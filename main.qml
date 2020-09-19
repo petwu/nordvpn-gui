@@ -1,9 +1,48 @@
 import QtQuick 2.12
-import QtQuick.Window 2.12
+import QtQuick.Controls 2.1
+import QtQuick.Layouts 1.3
 
-Window {
+import "app/ui/map"
+
+ApplicationWindow {
+    id: window
+    // TODO: remove
+    x: 920
+    y: 0
+
     visible: true
-    width: 640
-    height: 480
-    title: qsTr("Hello World")
+    title: "NordVPN"
+    minimumWidth: 720
+    minimumHeight: 400
+    width: 1000
+    height: 600
+
+    Column {
+        id: leftColumn
+        width: 240
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
+
+        Button {
+            objectName: "btn"
+            text: "Click Me."
+        }
+    }
+
+    Rectangle {
+        id: rightColumn
+        color: "#b8cedc"
+        anchors.top: parent.top
+        anchors.left: leftColumn.right
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
+        clip: true
+
+        ColumnLayout {
+            width: parent.width
+            height: parent.height
+
+            Map { }
+        }
+    }
 }
