@@ -14,6 +14,8 @@ Item {
     /*! size of the border/margin around the map */
     property int mapBorder: 64
 
+    property bool markerDebug: false
+
     // private properties
     QtObject {
         id: _
@@ -193,5 +195,33 @@ Item {
         onClicked: zoomCenter(false)
         anchors.right: parent.right
         anchors.bottom: parent.bottom
+    }
+
+    /*
+      markers
+    */
+    MouseArea {
+        visible: markerDebug
+        anchors.fill: map
+        onClicked: {
+            const l = (mouseX / map.width).toFixed(4)
+            const t = (mouseY / map.height).toFixed(4)
+            debugMarkerPosHint.text = `FROM LEFT: ${l}` + '\n' + `FROM TOP:  ${t}`
+        }
+    }
+
+    Text {
+        id: debugMarkerPosHint
+        visible: markerDebug
+        anchors.left: mapArea.left
+        anchors.bottom: mapArea.bottom
+        text: 'Test'
+    }
+
+    Marker {
+        anchors.left: map.left
+        anchors.top: map.top
+        anchors.leftMargin: .5083*map.width
+        anchors.topMargin: .3340*map.height
     }
 }
