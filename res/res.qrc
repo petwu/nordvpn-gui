@@ -1,5 +1,9 @@
 <RCC>
     <qresource prefix="/img">
-        <file>map.svg</file>
+        <file alias="map.svg">img/map.svg</file>
+    </qresource>
+    <qresource prefix="/style">
+        <file alias="Style/Style.qml">style/Style.qml</file>
+        <file alias="Style/qmldir">style/qmldir</file>
     </qresource>
 </RCC>

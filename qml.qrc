@@ -2,6 +2,7 @@
     <qresource prefix="/">
         <file>main.qml</file>
         <file>app/ui/map/Map.qml</file>
-        <file>app/ui/map/Map.qml</file>
+        <file>app/ui/map/Marker.qml</file>
+        <file>app/ui/map/ZoomButton.qml</file>
     </qresource>
 </RCC>

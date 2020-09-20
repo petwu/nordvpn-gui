@@ -1,35 +1,24 @@
 import QtQuick 2.12
 
+import '.'
+
 Item {
     width: parent.width
     height: parent.height
 
-    // size boundaries of the map image
-    property int mapMinHeight: 400
-    property int mapMaxHeight: 4000
-    // zoom by scaling the map image with the given factor
+    /*! size boundaries of the map image */
+    property int mapMinHeight: 640
+    property int mapMaxHeight: 4800
+    /*! zoom by scaling the map image with the given factor */
     property double zoomFactor: 1.3
-    // operate in a grid rather than pixel by pixel
-    property int gridSize: 5
-    // size of the border/margin around the map
-    property int maxBorder: 50
-    // flag that keeps the map centered until the first click/drag
-    property bool firstInteraction: true
-    // transition duration
-    property int behaviorDuration: 100
-    property bool checkBoundsAfterZoomIsQueued: false
+    /*! size of the border/margin around the map */
+    property int mapBorder: 64
 
-    /*!
-      g(n) rounds n to the next multiplicative of gridSize, e.g.
-      - 123 => 125
-      - 112 => 110
-      - 2.5 => 5
-    */
-    function g(n) {
-        if ((n % gridSize) > gridSize/2) {
-            return Math.ceil(n/gridSize) * gridSize
-        }
-        return Math.floor(n/gridSize) * gridSize
+    // private properties
+    QtObject {
+        id: _
+        // flag that keeps the map centered until the first click/drag
+        property bool mapCentered: true
     }
 
     /*!
@@ -56,138 +45,113 @@ Item {
     */
     function zoom(zoomIn, mouseX, mouseY) {
         const zoomOut = !zoomIn
-        // check if bounds are reached => no further zooming out
-        if (zoomOut && (mapArea.width - (map.width + 2*maxBorder) >= 0 || mapArea.height - (map.height + 2*maxBorder) >= 0)) {
-            checkBounds()
-            return
+        const curHeight = map.height
+        const curWidth = map.width
+        const curLeft = map.x
+        const curRight = mapArea.width - (map.x + map.width)
+        const curTop = map.y
+        const curBottom = mapArea.height - (map.y + map.height)
+        const ratio = map.width/map.height
+        //
+        let newHeight = curHeight
+        if (zoomIn && curHeight*zoomFactor <= mapMaxHeight) {
+            newHeight *= zoomFactor
+        } else if (zoomOut && curHeight/zoomFactor >= mapMinHeight) {
+            newHeight /= zoomFactor
         }
+        let newWidth = newHeight * ratio
+        let deltaWidth = newWidth - curWidth
+        let deltaHeight = newHeight - curHeight
+        let shiftX = -deltaWidth * (mouseX - curLeft)/(mapArea.width - curLeft - curRight)
+        let shiftY = -deltaHeight * (mouseY - curTop)/(mapArea.height - curTop - curBottom)
+        let newLeft = curLeft + shiftX
+        let newRight = curRight - (deltaWidth + shiftX)
+        let newTop = curTop + shiftY
+        let newBottom = curBottom - (deltaHeight + shiftY)
+        while (newLeft + newRight - 2*mapBorder > 0 || newTop + newBottom - 2*mapBorder > 0) {
+            // => too small => scale up
+            newHeight++
+            newWidth = newHeight * ratio
+            deltaWidth = newWidth - curWidth
+            deltaHeight = newHeight - curHeight
+            shiftX = -deltaWidth * (mouseX - curLeft)/(mapArea.width - curLeft - curRight)
+            shiftY = -deltaHeight * (mouseY - curTop)/(mapArea.height - curTop - curBottom)
+            newLeft = curLeft + shiftX
+            newRight = curRight - (deltaWidth + shiftX)
+            newTop = curTop + shiftY
+            newBottom = curBottom - (deltaHeight + shiftY)
+        }
+        newLeft -= mapBorder
+        newRight -= mapBorder
+        newTop -= mapBorder
+        newBottom -= mapBorder
+        if (newLeft > 0) shiftX -= newLeft
+        if (newRight > 0) shiftX += newRight
+        if (newTop > 0) shiftY -= newTop
+        if (newBottom > 0) shiftY += newBottom
+        map.height = newHeight
+        map.x += shiftX
+        map.y += shiftY
+    }
 
-        // get new height
-        let h = map.height
-        let w = map.width
-        if (zoomIn && g(h*zoomFactor) <= mapMaxHeight) {
-            h *= zoomFactor
-        } else if (zoomOut && g(h/zoomFactor) >= mapMinHeight) {
-            h /= zoomFactor
-        }
-        h = g(h)
-        const deltaH = Math.abs(map.height - h)
-        const deltaW = w * Math.abs(1 - h / map.height)
-        // correct (x,y) of map depending on the mouse position in order to zoom the area
-        // beneath the mouse and no the currently centered area
-        let xShift = 0
-        let yShift = 0
-        if (Math.abs(g(mouseX) - g(mapArea.width/2)) <= 4*gridSize && Math.abs(g(mouseY) - g(mapArea.height/2)) <= 4*gridSize) {
-            // mouse is in center => no correction required
-        } else if (deltaH === 0) {
-            // no zooming => no correction required
-        } else {
-            const offsetX = g(mouseX - mapArea.width/2)
-            const offsetY = g(mouseY - mapArea.height/2)
-
-            xShift = deltaW * mouseX / mapArea.width
-            yShift = deltaH * mouseY / mapArea.height
-            if (zoomIn) {
-                xShift *= -1
-                yShift *= -1
-            }
-        }
-        // apply zoom
-        map.height = h
-        map.x += xShift
-        map.y += yShift
-        delay(behaviorDuration, () => checkBounds())
+    /*!
+      simplified zoom function that does not zoom towards the mouse pointer
+      but rather towards the center of mapArea
+    */
+    function zoomCenter(zoomIn) {
+        zoom(zoomIn,
+             mapArea.width/2,
+             mapArea.height/2)
     }
 
     /*!
       checkBounds ensures that the map stays inside mapArea
     */
-    function checkBounds(secondTime = false) {
+    function checkBounds() {
         // fit map inside mapArea
-        let width = map.width + 2*maxBorder
-        let height = map.height + 2*maxBorder
-        let deltaW = mapArea.width - width
-        let deltaH = mapArea.height - height
-        const ratio = width/height
-        if (deltaW > 0 && deltaH > 0) {
+        let deltaW = mapArea.width - map.width - 2*mapBorder
+        let deltaH = mapArea.height - map.height - 2*mapBorder
+        const ratio = map.width/map.height
+        if (deltaW > 0 || deltaH > 0) {
             if (deltaH*ratio < deltaW) {
                 // if: overcoming the vertical distance requires less scaling
-                // then: add the missing height to map to fit the height of mapArea
-                map.height += deltaH
-                deltaH = 0
-            } else {
-                // else: overcoming the horizontal distance requires less scaling
                 // then: add the missing height to map to fit the width of mapArea
                 //       (the missing height can be defered from the missing width by considering the map ratio)
                 map.height += deltaW/ratio
-                deltaW = 0
+            } else {
+                // else: overcoming the horizontal distance requires less scaling
+                // then: add the missing height to map to fit the height of mapArea
+                map.height += deltaH
             }
         }
-        // keep map+maxBorder inside mapArea
-        const left = map.x - maxBorder
-        const right = mapArea.width - (map.x + map.width + maxBorder)
-        const top = map.y - maxBorder
-        const bottom = mapArea.height - (map.y + map.height + maxBorder)
-        if (deltaW === 0) {
-            // if: map fits the width of mapArea
-            // then: center map vertically
-            map.x = maxBorder
-            map.y -= (top - bottom)/2
-        } else if (deltaH === 0) {
-            // if: map fits the height of mapArea
-            // then: center map horizontally
-            map.x -= (left - right)/2
-            map.y = maxBorder
-        } else {
-            // else: map convers mapArea completely
-            // then: ensure all boundaries are adhered
-            if (left > 0) map.x -= left
-            if (right > 0) map.x += right
-            if (top > 0) map.y -= top
-            if (bottom > 0) map.y += bottom
-        }
-        if (!secondTime) {
-            delay(behaviorDuration, () => checkBounds(true))
-        }
+        // keep map inside mapArea
+        const left = map.x - mapBorder
+        const right = mapArea.width - (map.x + map.width) - mapBorder
+        const top = map.y - mapBorder
+        const bottom = mapArea.height - (map.y + map.height) - mapBorder
+        if (left > 0) map.x -= left
+        if (right > 0) map.x += right
+        if (top > 0) map.y -= top
+        if (bottom > 0) map.y += bottom
     }
 
     /*
       the map image
     */
-    Image {
+    Item {
         id: map
-        source: "qrc:/img/map.svg"
-        sourceSize: Qt.size(0, mapMaxHeight)
-        fillMode: Image.PreserveAspectFit
-        height: 720
-        anchors.centerIn: firstInteraction ? parent : undefined
+        width: mapImg.width
+        height: 800
+        anchors.centerIn: _.mapCentered ? parent : undefined
 
-        Behavior on x {
-            NumberAnimation {
-                duration: behaviorDuration
-                easing.type: Easing.InOutQuad
-            }
-        }
-
-        Behavior on y {
-            NumberAnimation {
-                duration: behaviorDuration
-                easing.type: Easing.InOutQuad
-            }
-        }
-
-        Behavior on width {
-            NumberAnimation {
-                duration: behaviorDuration
-                easing.type: Easing.InOutQuad
-            }
-        }
-
-        Behavior on height {
-            NumberAnimation {
-                duration: behaviorDuration
-                easing.type: Easing.InOutQuad
-            }
+        Image {
+            id: mapImg
+            source: "qrc:/img/map.svg"
+            sourceSize: Qt.size(0, mapMaxHeight)
+            fillMode: Image.PreserveAspectFit
+            x: 0
+            y: 0
+            height: parent.height
         }
     }
 
@@ -200,15 +164,34 @@ Item {
         height: parent.height
 
         drag.target: map
-        onPressed: () => firstInteraction = false
+        onPressed: () => _.mapCentered = false
         onReleased: checkBounds()
         onWidthChanged: checkBounds()
         onHeightChanged: checkBounds()
         onWheel: (wheel) => {
-                     firstInteraction = false
+                     _.mapCentered = false
                      zoom(wheel.angleDelta.y > 0,
                           wheel.x,
                           wheel.y)
                  }
+    }
+
+    /*
+      zoom controls
+    */
+    ZoomButton {
+        id: zoomInBtn
+        text: '+'
+        onClicked: zoomCenter(true)
+        anchors.right: parent.right
+        anchors.bottom: zoomOutBtn.top
+    }
+
+    ZoomButton {
+        id: zoomOutBtn
+        text: '−'
+        onClicked: zoomCenter(false)
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom
     }
 }
