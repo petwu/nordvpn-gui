@@ -1,4 +1,7 @@
 <RCC>
+    <qresource prefix="/data">
+        <file alias="countries.json">data/countries.json</file>
+    </qresource>
     <qresource prefix="/img">
         <file alias="map.svg">img/map.svg</file>
     </qresource>

@@ -21,20 +21,19 @@ Item {
         id: _
         // flag that keeps the map centered until the first click/drag
         property bool mapCentered: true
+        property var countryList: []
     }
 
-    /*!
-      delay waits the given delayTime in millisecons an the executes the callback
-    */
-    function delay(delayTime, callback) {
-        function Timer() {
-            return Qt.createQmlObject("import QtQuick 2.0; Timer {}", parent);
+    Component.onCompleted: {
+        // get country to position the markers
+        let xhr = new XMLHttpRequest
+        xhr.open('GET', 'qrc:/data/countries.json')
+        xhr.onreadystatechange = () => {
+            if (xhr.readyState === XMLHttpRequest.DONE) {
+                _.countryList = JSON.parse(xhr.responseText)
+            }
         }
-        let timer = new Timer()
-        timer.interval = delayTime
-        timer.repeat = false
-        timer.triggered.connect(callback)
-        timer.start()
+        xhr.send()
     }
 
     /*!
@@ -218,10 +217,16 @@ Item {
         text: 'Test'
     }
 
-    Marker {
-        anchors.left: map.left
-        anchors.top: map.top
-        anchors.leftMargin: .5083*map.width
-        anchors.topMargin: .3340*map.height
+    Repeater {
+        model: _.countryList
+
+        Marker {
+            countryId: modelData.id
+            name: modelData.cliName
+            anchors.left: map.left
+            anchors.top: map.top
+            anchors.leftMargin: map.width * modelData.offsetLeft
+            anchors.topMargin: map.height * modelData.offsetTop
+        }
     }
 }

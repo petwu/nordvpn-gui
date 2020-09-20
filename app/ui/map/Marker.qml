@@ -7,20 +7,31 @@ Item {
     width: 0
     height: 0
 
+    property int countryId: -1
+    property string name: ''
     property double scaleFactor: 1
     property double pointerHeight: .25
     property int radius: 18 * scaleFactor
     property int borderWidth: radius/8
 
     MouseArea {
+        id: markerArea
         width: 2*marker.radius
         height: width * (1 + marker.pointerHeight)
         x: -width/2
         y: -height
         cursorShape: Qt.PointingHandCursor
         hoverEnabled: true
-        onEntered: scaleFactor += .3
-        onExited: scaleFactor -= .3
+        onEntered: {
+            marker.z += 10
+            markerText.visible = true
+            scaleFactor += .3
+        }
+        onExited: {
+            marker.z -= 10
+            markerText.visible = false
+            scaleFactor -= .3
+        }
 
         Behavior on width {
             NumberAnimation {
@@ -102,6 +113,30 @@ Item {
             radius: .5 * width
             color: Style.colorMarkerWhite
             anchors.centerIn: circle
+        }
+
+        /*
+          name tag
+        */
+        Rectangle {
+            id: markerText
+            visible: false
+            width: _markerText.width + 24
+            height: _markerText.height + 10
+            anchors.top: markerArea.bottom
+            x: -(width - markerArea.width)/2
+            z: 10
+            color: Style.colorMarkerBlueDark
+            border.width: marker.borderWidth
+            border.color: Style.colorMarkerWhite
+            radius: 8
+
+            Text {
+                id: _markerText
+                text: marker.name
+                anchors.centerIn: parent
+                color: Style.colorMarkerWhite
+            }
         }
     }
 }

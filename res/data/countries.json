@@ -1,0 +1,350 @@
+[
+    {
+        "id": 0,
+        "cliName": "Albania",
+        "offsetLeft": 0.5372,
+        "offsetTop": 0.397
+    },
+    {
+        "id": 1,
+        "cliName": "Argentina",
+        "offsetLeft": 0.2917,
+        "offsetTop": 0.8416
+    },
+    {
+        "id": 2,
+        "cliName": "Australia",
+        "offsetLeft": 0.8873,
+        "offsetTop": 0.8116
+    },
+    {
+        "id": 3,
+        "cliName": "Austria",
+        "offsetLeft": 0.5189,
+        "offsetTop": 0.3548
+    },
+    {
+        "id": 4,
+        "cliName": "Belgium",
+        "offsetLeft": 0.4923,
+        "offsetTop": 0.3325
+    },
+    {
+        "id": 5,
+        "cliName": "Bosnia_And_Herzegovina",
+        "offsetLeft": 0.5310,
+        "offsetTop": 0.3756
+    },
+    {
+        "id": 6,
+        "cliName": "Brazil",
+        "offsetLeft": 0.3274,
+        "offsetTop": 0.7161
+    },
+    {
+        "id": 7,
+        "cliName": "Bulgaria",
+        "offsetLeft": 0.5508,
+        "offsetTop": 0.3867
+    },
+    {
+        "id": 8,
+        "cliName": "Canada",
+        "offsetLeft": 0.1988,
+        "offsetTop": 0.2472
+    },
+    {
+        "id": 9,
+        "cliName": "Chile",
+        "offsetLeft": 0.2717,
+        "offsetTop": 0.8809
+    },
+    {
+        "id": 10,
+        "cliName": "Costa_Rica",
+        "offsetLeft": 0.2177,
+        "offsetTop": 0.5768
+    },
+    {
+        "id": 11,
+        "cliName": "Croatia",
+        "offsetLeft": 0.5246,
+        "offsetTop": 0.3780
+    },
+    {
+        "id": 12,
+        "cliName": "Cyprus",
+        "offsetLeft": 0.553,
+        "offsetTop": 0.4329
+    },
+    {
+        "id": 13,
+        "cliName": "Czech_Republic",
+        "offsetLeft": 0.5219,
+        "offsetTop": 0.338
+    },
+    {
+        "id": 14,
+        "cliName": "Denmark",
+        "offsetLeft": 0.5039,
+        "offsetTop": 0.2942
+    },
+    {
+        "id": 15,
+        "cliName": "Estonia",
+        "offsetLeft": 0.5463,
+        "offsetTop": 0.2717
+    },
+    {
+        "id": 16,
+        "cliName": "Finland",
+        "offsetLeft": 0.5459,
+        "offsetTop": 0.2392
+    },
+    {
+        "id": 17,
+        "cliName": "France",
+        "offsetLeft": 0.4876,
+        "offsetTop": 0.3636
+    },
+    {
+        "id": 18,
+        "cliName": "Georgia",
+        "offsetLeft": 0.6008,
+        "offsetTop": 0.3856
+    },
+    {
+        "id": 19,
+        "cliName": "Germany",
+        "offsetLeft": 0.5083,
+        "offsetTop": 0.334
+    },
+    {
+        "id": 20,
+        "cliName": "Greece",
+        "offsetLeft": 0.5445,
+        "offsetTop": 0.4198
+    },
+    {
+        "id": 21,
+        "cliName": "Hong_Kong",
+        "offsetLeft": 0.8290,
+        "offsetTop": 0.4847
+    },
+    {
+        "id": 22,
+        "cliName": "Hungary",
+        "offsetLeft": 0.5316,
+        "offsetTop": 0.3580
+    },
+    {
+        "id": 23,
+        "cliName": "Iceland",
+        "offsetLeft": 0.4348,
+        "offsetTop": 0.2318
+    },
+    {
+        "id": 24,
+        "cliName": "India",
+        "offsetLeft": 0.72,
+        "offsetTop": 0.51
+    },
+    {
+        "id": 25,
+        "cliName": "Indonesia",
+        "offsetLeft": 0.8351,
+        "offsetTop": 0.6412
+    },
+    {
+        "id": 26,
+        "cliName": "Ireland",
+        "offsetLeft": 0.4582,
+        "offsetTop": 0.3164
+    },
+    {
+        "id": 27,
+        "cliName": "Israel",
+        "offsetLeft": 0.5816,
+        "offsetTop": 0.4522
+    },
+    {
+        "id": 28,
+        "cliName": "Italy",
+        "offsetLeft": 0.5169,
+        "offsetTop": 0.3894
+    },
+    {
+        "id": 29,
+        "cliName": "Japan",
+        "offsetLeft": 0.8853,
+        "offsetTop": 0.3816
+    },
+    {
+        "id": 30,
+        "cliName": "Latvia",
+        "offsetLeft": 0.5473,
+        "offsetTop": 0.2864
+    },
+    {
+        "id": 31,
+        "cliName": "Luxembourg",
+        "offsetLeft": 0.4983,
+        "offsetTop": 0.3401
+    },
+    {
+        "id": 32,
+        "cliName": "Malaysia",
+        "offsetLeft": 0.7957,
+        "offsetTop": 0.6100
+    },
+    {
+        "id": 33,
+        "cliName": "Mexico",
+        "offsetLeft": 0.1711,
+        "offsetTop": 0.5067
+    },
+    {
+        "id": 34,
+        "cliName": "Moldova",
+        "offsetLeft": 0.5581,
+        "offsetTop": 0.3544
+    },
+    {
+        "id": 35,
+        "cliName": "Netherlands",
+        "offsetLeft": 0.4960,
+        "offsetTop": 0.3223
+    },
+    {
+        "id": 36,
+        "cliName": "New_Zealand",
+        "offsetLeft": 0.965,
+        "offsetTop": 0.9768
+    },
+    {
+        "id": 37,
+        "cliName": "North_Macedonia",
+        "offsetLeft": 0.5417,
+        "offsetTop": 0.3922
+    },
+    {
+        "id": 38,
+        "cliName": "Norway",
+        "offsetLeft": 0.5025,
+        "offsetTop": 0.2553
+    },
+    {
+        "id": 39,
+        "cliName": "Poland",
+        "offsetLeft": 0.5323,
+        "offsetTop": 0.3230
+    },
+    {
+        "id": 40,
+        "cliName": "Portugal",
+        "offsetLeft": 0.5464,
+        "offsetTop": 0.4092
+    },
+    {
+        "id": 41,
+        "cliName": "Romania",
+        "offsetLeft": 0.5494,
+        "offsetTop": 0.3660
+    },
+    {
+        "id": 42,
+        "cliName": "Serbia",
+        "offsetLeft": 0.5390,
+        "offsetTop": 0.3778
+    },
+    {
+        "id": 43,
+        "cliName": "Singapore",
+        "offsetLeft": 0.8020,
+        "offsetTop": 0.6239
+    },
+    {
+        "id": 44,
+        "cliName": "Slovakia",
+        "offsetLeft": 0.5344,
+        "offsetTop": 0.3466
+    },
+    {
+        "id": 45,
+        "cliName": "Slovenia",
+        "offsetLeft": 0.5217,
+        "offsetTop": 0.3637
+    },
+    {
+        "id": 46,
+        "cliName": "South_Africa",
+        "offsetLeft": 0.5513,
+        "offsetTop": 0.8070
+    },
+    {
+        "id": 47,
+        "cliName": "South_Korea",
+        "offsetLeft": 0.8523,
+        "offsetTop": 0.3868
+    },
+    {
+        "id": 48,
+        "cliName": "Spain",
+        "offsetLeft": 0.47,
+        "offsetTop": 0.4047
+    },
+    {
+        "id": 49,
+        "cliName": "Sweden",
+        "offsetLeft": 0.5183,
+        "offsetTop": 0.2608
+    },
+    {
+        "id": 50,
+        "cliName": "Switzerland",
+        "offsetLeft": 0.5024,
+        "offsetTop": 0.3588
+    },
+    {
+        "id": 51,
+        "cliName": "Taiwan",
+        "offsetLeft": 0.8462,
+        "offsetTop": 0.4748
+    },
+    {
+        "id": 52,
+        "cliName": "Thailand",
+        "offsetLeft": 0.7896,
+        "offsetTop": 0.5386
+    },
+    {
+        "id": 53,
+        "cliName": "Turkey",
+        "offsetLeft": 0.5799,
+        "offsetTop": 0.4099
+    },
+    {
+        "id": 54,
+        "cliName": "Ukraine",
+        "offsetLeft": 0.5675,
+        "offsetTop": 0.3405
+    },
+    {
+        "id": 55,
+        "cliName": "United_Kingdom",
+        "offsetLeft": 0.4762,
+        "offsetTop": 0.3248
+    },
+    {
+        "id": 56,
+        "cliName": "United_States",
+        "offsetLeft": 0.1922,
+        "offsetTop": 0.3871
+    },
+    {
+        "id": 57,
+        "cliName": "Vietnam",
+        "offsetLeft": 0.8133,
+        "offsetTop": 0.5476
+    }
+]
