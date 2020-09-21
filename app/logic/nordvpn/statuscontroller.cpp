@@ -6,18 +6,18 @@ bool StatusController::canExecuteShellCmds() {
 }
 
 bool StatusController::isNordVpnInstalled() {
-    auto result = execute(cmd::NORDVPN_VERSION);
+    auto result = execute(nordvpn::CMD_VERSION);
     return result->exitCode == 0 &&
            result->output.rfind("NordVPN Version", 0) == 0;
 }
 
 std::string StatusController::getVersion() {
-    auto result = execute(cmd::NORDVPN_VERSION);
+    auto result = execute(nordvpn::CMD_VERSION);
     return result->output;
 }
 
 std::unique_ptr<ConnectionStatus> StatusController::getStatus() {
-    auto result = execute(cmd::NORDVPN_STATUS);
+    auto result = execute(nordvpn::CMD_STATUS);
     auto status = std::unique_ptr<ConnectionStatus>(new ConnectionStatus());
     auto o = result->output;
     std::smatch m;
@@ -100,13 +100,13 @@ std::unique_ptr<ConnectionStatus> StatusController::getStatus() {
     return status;
 }
 
-uint8_t StatusController::getRatingMin() { return 1; }
+uint8_t StatusController::getRatingMin() { return nordvpn::RATING_MIN; }
 
-uint8_t StatusController::getRatingMax() { return 5; }
+uint8_t StatusController::getRatingMax() { return nordvpn::RADING_MAX; }
 
 void StatusController::rate(uint8_t rating) {
     if (rating < getRatingMin() || rating > getRatingMax()) {
         return;
     }
-    execute(cmd::NORDVPN_RATE + " " + std::to_string(rating));
+    execute(nordvpn::CMD_RATE + " " + std::to_string(rating));
 }

@@ -12,8 +12,10 @@
 #include <regex>
 #include <string>
 #include <tuple>
+#include <vector>
 
 #include "commands.h"
+#include "common/util/strings.h"
 
 struct CmdResult {
     std::string output;
@@ -33,7 +35,7 @@ class BaseController {
     BaseController() {}
 
   protected:
-    std::unique_ptr<CmdResult> execute(std::string cmd);
+    std::unique_ptr<CmdResult> execute(std::string nordvpn);
 };
 
 #endif // BASECONTROLLER_H

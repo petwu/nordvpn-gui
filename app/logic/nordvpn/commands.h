@@ -3,12 +3,18 @@
 
 #include <string>
 
-namespace cmd {
+namespace nordvpn {
 
-static const std::string NORDVPN_VERSION = "nordvpn --version";
-static const std::string NORDVPN_STATUS = "nordvpn status";
-static const std::string NORDVPN_RATE = "nordvon rate";
+    static const std::string CMD_VERSION = "nordvpn --version";
+    static const std::string CMD_STATUS = "nordvpn status";
+    static const std::string CMD_RATE = "nordvpn rate";
+    static const std::string CMD_CITIES = "nordvpn cities";
+    static const std::string CMD_COUTRIES = "nordvpn countries";
+    static const std::string CMD_GROUPS = "nordvpn groups";
 
-} // namespace cmd
+    static const uint8_t RATING_MIN = 1;
+    static const uint8_t RADING_MAX = 5;
+
+} // namespace nordvpn
 
 #endif // COMMANDS_H
