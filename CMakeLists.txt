@@ -21,6 +21,8 @@ add_executable(nordvpn-gui
     ${TS_FILES}
     # source files
     app/main.cpp
+    app/logic/nordvpn/basecontroller.cpp
+    app/logic/nordvpn/statuscontroller.cpp
     app/logic/mediators/mapmediator.cpp
 )
 

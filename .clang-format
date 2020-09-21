@@ -9,11 +9,4 @@ BasedOnStyle: LLVM
 IndentWidth: 4
 ColumnLimit: 80
 
-# put braces on next line after e.g. functions
-BreakBeforeBraces: Linux
-
-# pointer (asterisk) and reference (ampersand) alignment
-DerivePointerAlignment: false
-PointerAlignment: Right
-
 ---
