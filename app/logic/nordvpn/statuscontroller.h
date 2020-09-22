@@ -1,6 +1,10 @@
 #ifndef STATUSCONTROLLER_H
 #define STATUSCONTROLLER_H
 
+#include <atomic>
+#include <functional>
+#include <thread>
+
 #include "basecontroller.h"
 
 class ConnectionType {
@@ -70,6 +74,12 @@ struct ConnectionStatus {
     uint64_t sent;
     uint64_t received;
     uint64_t uptime;
+    std::string toString(bool onLine = true);
+};
+
+class IConnectionStatusSubscription {
+  public:
+    virtual void update(std::shared_ptr<ConnectionStatus> newStatus) = 0;
 };
 
 class StatusController : public BaseController {
@@ -77,10 +87,23 @@ class StatusController : public BaseController {
     bool canExecuteShellCmds();
     bool isNordVpnInstalled();
     std::string getVersion();
+
     std::unique_ptr<ConnectionStatus> getStatus();
+    void startBackgroundTask();
+    void stopBackgroundTask();
+    void attach(std::shared_ptr<IConnectionStatusSubscription> subscriber);
+    void detach(std::shared_ptr<IConnectionStatusSubscription> subscriber);
+
     uint8_t getRatingMin();
     uint8_t getRatingMax();
     void rate(uint8_t rating);
+
+  private:
+    std::atomic<bool> _performBackgroundTask = false;
+    std::vector<std::shared_ptr<IConnectionStatusSubscription>> _subscribers;
+    std::shared_ptr<ConnectionStatus> _currectStatus;
+    void _backgroundTask();
+    void _notifySubscribers();
 };
 
 #endif // STATUSCONTROLLER_H

@@ -2,6 +2,7 @@
 #define COMMANDS_H
 
 #include <string>
+#include <chrono>
 
 namespace nordvpn {
 
@@ -14,6 +15,8 @@ namespace nordvpn {
 
     static const uint8_t RATING_MIN = 1;
     static const uint8_t RADING_MAX = 5;
+
+    static const std::chrono::duration STATUS_UPDATE_INTERVAL = std::chrono::milliseconds(500);
 
 } // namespace nordvpn
 

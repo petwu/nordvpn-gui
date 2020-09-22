@@ -1,23 +1,38 @@
 #include "statuscontroller.h"
 
+std::string ConnectionStatus::toString(bool onLine) {
+    std::string sb = onLine ? " " : "\n  ";
+    std::string s = onLine ? ", " : "\n  ";
+    std::string se = onLine ? " " : "\n";
+    return std::string("ConnectionStatus {") + sb +
+           "connected = " + (this->connected ? "true" : "false") + s +
+           "server = " + this->server + s + "country = " + this->country + s +
+           "city = " + this->city + s + "ip = " + this->ip + s +
+           "technology = " + this->technology.toString() + s +
+           "connectionType = " + this->connectionType.toString() + s +
+           "sent = " + std::to_string(this->sent) + s +
+           "received = " + std::to_string(this->received) + s +
+           "uptime = " + std::to_string(this->uptime) + "s" + se + "}";
+}
+
 bool StatusController::canExecuteShellCmds() {
-    auto result = execute("");
+    auto result = this->execute("");
     return *result != *ERROR_POPEN_FAILED;
 }
 
 bool StatusController::isNordVpnInstalled() {
-    auto result = execute(nordvpn::CMD_VERSION);
+    auto result = this->execute(nordvpn::CMD_VERSION);
     return result->exitCode == 0 &&
            result->output.rfind("NordVPN Version", 0) == 0;
 }
 
 std::string StatusController::getVersion() {
-    auto result = execute(nordvpn::CMD_VERSION);
+    auto result = this->execute(nordvpn::CMD_VERSION);
     return result->output;
 }
 
 std::unique_ptr<ConnectionStatus> StatusController::getStatus() {
-    auto result = execute(nordvpn::CMD_STATUS);
+    auto result = this->execute(nordvpn::CMD_STATUS);
     auto status = std::unique_ptr<ConnectionStatus>(new ConnectionStatus());
     auto o = result->output;
     std::smatch m;
@@ -100,6 +115,43 @@ std::unique_ptr<ConnectionStatus> StatusController::getStatus() {
     return status;
 }
 
+void StatusController::startBackgroundTask() {
+    this->_performBackgroundTask = true;
+    // create and run new daemon thread
+    std::thread t(&StatusController::_backgroundTask, this);
+    t.detach();
+}
+
+void StatusController::stopBackgroundTask() {
+    this->_performBackgroundTask = false;
+}
+
+void StatusController::attach(
+    std::shared_ptr<IConnectionStatusSubscription> subscriber) {
+    this->_subscribers.push_back(subscriber);
+}
+
+void StatusController::detach(
+    std::shared_ptr<IConnectionStatusSubscription> subscriber) {
+    this->_subscribers.erase(std::remove(this->_subscribers.begin(),
+                                         this->_subscribers.end(), subscriber),
+                             this->_subscribers.end());
+}
+
+void StatusController::_backgroundTask() {
+    while (this->_performBackgroundTask) {
+        this->_currectStatus = this->getStatus();
+        this->_notifySubscribers();
+        std::this_thread::sleep_for(nordvpn::STATUS_UPDATE_INTERVAL);
+    }
+}
+
+void StatusController::_notifySubscribers() {
+    for (auto &subscriber : this->_subscribers) {
+        subscriber->update(this->_currectStatus);
+    }
+}
+
 uint8_t StatusController::getRatingMin() { return nordvpn::RATING_MIN; }
 
 uint8_t StatusController::getRatingMax() { return nordvpn::RADING_MAX; }
@@ -108,5 +160,5 @@ void StatusController::rate(uint8_t rating) {
     if (rating < getRatingMin() || rating > getRatingMax()) {
         return;
     }
-    execute(nordvpn::CMD_RATE + " " + std::to_string(rating));
+    this->execute(nordvpn::CMD_RATE + " " + std::to_string(rating));
 }

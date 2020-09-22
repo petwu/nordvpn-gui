@@ -1,11 +1,7 @@
 #ifndef BASECONTROLLER_H
 #define BASECONTROLLER_H
 
-#include <algorithm>
 #include <array>
-#include <cctype>
-#include <cstdio>
-#include <cstdlib>
 #include <iostream>
 #include <map>
 #include <memory>
@@ -14,8 +10,8 @@
 #include <tuple>
 #include <vector>
 
-#include "commands.h"
 #include "common/util/strings.h"
+#include "config.h"
 
 struct CmdResult {
     std::string output;

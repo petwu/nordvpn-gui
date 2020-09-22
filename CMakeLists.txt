@@ -10,6 +10,7 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
 find_package(Qt5 COMPONENTS Core Quick LinguistTools REQUIRED)
+find_package(Threads REQUIRED)
 
 set(TS_FILES locale/en_US.ts)
 
@@ -30,6 +31,6 @@ add_executable(nordvpn-gui
 
 target_include_directories(nordvpn-gui PUBLIC app/)
 
-target_link_libraries(nordvpn-gui PRIVATE Qt5::Core Qt5::Quick)
+target_link_libraries(nordvpn-gui PRIVATE Qt5::Core Qt5::Quick Threads::Threads)
 
 qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
