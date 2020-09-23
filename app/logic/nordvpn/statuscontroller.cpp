@@ -1,11 +1,11 @@
 #include "statuscontroller.h"
 
-std::string ConnectionStatus::toString(bool onLine) {
+std::string ConnectionInfo::toString(bool onLine) const {
     std::string sb = onLine ? " " : "\n  ";
     std::string s = onLine ? ", " : "\n  ";
     std::string se = onLine ? " " : "\n";
-    return std::string("ConnectionStatus {") + sb +
-           "connected = " + (this->connected ? "true" : "false") + s +
+    return std::string("ConnectionInfo {") + sb +
+           "status = " + this->status.toString() + s +
            "server = " + this->server + s + "country = " + this->country + s +
            "city = " + this->city + s + "ip = " + this->ip + s +
            "technology = " + this->technology.toString() + s +
@@ -31,48 +31,47 @@ std::string StatusController::getVersion() {
     return result.output;
 }
 
-ConnectionStatus StatusController::getStatus() {
+ConnectionInfo StatusController::getStatus() {
     std::string o = this->execute(config::cmd::STATUS).output;
-    ConnectionStatus status;
+    ConnectionInfo info;
     std::smatch m;
     bool matched;
 
-    // connection status
+    // connection status => disconnected ?
     matched = std::regex_search(o, m, std::regex("Status: (\\w+)"));
     if (!matched || m[1].str() == "Disconnected") {
-        return status;
+        return info;
     }
-    status.connected = true;
 
     // server
     matched = std::regex_search(o, m, std::regex("Current server: (.+)"));
     if (matched)
-        status.server = m[1].str();
+        info.server = m[1].str();
 
     // country
     matched = std::regex_search(o, m, std::regex("Country: (.+)"));
     if (matched)
-        status.country = m[1].str();
+        info.country = m[1].str();
 
     // city
     matched = std::regex_search(o, m, std::regex("City: (.+)"));
     if (matched)
-        status.city = m[1].str();
+        info.city = m[1].str();
 
     // ip
     matched = std::regex_search(o, m, std::regex("Your new IP: (.+)"));
     if (matched)
-        status.ip = m[1].str();
+        info.ip = m[1].str();
 
     // technology
     matched = std::regex_search(o, m, std::regex("Current technology: (.+)"));
     if (matched)
-        status.technology = Technology::fromString(m[1].str());
+        info.technology = Technology::fromString(m[1].str());
 
     // connection type
     matched = std::regex_search(o, m, std::regex("Current protocol: (.+)"));
     if (matched)
-        status.connectionType = ConnectionType::fromString(m[1].str());
+        info.connectionType = ConnectionType::fromString(m[1].str());
 
     std::map<std::string, uint64_t> bytes = {
         {"B", 1},
@@ -85,14 +84,13 @@ ConnectionStatus StatusController::getStatus() {
     matched = std::regex_search(
         o, m, std::regex("([\\d\\.]+) (B|KiB|MiB|GiB|TiB) sent"));
     if (matched)
-        status.sent =
-            uint64_t(std::atof(m[1].str().c_str()) * bytes[m[2].str()]);
+        info.sent = uint64_t(std::atof(m[1].str().c_str()) * bytes[m[2].str()]);
 
     // received
     matched = std::regex_search(
         o, m, std::regex("([\\d\\.]+) (B|KiB|MiB|GiB|TiB) received"));
     if (matched)
-        status.received =
+        info.received =
             uint64_t(std::atof(m[1].str().c_str()) * bytes[m[2].str()]);
 
     // uptime
@@ -101,17 +99,21 @@ ConnectionStatus StatusController::getStatus() {
         std::regex("Uptime: ?((\\d+) years?)? ?((\\d+) days?)? ?((\\d+) "
                    "hours?)? ?((\\d+) minutes?)? ?((\\d+) seconds?)?"));
     if (matched)
-        status.uptime = std::atoi(m[10].str().c_str()) +     // seconds
-                        (std::atoi(m[8].str().c_str()) +     // minutes
-                         (std::atoi(m[6].str().c_str()) +    // hours
-                          (std::atoi(m[4].str().c_str()) +   // days
-                           (std::atoi(m[2].str().c_str())) * // years
-                               365) *                        // years -> days
-                              24) *                          // days -> hours
-                             60) *                           // hours -> minutes
-                            60; // minutes -> seconds
+        info.uptime = std::atoi(m[10].str().c_str()) +     // seconds
+                      (std::atoi(m[8].str().c_str()) +     // minutes
+                       (std::atoi(m[6].str().c_str()) +    // hours
+                        (std::atoi(m[4].str().c_str()) +   // days
+                         (std::atoi(m[2].str().c_str())) * // years
+                             365) *                        // years -> days
+                            24) *                          // days -> hours
+                           60) *                           // hours -> minutes
+                          60;                              // minutes -> seconds
 
-    return std::move(status);
+    // connection status => connecting or connected ?
+    info.status = info.sent == 0 ? ConnectionStatus::Connecting
+                                 : ConnectionStatus::Connected;
+
+    return std::move(info);
 }
 
 void StatusController::startBackgroundTask() {
@@ -125,13 +127,11 @@ void StatusController::stopBackgroundTask() {
     this->_performBackgroundTask = false;
 }
 
-void StatusController::attach(
-    std::shared_ptr<IConnectionStatusSubscription> subscriber) {
+void StatusController::attach(IConnectionInfoSubscription *subscriber) {
     this->_subscribers.push_back(subscriber);
 }
 
-void StatusController::detach(
-    std::shared_ptr<IConnectionStatusSubscription> subscriber) {
+void StatusController::detach(IConnectionInfoSubscription *subscriber) {
     this->_subscribers.erase(std::remove(this->_subscribers.begin(),
                                          this->_subscribers.end(), subscriber),
                              this->_subscribers.end());

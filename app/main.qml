@@ -27,6 +27,11 @@ ApplicationWindow {
             objectName: "btn"
             text: "Click Me."
         }
+
+        Text {
+            text: 'connecting = ' + MapMediator.connectingCountryId +
+                  '\nconnected = ' + MapMediator.connectedCountryId
+        }
     }
 
     Rectangle {

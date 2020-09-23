@@ -1,349 +1,407 @@
 [
     {
         "id": 0,
-        "cliName": "Albania",
+        "connectName": "Albania",
+        "statusName": "Albania",
         "offsetLeft": 0.5372,
         "offsetTop": 0.397
     },
     {
         "id": 1,
-        "cliName": "Argentina",
+        "connectName": "Argentina",
+        "statusName": "Argentina",
         "offsetLeft": 0.2917,
         "offsetTop": 0.8416
     },
     {
         "id": 2,
-        "cliName": "Australia",
+        "connectName": "Australia",
+        "statusName": "Australia",
         "offsetLeft": 0.8873,
         "offsetTop": 0.8116
     },
     {
         "id": 3,
-        "cliName": "Austria",
+        "connectName": "Austria",
+        "statusName": "Austria",
         "offsetLeft": 0.5189,
         "offsetTop": 0.3548
     },
     {
         "id": 4,
-        "cliName": "Belgium",
+        "connectName": "Belgium",
+        "statusName": "Belgium",
         "offsetLeft": 0.4923,
         "offsetTop": 0.3325
     },
     {
         "id": 5,
-        "cliName": "Bosnia_And_Herzegovina",
+        "connectName": "Bosnia_And_Herzegovina",
+        "statusName": "Bosnia and Herzegovina",
         "offsetLeft": 0.5310,
         "offsetTop": 0.3756
     },
     {
         "id": 6,
-        "cliName": "Brazil",
+        "connectName": "Brazil",
+        "statusName": "Brazil",
         "offsetLeft": 0.3274,
         "offsetTop": 0.7161
     },
     {
         "id": 7,
-        "cliName": "Bulgaria",
+        "connectName": "Bulgaria",
+        "statusName": "Bulgaria",
         "offsetLeft": 0.5508,
         "offsetTop": 0.3867
     },
     {
         "id": 8,
-        "cliName": "Canada",
+        "connectName": "Canada",
+        "statusName": "Canada",
         "offsetLeft": 0.1988,
         "offsetTop": 0.2472
     },
     {
         "id": 9,
-        "cliName": "Chile",
+        "connectName": "Chile",
+        "statusName": "Chile",
         "offsetLeft": 0.2717,
         "offsetTop": 0.8809
     },
     {
         "id": 10,
-        "cliName": "Costa_Rica",
+        "connectName": "Costa_Rica",
+        "statusName": "Costa Rica",
         "offsetLeft": 0.2177,
         "offsetTop": 0.5768
     },
     {
         "id": 11,
-        "cliName": "Croatia",
+        "connectName": "Croatia",
+        "statusName": "Croatia",
         "offsetLeft": 0.5246,
         "offsetTop": 0.3780
     },
     {
         "id": 12,
-        "cliName": "Cyprus",
+        "connectName": "Cyprus",
+        "statusName": "Cyprus",
         "offsetLeft": 0.553,
         "offsetTop": 0.4329
     },
     {
         "id": 13,
-        "cliName": "Czech_Republic",
+        "connectName": "Czech_Republic",
+        "statusName": "Czech Republic",
         "offsetLeft": 0.5219,
         "offsetTop": 0.338
     },
     {
         "id": 14,
-        "cliName": "Denmark",
+        "connectName": "Denmark",
+        "statusName": "Denmark",
         "offsetLeft": 0.5039,
         "offsetTop": 0.2942
     },
     {
         "id": 15,
-        "cliName": "Estonia",
+        "connectName": "Estonia",
+        "statusName": "Estonia",
         "offsetLeft": 0.5463,
         "offsetTop": 0.2717
     },
     {
         "id": 16,
-        "cliName": "Finland",
+        "connectName": "Finland",
+        "statusName": "Finland",
         "offsetLeft": 0.5459,
         "offsetTop": 0.2392
     },
     {
         "id": 17,
-        "cliName": "France",
+        "connectName": "France",
+        "statusName": "France",
         "offsetLeft": 0.4876,
         "offsetTop": 0.3636
     },
     {
         "id": 18,
-        "cliName": "Georgia",
+        "connectName": "Georgia",
+        "statusName": "Georgia",
         "offsetLeft": 0.6008,
         "offsetTop": 0.3856
     },
     {
         "id": 19,
-        "cliName": "Germany",
+        "connectName": "Germany",
+        "statusName": "Germany",
         "offsetLeft": 0.5083,
         "offsetTop": 0.334
     },
     {
         "id": 20,
-        "cliName": "Greece",
+        "connectName": "Greece",
+        "statusName": "Greece",
         "offsetLeft": 0.5445,
         "offsetTop": 0.4198
     },
     {
         "id": 21,
-        "cliName": "Hong_Kong",
+        "connectName": "Hong_Kong",
+        "statusName": "Hong Kong",
         "offsetLeft": 0.8290,
         "offsetTop": 0.4847
     },
     {
         "id": 22,
-        "cliName": "Hungary",
+        "connectName": "Hungary",
+        "statusName": "Hungary",
         "offsetLeft": 0.5316,
         "offsetTop": 0.3580
     },
     {
         "id": 23,
-        "cliName": "Iceland",
+        "connectName": "Iceland",
+        "statusName": "Iceland",
         "offsetLeft": 0.4348,
         "offsetTop": 0.2318
     },
     {
         "id": 24,
-        "cliName": "India",
+        "connectName": "India",
+        "statusName": "India",
         "offsetLeft": 0.72,
         "offsetTop": 0.51
     },
     {
         "id": 25,
-        "cliName": "Indonesia",
+        "connectName": "Indonesia",
+        "statusName": "Indonesia",
         "offsetLeft": 0.8351,
         "offsetTop": 0.6412
     },
     {
         "id": 26,
-        "cliName": "Ireland",
+        "connectName": "Ireland",
+        "statusName": "Ireland",
         "offsetLeft": 0.4582,
         "offsetTop": 0.3164
     },
     {
         "id": 27,
-        "cliName": "Israel",
+        "connectName": "Israel",
+        "statusName": "Israel",
         "offsetLeft": 0.5816,
         "offsetTop": 0.4522
     },
     {
         "id": 28,
-        "cliName": "Italy",
+        "connectName": "Italy",
+        "statusName": "Italy",
         "offsetLeft": 0.5169,
         "offsetTop": 0.3894
     },
     {
         "id": 29,
-        "cliName": "Japan",
+        "connectName": "Japan",
+        "statusName": "Japan",
         "offsetLeft": 0.8853,
         "offsetTop": 0.3816
     },
     {
         "id": 30,
-        "cliName": "Latvia",
+        "connectName": "Latvia",
+        "statusName": "Latvia",
         "offsetLeft": 0.5473,
         "offsetTop": 0.2864
     },
     {
         "id": 31,
-        "cliName": "Luxembourg",
+        "connectName": "Luxembourg",
+        "statusName": "Luxembourg",
         "offsetLeft": 0.4983,
         "offsetTop": 0.3401
     },
     {
         "id": 32,
-        "cliName": "Malaysia",
+        "connectName": "Malaysia",
+        "statusName": "Malaysia",
         "offsetLeft": 0.7957,
         "offsetTop": 0.6100
     },
     {
         "id": 33,
-        "cliName": "Mexico",
+        "connectName": "Mexico",
+        "statusName": "Mexico",
         "offsetLeft": 0.1711,
         "offsetTop": 0.5067
     },
     {
         "id": 34,
-        "cliName": "Moldova",
+        "connectName": "Moldova",
+        "statusName": "Moldova",
         "offsetLeft": 0.5581,
         "offsetTop": 0.3544
     },
     {
         "id": 35,
-        "cliName": "Netherlands",
+        "connectName": "Netherlands",
+        "statusName": "Netherlands",
         "offsetLeft": 0.4960,
         "offsetTop": 0.3223
     },
     {
         "id": 36,
-        "cliName": "New_Zealand",
+        "connectName": "New_Zealand",
+        "statusName": "New Zealand",
         "offsetLeft": 0.965,
         "offsetTop": 0.9768
     },
     {
         "id": 37,
-        "cliName": "North_Macedonia",
+        "connectName": "North_Macedonia",
+        "statusName": "North Macedonia",
         "offsetLeft": 0.5417,
         "offsetTop": 0.3922
     },
     {
         "id": 38,
-        "cliName": "Norway",
+        "connectName": "Norway",
+        "statusName": "Norway",
         "offsetLeft": 0.5025,
         "offsetTop": 0.2553
     },
     {
         "id": 39,
-        "cliName": "Poland",
+        "connectName": "Poland",
+        "statusName": "Poland",
         "offsetLeft": 0.5323,
         "offsetTop": 0.3230
     },
     {
         "id": 40,
-        "cliName": "Portugal",
+        "connectName": "Portugal",
+        "statusName": "Portugal",
         "offsetLeft": 0.5464,
         "offsetTop": 0.4092
     },
     {
         "id": 41,
-        "cliName": "Romania",
+        "connectName": "Romania",
+        "statusName": "Romania",
         "offsetLeft": 0.5494,
         "offsetTop": 0.3660
     },
     {
         "id": 42,
-        "cliName": "Serbia",
+        "connectName": "Serbia",
+        "statusName": "Serbia",
         "offsetLeft": 0.5390,
         "offsetTop": 0.3778
     },
     {
         "id": 43,
-        "cliName": "Singapore",
+        "connectName": "Singapore",
+        "statusName": "Singapore",
         "offsetLeft": 0.8020,
         "offsetTop": 0.6239
     },
     {
         "id": 44,
-        "cliName": "Slovakia",
+        "connectName": "Slovakia",
+        "statusName": "Slovakia",
         "offsetLeft": 0.5344,
         "offsetTop": 0.3466
     },
     {
         "id": 45,
-        "cliName": "Slovenia",
+        "connectName": "Slovenia",
+        "statusName": "Slovenia",
         "offsetLeft": 0.5217,
         "offsetTop": 0.3637
     },
     {
         "id": 46,
-        "cliName": "South_Africa",
+        "connectName": "South_Africa",
+        "statusName": "South Africa",
         "offsetLeft": 0.5513,
         "offsetTop": 0.8070
     },
     {
         "id": 47,
-        "cliName": "South_Korea",
+        "connectName": "South_Korea",
+        "statusName": "South Korea",
         "offsetLeft": 0.8523,
         "offsetTop": 0.3868
     },
     {
         "id": 48,
-        "cliName": "Spain",
+        "connectName": "Spain",
+        "statusName": "Spain",
         "offsetLeft": 0.47,
         "offsetTop": 0.4047
     },
     {
         "id": 49,
-        "cliName": "Sweden",
+        "connectName": "Sweden",
+        "statusName": "Sweden",
         "offsetLeft": 0.5183,
         "offsetTop": 0.2608
     },
     {
         "id": 50,
-        "cliName": "Switzerland",
+        "connectName": "Switzerland",
+        "statusName": "Switzerland",
         "offsetLeft": 0.5024,
         "offsetTop": 0.3588
     },
     {
         "id": 51,
-        "cliName": "Taiwan",
+        "connectName": "Taiwan",
+        "statusName": "Taiwan",
         "offsetLeft": 0.8462,
         "offsetTop": 0.4748
     },
     {
         "id": 52,
-        "cliName": "Thailand",
+        "connectName": "Thailand",
+        "statusName": "Thailand",
         "offsetLeft": 0.7896,
         "offsetTop": 0.5386
     },
     {
         "id": 53,
-        "cliName": "Turkey",
+        "connectName": "Turkey",
+        "statusName": "Turkey",
         "offsetLeft": 0.5799,
         "offsetTop": 0.4099
     },
     {
         "id": 54,
-        "cliName": "Ukraine",
+        "connectName": "Ukraine",
+        "statusName": "Ukraine",
         "offsetLeft": 0.5675,
         "offsetTop": 0.3405
     },
     {
         "id": 55,
-        "cliName": "United_Kingdom",
+        "connectName": "United_Kingdom",
+        "statusName": "United Kingdom",
         "offsetLeft": 0.4762,
         "offsetTop": 0.3248
     },
     {
         "id": 56,
-        "cliName": "United_States",
+        "connectName": "United_States",
+        "statusName": "United States",
         "offsetLeft": 0.1922,
         "offsetTop": 0.3871
     },
     {
         "id": 57,
-        "cliName": "Vietnam",
+        "connectName": "Vietnam",
+        "statusName": "Vietnam",
         "offsetLeft": 0.8133,
         "offsetTop": 0.5476
     }

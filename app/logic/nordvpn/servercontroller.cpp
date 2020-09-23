@@ -9,7 +9,7 @@ json::array_t ServerController::getAllCountries() {
     // the CLI command
     for (std::string c : availableCountries) {
         for (auto e : all) {
-            if (c == e["cliName"]) {
+            if (c == e["connectName"]) {
                 available += e;
             }
         }

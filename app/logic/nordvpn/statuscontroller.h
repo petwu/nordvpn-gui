@@ -7,6 +7,29 @@
 
 #include "basecontroller.h"
 
+class ConnectionStatus {
+  public:
+    enum Value : int { Disconnected, Connecting, Connected };
+    ConnectionStatus() = default;
+    constexpr ConnectionStatus(Value v) : value(v) {}
+    operator Value() const { return value; }
+    std::string toString() const {
+        switch (value) {
+        case Disconnected:
+            return "disconnected";
+        case Connecting:
+            return "connecting";
+        case Connected:
+            return "connected";
+        default:
+            return "";
+        }
+    }
+
+  private:
+    Value value;
+};
+
 class ConnectionType {
   public:
     enum Value : int { Undefined, TCP, UDP };
@@ -63,30 +86,30 @@ class Technology {
     Value value;
 };
 
-class ConnectionStatus {
+class ConnectionInfo {
   public:
-    ConnectionStatus() = default;
-    ConnectionStatus(const ConnectionStatus &c) = default;
-    ConnectionStatus &operator=(const ConnectionStatus &) = default;
-    ConnectionStatus(ConnectionStatus &&m) = default;
-    ConnectionStatus &operator=(ConnectionStatus &&) = default;
+    ConnectionInfo() = default;
+    ConnectionInfo(const ConnectionInfo &c) = default;
+    ConnectionInfo &operator=(const ConnectionInfo &) = default;
+    ConnectionInfo(ConnectionInfo &&m) = default;
+    ConnectionInfo &operator=(ConnectionInfo &&) = default;
 
-    bool connected;
-    std::string server;
-    std::string country;
-    std::string city;
-    std::string ip;
-    Technology technology;
-    ConnectionType connectionType;
-    uint64_t sent;
-    uint64_t received;
-    uint64_t uptime;
-    std::string toString(bool onLine = true);
+    ConnectionStatus status = ConnectionStatus::Disconnected;
+    std::string server = "";
+    std::string country = "";
+    std::string city = "";
+    std::string ip = "";
+    Technology technology = Technology::Undefined;
+    ConnectionType connectionType = ConnectionType::Undefined;
+    uint64_t sent = 0;
+    uint64_t received = 0;
+    uint64_t uptime = 0;
+    std::string toString(bool onLine = true) const;
 };
 
-class IConnectionStatusSubscription {
+class IConnectionInfoSubscription {
   public:
-    virtual void update(const ConnectionStatus &newStatus) = 0;
+    virtual void update(const ConnectionInfo &newInfo) = 0;
 };
 
 class StatusController : public BaseController {
@@ -95,11 +118,11 @@ class StatusController : public BaseController {
     bool isNordVpnInstalled();
     std::string getVersion();
 
-    ConnectionStatus getStatus();
+    ConnectionInfo getStatus();
     void startBackgroundTask();
     void stopBackgroundTask();
-    void attach(std::shared_ptr<IConnectionStatusSubscription> subscriber);
-    void detach(std::shared_ptr<IConnectionStatusSubscription> subscriber);
+    void attach(IConnectionInfoSubscription *subscriber);
+    void detach(IConnectionInfoSubscription *subscriber);
 
     uint8_t getRatingMin();
     uint8_t getRatingMax();
@@ -107,8 +130,8 @@ class StatusController : public BaseController {
 
   private:
     std::atomic<bool> _performBackgroundTask = false;
-    std::vector<std::shared_ptr<IConnectionStatusSubscription>> _subscribers;
-    ConnectionStatus _currectStatus;
+    std::vector<IConnectionInfoSubscription *> _subscribers;
+    ConnectionInfo _currectStatus;
     void _backgroundTask();
     void _notifySubscribers();
 };

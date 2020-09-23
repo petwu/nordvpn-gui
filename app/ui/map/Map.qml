@@ -211,7 +211,7 @@ Item {
 
         Marker {
             countryId: modelData.id
-            name: modelData.cliName
+            name: modelData.statusName
             anchors.left: map.left
             anchors.top: map.top
             anchors.leftMargin: map.width * modelData.offsetLeft
