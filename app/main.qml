@@ -26,6 +26,10 @@ ApplicationWindow {
         Button {
             objectName: "btn"
             text: "Click Me."
+            onClicked: {
+                let x = MapMediator.getAllCountries()
+                console.log(x)
+            }
         }
     }
 

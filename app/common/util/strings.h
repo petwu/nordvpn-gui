@@ -15,7 +15,8 @@ namespace util {
         std::string trimPrefix(std::string &s);
         std::string trimSuffix(std::string &s);
 
-        std::vector<std::string> split(std::string s, std::string delim);
+        std::vector<std::string> split(std::string &s,
+                                       const std::string &delim);
 
     } // namespace string
 

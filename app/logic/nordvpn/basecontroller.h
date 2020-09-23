@@ -13,25 +13,33 @@
 #include "common/util/strings.h"
 #include "config.h"
 
-struct CmdResult {
-    std::string output;
-    int exitCode;
+class CmdResult {
+  public:
+    CmdResult(std::string out, uint32_t rc);
+    CmdResult(const CmdResult &c) = default;
+    CmdResult &operator=(const CmdResult &) = default;
+    CmdResult(CmdResult &&m) = default;
+    CmdResult &operator=(CmdResult &&) = default;
 
-    bool operator==(const CmdResult &other) const {
-        return output == other.output && exitCode == other.exitCode;
-    }
-    bool operator!=(const CmdResult &other) const { return !(*this == other); }
+    std::string output;
+    uint32_t exitCode;
+
+    bool operator==(const CmdResult &other) const;
+    bool operator!=(const CmdResult &other) const;
+
+  private:
+    CmdResult() = default;
 };
 
-static CmdResult *ERROR_POPEN_FAILED =
-    new CmdResult{"error: unable to execute a shell command", -1};
+static CmdResult ERROR_POPEN_FAILED("error: unable to execute a shell command",
+                                    -1);
 
 class BaseController {
   public:
     BaseController() {}
 
   protected:
-    std::unique_ptr<CmdResult> execute(std::string nordvpn);
+    CmdResult execute(std::string config);
 };
 
 #endif // BASECONTROLLER_H

@@ -17,24 +17,23 @@ std::string ConnectionStatus::toString(bool onLine) {
 
 bool StatusController::canExecuteShellCmds() {
     auto result = this->execute("");
-    return *result != *ERROR_POPEN_FAILED;
+    return result != ERROR_POPEN_FAILED;
 }
 
 bool StatusController::isNordVpnInstalled() {
-    auto result = this->execute(nordvpn::CMD_VERSION);
-    return result->exitCode == 0 &&
-           result->output.rfind("NordVPN Version", 0) == 0;
+    auto result = this->execute(config::cmd::VERSION);
+    return result.exitCode == 0 &&
+           result.output.rfind("NordVPN Version", 0) == 0;
 }
 
 std::string StatusController::getVersion() {
-    auto result = this->execute(nordvpn::CMD_VERSION);
-    return result->output;
+    auto result = this->execute(config::cmd::VERSION);
+    return result.output;
 }
 
-std::unique_ptr<ConnectionStatus> StatusController::getStatus() {
-    auto result = this->execute(nordvpn::CMD_STATUS);
-    auto status = std::unique_ptr<ConnectionStatus>(new ConnectionStatus());
-    auto o = result->output;
+ConnectionStatus StatusController::getStatus() {
+    std::string o = this->execute(config::cmd::STATUS).output;
+    ConnectionStatus status;
     std::smatch m;
     bool matched;
 
@@ -43,37 +42,37 @@ std::unique_ptr<ConnectionStatus> StatusController::getStatus() {
     if (!matched || m[1].str() == "Disconnected") {
         return status;
     }
-    status->connected = true;
+    status.connected = true;
 
     // server
     matched = std::regex_search(o, m, std::regex("Current server: (.+)"));
     if (matched)
-        status->server = m[1].str();
+        status.server = m[1].str();
 
     // country
     matched = std::regex_search(o, m, std::regex("Country: (.+)"));
     if (matched)
-        status->country = m[1].str();
+        status.country = m[1].str();
 
     // city
     matched = std::regex_search(o, m, std::regex("City: (.+)"));
     if (matched)
-        status->city = m[1].str();
+        status.city = m[1].str();
 
     // ip
     matched = std::regex_search(o, m, std::regex("Your new IP: (.+)"));
     if (matched)
-        status->ip = m[1].str();
+        status.ip = m[1].str();
 
     // technology
     matched = std::regex_search(o, m, std::regex("Current technology: (.+)"));
     if (matched)
-        status->technology = Technology::fromString(m[1].str());
+        status.technology = Technology::fromString(m[1].str());
 
     // connection type
     matched = std::regex_search(o, m, std::regex("Current protocol: (.+)"));
     if (matched)
-        status->connectionType = ConnectionType::fromString(m[1].str());
+        status.connectionType = ConnectionType::fromString(m[1].str());
 
     std::map<std::string, uint64_t> bytes = {
         {"B", 1},
@@ -86,14 +85,14 @@ std::unique_ptr<ConnectionStatus> StatusController::getStatus() {
     matched = std::regex_search(
         o, m, std::regex("([\\d\\.]+) (B|KiB|MiB|GiB|TiB) sent"));
     if (matched)
-        status->sent =
+        status.sent =
             uint64_t(std::atof(m[1].str().c_str()) * bytes[m[2].str()]);
 
     // received
     matched = std::regex_search(
         o, m, std::regex("([\\d\\.]+) (B|KiB|MiB|GiB|TiB) received"));
     if (matched)
-        status->received =
+        status.received =
             uint64_t(std::atof(m[1].str().c_str()) * bytes[m[2].str()]);
 
     // uptime
@@ -102,17 +101,17 @@ std::unique_ptr<ConnectionStatus> StatusController::getStatus() {
         std::regex("Uptime: ?((\\d+) years?)? ?((\\d+) days?)? ?((\\d+) "
                    "hours?)? ?((\\d+) minutes?)? ?((\\d+) seconds?)?"));
     if (matched)
-        status->uptime = std::atoi(m[10].str().c_str()) +     // seconds
-                         (std::atoi(m[8].str().c_str()) +     // minutes
-                          (std::atoi(m[6].str().c_str()) +    // hours
-                           (std::atoi(m[4].str().c_str()) +   // days
-                            (std::atoi(m[2].str().c_str())) * // years
-                                365) *                        // years -> days
-                               24) *                          // days -> hours
-                              60) * // hours -> minutes
-                             60;    // minutes -> seconds
+        status.uptime = std::atoi(m[10].str().c_str()) +     // seconds
+                        (std::atoi(m[8].str().c_str()) +     // minutes
+                         (std::atoi(m[6].str().c_str()) +    // hours
+                          (std::atoi(m[4].str().c_str()) +   // days
+                           (std::atoi(m[2].str().c_str())) * // years
+                               365) *                        // years -> days
+                              24) *                          // days -> hours
+                             60) *                           // hours -> minutes
+                            60; // minutes -> seconds
 
-    return status;
+    return std::move(status);
 }
 
 void StatusController::startBackgroundTask() {
@@ -142,7 +141,7 @@ void StatusController::_backgroundTask() {
     while (this->_performBackgroundTask) {
         this->_currectStatus = this->getStatus();
         this->_notifySubscribers();
-        std::this_thread::sleep_for(nordvpn::STATUS_UPDATE_INTERVAL);
+        std::this_thread::sleep_for(config::consts::STATUS_UPDATE_INTERVAL);
     }
 }
 
@@ -152,13 +151,13 @@ void StatusController::_notifySubscribers() {
     }
 }
 
-uint8_t StatusController::getRatingMin() { return nordvpn::RATING_MIN; }
+uint8_t StatusController::getRatingMin() { return config::consts::RATING_MIN; }
 
-uint8_t StatusController::getRatingMax() { return nordvpn::RADING_MAX; }
+uint8_t StatusController::getRatingMax() { return config::consts::RATING_MAX; }
 
 void StatusController::rate(uint8_t rating) {
     if (rating < getRatingMin() || rating > getRatingMax()) {
         return;
     }
-    this->execute(nordvpn::CMD_RATE + " " + std::to_string(rating));
+    this->execute(config::cmd::RATE + " " + std::to_string(rating));
 }

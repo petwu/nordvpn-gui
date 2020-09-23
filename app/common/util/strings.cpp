@@ -30,7 +30,8 @@ namespace util {
             return r;
         }
 
-        std::vector<std::string> split(std::string s, std::string delim = " ") {
+        std::vector<std::string> split(std::string &s,
+                                       const std::string &delim = " ") {
             std::vector<std::string> parts;
             std::size_t cur, prev = 0;
             cur = s.find(delim);

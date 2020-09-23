@@ -63,7 +63,14 @@ class Technology {
     Value value;
 };
 
-struct ConnectionStatus {
+class ConnectionStatus {
+  public:
+    ConnectionStatus() = default;
+    ConnectionStatus(const ConnectionStatus &c) = default;
+    ConnectionStatus &operator=(const ConnectionStatus &) = default;
+    ConnectionStatus(ConnectionStatus &&m) = default;
+    ConnectionStatus &operator=(ConnectionStatus &&) = default;
+
     bool connected;
     std::string server;
     std::string country;
@@ -79,7 +86,7 @@ struct ConnectionStatus {
 
 class IConnectionStatusSubscription {
   public:
-    virtual void update(std::shared_ptr<ConnectionStatus> newStatus) = 0;
+    virtual void update(const ConnectionStatus &newStatus) = 0;
 };
 
 class StatusController : public BaseController {
@@ -88,7 +95,7 @@ class StatusController : public BaseController {
     bool isNordVpnInstalled();
     std::string getVersion();
 
-    std::unique_ptr<ConnectionStatus> getStatus();
+    ConnectionStatus getStatus();
     void startBackgroundTask();
     void stopBackgroundTask();
     void attach(std::shared_ptr<IConnectionStatusSubscription> subscriber);
@@ -101,7 +108,7 @@ class StatusController : public BaseController {
   private:
     std::atomic<bool> _performBackgroundTask = false;
     std::vector<std::shared_ptr<IConnectionStatusSubscription>> _subscribers;
-    std::shared_ptr<ConnectionStatus> _currectStatus;
+    ConnectionStatus _currectStatus;
     void _backgroundTask();
     void _notifySubscribers();
 };

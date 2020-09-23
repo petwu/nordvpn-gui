@@ -5,6 +5,7 @@
 #include "logic/mediators/mapmediator.h"
 
 int main(int argc, char *argv[]) {
+    // set the behavior of application-wide features
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
     // create Qt application
@@ -19,5 +20,6 @@ int main(int argc, char *argv[]) {
     MapMediator *mapMediator = new MapMediator();
     ctx->setContextProperty("MapMediator", mapMediator);
 
+    // enter main loop
     return app.exec();
 }
