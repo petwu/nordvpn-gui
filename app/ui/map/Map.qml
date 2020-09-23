@@ -21,19 +21,8 @@ Item {
         id: _
         // flag that keeps the map centered until the first click/drag
         property bool mapCentered: true
-        property var countryList: []
-    }
-
-    Component.onCompleted: {
-        // get country to position the markers
-        let xhr = new XMLHttpRequest
-        xhr.open('GET', 'qrc:/data/countries.json')
-        xhr.onreadystatechange = () => {
-            if (xhr.readyState === XMLHttpRequest.DONE) {
-                _.countryList = JSON.parse(xhr.responseText)
-            }
-        }
-        xhr.send()
+        // list of all countries with their marker positions
+        property var countryList: MapMediator.getAllCountries()
     }
 
     /*!

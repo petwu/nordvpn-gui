@@ -2,8 +2,10 @@
 #define MAPMEDIATOR_H
 
 #include <QObject>
+#include <QVariant>
 
 #include "logic/nordvpn/servercontroller.h"
+#include "qmldataconverter.h"
 
 class MapMediator : public QObject {
     Q_OBJECT
@@ -11,7 +13,7 @@ class MapMediator : public QObject {
     MapMediator();
 
   public slots:
-    json getAllCountries() { return this->_serverController.getAllCountries(); }
+    QVariant getAllCountries();
 
   private:
     ServerController _serverController;

@@ -1,11 +1,7 @@
 #ifndef JSONCONVERTER_H
 #define JSONCONVERTER_H
 
-/*
- * array => QVariantList
- * object => QVariantMap
- */
-
+#include <iostream>
 #include <memory>
 
 #include <QVariant>
@@ -17,7 +13,7 @@ using json = nlohmann::json;
 
 class QmlDataConverter {
   public:
-    static QVariant jsonToQml(json &j);
+    static QVariant jsonToQml(const json &j);
 };
 
 #endif // JSONCONVERTER_H

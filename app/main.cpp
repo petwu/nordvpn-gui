@@ -12,13 +12,15 @@ int main(int argc, char *argv[]) {
     QGuiApplication app(argc, argv);
     QQmlApplicationEngine engine;
     engine.addImportPath(":/style");
-    engine.load("qrc:/main.qml");
 
     // setup connection between QML/UI and C++/logic through mediator objects
     // that are available as QML context objects
     QQmlContext *ctx = engine.rootContext();
     MapMediator *mapMediator = new MapMediator();
     ctx->setContextProperty("MapMediator", mapMediator);
+
+    // load QML entry point
+    engine.load("qrc:/main.qml");
 
     // enter main loop
     return app.exec();
