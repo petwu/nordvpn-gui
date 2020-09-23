@@ -6,13 +6,55 @@ Item {
     id: marker
     width: 0
     height: 0
+    z: _.connected ? 10 : 1
 
     property int countryId: -1
     property string name: ''
-    property double scaleFactor: 1
+    property double scaleFactor: 1 + (_.disconnected ? 0 : scaleDiff)
+    property double scaleDiff: 0.35
     property double pointerHeight: .25
     property int radius: 18 * scaleFactor
     property int borderWidth: radius/8
+
+    QtObject {
+        id: _
+        property int connectedCountryId: MapMediator.connectedCountryId
+        property int connectingCountryId: MapMediator.connectingCountryId
+        property bool disconnected: connectedCountryId !== marker.countryId &&
+                                    connectingCountryId !== marker.countryId
+        property bool connecting: connectingCountryId === marker.countryId
+        property bool connected: connectedCountryId === marker.countryId
+        property color colorPrimary: connected
+                                     /* if connected => highlight with green */
+                                     ? Style.colorMarkerGreen
+                                     : (connectingCountryId === -1
+                                        /* else if idle/nothing connected or connecting => use dark blue for all markers */
+                                        ? Style.colorMarkerBlueDark
+                                        : (connecting
+                                           /* else if connecting => use dark blue for the connecting marker ... */
+                                           ? Style.colorMarkerBlueDark
+                                           /* ... and light blue for all other markers */
+                                           : Style.colorMarkerBlueLight))
+        property color colorSecondary: Style.colorMarkerWhite
+        onConnectedCountryIdChanged: triangle.requestPaint()
+        onConnectingCountryIdChanged: triangle.requestPaint()
+    }
+
+    Timer {
+        interval: 500
+        running: true
+        repeat: true
+        onTriggered: {
+            // repaint triangle because of some strange color leak (= narrow blue line)
+            // when switching color from blue (connecting) to green (connected)
+            // => with this timer the leak fades after a few seconds
+            // if the reader of this comments knows any better solutions
+            // => you're welcome to implement them :D
+            if (_.connected) {
+                triangle.requestPaint()
+            }
+        }
+    }
 
     MouseArea {
         id: markerArea
@@ -25,12 +67,16 @@ Item {
         onEntered: {
             marker.z += 10
             markerText.visible = true
-            scaleFactor += .3
+            if (_.disconnected) {
+                scaleFactor += scaleDiff
+            }
         }
         onExited: {
             marker.z -= 10
             markerText.visible = false
-            scaleFactor -= .3
+            if (_.disconnected) {
+                scaleFactor -= scaleDiff
+            }
         }
 
         Behavior on width {
@@ -48,15 +94,16 @@ Item {
             width: parent.width
             height: width
             radius: .5 * width
-            color: Style.colorMarkerBlueDark
+            color: _.colorPrimary
             border.width: marker.borderWidth
-            border.color: Style.colorMarkerWhite
+            border.color: _.colorSecondary
         }
 
         /*
           triangle below outer circle giving the marker its typical shape
         */
         Canvas {
+            id: triangle
             width: circle.width
             height: circle.height * (1 + marker.pointerHeight)
             anchors.top: circle.top
@@ -111,7 +158,7 @@ Item {
             width: circle.width/3
             height: width
             radius: .5 * width
-            color: Style.colorMarkerWhite
+            color: _.colorSecondary
             anchors.centerIn: circle
         }
 
@@ -126,16 +173,16 @@ Item {
             anchors.top: markerArea.bottom
             x: -(width - markerArea.width)/2
             z: 10
-            color: Style.colorMarkerBlueDark
+            color: _.colorPrimary
             border.width: marker.borderWidth
-            border.color: Style.colorMarkerWhite
+            border.color: _.colorSecondary
             radius: 8
 
             Text {
                 id: _markerText
                 text: marker.name
                 anchors.centerIn: parent
-                color: Style.colorMarkerWhite
+                color: _.colorSecondary
             }
         }
     }
