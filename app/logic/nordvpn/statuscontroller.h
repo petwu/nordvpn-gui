@@ -5,7 +5,11 @@
 #include <functional>
 #include <thread>
 
+#include "nlohmann/json.hpp"
+using json = nlohmann::json;
+
 #include "basecontroller.h"
+#include "servercontroller.h"
 
 class ConnectionStatus {
   public:
@@ -96,7 +100,9 @@ class ConnectionInfo {
 
     ConnectionStatus status = ConnectionStatus::Disconnected;
     std::string server = "";
+    int32_t serverId = 0;
     std::string country = "";
+    int32_t countryId = -1;
     std::string city = "";
     std::string ip = "";
     Technology technology = Technology::Undefined;
@@ -114,6 +120,8 @@ class IConnectionInfoSubscription {
 
 class StatusController : public BaseController {
   public:
+    StatusController();
+
     bool canExecuteShellCmds();
     bool isNordVpnInstalled();
     std::string getVersion();
@@ -134,6 +142,9 @@ class StatusController : public BaseController {
     ConnectionInfo _currectStatus;
     void _backgroundTask();
     void _notifySubscribers();
+    json::array_t _countries;
+    int32_t _getCountryId(std::string name);
+    int32_t _getServerId(std::string server);
 };
 
 #endif // STATUSCONTROLLER_H

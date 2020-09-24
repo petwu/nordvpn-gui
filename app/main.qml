@@ -47,7 +47,16 @@ ApplicationWindow {
             width: parent.width
             height: parent.height
 
-            Map { }
+            Map {
+                id:map
+
+                ConnectionStatusPanel {
+                    id: statusPanel
+                    anchors.horizontalCenter: map.horizontalCenter
+                    anchors.bottom: map.bottom
+                    anchors.bottomMargin: 32
+                }
+            }
         }
     }
 }

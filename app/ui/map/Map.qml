@@ -22,7 +22,7 @@ Item {
         // flag that keeps the map centered until the first click/drag
         property bool mapCentered: true
         // list of all countries with their marker positions
-        property var countryList: MapMediator.getAllCountries()
+        property var countryList: MapMediator.countryList
     }
 
     /*!

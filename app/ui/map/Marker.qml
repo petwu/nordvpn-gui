@@ -6,7 +6,7 @@ Item {
     id: marker
     width: 0
     height: 0
-    z: _.connected ? 10 : 1
+    z: _.disconnected ? 1 : MapMediator.countryList.length+1
 
     property int countryId: -1
     property string name: ''
@@ -18,16 +18,14 @@ Item {
 
     QtObject {
         id: _
-        property int connectedCountryId: MapMediator.connectedCountryId
-        property int connectingCountryId: MapMediator.connectingCountryId
-        property bool disconnected: connectedCountryId !== marker.countryId &&
-                                    connectingCountryId !== marker.countryId
-        property bool connecting: connectingCountryId === marker.countryId
-        property bool connected: connectedCountryId === marker.countryId
+        property bool disconnected: MapMediator.connectedCountryId !== marker.countryId &&
+                                    MapMediator.connectingCountryId !== marker.countryId
+        property bool connecting: MapMediator.connectingCountryId === marker.countryId
+        property bool connected: MapMediator.connectedCountryId === marker.countryId
         property color colorPrimary: connected
                                      /* if connected => highlight with green */
                                      ? Style.colorMarkerGreen
-                                     : (connectingCountryId === -1
+                                     : (MapMediator.connectingCountryId === -1
                                         /* else if idle/nothing connected or connecting => use dark blue for all markers */
                                         ? Style.colorMarkerBlueDark
                                         : (connecting
@@ -36,6 +34,10 @@ Item {
                                            /* ... and light blue for all other markers */
                                            : Style.colorMarkerBlueLight))
         property color colorSecondary: Style.colorMarkerWhite
+    }
+
+    Connections {
+        target: MapMediator
         onConnectedCountryIdChanged: triangle.requestPaint()
         onConnectingCountryIdChanged: triangle.requestPaint()
     }
@@ -76,6 +78,11 @@ Item {
             markerText.visible = false
             if (_.disconnected) {
                 scaleFactor -= scaleDiff
+            }
+        }
+        onClicked: {
+            if (_.disconnected) {
+                MapMediator.connectToCountryById(marker.countryId)
             }
         }
 

@@ -2,11 +2,13 @@
 #define BASECONTROLLER_H
 
 #include <array>
+#include <future>
 #include <iostream>
 #include <map>
 #include <memory>
 #include <regex>
 #include <string>
+#include <thread>
 #include <tuple>
 #include <vector>
 
@@ -33,13 +35,13 @@ class CmdResult {
 
 static CmdResult ERROR_POPEN_FAILED("error: unable to execute a shell command",
                                     -1);
-
 class BaseController {
   public:
     BaseController() {}
 
   protected:
-    CmdResult execute(std::string config);
+    CmdResult execute(std::string cmd);
+    void executeNonBlocking(std::string cmd);
 };
 
 #endif // BASECONTROLLER_H

@@ -14,6 +14,8 @@ namespace config {
         static const std::string CITIES = "nordvpn cities";
         static const std::string COUTRIES = "nordvpn countries";
         static const std::string GROUPS = "nordvpn groups";
+        static const std::string CONNECT = "nordvpn connect";
+        static const std::string DISCONNECT = "nordvpn disconnect";
 
     } // namespace cmd
 

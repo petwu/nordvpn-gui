@@ -29,3 +29,18 @@ CmdResult BaseController::execute(std::string cmd) {
         .exitCode = rc,
     });
 }
+
+void BaseController::executeNonBlocking(std::string cmd) {
+    std::thread t([cmd] {
+        std::array<char, 256> buf;
+        FILE *pipe = popen(cmd.c_str(), "r");
+        if (!pipe) {
+            pclose(pipe);
+            return;
+        }
+        while (fgets(buf.data(), buf.size(), pipe) != nullptr) {
+        }
+        pclose(pipe);
+    });
+    t.detach();
+}

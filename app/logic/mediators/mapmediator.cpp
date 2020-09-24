@@ -7,30 +7,70 @@ MapMediator::MapMediator() {
 }
 
 void MapMediator::update(const ConnectionInfo &newInfo) {
-    int32_t connectingId, connectedId;
+    std::cout << newInfo.toString() << std::endl;
+    int32_t connectingId = -1, connectedId = -1;
+    bool disconnected = false, connecting = false, connected = false;
     switch (newInfo.status) {
     case ConnectionStatus::Disconnected:
-        connectingId = -1;
-        connectedId = -1;
+        disconnected = true;
         break;
     case ConnectionStatus::Connecting:
-        connectingId = this->_getCountryId(newInfo.country);
-        connectedId = -1;
+        connecting = true;
+        connectingId = newInfo.countryId;
         break;
     case ConnectionStatus::Connected:
-        connectingId = -1;
-        connectedId = this->_getCountryId(newInfo.country);
+        connected = true;
+        connectedId = newInfo.countryId;
         break;
     }
-    this->_connectingCountryId = connectingId;
-    this->connectingIdChanged(connectingId);
-    this->_connectedCountryId = connectedId;
-    this->connectedIdChanged(connectedId);
+    if (this->_connected && disconnected) {
+        this->_isRatingPossbile = true;
+        this->isRatingPossibleChanged(true);
+    } else if (this->_disconnected && !disconnected) {
+        this->_isRatingPossbile = false;
+        this->isRatingPossibleChanged(false);
+    }
+    if (disconnected != this->_disconnected) {
+        this->_disconnected = disconnected;
+        this->disconnectedChanged(disconnected);
+    }
+    if (connecting != this->_connecting) {
+        this->_connecting = connecting;
+        this->connectingChanged(connecting);
+    }
+    if (connected != this->_connected) {
+        this->_connected = connected;
+        this->connectedChanged(connected);
+    }
+    if (connectingId != this->_connectingCountryId) {
+        this->_connectingCountryId = connectingId;
+        this->connectingIdChanged(connectingId);
+    }
+    if (connectedId != this->_connectedCountryId) {
+        this->_connectedCountryId = connectedId;
+        this->connectedIdChanged(connectedId);
+    }
+    if (newInfo.serverId != this->_connectedServerId) {
+        this->_connectedServerId = newInfo.serverId;
+        this->connectedServerIdChanged(newInfo.serverId);
+    }
+    if (newInfo.ip != this->_connectedIP) {
+        this->_connectedIP = newInfo.ip;
+        this->connectedIPChanged(QString(newInfo.ip.c_str()));
+    }
 }
 
-QVariant MapMediator::getAllCountries() {
+QVariant MapMediator::_getCountryList() {
     return QmlDataConverter::jsonToQml(this->_countries);
 }
+
+bool MapMediator::_isDisconnected() { return this->_disconnected; }
+
+bool MapMediator::_isConnecting() { return this->_connecting; }
+
+bool MapMediator::_isConnected() { return this->_connected; }
+
+bool MapMediator::_getIsRatingPossible() { return this->_isRatingPossbile; }
 
 qint32 MapMediator::_getConnectingCountryId() {
     return this->_connectingCountryId;
@@ -40,24 +80,18 @@ qint32 MapMediator::_getConnectedCountryId() {
     return this->_connectedCountryId;
 }
 
-int32_t MapMediator::_getCountryId(std::string name) {
-    json countries = this->_countries;
-    for (auto i = countries.begin(); i != countries.end(); ++i) {
-        json country = i.value();
-        if (country.is_object() && country["id"].is_number_integer() &&
-            (country["statusName"].is_string() ||
-             country["connectName"].is_string())) {
-            std::string sName = util::string::toLower(
-                country["statusName"].is_string() ? country["statusName"] : "");
-            std::string cName = util::string::toLower(
-                country["connectName"].is_string() ? country["connectName"]
-                                                   : "");
-            std::string n1 = util::string::toLower(name);
-            std::string n2 = util::string::replaceAll(n1, "_", " ");
-            if (sName == n1 || sName == n2 || cName == n1 || cName == n2) {
-                return country["id"];
-            }
-        }
-    }
-    return -1;
+qint32 MapMediator::_getConnectedServerId() { return this->_connectedServerId; }
+
+QString MapMediator::_getConnectedIP() {
+    return QString(this->_connectedIP.c_str());
 }
+
+void MapMediator::quickConnect() { this->_serverController.quickConnect(); }
+
+void MapMediator::connectToCountryById(quint32 id) {
+    this->_serverController.connectToCountryById(id);
+}
+
+void MapMediator::disconnect() { this->_serverController.disconnect(); }
+
+void MapMediator::rate(quint8 rating) { this->_statusController.rate(rating); }

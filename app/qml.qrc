@@ -4,5 +4,8 @@
         <file>ui/map/Map.qml</file>
         <file>ui/map/Marker.qml</file>
         <file>ui/map/ZoomButton.qml</file>
+        <file>ui/map/ConnectionStatusPanel.qml</file>
+        <file>ui/general/Button.qml</file>
+        <file>ui/map/RatingStars.qml</file>
     </qresource>
 </RCC>

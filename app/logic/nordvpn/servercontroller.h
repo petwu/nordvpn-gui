@@ -9,6 +9,12 @@ class ServerController : public BaseController {
     json::array_t getAllCountries();
     std::vector<std::string> getCities(std::string country);
     std::vector<std::string> getGroups();
+    void quickConnect();
+    void connectToCountryById(uint32_t id);
+    void disconnect();
+
+  private:
+    json _allCountries;
 };
 
 #endif // SERVERCONTROLLER_H

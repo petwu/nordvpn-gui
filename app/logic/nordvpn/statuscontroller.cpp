@@ -1,12 +1,19 @@
 #include "statuscontroller.h"
 
+StatusController::StatusController() {
+    this->_countries = ServerController{}.getAllCountries();
+}
+
 std::string ConnectionInfo::toString(bool onLine) const {
     std::string sb = onLine ? " " : "\n  ";
     std::string s = onLine ? ", " : "\n  ";
     std::string se = onLine ? " " : "\n";
     return std::string("ConnectionInfo {") + sb +
            "status = " + this->status.toString() + s +
-           "server = " + this->server + s + "country = " + this->country + s +
+           "server = " + this->server + s +
+           "serverId = " + std::to_string(this->serverId) + s +
+           "country = " + this->country + s +
+           "countryId = " + std::to_string(this->countryId) + s +
            "city = " + this->city + s + "ip = " + this->ip + s +
            "technology = " + this->technology.toString() + s +
            "connectionType = " + this->connectionType.toString() + s +
@@ -45,33 +52,41 @@ ConnectionInfo StatusController::getStatus() {
 
     // server
     matched = std::regex_search(o, m, std::regex("Current server: (.+)"));
-    if (matched)
+    if (matched) {
         info.server = m[1].str();
+        info.serverId = this->_getServerId(info.server);
+    }
 
     // country
     matched = std::regex_search(o, m, std::regex("Country: (.+)"));
-    if (matched)
+    if (matched) {
         info.country = m[1].str();
+        info.countryId = this->_getCountryId(info.country);
+    }
 
     // city
     matched = std::regex_search(o, m, std::regex("City: (.+)"));
-    if (matched)
+    if (matched) {
         info.city = m[1].str();
+    }
 
     // ip
     matched = std::regex_search(o, m, std::regex("Your new IP: (.+)"));
-    if (matched)
+    if (matched) {
         info.ip = m[1].str();
+    }
 
     // technology
     matched = std::regex_search(o, m, std::regex("Current technology: (.+)"));
-    if (matched)
+    if (matched) {
         info.technology = Technology::fromString(m[1].str());
+    }
 
     // connection type
     matched = std::regex_search(o, m, std::regex("Current protocol: (.+)"));
-    if (matched)
+    if (matched) {
         info.connectionType = ConnectionType::fromString(m[1].str());
+    }
 
     std::map<std::string, uint64_t> bytes = {
         {"B", 1},
@@ -83,22 +98,24 @@ ConnectionInfo StatusController::getStatus() {
     // sent
     matched = std::regex_search(
         o, m, std::regex("([\\d\\.]+) (B|KiB|MiB|GiB|TiB) sent"));
-    if (matched)
+    if (matched) {
         info.sent = uint64_t(std::atof(m[1].str().c_str()) * bytes[m[2].str()]);
+    }
 
     // received
     matched = std::regex_search(
         o, m, std::regex("([\\d\\.]+) (B|KiB|MiB|GiB|TiB) received"));
-    if (matched)
+    if (matched) {
         info.received =
             uint64_t(std::atof(m[1].str().c_str()) * bytes[m[2].str()]);
+    }
 
     // uptime
     matched = std::regex_search(
         o, m,
         std::regex("Uptime: ?((\\d+) years?)? ?((\\d+) days?)? ?((\\d+) "
                    "hours?)? ?((\\d+) minutes?)? ?((\\d+) seconds?)?"));
-    if (matched)
+    if (matched) {
         info.uptime = std::atoi(m[10].str().c_str()) +     // seconds
                       (std::atoi(m[8].str().c_str()) +     // minutes
                        (std::atoi(m[6].str().c_str()) +    // hours
@@ -108,12 +125,44 @@ ConnectionInfo StatusController::getStatus() {
                             24) *                          // days -> hours
                            60) *                           // hours -> minutes
                           60;                              // minutes -> seconds
+    }
 
     // connection status => connecting or connected ?
-    info.status = info.sent == 0 ? ConnectionStatus::Connecting
-                                 : ConnectionStatus::Connected;
+    info.status = info.sent == 0 || info.uptime == 0
+                      ? ConnectionStatus::Connecting
+                      : ConnectionStatus::Connected;
 
     return std::move(info);
+}
+
+int32_t StatusController::_getCountryId(std::string name) {
+    json countries = this->_countries;
+    for (auto i = countries.begin(); i != countries.end(); ++i) {
+        json country = i.value();
+        if (country.is_object() && country["id"].is_number_integer() &&
+            (country["statusName"].is_string() ||
+             country["connectName"].is_string())) {
+            std::string sName = util::string::toLower(
+                country["statusName"].is_string() ? country["statusName"] : "");
+            std::string cName = util::string::toLower(
+                country["connectName"].is_string() ? country["connectName"]
+                                                   : "");
+            std::string n1 = util::string::toLower(name);
+            std::string n2 = util::string::replaceAll(n1, "_", " ");
+            if (sName == n1 || sName == n2 || cName == n1 || cName == n2) {
+                return country["id"];
+            }
+        }
+    }
+    return -1;
+}
+
+int32_t StatusController::_getServerId(std::string name) {
+    std::smatch m;
+    if (std::regex_search(name, m, std::regex("^([a-zA-Z]+)(\\d+)\\..+"))) {
+        return std::atoi(m[2].str().c_str());
+    }
+    return 0;
 }
 
 void StatusController::startBackgroundTask() {
@@ -156,8 +205,9 @@ uint8_t StatusController::getRatingMin() { return config::consts::RATING_MIN; }
 uint8_t StatusController::getRatingMax() { return config::consts::RATING_MAX; }
 
 void StatusController::rate(uint8_t rating) {
+    return;
     if (rating < getRatingMin() || rating > getRatingMax()) {
         return;
     }
-    this->execute(config::cmd::RATE + " " + std::to_string(rating));
+    this->executeNonBlocking(config::cmd::RATE + " " + std::to_string(rating));
 }
