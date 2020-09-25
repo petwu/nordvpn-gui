@@ -12,7 +12,7 @@ Item {
     /*! zoom by scaling the map image with the given factor */
     property double zoomFactor: 1.3
     /*! size of the border/margin around the map */
-    property int mapBorder: 64
+    property int mapBorder: 128
 
     property bool markerDebug: false
 
@@ -23,6 +23,74 @@ Item {
         property bool mapCentered: true
         // list of all countries with their marker positions
         property var countryList: MapMediator.countryList
+    }
+
+    Connections {
+        target: MapMediator
+        onConnectingIdChanged: (id) => (id !== -1) ? focusCountry(id) : null
+    }
+
+    /*!
+      delay waits the given delayTime in millisecons an the executes the callback
+    */
+    function delay(delayTime, callback) {
+        function Timer() {
+            return Qt.createQmlObject("import QtQuick 2.0; Timer {}", parent);
+        }
+        let timer = new Timer()
+        timer.interval = delayTime
+        timer.repeat = false
+        timer.triggered.connect(callback)
+        timer.start()
+    }
+
+    /*!
+      focusCountry brings the country with the given id into focus, meaning it centers
+      the country's marker. The map boundaries are respecting, which may cause the focused
+      marker to be not centered but just as close to the center as possible within the given
+      map boundaries.
+    */
+    function focusCountry(id) {
+        let markerOffsetLeft = 0
+        let markerOffsetTop = 0
+        // find country to get marker offset
+        for (let i = 0; i < _.countryList.length; i++) {
+            const c = _.countryList[i]
+            if (c.id === id) {
+                markerOffsetLeft = c.offsetLeft
+                markerOffsetTop = c.offsetTop
+                break
+            }
+        }
+        // calculate needed shift to center marker
+        const shiftX = -(map.width*markerOffsetLeft + map.x - mapArea.width/2)
+        const shiftY = -(map.height*markerOffsetTop + map.y - mapArea.height/2)
+        // backup animation durations
+        const xad = mapXAnimation.duration
+        const yad = mapYAnimation.duration
+        // animate the X/Y shift within 200ms
+        mapXAnimation.duration = 200
+        mapYAnimation.duration = 200
+        // shift by respecting the boundaries
+        if (shiftX > 0) {
+            map.x = Math.min(map.x + shiftX /* = desired x position */,
+                             mapBorder /* = max. x position*/)
+        } else {
+            map.x = Math.max(map.x + shiftX /* = desired x position */,
+                             -(map.width + mapBorder - mapArea.width) /* = min. x position */)
+        }
+        if (shiftY > 0) {
+            map.y = Math.min(map.y + shiftY /* = desired y position */,
+                             mapBorder /* = max. y position */)
+        } else {
+            map.y = Math.max(map.y + shiftY /* = desired y position */,
+                             -(map.height + mapBorder - mapArea.height) /* = min. y position */)
+        }
+        // restore previous animation durations after the animaton is done
+        delay(200, () => {
+                  mapXAnimation.duration = xad
+                  mapYAnimation.duration = yad
+              })
     }
 
     /*!
@@ -142,6 +210,22 @@ Item {
             x: 0
             y: 0
             height: parent.height
+        }
+
+        Behavior on x {
+            NumberAnimation {
+                id: mapXAnimation
+                duration: 0
+                easing.type: Easing.InOutQuad
+            }
+        }
+
+        Behavior on y {
+            NumberAnimation {
+                id: mapYAnimation
+                duration: 0
+                easing.type: Easing.InOutQuad
+            }
         }
     }
 
