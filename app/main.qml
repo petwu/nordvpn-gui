@@ -30,7 +30,8 @@ ApplicationWindow {
 
         Text {
             text: 'connecting = ' + MapMediator.connectingCountryId +
-                  '\nconnected = ' + MapMediator.connectedCountryId
+                  '\nconnected = ' + MapMediator.connectedCountryId +
+                  '\nconnect-commands paused = ' + MapMediator.areConnectionCommandsPaused
         }
     }
 

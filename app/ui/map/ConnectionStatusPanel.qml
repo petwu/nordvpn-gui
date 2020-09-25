@@ -17,8 +17,6 @@ Item {
     Connections {
         target: MapMediator
         onIsRatingPossibleChanged: (possible) => _.showRating = possible
-        onDisconnectedChanged: (disconnected) => disconnected ? btnQuickConnect.enabled = true : null
-        onConnectedChanged: (connected) => connected ? btnDisconnect.enabled = true : null
     }
 
     QtObject {
@@ -122,23 +120,19 @@ Item {
                 MyControls.Button {
                     id: btnQuickConnect
                     visible: MapMediator.isDisconnected && !_.showRating
+                    enabled: !MapMediator.areConnectionCommandsPaused
                     text: 'Quick Connect'
-                    onClicked: {
-                        enabled = false
-                        MapMediator.quickConnect()
-                    }
+                    onClicked: MapMediator.quickConnect()
                 }
 
                 MyControls.Button {
                     id: btnDisconnect
                     visible: MapMediator.isConnected
+                    enabled: !MapMediator.areConnectionCommandsPaused
                     text: 'Disconnect'
                     isInverted: true
                     isDanger: true
-                    onClicked: {
-                        enabled = false
-                        MapMediator.disconnect()
-                    }
+                    onClicked: MapMediator.disconnect()
                 }
 
                 RowLayout {

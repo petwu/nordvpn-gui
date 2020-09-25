@@ -12,10 +12,16 @@ class MapMediator : public QObject, public IConnectionInfoSubscription {
 
     Q_OBJECT
 
+  public:
+    MapMediator();
+
     Q_PROPERTY(
-        bool isDisconnected READ _isDisconnected NOTIFY disconnectedChanged)
-    Q_PROPERTY(bool isConnecting READ _isConnecting NOTIFY connectingChanged)
-    Q_PROPERTY(bool isConnected READ _isConnected NOTIFY connectedChanged)
+        bool areConnectionCommandsPaused READ _getAreConnectionCommandsPaused
+            NOTIFY areConnectionCommandsPausedChanged)
+    Q_PROPERTY(
+        bool isDisconnected READ _getIsDisconnected NOTIFY disconnectedChanged)
+    Q_PROPERTY(bool isConnecting READ _getIsConnecting NOTIFY connectingChanged)
+    Q_PROPERTY(bool isConnected READ _getIsConnected NOTIFY connectedChanged)
     Q_PROPERTY(bool isRatingPossbile READ _getIsRatingPossible NOTIFY
                    isRatingPossibleChanged)
     Q_PROPERTY(qint32 connectingCountryId READ _getConnectingCountryId NOTIFY
@@ -29,9 +35,6 @@ class MapMediator : public QObject, public IConnectionInfoSubscription {
     Q_PROPERTY(
         QVariant countryList READ _getCountryList NOTIFY countryListChanged)
 
-  public:
-    MapMediator();
-
   public slots:
     void quickConnect();
     void connectToCountryById(quint32 id);
@@ -39,6 +42,7 @@ class MapMediator : public QObject, public IConnectionInfoSubscription {
     void rate(quint8 rating);
 
   signals:
+    void areConnectionCommandsPausedChanged(bool paused);
     void disconnectedChanged(bool connected);
     void connectingChanged(bool connecting);
     void connectedChanged(bool connected);
@@ -54,22 +58,33 @@ class MapMediator : public QObject, public IConnectionInfoSubscription {
     StatusController &_statusController = StatusController::getInstance();
     json::array_t _countries;
 
-    bool _disconnected = false;
-    bool _isDisconnected();
-    bool _connecting = false;
-    bool _isConnecting();
-    bool _connected = false;
-    bool _isConnected();
+    bool _areConnectionCommandsPaused = false;
+    bool _getAreConnectionCommandsPaused();
+    void _setAreConnectionCommandsPaused(bool value);
+    bool _isDisconnected = false;
+    bool _getIsDisconnected();
+    void _setIsDisconnected(bool value);
+    bool _isConnecting = false;
+    bool _getIsConnecting();
+    void _setIsConnecting(bool value);
+    bool _isConnected = false;
+    bool _getIsConnected();
+    void _setIsConnected(bool value);
     bool _isRatingPossbile = false;
     bool _getIsRatingPossible();
+    void _setIsRatingPossible(bool value);
     int32_t _connectingCountryId = -1;
     qint32 _getConnectingCountryId();
+    void _setConnectingCountryId(qint32 value);
     int32_t _connectedCountryId = -1;
     qint32 _getConnectedCountryId();
+    void _setConnectedCountryId(qint32 value);
     int32_t _connectedServerId = 0;
     qint32 _getConnectedServerId();
+    void _setConnectedServerId(qint32 value);
     std::string _connectedIP = "";
     QString _getConnectedIP();
+    void _setConnectedIP(std::string value);
 
     void update(const ConnectionInfo &newStatus);
     QVariant _getCountryList();
