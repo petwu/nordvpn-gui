@@ -10,14 +10,15 @@ Item {
 
     property int countryId: -1
     property string name: ''
-    property double scaleFactor: 1 + (_.disconnected ? 0 : scaleDiff)
+    property double scaleFactor: 1
     property double scaleDiff: 0.35
     property double pointerHeight: .25
-    property int radius: 18 * scaleFactor
-    property int borderWidth: radius/8
+    property int radius: 18
+    property int borderWidth: (radius*scaleFactor)/8
 
     QtObject {
         id: _
+        property double scaleFactor: marker.scaleFactor
         property bool disconnected: MapMediator.connectedCountryId !== marker.countryId &&
                                     MapMediator.connectingCountryId !== marker.countryId
         property bool connecting: MapMediator.connectingCountryId === marker.countryId
@@ -34,6 +35,9 @@ Item {
                                            /* ... and light blue for all other markers */
                                            : Style.colorMarkerBlueLight))
         property color colorSecondary: Style.colorMarkerWhite
+        onConnectedChanged: {
+            _.scaleFactor = marker.scaleFactor + (connected ? marker.scaleDiff : 0)
+        }
     }
 
     Connections {
@@ -60,7 +64,7 @@ Item {
 
     MouseArea {
         id: markerArea
-        width: 2*marker.radius
+        width: 2*marker.radius*_.scaleFactor
         height: width * (1 + marker.pointerHeight)
         x: -width/2
         y: -height
@@ -70,14 +74,14 @@ Item {
             marker.z += 10
             markerText.visible = true
             if (_.disconnected) {
-                scaleFactor += scaleDiff
+                _.scaleFactor = marker.scaleFactor + scaleDiff
             }
         }
         onExited: {
             marker.z -= 10
             markerText.visible = false
             if (_.disconnected) {
-                scaleFactor -= scaleDiff
+                _.scaleFactor = marker.scaleFactor
             }
         }
         onClicked: {
