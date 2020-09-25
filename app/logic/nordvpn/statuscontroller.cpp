@@ -145,7 +145,7 @@ ConnectionInfo StatusController::getStatus() {
     // connection status => connecting or connected ?
     matched = std::regex_search(o, m, std::regex("Status: (\\w+)"));
     if (matched) {
-        if (m[1].str() == "Connecting") {
+        if (m[1].str() == "Connecting" || m[1].str() == "Reconnecting") {
             info.status = ConnectionStatus::Connecting;
         } else if (m[1].str() == "Connected") {
             if (info.sent == 0 ||
