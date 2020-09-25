@@ -38,6 +38,9 @@ Item {
         onConnectedChanged: {
             _.scaleFactor = marker.scaleFactor + (connected ? marker.scaleDiff : 0)
         }
+        onDisconnectedChanged: {
+            marker.z = disconnected ? 1 : MapMediator.countryList.length+1
+        }
     }
 
     Connections {
