@@ -1,9 +1,5 @@
 #include "statuscontroller.h"
 
-StatusController::StatusController() {
-    this->_countries = ServerController{}.getAllCountries();
-}
-
 std::string ConnectionInfo::toString(bool onLine) const {
     std::string sb = onLine ? " " : "\n  ";
     std::string s = onLine ? ", " : "\n  ";
@@ -20,6 +16,24 @@ std::string ConnectionInfo::toString(bool onLine) const {
            "sent = " + std::to_string(this->sent) + s +
            "received = " + std::to_string(this->received) + s +
            "uptime = " + std::to_string(this->uptime) + "s" + se + "}";
+}
+
+bool ConnectionInfo::isEmpty() const {
+    return this->status == ConnectionStatus::Disconnected &&
+           this->server == "" && this->serverId == 0 && this->country == "" &&
+           this->countryId == -1 && this->city == "" && this->ip == "" &&
+           this->technology == Technology::Undefined &&
+           this->connectionType == ConnectionType::Undefined &&
+           this->sent == 0 && this->received == 0 && this->uptime == 0;
+}
+
+StatusController::StatusController() {
+    this->_countries = ServerController{}.getAllCountries();
+}
+
+StatusController &StatusController::getInstance() {
+    static StatusController instance;
+    return instance;
 }
 
 bool StatusController::canExecuteShellCmds() {
@@ -47,6 +61,7 @@ ConnectionInfo StatusController::getStatus() {
     // connection status => disconnected ?
     matched = std::regex_search(o, m, std::regex("Status: (\\w+)"));
     if (!matched || m[1].str() == "Disconnected") {
+        this->_currentConnectedInfo = std::move(ConnectionInfo(info));
         return info;
     }
 
@@ -128,9 +143,45 @@ ConnectionInfo StatusController::getStatus() {
     }
 
     // connection status => connecting or connected ?
-    info.status = info.sent == 0 || info.uptime == 0
-                      ? ConnectionStatus::Connecting
-                      : ConnectionStatus::Connected;
+    matched = std::regex_search(o, m, std::regex("Status: (\\w+)"));
+    if (matched) {
+        if (m[1].str() == "Connecting") {
+            info.status = ConnectionStatus::Connecting;
+        } else if (m[1].str() == "Connected") {
+            if (info.sent == 0 ||
+                (!this->_currentConnectedInfo.isEmpty() &&
+                 this->_currentConnectedInfo.server != info.server &&
+                 info.uptime >= this->_currentConnectedInfo.uptime)) {
+                /*
+                 * [ special case ]
+                 *
+                 * Cause:
+                 * While switching the connected country, the NordVPN CLI
+                 * returns an inconsistent status: During the connecting phase,
+                 * the properties "Current server", "Country", "City" and "Your
+                 * new IP" already have the values of the new country while
+                 * "Status", "Transfer" and "Uptime" still have the values of
+                 * the old country. Thus the "Status" still states "Connected"
+                 * though it should be "Connecting".
+                 *
+                 * Detection:
+                 * This case can be detected by checking whether the previously
+                 * remmembered connected server (_currentConnectedInfo) matches
+                 * the server of the currently parsed status info. If yes: We
+                 * are still connected to the same server. If no: We are
+                 * switching servers and thus the "Status" property is wrong;
+                 * the "Uptime" property is wrong as well. In some cases, the
+                 * sent bytes ("Transfer") also already resetted to 0.
+                 *
+                 */
+                info.status = ConnectionStatus::Connecting;
+                info.sent = 0;
+            } else {
+                info.status = ConnectionStatus::Connected;
+                this->_currentConnectedInfo = std::move(ConnectionInfo(info));
+            }
+        }
+    }
 
     return std::move(info);
 }
@@ -188,7 +239,7 @@ void StatusController::detach(IConnectionInfoSubscription *subscriber) {
 
 void StatusController::_backgroundTask() {
     while (this->_performBackgroundTask) {
-        this->_currectStatus = this->getStatus();
+        this->_currentInfo = this->getStatus();
         this->_notifySubscribers();
         std::this_thread::sleep_for(config::consts::STATUS_UPDATE_INTERVAL);
     }
@@ -196,7 +247,7 @@ void StatusController::_backgroundTask() {
 
 void StatusController::_notifySubscribers() {
     for (auto &subscriber : this->_subscribers) {
-        subscriber->update(this->_currectStatus);
+        subscriber->update(this->_currentInfo);
     }
 }
 

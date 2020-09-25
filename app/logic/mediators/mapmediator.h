@@ -51,7 +51,7 @@ class MapMediator : public QObject, public IConnectionInfoSubscription {
 
   private:
     ServerController _serverController;
-    StatusController _statusController;
+    StatusController &_statusController = StatusController::getInstance();
     json::array_t _countries;
 
     bool _disconnected = false;

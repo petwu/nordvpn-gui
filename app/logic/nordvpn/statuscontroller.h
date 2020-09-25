@@ -110,7 +110,9 @@ class ConnectionInfo {
     uint64_t sent = 0;
     uint64_t received = 0;
     uint64_t uptime = 0;
+
     std::string toString(bool onLine = true) const;
+    bool isEmpty() const;
 };
 
 class IConnectionInfoSubscription {
@@ -118,9 +120,13 @@ class IConnectionInfoSubscription {
     virtual void update(const ConnectionInfo &newInfo) = 0;
 };
 
+// Singleton:
+// https://stackoverflow.com/questions/1008019/c-singleton-design-pattern
 class StatusController : public BaseController {
   public:
-    StatusController();
+    StatusController(const StatusController &) = delete;
+    void operator=(const StatusController &) = delete;
+    static StatusController &getInstance();
 
     bool canExecuteShellCmds();
     bool isNordVpnInstalled();
@@ -137,9 +143,12 @@ class StatusController : public BaseController {
     void rate(uint8_t rating);
 
   private:
+    StatusController();
+
     std::atomic<bool> _performBackgroundTask = false;
     std::vector<IConnectionInfoSubscription *> _subscribers;
-    ConnectionInfo _currectStatus;
+    ConnectionInfo _currentInfo;
+    ConnectionInfo _currentConnectedInfo;
     void _backgroundTask();
     void _notifySubscribers();
     json::array_t _countries;

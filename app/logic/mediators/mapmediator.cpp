@@ -7,7 +7,6 @@ MapMediator::MapMediator() {
 }
 
 void MapMediator::update(const ConnectionInfo &newInfo) {
-    std::cout << newInfo.toString() << std::endl;
     int32_t connectingId = -1, connectedId = -1;
     bool disconnected = false, connecting = false, connected = false;
     switch (newInfo.status) {
