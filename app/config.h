@@ -24,7 +24,7 @@ namespace config {
         static const uint8_t RATING_MIN = 1;
         static const uint8_t RATING_MAX = 5;
         static const std::chrono::duration STATUS_UPDATE_INTERVAL =
-            std::chrono::milliseconds(500);
+            std::chrono::milliseconds(1000);
 
     } // namespace consts
 

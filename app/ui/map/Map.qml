@@ -51,6 +51,7 @@ Item {
       map boundaries.
     */
     function focusCountry(id) {
+        _.mapCentered = false
         let markerOffsetLeft = 0
         let markerOffsetTop = 0
         // find country to get marker offset
