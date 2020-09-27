@@ -210,7 +210,7 @@ int32_t StatusController::_getCountryId(std::string name) {
 
 int32_t StatusController::_getServerId(std::string name) {
     std::smatch m;
-    if (std::regex_search(name, m, std::regex("^([a-zA-Z]+)(\\d+)\\..+"))) {
+    if (std::regex_search(name, m, std::regex("^([a-zA-Z-]+)(\\d+)\\..+"))) {
         return std::atoi(m[2].str().c_str());
     }
     return 0;

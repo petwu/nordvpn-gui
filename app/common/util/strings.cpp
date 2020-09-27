@@ -65,6 +65,25 @@ namespace util {
             return std::regex_replace(s, std::regex(oldSub), newSub);
         }
 
+        std::string replacePrefix(const std::string &s,
+                                  const std::string &prefix,
+                                  const std::string &replacement) {
+            if (s.find(prefix) != 0)
+                return s;
+            std::string r(s);
+            return r.replace(0, prefix.length(), replacement);
+        }
+
+        std::string replaceSuffix(const std::string &s,
+                                  const std::string &suffix,
+                                  const std::string &replacement) {
+            if (s.rfind(suffix) != s.length() - suffix.length())
+                return s;
+            std::string r(s);
+            return r.replace(s.length() - suffix.length(), suffix.length(),
+                             replacement);
+        }
+
     } // namespace string
 
 } // namespace util

@@ -34,6 +34,13 @@ namespace config {
 
     } // namespace paths
 
+    namespace urls {
+
+        static const std::string NORDVPN_API_ALL_SERVERS =
+            "https://api.nordvpn.com/v1/servers?limit=-1";
+
+    }
+
 } // namespace config
 
 #endif // COMMANDS_H

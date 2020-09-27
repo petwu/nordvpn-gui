@@ -25,6 +25,12 @@ namespace util {
 
         std::string replaceAll(const std::string &s, const std::string &oldSub,
                                const std::string &newSub);
+        std::string replacePrefix(const std::string &s,
+                                  const std::string &prefix,
+                                  const std::string &replacement);
+        std::string replaceSuffix(const std::string &s,
+                                  const std::string &suffix,
+                                  const std::string &replacement);
 
     } // namespace string
 
