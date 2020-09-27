@@ -11,83 +11,22 @@ using json = nlohmann::json;
 #include "basecontroller.h"
 #include "servercontroller.h"
 
-class ConnectionStatus {
-  public:
-    enum Value : int { Disconnected, Connecting, Connected };
-    ConnectionStatus() = default;
-    constexpr ConnectionStatus(Value v) : value(v) {}
-    operator Value() const { return value; }
-    std::string toString() const {
-        switch (value) {
-        case Disconnected:
-            return "disconnected";
-        case Connecting:
-            return "connecting";
-        case Connected:
-            return "connected";
-        default:
-            return "";
-        }
-    }
-
-  private:
-    Value value;
+enum class ConnectionStatus {
+    Disconnected,
+    Connecting,
+    Connected,
 };
 
-class ConnectionType {
-  public:
-    enum Value : int { Undefined, TCP, UDP };
-    ConnectionType() = default;
-    constexpr ConnectionType(Value v) : value(v) {}
-    operator Value() const { return value; }
-    std::string toString() const {
-        switch (value) {
-        case TCP:
-            return "TCP";
-        case UDP:
-            return "UDP";
-        default:
-            return "";
-        }
-    }
-    static ConnectionType fromString(std::string s) {
-        if (s == "TCP")
-            return TCP;
-        if (s == "UDP")
-            return UDP;
-        else
-            return Undefined;
-    }
-
-  private:
-    Value value;
+enum class ConnectionType {
+    Undefined,
+    TCP,
+    UDP,
 };
 
-class Technology {
-  public:
-    enum Value : int { Undefined, OpenVPN, NordLynx };
-    Technology() = default;
-    constexpr Technology(Value v) : value(v) {}
-    operator Value() const { return value; }
-    std::string toString() const {
-        if (value == OpenVPN)
-            return "OpenVPN";
-        if (value == NordLynx)
-            return "NordLynx";
-        else
-            return "";
-    }
-    static Technology fromString(std::string s) {
-        if (s == "OpenVPN")
-            return OpenVPN;
-        if (s == "NordLynx")
-            return NordLynx;
-        else
-            return Undefined;
-    }
-
-  private:
-    Value value;
+enum class Technology {
+    Undefined,
+    OpenVPN,
+    NordLynx,
 };
 
 class ConnectionInfo {

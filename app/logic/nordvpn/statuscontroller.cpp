@@ -1,19 +1,71 @@
 #include "statuscontroller.h"
 
+std::string connectionStatusToString(const ConnectionStatus cs) {
+    switch (cs) {
+    case ConnectionStatus::Disconnected:
+        return "disconnected";
+    case ConnectionStatus::Connecting:
+        return "connecting";
+    case ConnectionStatus::Connected:
+        return "connected";
+    default:
+        return "";
+    }
+}
+std::string connectionTypeToString(const ConnectionType ct) {
+    switch (ct) {
+    case ConnectionType::TCP:
+        return "TCP";
+    case ConnectionType::UDP:
+        return "UDP";
+    default:
+        return "";
+    }
+}
+
+ConnectionType connectionTypeFromString(const std::string &s) {
+    if (s == "TCP")
+        return ConnectionType::TCP;
+    if (s == "UDP")
+        return ConnectionType::UDP;
+    else
+        return ConnectionType::Undefined;
+}
+
+std::string technologyToString(Technology t) {
+    switch (t) {
+    case Technology::OpenVPN:
+        return "OpenVPN";
+    case Technology::NordLynx:
+        return "NordLynx";
+    default:
+        return "";
+    }
+}
+
+Technology technologyFromString(const std::string &s) {
+    if (s == "OpenVPN")
+        return Technology::OpenVPN;
+    if (s == "NordLynx")
+        return Technology::NordLynx;
+    else
+        return Technology::Undefined;
+}
+
 std::string ConnectionInfo::toString(bool onLine) const {
     std::string sb = onLine ? " " : "\n  ";
     std::string s = onLine ? ", " : "\n  ";
     std::string se = onLine ? " " : "\n";
     return std::string("ConnectionInfo {") + sb +
-           "status = " + this->status.toString() + s +
+           "status = " + connectionStatusToString(this->status) + s +
            "server = " + this->server + s +
            "serverId = " + std::to_string(this->serverId) + s +
            "country = " + this->country + s +
            "countryId = " + std::to_string(this->countryId) + s +
            "city = " + this->city + s + "ip = " + this->ip + s +
-           "technology = " + this->technology.toString() + s +
-           "connectionType = " + this->connectionType.toString() + s +
-           "sent = " + std::to_string(this->sent) + s +
+           "technology = " + technologyToString(this->technology) + s +
+           "connectionType = " + connectionTypeToString(this->connectionType) +
+           s + "sent = " + std::to_string(this->sent) + s +
            "received = " + std::to_string(this->received) + s +
            "uptime = " + std::to_string(this->uptime) + "s" + se + "}";
 }
@@ -94,13 +146,13 @@ ConnectionInfo StatusController::getStatus() {
     // technology
     matched = std::regex_search(o, m, std::regex("Current technology: (.+)"));
     if (matched) {
-        info.technology = Technology::fromString(m[1].str());
+        info.technology = technologyFromString(m[1].str());
     }
 
     // connection type
     matched = std::regex_search(o, m, std::regex("Current protocol: (.+)"));
     if (matched) {
-        info.connectionType = ConnectionType::fromString(m[1].str());
+        info.connectionType = connectionTypeFromString(m[1].str());
     }
 
     std::map<std::string, uint64_t> bytes = {
