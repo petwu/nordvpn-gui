@@ -1,10 +1,13 @@
 import QtQuick 2.12
 
+import Style 1.0
+
 import '.'
 
 Item {
     width: parent.width
     height: parent.height
+    clip: true
 
     /*! size boundaries of the map image */
     property int mapMinHeight: 640
@@ -195,6 +198,14 @@ Item {
     }
 
     /*
+      background/ocean color
+    */
+    Rectangle {
+        anchors.fill: parent
+        color: Style.colorMapWater
+    }
+
+    /*
       the map image
     */
     Item {
@@ -254,7 +265,7 @@ Item {
     /*
       zoom controls
     */
-    ZoomButton {
+    MapButton {
         id: zoomInBtn
         text: '+'
         onClicked: zoomCenter(true)
@@ -262,7 +273,7 @@ Item {
         anchors.bottom: zoomOutBtn.top
     }
 
-    ZoomButton {
+    MapButton {
         id: zoomOutBtn
         text: '−'
         onClicked: zoomCenter(false)

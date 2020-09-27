@@ -3,9 +3,12 @@
         <file>main.qml</file>
         <file>ui/map/Map.qml</file>
         <file>ui/map/Marker.qml</file>
-        <file>ui/map/ZoomButton.qml</file>
+        <file>ui/map/MapButton.qml</file>
         <file>ui/map/ConnectionStatusPanel.qml</file>
         <file>ui/general/Button.qml</file>
         <file>ui/map/RatingStars.qml</file>
+        <file>ui/sidepanel/SidePanel.qml</file>
+        <file>ui/general/Collapsible.qml</file>
+        <file>ui/sidepanel/HideButton.qml</file>
     </qresource>
 </RCC>

@@ -11,31 +11,25 @@ Button {
     property bool isDanger: false
     property bool isClose: false
     property bool hasNoBackground: false
-
-    QtObject {
-        id: _
-        property color foreground: 'transparent'
-        property color background: 'transparent'
-    }
+    property color foregroundColor: Style.colorButtonDefaultFrgd
+    property color backgroundColor: Style.colorButtonDefaultBkgd
 
     Component.onCompleted: {
-        let frgd, bkgd
+        let frgd = btn.foregroundColor
+        let bkgd = btn.backgroundColor
         if (btn.isDanger) {
             frgd = Style.colorButtonDangerFrgd
             bkgd = Style.colorButtonDangerBkgd
-        } else {
-            frgd = Style.colorButtonDefaultFrgd
-            bkgd = Style.colorButtonDefaultBkgd
         }
         if (btn.isInverted) {
-            _.foreground = bkgd
-            _.background = frgd
+            btn.foregroundColor = bkgd
+            btn.backgroundColor = frgd
         } else {
-            _.foreground = frgd
-            _.background = bkgd
+            btn.foregroundColor = frgd
+            btn.backgroundColor = bkgd
         }
         if (btn.hasNoBackground) {
-            _.background = 'transparent'
+            btn.backgroundColor = 'transparent'
         }
     }
 
@@ -43,8 +37,8 @@ Button {
         visible: btn.isClose
         anchors.centerIn: btn
         text: '×'
-        font.pixelSize: (isClose ? 2.25 : 1) * Qt.application.font.pixelSize
-        color: _.foreground
+        font.pixelSize: 2.25 * Qt.application.font.pixelSize
+        color: foregroundColor
         opacity: enabled ? 1 : (btn.isInverted ? .5 : .9)
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
@@ -55,7 +49,7 @@ Button {
         text: btn.isClose ? '' : btn.text
         font: btn.font
         opacity: enabled ? 1 : (btn.isInverted ? .5 : .9)
-        color: _.foreground
+        color: foregroundColor
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
         elide: Text.ElideRight
@@ -65,7 +59,7 @@ Button {
         implicitWidth: 32
         implicitHeight: 32
         opacity: enabled ? 1 : (btn.isInverted ? .9 : .75)
-        color: _.background
+        color: backgroundColor
         border.width: btn.border ? btn.border.width : 0
         border.color: btn.border ? btn.border.color : 'transparent'
         radius: btn.radius ? btn.radius : 0

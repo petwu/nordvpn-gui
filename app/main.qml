@@ -1,8 +1,8 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.1
-import QtQuick.Layouts 1.3
 
 import "ui/map"
+import "ui/sidepanel"
 
 ApplicationWindow {
     id: window
@@ -17,47 +17,45 @@ ApplicationWindow {
     width: 1000
     height: 600
 
-    Column {
+    SidePanel {
         id: leftColumn
-        width: 240
+        width: hideSidebarBtn.hidden ? 0 : 240
         anchors.top: parent.top
+        anchors.left: parent.left
         anchors.bottom: parent.bottom
 
-        Button {
-            objectName: "btn"
-            text: "Click Me."
-        }
-
-        Text {
-            text: 'connecting = ' + MapMediator.connectingCountryId +
-                  '\nconnected = ' + MapMediator.connectedCountryId +
-                  '\nconnect-commands paused = ' + MapMediator.areConnectionCommandsPaused
+        Behavior on width {
+            NumberAnimation {
+                duration: 100
+                easing.type: Easing.InOutQuad
+            }
         }
     }
 
-    Rectangle {
+    MapButton {
+        id: hideSidebarBtn
+        anchors.left: leftColumn.right
+        anchors.bottom: leftColumn.bottom
+        text: '↹'
+
+        property bool hidden: false
+
+        onClicked: {
+            hidden = !hidden
+        }
+    }
+
+    Map {
         id: rightColumn
-        color: "#b8cedc"
         anchors.top: parent.top
         anchors.left: leftColumn.right
         anchors.right: parent.right
         anchors.bottom: parent.bottom
-        clip: true
 
-        ColumnLayout {
-            width: parent.width
-            height: parent.height
-
-            Map {
-                id:map
-
-                ConnectionStatusPanel {
-                    id: statusPanel
-                    anchors.horizontalCenter: map.horizontalCenter
-                    anchors.bottom: map.bottom
-                    anchors.bottomMargin: 32
-                }
-            }
+        ConnectionStatusPanel {
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 32
         }
     }
 }

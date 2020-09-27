@@ -1,6 +1,6 @@
 pragma Singleton
 
-import QtQuick 2.0
+import QtQuick 2.12
 
 QtObject {
     // base colors
@@ -19,6 +19,8 @@ QtObject {
     readonly property color colorButtonDefaultFrgd: colorLightGray
     readonly property color colorButtonDangerBkgd: colorRed
     readonly property color colorButtonDangerFrgd: colorLightGray
+    readonly property color colorMapButtonBkgd: '#ffffff'
+    readonly property color colorMapButtonFrgd: colorMapWater
 
     // map
     readonly property color colorMarkerBlueDark: colorBlueDark
@@ -35,4 +37,7 @@ QtObject {
     readonly property color colorStatusPanelConnected: colorGreen
     readonly property color colorStatusPanelSeconary: colorDarkGray
     readonly property color colorStatusPanelStarsOutline: colorYellow
+
+    // spacing
+    readonly property int marginMapButtons: 4
 }
