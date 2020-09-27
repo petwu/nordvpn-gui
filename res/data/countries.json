@@ -1,8 +1,8 @@
 [
     {
         "id": 0,
+        "name": "Albania",
         "connectName": "Albania",
-        "statusName": "Albania",
         "offsetLeft": 0.5372,
         "offsetTop": 0.397,
         "lat": 41.153332,
@@ -10,8 +10,8 @@
     },
     {
         "id": 1,
+        "name": "Argentina",
         "connectName": "Argentina",
-        "statusName": "Argentina",
         "offsetLeft": 0.2917,
         "offsetTop": 0.8416,
         "lat": -38.416097,
@@ -19,8 +19,8 @@
     },
     {
         "id": 2,
+        "name": "Australia",
         "connectName": "Australia",
-        "statusName": "Australia",
         "offsetLeft": 0.8873,
         "offsetTop": 0.8116,
         "lat": -25.274398,
@@ -28,8 +28,8 @@
     },
     {
         "id": 3,
+        "name": "Austria",
         "connectName": "Austria",
-        "statusName": "Austria",
         "offsetLeft": 0.5189,
         "offsetTop": 0.3548,
         "lat": 47.516231,
@@ -37,8 +37,8 @@
     },
     {
         "id": 4,
+        "name": "Belgium",
         "connectName": "Belgium",
-        "statusName": "Belgium",
         "offsetLeft": 0.4923,
         "offsetTop": 0.3325,
         "lat": 50.503887,
@@ -46,8 +46,8 @@
     },
     {
         "id": 5,
+        "name": "Bosnia and Herzegovina",
         "connectName": "Bosnia_And_Herzegovina",
-        "statusName": "Bosnia and Herzegovina",
         "offsetLeft": 0.5310,
         "offsetTop": 0.3756,
         "lat": 43.915886,
@@ -55,8 +55,8 @@
     },
     {
         "id": 6,
+        "name": "Brazil",
         "connectName": "Brazil",
-        "statusName": "Brazil",
         "offsetLeft": 0.3274,
         "offsetTop": 0.7161,
         "lat": -14.235004,
@@ -64,8 +64,8 @@
     },
     {
         "id": 7,
+        "name": "Bulgaria",
         "connectName": "Bulgaria",
-        "statusName": "Bulgaria",
         "offsetLeft": 0.5508,
         "offsetTop": 0.3867,
         "lat": 42.733883,
@@ -73,8 +73,8 @@
     },
     {
         "id": 8,
+        "name": "Canada",
         "connectName": "Canada",
-        "statusName": "Canada",
         "offsetLeft": 0.1988,
         "offsetTop": 0.2472,
         "lat": 56.130366,
@@ -82,8 +82,8 @@
     },
     {
         "id": 9,
+        "name": "Chile",
         "connectName": "Chile",
-        "statusName": "Chile",
         "offsetLeft": 0.2717,
         "offsetTop": 0.8809,
         "lat": -35.675147,
@@ -91,8 +91,8 @@
     },
     {
         "id": 10,
+        "name": "Costa Rica",
         "connectName": "Costa_Rica",
-        "statusName": "Costa Rica",
         "offsetLeft": 0.2177,
         "offsetTop": 0.5768,
         "lat": 9.748917,
@@ -100,8 +100,8 @@
     },
     {
         "id": 11,
+        "name": "Croatia",
         "connectName": "Croatia",
-        "statusName": "Croatia",
         "offsetLeft": 0.5246,
         "offsetTop": 0.3780,
         "lat": 45.1,
@@ -109,8 +109,8 @@
     },
     {
         "id": 12,
+        "name": "Cyprus",
         "connectName": "Cyprus",
-        "statusName": "Cyprus",
         "offsetLeft": 0.553,
         "offsetTop": 0.4329,
         "lat": 35.126413,
@@ -118,8 +118,8 @@
     },
     {
         "id": 13,
+        "name": "Czech Republic",
         "connectName": "Czech_Republic",
-        "statusName": "Czech Republic",
         "offsetLeft": 0.5219,
         "offsetTop": 0.338,
         "lat": 49.817492,
@@ -127,8 +127,8 @@
     },
     {
         "id": 14,
+        "name": "Denmark",
         "connectName": "Denmark",
-        "statusName": "Denmark",
         "offsetLeft": 0.5039,
         "offsetTop": 0.2942,
         "lat": 56.26392,
@@ -136,8 +136,8 @@
     },
     {
         "id": 15,
+        "name": "Estonia",
         "connectName": "Estonia",
-        "statusName": "Estonia",
         "offsetLeft": 0.5463,
         "offsetTop": 0.2717,
         "lat": 58.595272,
@@ -145,8 +145,8 @@
     },
     {
         "id": 16,
+        "name": "Finland",
         "connectName": "Finland",
-        "statusName": "Finland",
         "offsetLeft": 0.5459,
         "offsetTop": 0.2392,
         "lat": 61.92411,
@@ -154,8 +154,8 @@
     },
     {
         "id": 17,
+        "name": "France",
         "connectName": "France",
-        "statusName": "France",
         "offsetLeft": 0.4876,
         "offsetTop": 0.3636,
         "lat": 46.227638,
@@ -163,8 +163,8 @@
     },
     {
         "id": 18,
+        "name": "Georgia",
         "connectName": "Georgia",
-        "statusName": "Georgia",
         "offsetLeft": 0.6008,
         "offsetTop": 0.3856,
         "lat": 42.315407,
@@ -172,8 +172,8 @@
     },
     {
         "id": 19,
+        "name": "Germany",
         "connectName": "Germany",
-        "statusName": "Germany",
         "offsetLeft": 0.5083,
         "offsetTop": 0.334,
         "lat": 51.165691,
@@ -181,8 +181,8 @@
     },
     {
         "id": 20,
+        "name": "Greece",
         "connectName": "Greece",
-        "statusName": "Greece",
         "offsetLeft": 0.5445,
         "offsetTop": 0.4198,
         "lat": 39.074208,
@@ -190,8 +190,8 @@
     },
     {
         "id": 21,
+        "name": "Hong Kong",
         "connectName": "Hong_Kong",
-        "statusName": "Hong Kong",
         "offsetLeft": 0.8290,
         "offsetTop": 0.4847,
         "lat": 22.396428,
@@ -199,8 +199,8 @@
     },
     {
         "id": 22,
+        "name": "Hungary",
         "connectName": "Hungary",
-        "statusName": "Hungary",
         "offsetLeft": 0.5316,
         "offsetTop": 0.3580,
         "lat": 47.162494,
@@ -208,8 +208,8 @@
     },
     {
         "id": 23,
+        "name": "Iceland",
         "connectName": "Iceland",
-        "statusName": "Iceland",
         "offsetLeft": 0.4348,
         "offsetTop": 0.2318,
         "lat": 64.963051,
@@ -217,8 +217,8 @@
     },
     {
         "id": 24,
+        "name": "India",
         "connectName": "India",
-        "statusName": "India",
         "offsetLeft": 0.72,
         "offsetTop": 0.51,
         "lat": 20.593684,
@@ -226,8 +226,8 @@
     },
     {
         "id": 25,
+        "name": "Indonesia",
         "connectName": "Indonesia",
-        "statusName": "Indonesia",
         "offsetLeft": 0.8351,
         "offsetTop": 0.6412,
         "lat": -0.789275,
@@ -235,8 +235,8 @@
     },
     {
         "id": 26,
+        "name": "Ireland",
         "connectName": "Ireland",
-        "statusName": "Ireland",
         "offsetLeft": 0.4582,
         "offsetTop": 0.3164,
         "lat": 53.41291,
@@ -244,8 +244,8 @@
     },
     {
         "id": 27,
+        "name": "Israel",
         "connectName": "Israel",
-        "statusName": "Israel",
         "offsetLeft": 0.5816,
         "offsetTop": 0.4522,
         "lat": 31.046051,
@@ -253,8 +253,8 @@
     },
     {
         "id": 28,
+        "name": "Italy",
         "connectName": "Italy",
-        "statusName": "Italy",
         "offsetLeft": 0.5169,
         "offsetTop": 0.3894,
         "lat": 41.87194,
@@ -262,8 +262,8 @@
     },
     {
         "id": 29,
+        "name": "Japan",
         "connectName": "Japan",
-        "statusName": "Japan",
         "offsetLeft": 0.8853,
         "offsetTop": 0.3816,
         "lat": 36.204824,
@@ -271,8 +271,8 @@
     },
     {
         "id": 30,
+        "name": "Latvia",
         "connectName": "Latvia",
-        "statusName": "Latvia",
         "offsetLeft": 0.5473,
         "offsetTop": 0.2864,
         "lat": 56.879635,
@@ -280,8 +280,8 @@
     },
     {
         "id": 31,
+        "name": "Luxembourg",
         "connectName": "Luxembourg",
-        "statusName": "Luxembourg",
         "offsetLeft": 0.4983,
         "offsetTop": 0.3401,
         "lat": 49.815273,
@@ -289,8 +289,8 @@
     },
     {
         "id": 32,
+        "name": "Malaysia",
         "connectName": "Malaysia",
-        "statusName": "Malaysia",
         "offsetLeft": 0.7957,
         "offsetTop": 0.6100,
         "lat": 4.210484,
@@ -298,8 +298,8 @@
     },
     {
         "id": 33,
+        "name": "Mexico",
         "connectName": "Mexico",
-        "statusName": "Mexico",
         "offsetLeft": 0.1711,
         "offsetTop": 0.5067,
         "lat": 23.634501,
@@ -307,8 +307,8 @@
     },
     {
         "id": 34,
+        "name": "Moldova",
         "connectName": "Moldova",
-        "statusName": "Moldova",
         "offsetLeft": 0.5581,
         "offsetTop": 0.3544,
         "lat": 47.411631,
@@ -316,8 +316,8 @@
     },
     {
         "id": 35,
+        "name": "Netherlands",
         "connectName": "Netherlands",
-        "statusName": "Netherlands",
         "offsetLeft": 0.4960,
         "offsetTop": 0.3223,
         "lat": 52.132633,
@@ -325,8 +325,8 @@
     },
     {
         "id": 36,
+        "name": "New Zealand",
         "connectName": "New_Zealand",
-        "statusName": "New Zealand",
         "offsetLeft": 0.965,
         "offsetTop": 0.9768,
         "lat": -40.900557,
@@ -334,8 +334,8 @@
     },
     {
         "id": 37,
+        "name": "North Macedonia",
         "connectName": "North_Macedonia",
-        "statusName": "North Macedonia",
         "offsetLeft": 0.5417,
         "offsetTop": 0.3922,
         "lat": 41.608635,
@@ -343,8 +343,8 @@
     },
     {
         "id": 38,
+        "name": "Norway",
         "connectName": "Norway",
-        "statusName": "Norway",
         "offsetLeft": 0.5025,
         "offsetTop": 0.2553,
         "lat": 60.472024,
@@ -352,8 +352,8 @@
     },
     {
         "id": 39,
+        "name": "Poland",
         "connectName": "Poland",
-        "statusName": "Poland",
         "offsetLeft": 0.5323,
         "offsetTop": 0.3230,
         "lat": 51.919438,
@@ -361,8 +361,8 @@
     },
     {
         "id": 40,
+        "name": "Portugal",
         "connectName": "Portugal",
-        "statusName": "Portugal",
         "offsetLeft": 0.5464,
         "offsetTop": 0.4092,
         "lat": 39.399872,
@@ -370,8 +370,8 @@
     },
     {
         "id": 41,
+        "name": "Romania",
         "connectName": "Romania",
-        "statusName": "Romania",
         "offsetLeft": 0.5494,
         "offsetTop": 0.3660,
         "lat": 45.943161,
@@ -379,8 +379,8 @@
     },
     {
         "id": 42,
+        "name": "Serbia",
         "connectName": "Serbia",
-        "statusName": "Serbia",
         "offsetLeft": 0.5390,
         "offsetTop": 0.3778,
         "lat": 44.016521,
@@ -388,8 +388,8 @@
     },
     {
         "id": 43,
+        "name": "Singapore",
         "connectName": "Singapore",
-        "statusName": "Singapore",
         "offsetLeft": 0.8020,
         "offsetTop": 0.6239,
         "lat": 1.352083,
@@ -397,8 +397,8 @@
     },
     {
         "id": 44,
+        "name": "Slovakia",
         "connectName": "Slovakia",
-        "statusName": "Slovakia",
         "offsetLeft": 0.5344,
         "offsetTop": 0.3466,
         "lat": 48.669026,
@@ -406,8 +406,8 @@
     },
     {
         "id": 45,
+        "name": "Slovenia",
         "connectName": "Slovenia",
-        "statusName": "Slovenia",
         "offsetLeft": 0.5217,
         "offsetTop": 0.3637,
         "lat": 46.151241,
@@ -415,8 +415,8 @@
     },
     {
         "id": 46,
+        "name": "South Africa",
         "connectName": "South_Africa",
-        "statusName": "South Africa",
         "offsetLeft": 0.5513,
         "offsetTop": 0.8070,
         "lat": -30.559482,
@@ -424,8 +424,8 @@
     },
     {
         "id": 47,
+        "name": "South Korea",
         "connectName": "South_Korea",
-        "statusName": "South Korea",
         "offsetLeft": 0.8523,
         "offsetTop": 0.3868,
         "lat": 35.907757,
@@ -433,8 +433,8 @@
     },
     {
         "id": 48,
+        "name": "Spain",
         "connectName": "Spain",
-        "statusName": "Spain",
         "offsetLeft": 0.47,
         "offsetTop": 0.4047,
         "lat": 40.463667,
@@ -442,8 +442,8 @@
     },
     {
         "id": 49,
+        "name": "Sweden",
         "connectName": "Sweden",
-        "statusName": "Sweden",
         "offsetLeft": 0.5183,
         "offsetTop": 0.2608,
         "lat": 60.128161,
@@ -451,8 +451,8 @@
     },
     {
         "id": 50,
+        "name": "Switzerland",
         "connectName": "Switzerland",
-        "statusName": "Switzerland",
         "offsetLeft": 0.5024,
         "offsetTop": 0.3588,
         "lat": 46.818188,
@@ -460,8 +460,8 @@
     },
     {
         "id": 51,
+        "name": "Taiwan",
         "connectName": "Taiwan",
-        "statusName": "Taiwan",
         "offsetLeft": 0.8462,
         "offsetTop": 0.4748,
         "lat": 23.69781,
@@ -469,8 +469,8 @@
     },
     {
         "id": 52,
+        "name": "Thailand",
         "connectName": "Thailand",
-        "statusName": "Thailand",
         "offsetLeft": 0.7896,
         "offsetTop": 0.5386,
         "lat": 15.870032,
@@ -478,8 +478,8 @@
     },
     {
         "id": 53,
+        "name": "Turkey",
         "connectName": "Turkey",
-        "statusName": "Turkey",
         "offsetLeft": 0.5799,
         "offsetTop": 0.4099,
         "lat": 38.963745,
@@ -487,8 +487,8 @@
     },
     {
         "id": 54,
+        "name": "Ukraine",
         "connectName": "Ukraine",
-        "statusName": "Ukraine",
         "offsetLeft": 0.5675,
         "offsetTop": 0.3405,
         "lat": 48.379433,
@@ -496,8 +496,8 @@
     },
     {
         "id": 55,
+        "name": "United Arab Emirates",
         "connectName": "United_Arab_Emirates",
-        "statusName": "United Arab Emirates",
         "offsetLeft": 0.6415,
         "offsetTop": 0.4984,
         "lat": 23.424076,
@@ -505,8 +505,8 @@
     },
     {
         "id": 56,
+        "name": "United Kingdom",
         "connectName": "United_Kingdom",
-        "statusName": "United Kingdom",
         "offsetLeft": 0.4762,
         "offsetTop": 0.3248,
         "lat": 55.378051,
@@ -514,8 +514,8 @@
     },
     {
         "id": 57,
+        "name": "United States",
         "connectName": "United_States",
-        "statusName": "United States",
         "offsetLeft": 0.1922,
         "offsetTop": 0.3871,
         "lat": 37.09024,
@@ -523,8 +523,8 @@
     },
     {
         "id": 58,
+        "name": "Vietnam",
         "connectName": "Vietnam",
-        "statusName": "Vietnam",
         "offsetLeft": 0.8133,
         "offsetTop": 0.5476,
         "lat": 14.058324,

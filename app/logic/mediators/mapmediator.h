@@ -56,7 +56,7 @@ class MapMediator : public QObject, public IConnectionInfoSubscription {
   private:
     ServerController _serverController;
     StatusController &_statusController = StatusController::getInstance();
-    json::array_t _countries;
+    std::vector<Country> _countries;
 
     bool _areConnectionCommandsPaused = false;
     bool _getAreConnectionCommandsPaused();

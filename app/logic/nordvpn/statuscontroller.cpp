@@ -187,22 +187,15 @@ ConnectionInfo StatusController::getStatus() {
 }
 
 int32_t StatusController::_getCountryId(std::string name) {
-    json countries = this->_countries;
-    for (auto i = countries.begin(); i != countries.end(); ++i) {
-        json country = i.value();
-        if (country.is_object() && country["id"].is_number_integer() &&
-            (country["statusName"].is_string() ||
-             country["connectName"].is_string())) {
-            std::string sName = util::string::toLower(
-                country["statusName"].is_string() ? country["statusName"] : "");
-            std::string cName = util::string::toLower(
-                country["connectName"].is_string() ? country["connectName"]
-                                                   : "");
-            std::string n1 = util::string::toLower(name);
-            std::string n2 = util::string::replaceAll(n1, "_", " ");
-            if (sName == n1 || sName == n2 || cName == n1 || cName == n2) {
-                return country["id"];
-            }
+    std::vector<Country> countries = this->_countries;
+    for (auto i = 0; i < countries.size(); i++) {
+        auto country = countries[i];
+        std::string sName = util::string::toLower(country.name);
+        std::string cName = util::string::toLower(country.connectName);
+        std::string n1 = util::string::toLower(name);
+        std::string n2 = util::string::replaceAll(n1, "_", " ");
+        if (sName == n1 || sName == n2 || cName == n1 || cName == n2) {
+            return country.id;
         }
     }
     return -1;

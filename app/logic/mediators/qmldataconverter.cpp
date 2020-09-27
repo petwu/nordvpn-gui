@@ -34,3 +34,24 @@ QVariant QmlDataConverter::jsonToQml(const json &j) {
     }
     return std::move(qVar);
 }
+
+QVariantMap QmlDataConverter::countryToQml(const Country &country) {
+    QVariantMap qObj = locationToQml(country);
+    qObj["offsetLeft"] = country.offsetLeft;
+    qObj["offsetTop"] = country.offsetTop;
+    QVariantList cities;
+    for (auto city : country.cities) {
+        cities << locationToQml(city);
+    }
+    qObj["cities"] = cities;
+    return qObj;
+}
+
+QVariantMap QmlDataConverter::locationToQml(const Location &location) {
+    QVariantMap qObj;
+    qObj["id"] = location.id;
+    qObj["name"] = QString(location.name.c_str());
+    qObj["lat"] = location.lat;
+    qObj["lng"] = location.lng;
+    return qObj;
+}

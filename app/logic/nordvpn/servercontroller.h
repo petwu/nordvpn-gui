@@ -6,7 +6,7 @@
 
 class ServerController : public BaseController {
   public:
-    json::array_t getAllCountries();
+    std::vector<Country> getAllCountries();
     std::vector<std::string> getCities(std::string country);
     std::vector<std::string> getGroups();
     void quickConnect();
@@ -14,7 +14,7 @@ class ServerController : public BaseController {
     void disconnect();
 
   private:
-    json _allCountries;
+    std::vector<Country> _allCountries;
 };
 
 #endif // SERVERCONTROLLER_H

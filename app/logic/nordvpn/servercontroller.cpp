@@ -1,17 +1,17 @@
 #include "servercontroller.h"
 
-json::array_t ServerController::getAllCountries() {
-    if (this->_allCountries.is_null()) {
+std::vector<Country> ServerController::getAllCountries() {
+    if (this->_allCountries.empty()) {
         auto cmdResult = execute(config::cmd::COUTRIES);
         auto availableCountries = util::string::split(cmdResult.output, ", ");
-        json all = ServerRepository::getCountriesJSON();
-        json available = json::array();
-        // filter the json array to only contains countries that were returned
+        std::vector<Country> all = ServerRepository::fetchCountries();
+        std::vector<Country> available;
+        // filter the vector to only contains countries that were returned
         // by the CLI command
         for (std::string c : availableCountries) {
             for (auto e : all) {
-                if (c == e["connectName"]) {
-                    available += e;
+                if (c == e.connectName) {
+                    available.push_back(e);
                 }
             }
         }
@@ -36,9 +36,9 @@ void ServerController::quickConnect() {
 
 void ServerController::connectToCountryById(uint32_t id) {
     for (auto country : this->_allCountries) {
-        if (country["id"] == id && country["connectName"].is_string()) {
+        if (country.id == id) {
             this->executeNonBlocking(config::cmd::CONNECT + " " +
-                                     std::string(country["connectName"]));
+                                     std::string(country.connectName));
             return;
         }
     }

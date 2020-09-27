@@ -90,7 +90,7 @@ Item {
                                 if (_.showRating)                       return 'Rate your connection speed'
                                 if (MapMediator.isDisconnected)         return 'Pick country or use quick connect'
                                 if (MapMediator.isConnecting)           return 'Finding the best server ...'
-                                if (MapMediator.isConnected && country) return 'Connected to ' + country.statusName + ' #' + MapMediator.connectedServerId
+                                if (MapMediator.isConnected && country) return 'Connected to ' + country.name + ' #' + MapMediator.connectedServerId
                                 return ''
                             }
                         }

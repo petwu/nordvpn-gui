@@ -55,7 +55,11 @@ void MapMediator::update(const ConnectionInfo &newInfo) {
 }
 
 QVariant MapMediator::_getCountryList() {
-    return QmlDataConverter::jsonToQml(this->_countries);
+    QVariantList list;
+    for (auto country : this->_countries) {
+        list << QmlDataConverter::countryToQml(country);
+    }
+    return list;
 }
 
 bool MapMediator::_getAreConnectionCommandsPaused() {

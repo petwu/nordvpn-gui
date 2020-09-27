@@ -151,7 +151,7 @@ class StatusController : public BaseController {
     ConnectionInfo _currentConnectedInfo;
     void _backgroundTask();
     void _notifySubscribers();
-    json::array_t _countries;
+    std::vector<Country> _countries;
     int32_t _getCountryId(std::string name);
     int32_t _getServerId(std::string server);
 };

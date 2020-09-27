@@ -13,6 +13,11 @@ enum class Group {
     OBFUSCATED,
 };
 
+class Connectable {
+  public:
+    std::string connectName = "";
+};
+
 class Location {
   public:
     int32_t id = -1;
@@ -23,11 +28,19 @@ class Location {
     std::string toString(bool oneLine = true);
 };
 
-class Server {
+class Country : public Location, public Connectable {
+  public:
+    double offsetLeft = 0;
+    double offsetTop = 0;
+    std::vector<Location> cities;
+
+    std::string toString(bool oneLine = true);
+};
+
+class Server : public Connectable {
   public:
     std::string name = "";
     std::string hostname = "";
-    std::string connectName = "";
     uint8_t load = 0;
     bool online = false;
     Location country;
@@ -41,6 +54,7 @@ class ServerRepository : public BaseRepository {
   public:
     static json::array_t getCountriesJSON();
     static std::vector<Server> fetchServers();
+    static std::vector<Country> fetchCountries();
 };
 
 #endif // SERVERREPOSITORY_H
