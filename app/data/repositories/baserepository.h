@@ -16,7 +16,8 @@ using json = nlohmann::json;
 
 class BaseRepository {
   protected:
-    static std::string readFile(std::string path);
+    static std::string readFile(std::filesystem::path path);
+    static void writeFile(std::filesystem::path path, std::string content);
     static std::string curl(std::string url, uint8_t timeoutSec = 30);
 };
 

@@ -106,6 +106,8 @@ std::vector<Server> ServerRepository::fetchServers() {
             for (auto country : countries) {
                 if (server.country.name != country["name"])
                     continue;
+                if (country["id"].is_number_integer())
+                    server.country.id = json::number_integer_t(country["id"]);
                 if (country["lat"].is_number_float())
                     server.country.lat = json::number_float_t(country["lat"]);
                 if (country["lng"].is_number_float())
@@ -161,6 +163,8 @@ std::vector<Country> ServerRepository::fetchCountries() {
         for (auto myC : myCountries) {
             if (country.name != myC["name"])
                 continue;
+            if (myC["id"].is_number_integer())
+                country.id = json::number_integer_t(myC["id"]);
             if (myC["connectName"].is_string())
                 country.connectName = json::string_t(myC["connectName"]);
             if (myC["lat"].is_number_float())

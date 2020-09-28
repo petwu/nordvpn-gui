@@ -2,7 +2,11 @@
 #define COMMANDS_H
 
 #include <chrono>
+#include <filesystem>
+#include <pwd.h>
 #include <string>
+#include <sys/types.h>
+#include <unistd.h>
 
 namespace config {
 
@@ -25,12 +29,21 @@ namespace config {
         static const uint8_t RATING_MAX = 5;
         static const std::chrono::duration STATUS_UPDATE_INTERVAL =
             std::chrono::milliseconds(1000);
+        static const uint8_t MAX_RECENTS = 5;
 
     } // namespace consts
 
     namespace paths {
 
-        static const std::string COUNTRIES_JSON = "../res/data/countries.json";
+        static const std::filesystem::path getHome() {
+            struct passwd *pw = getpwuid(getuid());
+            std::string home(pw->pw_dir);
+            return std::filesystem::path(home);
+        }
+        static const std::filesystem::path COUNTRIES_JSON =
+            std::filesystem::path("..") / "res" / "data" / "countries.json";
+        static const std::filesystem::path RECENTS_JSON =
+            getHome() / ".nordvpn-gui" / "recents.list";
 
     } // namespace paths
 

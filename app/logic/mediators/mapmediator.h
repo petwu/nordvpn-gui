@@ -9,7 +9,6 @@
 #include "qmldataconverter.h"
 
 class MapMediator : public QObject, public IConnectionInfoSubscription {
-
     Q_OBJECT
 
   public:
@@ -42,16 +41,16 @@ class MapMediator : public QObject, public IConnectionInfoSubscription {
     void rate(quint8 rating);
 
   signals:
-    void areConnectionCommandsPausedChanged(bool paused);
-    void disconnectedChanged(bool connected);
-    void connectingChanged(bool connecting);
-    void connectedChanged(bool connected);
-    void isRatingPossibleChanged(bool possible);
-    void connectingIdChanged(qint32 countryId);
-    void connectedIdChanged(qint32 countryId);
-    void connectedServerIdChanged(qint32 serverId);
-    void connectedIPChanged(QString ip);
-    void countryListChanged(QVariant countryList);
+    void areConnectionCommandsPausedChanged(bool);
+    void disconnectedChanged(bool);
+    void connectingChanged(bool);
+    void connectedChanged(bool);
+    void isRatingPossibleChanged(bool);
+    void connectingIdChanged(qint32);
+    void connectedIdChanged(qint32);
+    void connectedServerIdChanged(qint32);
+    void connectedIPChanged(QString);
+    void countryListChanged(QVariant);
 
   private:
     ServerController _serverController;

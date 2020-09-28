@@ -1,13 +1,20 @@
 #include "baserepository.h"
 
-std::string BaseRepository::readFile(std::string path) {
-    std::filesystem::path fspath;
-    for (auto partial : util::string::split(path, "/"))
-        fspath /= partial;
-    std::ifstream file(fspath);
+std::string BaseRepository::readFile(std::filesystem::path path) {
+    std::ifstream file(path);
     std::stringstream buf;
     buf << file.rdbuf();
+    file.close();
     return buf.str();
+}
+
+void BaseRepository::writeFile(std::filesystem::path path,
+                               std::string content) {
+    std::filesystem::create_directories(path.parent_path());
+    std::fstream file;
+    file.open(path, std::fstream::out | std::fstream::trunc);
+    file << content << std::endl;
+    file.close();
 }
 
 size_t curlCallback(const char *in, size_t size, size_t num, std::string *out) {
