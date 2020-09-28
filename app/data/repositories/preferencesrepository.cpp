@@ -21,9 +21,16 @@ void PreferencesRepository::addRecentCountryId(uint32_t id) {
     std::vector<uint32_t> currentRecents = getRecentCountriesIds();
     json newRecents = json::array_t();
     newRecents.push_back(id);
+    bool idIsInCurrentRecents = false;
     for (uint8_t i = 0;
-         i < config::consts::MAX_RECENTS - 1 && i < currentRecents.size();
-         i++) {
+         i < config::consts::MAX_RECENTS && i < currentRecents.size(); i++) {
+        if (currentRecents[i] == id) {
+            idIsInCurrentRecents = true;
+            continue;
+        }
+        if (!idIsInCurrentRecents && i == config::consts::MAX_RECENTS - 1) {
+            break;
+        }
         newRecents.push_back(currentRecents[i]);
     }
     writeFile(config::paths::RECENTS_JSON, newRecents.dump(2));

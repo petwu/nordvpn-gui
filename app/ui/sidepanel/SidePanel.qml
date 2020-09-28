@@ -11,10 +11,13 @@ ScrollView {
         Collapsible {
             title: 'Recents'
 
-            Rectangle {
-                width: parent.width
-                height: 300
-                color: '#bbffcc'
+            Repeater {
+                model: SidePanelMediator.recentCountries
+
+                Text {
+                    text: modelData.name
+                    padding: 8
+                }
             }
         }
 

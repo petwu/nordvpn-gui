@@ -12,7 +12,7 @@ class MapMediator : public QObject, public IConnectionInfoSubscription {
     Q_OBJECT
 
   public:
-    MapMediator();
+    MapMediator(std::shared_ptr<ServerController> sc);
 
     Q_PROPERTY(
         bool areConnectionCommandsPaused READ _getAreConnectionCommandsPaused
@@ -53,7 +53,7 @@ class MapMediator : public QObject, public IConnectionInfoSubscription {
     void countryListChanged(QVariant);
 
   private:
-    ServerController _serverController;
+    std::shared_ptr<ServerController> _serverController;
     StatusController &_statusController = StatusController::getInstance();
     std::vector<Country> _countries;
 

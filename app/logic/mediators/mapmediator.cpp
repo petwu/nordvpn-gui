@@ -1,9 +1,10 @@
 #include "mapmediator.h"
 
-MapMediator::MapMediator() {
+MapMediator::MapMediator(std::shared_ptr<ServerController> sc)
+    : _serverController(sc) {
     this->_statusController.attach(this);
     this->_statusController.startBackgroundTask();
-    this->_countries = this->_serverController.getAllCountries();
+    this->_countries = this->_serverController->getAllCountries();
 }
 
 void MapMediator::update(const ConnectionInfo &newInfo) {
@@ -154,21 +155,21 @@ void MapMediator::_setConnectedIP(std::string value) {
 void MapMediator::quickConnect() {
     if (this->_areConnectionCommandsPaused)
         return;
-    this->_serverController.quickConnect();
+    this->_serverController->quickConnect();
     this->_setAreConnectionCommandsPaused(true);
 }
 
 void MapMediator::connectToCountryById(quint32 id) {
     if (this->_areConnectionCommandsPaused)
         return;
-    this->_serverController.connectToCountryById(id);
+    this->_serverController->connectToCountryById(id);
     this->_setAreConnectionCommandsPaused(true);
 }
 
 void MapMediator::disconnect() {
     if (this->_areConnectionCommandsPaused)
         return;
-    this->_serverController.disconnect();
+    this->_serverController->disconnect();
     this->_setAreConnectionCommandsPaused(true);
 }
 

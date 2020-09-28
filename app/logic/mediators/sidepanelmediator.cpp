@@ -2,9 +2,14 @@
 
 #include "sidepanelmediator.h"
 
+SidePanelMediator::SidePanelMediator(std::shared_ptr<ServerController> sc)
+    : _serverController(sc) {
+    this->_serverController->attach(this);
+}
+
 QVariantList SidePanelMediator::_getRecentCountries() {
     if (this->_recentCountries.size() == 0) {
-        this->_recentCountries = this->_serverController.getRecentCountries();
+        this->_recentCountries = this->_serverController->getRecentCountries();
     }
     QVariantList recents;
     for (auto r : this->_recentCountries) {

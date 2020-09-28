@@ -4,6 +4,7 @@
 
 #include "logic/mediators/mapmediator.h"
 #include "logic/mediators/sidepanelmediator.h"
+#include "logic/nordvpn/servercontroller.h"
 
 int main(int argc, char *argv[]) {
     // set the behavior of application-wide features
@@ -17,8 +18,9 @@ int main(int argc, char *argv[]) {
     // setup connection between QML/UI and C++/logic through mediator objects
     // that are available as QML context objects
     QQmlContext *ctx = engine.rootContext();
-    auto *mapMediator = new MapMediator();
-    auto *sidePanelMediator = new SidePanelMediator();
+    std::shared_ptr<ServerController> serverController(new ServerController{});
+    auto *mapMediator = new MapMediator(serverController);
+    auto *sidePanelMediator = new SidePanelMediator(serverController);
     ctx->setContextProperty("MapMediator", mapMediator);
     ctx->setContextProperty("SidePanelMediator", sidePanelMediator);
 

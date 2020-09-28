@@ -34,8 +34,9 @@ std::vector<Country> ServerController::getRecentCountries() {
     std::vector<Country> recents;
     std::vector<uint32_t> recentsIds =
         PreferencesRepository::getRecentCountriesIds();
-    for (auto c : this->getAllCountries()) {
-        for (auto rId : recentsIds) {
+    std::vector countries = this->getAllCountries();
+    for (auto rId : recentsIds) {
+        for (auto c : countries) {
             if (rId == c.id) {
                 recents.push_back(c);
                 break;
@@ -55,6 +56,8 @@ void ServerController::connectToCountryById(uint32_t id) {
             this->executeNonBlocking(config::cmd::CONNECT + " " +
                                      std::string(country.connectName));
             PreferencesRepository::addRecentCountryId(id);
+            this->_recents = this->getRecentCountries();
+            this->_notifySubscribers();
             return;
         }
     }

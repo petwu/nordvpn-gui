@@ -11,6 +11,8 @@ class SidePanelMediator : public QObject, public IRecentCountriesSubscription {
     Q_OBJECT
 
   public:
+    SidePanelMediator(std::shared_ptr<ServerController> sc);
+
     Q_PROPERTY(QVariantList recentCountries READ _getRecentCountries NOTIFY
                    recentCountriesChanged)
 
@@ -18,7 +20,7 @@ class SidePanelMediator : public QObject, public IRecentCountriesSubscription {
     void recentCountriesChanged(QVariantList);
 
   private:
-    ServerController _serverController;
+    std::shared_ptr<ServerController> _serverController;
     std::vector<Country> _recentCountries;
     QVariantList _getRecentCountries();
     void updateRecents(const std::vector<Country> &newRecents) override;
