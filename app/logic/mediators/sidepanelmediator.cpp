@@ -22,3 +22,7 @@ void SidePanelMediator::updateRecents(const std::vector<Country> &newRecents) {
     this->_recentCountries = newRecents;
     this->recentCountriesChanged(this->_getRecentCountries());
 }
+
+void SidePanelMediator::removeFromRecentsList(quint32 countryId) {
+    this->_serverController->removeFromRecentsList(countryId);
+}

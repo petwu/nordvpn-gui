@@ -10,5 +10,8 @@
         <file>ui/sidepanel/SidePanel.qml</file>
         <file>ui/general/Collapsible.qml</file>
         <file>ui/sidepanel/HideButton.qml</file>
+        <file>ui/icons/IconOnion.qml</file>
+        <file>ui/icons/IconBase.qml</file>
+        <file>ui/icons/IconClock.qml</file>
     </qresource>
 </RCC>

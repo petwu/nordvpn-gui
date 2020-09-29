@@ -46,6 +46,12 @@ std::vector<Country> ServerController::getRecentCountries() {
     return std::move(recents);
 }
 
+void ServerController::removeFromRecentsList(uint32_t countryId) {
+    PreferencesRepository::removeRecentCountryId(countryId);
+    this->_recents = this->getRecentCountries();
+    this->_notifySubscribers();
+}
+
 void ServerController::quickConnect() {
     this->executeNonBlocking(config::cmd::CONNECT);
 }

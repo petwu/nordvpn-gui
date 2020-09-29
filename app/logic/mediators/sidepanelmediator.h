@@ -16,6 +16,9 @@ class SidePanelMediator : public QObject, public IRecentCountriesSubscription {
     Q_PROPERTY(QVariantList recentCountries READ _getRecentCountries NOTIFY
                    recentCountriesChanged)
 
+  public slots:
+    void removeFromRecentsList(quint32 countryId);
+
   signals:
     void recentCountriesChanged(QVariantList);
 

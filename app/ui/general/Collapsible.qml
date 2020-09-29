@@ -1,7 +1,7 @@
 import QtQuick 2.12
 import QtQuick.Layouts 1.12
 
-ColumnLayout {
+Column {
     id: collapsible
     width: parent.width
     height: expanded
@@ -19,9 +19,24 @@ ColumnLayout {
     property int animationDuration: 100
     property bool expanded: true
 
+    /*!
+      delay waits the given delayTime in millisecons an the executes the callback
+    */
+    function delay(delayTime, callback) {
+        function Timer() {
+            return Qt.createQmlObject("import QtQuick 2.0; Timer {}", parent);
+        }
+        let timer = new Timer()
+        timer.interval = delayTime
+        timer.repeat = false
+        timer.triggered.connect(callback)
+        timer.start()
+    }
+
     Behavior on height {
         NumberAnimation {
-            duration: collapsible.animationDuration
+            id: heightAnimation
+            duration: 0
             easing.type: Easing.InOutQuad
         }
     }
@@ -92,7 +107,11 @@ ColumnLayout {
                 anchors.fill: parent
                 cursorShape: Qt.PointingHandCursor
                 onClicked: {
+                    heightAnimation.duration = collapsible.animationDuration
                     collapsible.expanded = !collapsible.expanded
+                    delay(collapsible.animationDuration, () => {
+                              heightAnimation.duration = 0
+                          })
                 }
             }
         }

@@ -35,3 +35,19 @@ void PreferencesRepository::addRecentCountryId(uint32_t id) {
     }
     writeFile(config::paths::RECENTS_JSON, newRecents.dump(2));
 }
+
+void PreferencesRepository::removeRecentCountryId(uint32_t id) {
+    std::vector<uint32_t> currentRecents = getRecentCountriesIds();
+    uint8_t i;
+    for (i = 0; i < currentRecents.size(); i++) {
+        if (currentRecents[i] == id) {
+            break;
+        }
+    }
+    currentRecents.erase(currentRecents.begin() + i);
+    json newRecents = json::array_t();
+    for (auto r : currentRecents) {
+        newRecents.push_back(r);
+    }
+    writeFile(config::paths::RECENTS_JSON, newRecents.dump(2));
+}

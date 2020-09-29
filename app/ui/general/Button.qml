@@ -38,7 +38,7 @@ Button {
         anchors.centerIn: btn
         text: '×'
         font.pixelSize: 2.25 * Qt.application.font.pixelSize
-        color: foregroundColor
+        color: isInverted ? foregroundColor : Style.colorDarkGray
         opacity: enabled ? 1 : (btn.isInverted ? .5 : .9)
         horizontalAlignment: Text.AlignHCenter
         verticalAlignment: Text.AlignVCenter
