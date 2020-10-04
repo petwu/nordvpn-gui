@@ -1,4 +1,5 @@
-#include <QGuiApplication>
+#include <QApplication>
+#include <QPalette>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 
@@ -11,7 +12,7 @@ int main(int argc, char *argv[]) {
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
     // create Qt application
-    QGuiApplication app(argc, argv);
+    QApplication app(argc, argv);
     QQmlApplicationEngine engine;
     engine.addImportPath(":/style");
 
@@ -23,6 +24,12 @@ int main(int argc, char *argv[]) {
     auto *sidePanelMediator = new SidePanelMediator(serverController);
     ctx->setContextProperty("MapMediator", mapMediator);
     ctx->setContextProperty("SidePanelMediator", sidePanelMediator);
+
+    // populate whether to use dark or light colors
+    // isDark := (r+g+b)/2 < 128    with    r,g,b ∊ { x | 0≤x≤255 ∧ x∊ℤ}
+    auto base = QApplication::palette().base().color();
+    bool isDark = (base.red() + base.green() + base.blue()) / 3 < 128;
+    ctx->setContextProperty("IsDarkTheme", isDark);
 
     // load QML entry point
     engine.load("qrc:/main.qml");

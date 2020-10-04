@@ -3,8 +3,8 @@ import QtQuick.Controls 2.12
 import QtQuick.Layouts 1.12
 import QtGraphicalEffects 1.12
 
-import "../general" as MyControls
-import "."
+import '../general'
+import '.'
 
 import Style 1.0
 
@@ -12,7 +12,7 @@ Item {
     id: statusPanel
     width: bkgd.width
     height: bkgd.height
-    z: MapMediator.countryList.length + 100
+    z: 100
 
     Connections {
         target: MapMediator
@@ -117,21 +117,21 @@ Item {
                     Layout.fillWidth: true
                 }
 
-                MyControls.Button {
+                Button {
                     id: btnQuickConnect
                     visible: MapMediator.isDisconnected && !_.showRating
                     enabled: !MapMediator.areConnectionCommandsPaused
                     text: 'Quick Connect'
+                    icon.name: 'network-wired'
                     onClicked: MapMediator.quickConnect()
                 }
 
-                MyControls.Button {
+                Button {
                     id: btnDisconnect
                     visible: MapMediator.isConnected
                     enabled: !MapMediator.areConnectionCommandsPaused
                     text: 'Disconnect'
-                    isInverted: true
-                    isDanger: true
+                    icon.name: 'network-offline'
                     onClicked: MapMediator.disconnect()
                 }
 
@@ -150,13 +150,10 @@ Item {
                     Rectangle {
                         width: 2
                         height: 32
-                        color: Style.colorLightGray
+                        color: Style.colorMid
                     }
 
-                    MyControls.Button {
-                        isClose: true
-                        isInverted: true
-                        hasNoBackground: true
+                    CloseButton {
                         onClicked: {
                             _.showRating = false
                         }

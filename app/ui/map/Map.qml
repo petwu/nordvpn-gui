@@ -1,8 +1,11 @@
 import QtQuick 2.12
+import QtQuick.Controls 2.12
+import QtGraphicalEffects 1.12
 
 import Style 1.0
 
 import '.'
+import '../general'
 
 Item {
     width: parent.width
@@ -224,6 +227,12 @@ Item {
             height: parent.height
         }
 
+        ColorOverlay {
+            anchors.fill: map
+            source: map
+            color: Style.colorMapLand
+        }
+
         Behavior on x {
             NumberAnimation {
                 id: mapXAnimation
@@ -265,20 +274,28 @@ Item {
     /*
       zoom controls
     */
-    MapButton {
+    Button {
         id: zoomInBtn
-        text: '+'
-        onClicked: zoomCenter(true)
+        text: '＋'
+        z: 100
+        width: height
         anchors.right: parent.right
         anchors.bottom: zoomOutBtn.top
+        anchors.rightMargin: Style.marginMapButtons
+        anchors.bottomMargin: Style.marginMapButtons
+        onClicked: zoomCenter(true)
     }
 
-    MapButton {
+    Button {
         id: zoomOutBtn
-        text: '−'
-        onClicked: zoomCenter(false)
+        text: '－'
+        z: 100
+        width: height
         anchors.right: parent.right
         anchors.bottom: parent.bottom
+        anchors.rightMargin: Style.marginMapButtons
+        anchors.bottomMargin: Style.marginMapButtons
+        onClicked: zoomCenter(false)
     }
 
     /*

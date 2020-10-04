@@ -8,5 +8,5 @@ Item {
 
     property int contentWidth: .75 * width
     property double lineWidth: Math.max(1, width/16)
-    property color color: Style.colorDarkGray
+    property color color: Style.colorIcon
 }

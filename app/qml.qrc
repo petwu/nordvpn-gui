@@ -3,7 +3,6 @@
         <file>main.qml</file>
         <file>ui/map/Map.qml</file>
         <file>ui/map/Marker.qml</file>
-        <file>ui/map/MapButton.qml</file>
         <file>ui/map/ConnectionStatusPanel.qml</file>
         <file>ui/general/Button.qml</file>
         <file>ui/map/RatingStars.qml</file>
@@ -13,5 +12,7 @@
         <file>ui/icons/IconOnion.qml</file>
         <file>ui/icons/IconBase.qml</file>
         <file>ui/icons/IconClock.qml</file>
+        <file>ui/general/CloseButton.qml</file>
+        <file>ui/general/Text.qml</file>
     </qresource>
 </RCC>

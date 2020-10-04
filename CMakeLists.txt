@@ -33,7 +33,7 @@ conan_cmake_run(CONANFILE conanfile.txt BUILD missing BASIC_SETUP CMAKE_TARGETS)
 # find required packages
 # --------------------------------------------------------------------------------
 
-find_package(Qt5 COMPONENTS Core Quick LinguistTools REQUIRED)
+find_package(Qt5 5.12 COMPONENTS Core Quick Widgets LinguistTools REQUIRED)
 find_package(Threads REQUIRED)
 
 # --------------------------------------------------------------------------------
@@ -75,5 +75,5 @@ set(TS_FILES
 # main target
 add_executable(nordvpn-gui ${SRC_FILES} ${QRC_FILES} ${TS_FILES})
 target_include_directories(nordvpn-gui PUBLIC app/)
-target_link_libraries(nordvpn-gui PRIVATE Qt5::Core Qt5::Quick Threads::Threads ${CONAN_TARGETS})
+target_link_libraries(nordvpn-gui PRIVATE Qt5::Core Qt5::Quick Qt5::Widgets Threads::Threads ${CONAN_TARGETS})
 qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})

@@ -2,6 +2,8 @@ import QtQuick 2.12
 import QtQuick.Controls 2.12
 import QtQuick.Layouts 1.12
 
+import Style 1.0
+
 import '.'
 import '../general'
 import '../icons'
@@ -28,7 +30,7 @@ ScrollView {
                     Rectangle {
                         anchors.fill: parent
                         visible: recentClose.visible
-                        color: '#f7f8f9'
+                        color: Style.colorBase
                     }
 
                     IconClock {
@@ -44,22 +46,15 @@ ScrollView {
                         text: modelData.name
                     }
 
-                    MouseArea {
-                        anchors.fill: parent
-                        hoverEnabled: true
-                        onEntered: recentClose.visible = true
-                        onExited: recentClose.visible = false
-                        cursorShape: Qt.PointingHandCursor
-                        onClicked: MapMediator.connectToCountryById(modelData.id)
+                    HoverHandler {
+                        onHoveredChanged: recentClose.visible = hovered
                     }
 
-                    Button {
+                    CloseButton {
                         id: recentClose
                         anchors.right: parent.right
                         anchors.verticalCenter: parent.verticalCenter
                         visible: false
-                        isClose: true
-                        hasNoBackground: true
                         onClicked: SidePanelMediator.removeFromRecentsList(modelData.id)
                     }
                 }

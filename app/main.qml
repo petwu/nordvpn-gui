@@ -1,8 +1,11 @@
 import QtQuick 2.12
-import QtQuick.Controls 2.1
+import QtQuick.Controls 2.12
 
-import "ui/map"
-import "ui/sidepanel"
+import Style 1.0
+
+import 'ui/general'
+import 'ui/map'
+import 'ui/sidepanel'
 
 ApplicationWindow {
     id: window
@@ -19,7 +22,7 @@ ApplicationWindow {
 
     SidePanel {
         id: leftColumn
-        width: hideSidebarBtn.hidden ? 0 : 240
+        width: sidebarToggle.hideSidebar ? 0 : 240
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.bottom: parent.bottom
@@ -32,16 +35,20 @@ ApplicationWindow {
         }
     }
 
-    MapButton {
-        id: hideSidebarBtn
+    Button {
+        id: sidebarToggle
+        text: '↹'
+        z: 100
+        width: height
         anchors.left: leftColumn.right
         anchors.bottom: leftColumn.bottom
-        text: '↹'
+        anchors.leftMargin: Style.marginMapButtons
+        anchors.bottomMargin: Style.marginMapButtons
 
-        property bool hidden: false
+        property bool hideSidebar: false
 
         onClicked: {
-            hidden = !hidden
+            hideSidebar = !hideSidebar
         }
     }
 

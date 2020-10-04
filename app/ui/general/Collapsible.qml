@@ -1,6 +1,8 @@
 import QtQuick 2.12
 import QtQuick.Layouts 1.12
 
+import Style 1.0
+
 Column {
     id: collapsible
     width: parent.width
@@ -11,10 +13,10 @@ Column {
     spacing: 0
 
     property string title: ''
-    property color titleColor: '#73757a'
-    property color titleColorExpanded: '#23252a'
+    property color titleColor: Style.colorCollapsibleTitle
+    property color titleColorExpanded: Style.colorCollapsibleTitleExpanded
     property int handleSize: 22
-    property color handleColor: '#393c43'
+    property color handleColor: Style.colorCollapsibleHandle
     property int headerPadding: 8
     property int animationDuration: 100
     property bool expanded: true
@@ -97,6 +99,7 @@ Column {
                 Text {
                     id: title
                     text: collapsible.title
+                    font.bold: true
                     color: collapsible.expanded
                            ? collapsible.titleColorExpanded
                            : collapsible.titleColor

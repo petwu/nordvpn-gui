@@ -24,17 +24,17 @@ Item {
         property bool connecting: MapMediator.connectingCountryId === marker.countryId
         property bool connected: MapMediator.connectedCountryId === marker.countryId
         property color colorPrimary: connected
-                                     /* if connected => highlight with green */
-                                     ? Style.colorMarkerGreen
+                                     /* if connected => highlight */
+                                     ? Style.colorMarkerConnected
                                      : (MapMediator.connectingCountryId === -1
-                                        /* else if idle/nothing connected or connecting => use dark blue for all markers */
-                                        ? Style.colorMarkerBlueDark
+                                        /* else if idle/nothing connected or connecting => use default color for all markers */
+                                        ? Style.colorMarkerDefault
                                         : (connecting
-                                           /* else if connecting => use dark blue for the connecting marker ... */
-                                           ? Style.colorMarkerBlueDark
-                                           /* ... and light blue for all other markers */
-                                           : Style.colorMarkerBlueLight))
-        property color colorSecondary: Style.colorMarkerWhite
+                                           /* else if connecting => use default color only for the connecting marker ... */
+                                           ? Style.colorMarkerDefault
+                                           /* ... and another color for all other markers */
+                                           : Style.colorMarkerInactive))
+        property color colorSecondary: Style.colorMarkerSecondary
         onConnectedChanged: {
             _.scaleFactor = marker.scaleFactor + (connected ? marker.scaleDiff : 0)
         }
