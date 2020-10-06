@@ -30,6 +30,7 @@ class Location {
 
 class Country : public Location, public Connectable {
   public:
+    std::string countryCode;
     double offsetLeft = 0;
     double offsetTop = 0;
     std::vector<Location> cities;

@@ -37,6 +37,7 @@ QVariant QmlDataConverter::jsonToQml(const json &j) {
 
 QVariantMap QmlDataConverter::countryToQml(const Country &country) {
     QVariantMap qObj = locationToQml(country);
+    qObj["countryCode"] = QString(country.countryCode.c_str());
     qObj["offsetLeft"] = country.offsetLeft;
     qObj["offsetTop"] = country.offsetTop;
     QVariantList cities;

@@ -31,7 +31,8 @@ void MapMediator::update(const ConnectionInfo &newInfo) {
             this->_isDisconnected != disconnected) {
             this->_setAreConnectionCommandsPaused(false);
         }
-    } else if (connecting) {
+    }
+    if (connecting) {
         // pause command handling while connecting
         this->_setAreConnectionCommandsPaused(true);
     }

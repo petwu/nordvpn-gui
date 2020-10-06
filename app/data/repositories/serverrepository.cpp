@@ -16,7 +16,8 @@ std::string Country::toString(bool oneLine) {
     std::string se = oneLine ? " " : "\n";
     auto r =
         std::string("Country {") + sb + "id = " + std::to_string(this->id) + s +
-        "name = " + this->name + s + "lat = " + std::to_string(this->lat) + s +
+        "name = " + this->name + s + "countryCode = " + this->countryCode + s +
+        "lat = " + std::to_string(this->lat) + s +
         "lng = " + std::to_string(this->lng) + s +
         "offsetLeft = " + std::to_string(this->offsetLeft) + s +
         "offsetTop = " + std::to_string(this->offsetTop) + s + "cities = [" + s;
@@ -160,6 +161,9 @@ std::vector<Country> ServerRepository::fetchCountries() {
             country.id = json::number_integer_t(c["id"]);
         if (c["name"].is_string())
             country.name = json::string_t(c["name"]);
+        if (c["code"].is_string())
+            country.countryCode =
+                util::string::toLower(json::string_t(c["code"]));
         for (auto myC : myCountries) {
             if (country.name != myC["name"])
                 continue;
