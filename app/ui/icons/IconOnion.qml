@@ -4,7 +4,7 @@ import '.'
 
 IconBase {
     Canvas {
-        width: parent.contentWidth
+        width: parent.size
         height: width
         anchors.centerIn: parent
         onPaint: {

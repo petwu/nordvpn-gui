@@ -108,7 +108,6 @@ Column {
 
             MouseArea {
                 anchors.fill: parent
-                cursorShape: Qt.PointingHandCursor
                 onClicked: {
                     heightAnimation.duration = collapsible.animationDuration
                     collapsible.expanded = !collapsible.expanded
@@ -117,10 +116,6 @@ Column {
                           })
                 }
             }
-        }
-
-        Item {
-            id: placeholder
         }
     }
 }
