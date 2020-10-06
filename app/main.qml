@@ -1,5 +1,6 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.12
+import Qt.labs.platform 1.1
 
 import Style 1.0
 
@@ -19,6 +20,52 @@ ApplicationWindow {
     minimumHeight: 400
     width: 1000
     height: 600
+
+    onClosing: window.hide()
+
+    QtObject {
+        id: _
+        property bool preventQuit: true
+    }
+
+    // TODO: use QSystemTrayIcon (C++), since Qt Labs Platform is experimental and has bugs, e.g.
+    // it's not possible to show a icon next to a MenuItem's text (https://bugreports.qt.io/browse/QTBUG-84102)
+    /*
+    SystemTrayIcon {
+        id: systemTray
+        visible: true
+        icon.source: MapMediator.isConnected
+                     ? 'qrc:/img/tray-active'
+                     : 'qrc:/img/tray-inactive'
+        menu: Menu {
+            MenuItem {
+                text: 'Show Window'
+                onTriggered: {
+                    window.show()
+                    window.raise()
+                    window.requestActivate()
+                }
+            }
+
+            MenuItem {
+                text: 'Quit'
+                onTriggered: Qt.quit()
+            }
+        }
+        onActivated: (reason) => {
+                         if (reason === SystemTrayIcon.Trigger ||
+                             reason === SystemTrayIcon.MiddleClick) {
+                             if (window.visible) {
+                                 window.hide()
+                             } else {
+                                 window.show()
+                                 window.raise()
+                                 window.requestActivate()
+                             }
+                         }
+                     }
+    }
+    */
 
     SidePanel {
         id: leftColumn

@@ -4,6 +4,8 @@
     </qresource>
     <qresource prefix="/img">
         <file alias="map.svg">img/map.svg</file>
+        <file alias="tray-active">img/tray-active.svg</file>
+        <file alias="tray-inactive">img/tray-inactive.svg</file>
     </qresource>
     <qresource prefix="/style">
         <file alias="Style/Style.qml">style/Style.qml</file>
