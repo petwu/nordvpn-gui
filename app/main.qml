@@ -1,6 +1,6 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.12
-import Qt.labs.platform 1.1
+//import Qt.labs.platform 1.1
 
 import Style 1.0
 
@@ -21,7 +21,7 @@ ApplicationWindow {
     width: 1000
     height: 600
 
-    onClosing: window.hide()
+    //onClosing: window.hide()
 
     QtObject {
         id: _
