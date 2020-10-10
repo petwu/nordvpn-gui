@@ -53,9 +53,8 @@ set(SRC_FILES
     app/data/repositories/baserepository.cpp
     app/data/repositories/preferencesrepository.cpp
     app/data/repositories/serverrepository.cpp
-    app/logic/mediators/mapmediator.cpp
+    app/logic/mediators/mediator.cpp
     app/logic/mediators/qmldataconverter.cpp
-    app/logic/mediators/sidepanelmediator.cpp
     app/logic/nordvpn/basecontroller.cpp
     app/logic/nordvpn/servercontroller.cpp
     app/logic/nordvpn/statuscontroller.cpp

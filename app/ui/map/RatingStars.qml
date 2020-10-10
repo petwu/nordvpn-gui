@@ -108,7 +108,7 @@ Item {
                     onEntered: ratingStars.rating = modelData + 1
                     onExited: ratingStars.rating = 0
                     onClicked: {
-                        MapMediator.rate(ratingStars.rating)
+                        Mediator.rate(ratingStars.rating)
                         rated()
                     }
                 }

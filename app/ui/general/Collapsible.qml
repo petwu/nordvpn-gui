@@ -9,8 +9,8 @@ Column {
     height: expanded
             ? childrenRect.height
             : header.height
-    clip: true
     spacing: 0
+    clip: !expanded
 
     property string title: ''
     property color titleColor: Style.colorCollapsibleTitle

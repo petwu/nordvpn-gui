@@ -34,7 +34,7 @@ ApplicationWindow {
     SystemTrayIcon {
         id: systemTray
         visible: true
-        icon.source: MapMediator.isConnected
+        icon.source: Mediator.isConnected
                      ? 'qrc:/img/tray-active'
                      : 'qrc:/img/tray-inactive'
         menu: Menu {
@@ -69,12 +69,21 @@ ApplicationWindow {
 
     SidePanel {
         id: leftColumn
-        width: sidebarToggle.hideSidebar ? 0 : 240
+        width: sidebarToggle.hideSidebar ? 0 : 250
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.bottom: parent.bottom
+        z: 1000
+        clip: sidebarToggle.hideSidebar
 
         Behavior on width {
+            NumberAnimation {
+                duration: 100
+                easing.type: Easing.InOutQuad
+            }
+        }
+
+        Behavior on clip {
             NumberAnimation {
                 duration: 100
                 easing.type: Easing.InOutQuad

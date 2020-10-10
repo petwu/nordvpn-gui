@@ -28,11 +28,11 @@ Item {
         // flag that keeps the map centered until the first click/drag
         property bool mapCentered: true
         // list of all countries with their marker positions
-        property var countryList: MapMediator.countryList
+        property var countryList: Mediator.countryList
     }
 
     Connections {
-        target: MapMediator
+        target: Mediator
         onConnectingIdChanged: (id) => (id !== -1) ? focusCountry(id) : null
     }
 

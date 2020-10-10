@@ -3,8 +3,7 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 
-#include "logic/mediators/mapmediator.h"
-#include "logic/mediators/sidepanelmediator.h"
+#include "logic/mediators/mediator.h"
 #include "logic/nordvpn/servercontroller.h"
 
 int main(int argc, char *argv[]) {
@@ -16,14 +15,11 @@ int main(int argc, char *argv[]) {
     QQmlApplicationEngine engine;
     engine.addImportPath(":/style");
 
-    // setup connection between QML/UI and C++/logic through mediator objects
-    // that are available as QML context objects
+    // setup connection between QML/UI and C++/logic through a mediator object
+    // that is available as a QML context object
     QQmlContext *ctx = engine.rootContext();
     std::shared_ptr<ServerController> serverController(new ServerController{});
-    auto *mapMediator = new MapMediator(serverController);
-    auto *sidePanelMediator = new SidePanelMediator(serverController);
-    ctx->setContextProperty("MapMediator", mapMediator);
-    ctx->setContextProperty("SidePanelMediator", sidePanelMediator);
+    ctx->setContextProperty("Mediator", new Mediator(serverController));
 
     // populate whether to use dark or light colors
     // isDark := (r+g+b)/2 < 128    with    r,g,b ∊ { x | 0≤x≤255 ∧ x∊ℤ}

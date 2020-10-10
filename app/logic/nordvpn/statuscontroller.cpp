@@ -292,7 +292,7 @@ void StatusController::_backgroundTask() {
 
 void StatusController::_notifySubscribers() {
     for (auto &subscriber : this->_subscribers) {
-        subscriber->update(this->_currentInfo);
+        subscriber->updateConnectionInfo(this->_currentInfo);
     }
 }
 

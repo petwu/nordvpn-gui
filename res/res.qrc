@@ -26,7 +26,6 @@
         <file alias="dz">icons/flags/dz.svg</file>
         <file alias="mm">icons/flags/mm.svg</file>
         <file alias="gp">icons/flags/gp.svg</file>
-        <file alias="gb-wls">icons/flags/gb-wls.svg</file>
         <file alias="sy">icons/flags/sy.svg</file>
         <file alias="me">icons/flags/me.svg</file>
         <file alias="gy">icons/flags/gy.svg</file>
@@ -56,7 +55,6 @@
         <file alias="lk">icons/flags/lk.svg</file>
         <file alias="cf">icons/flags/cf.svg</file>
         <file alias="mo">icons/flags/mo.svg</file>
-        <file alias="us-ca">icons/flags/us-ca.svg</file>
         <file alias="pg">icons/flags/pg.svg</file>
         <file alias="tf">icons/flags/tf.svg</file>
         <file alias="co">icons/flags/co.svg</file>
@@ -91,7 +89,6 @@
         <file alias="by">icons/flags/by.svg</file>
         <file alias="gs">icons/flags/gs.svg</file>
         <file alias="pl">icons/flags/pl.svg</file>
-        <file alias="gb-eng">icons/flags/gb-eng.svg</file>
         <file alias="gt">icons/flags/gt.svg</file>
         <file alias="mz">icons/flags/mz.svg</file>
         <file alias="dm">icons/flags/dm.svg</file>
@@ -120,7 +117,6 @@
         <file alias="gi">icons/flags/gi.svg</file>
         <file alias="io">icons/flags/io.svg</file>
         <file alias="li">icons/flags/li.svg</file>
-        <file alias="gb-nir">icons/flags/gb-nir.svg</file>
         <file alias="tj">icons/flags/tj.svg</file>
         <file alias="do">icons/flags/do.svg</file>
         <file alias="il">icons/flags/il.svg</file>
@@ -179,7 +175,6 @@
         <file alias="cl">icons/flags/cl.svg</file>
         <file alias="tl">icons/flags/tl.svg</file>
         <file alias="pw">icons/flags/pw.svg</file>
-        <file alias="gb-zet">icons/flags/gb-zet.svg</file>
         <file alias="bg">icons/flags/bg.svg</file>
         <file alias="mr">icons/flags/mr.svg</file>
         <file alias="nl">icons/flags/nl.svg</file>
@@ -202,7 +197,6 @@
         <file alias="id">icons/flags/id.svg</file>
         <file alias="af">icons/flags/af.svg</file>
         <file alias="it">icons/flags/it.svg</file>
-        <file alias="gb-sct">icons/flags/gb-sct.svg</file>
         <file alias="sx">icons/flags/sx.svg</file>
         <file alias="lc">icons/flags/lc.svg</file>
         <file alias="xk">icons/flags/xk.svg</file>
@@ -244,7 +238,6 @@
         <file alias="ge">icons/flags/ge.svg</file>
         <file alias="jm">icons/flags/jm.svg</file>
         <file alias="gm">icons/flags/gm.svg</file>
-        <file alias="lgbt">icons/flags/lgbt.svg</file>
         <file alias="ch">icons/flags/ch.svg</file>
         <file alias="bm">icons/flags/bm.svg</file>
         <file alias="sd">icons/flags/sd.svg</file>

@@ -13,5 +13,8 @@
         <file>ui/icons/IconClock.qml</file>
         <file>ui/general/CloseButton.qml</file>
         <file>ui/general/Text.qml</file>
+        <file>ui/sidepanel/RecentConnection.qml</file>
+        <file>ui/sidepanel/CountryItem.qml</file>
+        <file>ui/general/ComboBox.qml</file>
     </qresource>
 </RCC>

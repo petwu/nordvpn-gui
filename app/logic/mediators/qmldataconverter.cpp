@@ -56,3 +56,20 @@ QVariantMap QmlDataConverter::locationToQml(const Location &location) {
     qObj["lng"] = location.lng;
     return qObj;
 }
+
+QVariantMap QmlDataConverter::serverToQml(const Server &server) {
+    QVariantMap qObj;
+    qObj["id"] = server.id;
+    qObj["name"] = QString(server.name.c_str());
+    qObj["connectName"] = QString(server.connectName.c_str());
+    qObj["hostname"] = QString(server.hostname.c_str());
+    qObj["load"] = server.load;
+    qObj["countryId"] = server.countryId;
+    qObj["cityId"] = server.cityId;
+    QVariantList groups;
+    for (auto g : server.groups) {
+        groups << QString(group2string(g).c_str());
+    }
+    qObj["groups"] = groups;
+    return qObj;
+}

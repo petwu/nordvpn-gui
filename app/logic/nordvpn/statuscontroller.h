@@ -56,7 +56,7 @@ class ConnectionInfo {
 
 class IConnectionInfoSubscription {
   public:
-    virtual void update(const ConnectionInfo &newInfo) = 0;
+    virtual void updateConnectionInfo(const ConnectionInfo &newInfo) = 0;
 };
 
 // Singleton:

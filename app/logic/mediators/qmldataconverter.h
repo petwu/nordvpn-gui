@@ -19,6 +19,7 @@ class QmlDataConverter {
     static QVariant jsonToQml(const json &j);
     static QVariantMap countryToQml(const Country &country);
     static QVariantMap locationToQml(const Location &location);
+    static QVariantMap serverToQml(const Server &server);
 };
 
 #endif // JSONCONVERTER_H

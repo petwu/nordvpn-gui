@@ -1,5 +1,5 @@
-#ifndef MAPMEDIATOR_H
-#define MAPMEDIATOR_H
+#ifndef MEDIATOR_H
+#define MEDIATOR_H
 
 #include <QObject>
 #include <QVariant>
@@ -8,11 +8,13 @@
 #include "logic/nordvpn/statuscontroller.h"
 #include "qmldataconverter.h"
 
-class MapMediator : public QObject, public IConnectionInfoSubscription {
+class Mediator : public QObject,
+                 public IConnectionInfoSubscription,
+                 public IRecentCountriesSubscription {
     Q_OBJECT
 
   public:
-    MapMediator(std::shared_ptr<ServerController> sc);
+    Mediator(std::shared_ptr<ServerController> sc);
 
     Q_PROPERTY(
         bool areConnectionCommandsPaused READ _getAreConnectionCommandsPaused
@@ -33,11 +35,16 @@ class MapMediator : public QObject, public IConnectionInfoSubscription {
         QString connectedIP READ _getConnectedIP NOTIFY connectedIPChanged)
     Q_PROPERTY(
         QVariant countryList READ _getCountryList NOTIFY countryListChanged)
+    Q_PROPERTY(QVariantList recentCountries READ _getRecentCountries NOTIFY
+                   recentCountriesChanged)
 
   public slots:
     void quickConnect();
     void connectToCountryById(quint32 id);
+    void connectToServerById(quint32 serverId);
     void disconnect();
+    void removeFromRecentsList(quint32 countryId);
+    QVariantList getServers(qint32 countryId, qint32 cityId);
     void rate(quint8 rating);
 
   signals:
@@ -51,11 +58,13 @@ class MapMediator : public QObject, public IConnectionInfoSubscription {
     void connectedServerIdChanged(qint32);
     void connectedIPChanged(QString);
     void countryListChanged(QVariant);
+    void recentCountriesChanged(QVariantList);
 
   private:
     std::shared_ptr<ServerController> _serverController;
     StatusController &_statusController = StatusController::getInstance();
     std::vector<Country> _countries;
+    std::vector<Server> _allServers;
 
     bool _areConnectionCommandsPaused = false;
     bool _getAreConnectionCommandsPaused();
@@ -84,9 +93,12 @@ class MapMediator : public QObject, public IConnectionInfoSubscription {
     std::string _connectedIP = "";
     QString _getConnectedIP();
     void _setConnectedIP(std::string value);
-
-    void update(const ConnectionInfo &newStatus);
     QVariant _getCountryList();
+    std::vector<Country> _recentCountries;
+    QVariantList _getRecentCountries();
+
+    void updateConnectionInfo(const ConnectionInfo &newStatus) override;
+    void updateRecents(const std::vector<Country> &newRecents) override;
 };
 
-#endif // MAPMEDIATOR_H
+#endif // MEDIATOR_H

@@ -1,5 +1,7 @@
 #include "servercontroller.h"
 
+ServerController::ServerController() {}
+
 std::vector<Country> ServerController::getAllCountries() {
     if (this->_allCountries.empty()) {
         auto cmdResult = execute(config::cmd::COUTRIES);
@@ -23,6 +25,30 @@ std::vector<Country> ServerController::getAllCountries() {
 std::vector<std::string> ServerController::getCities(std::string country) {
     auto result = execute(config::cmd::CITIES + " " + country);
     return util::string::split(result.output, ", ");
+}
+
+std::vector<Server> ServerController::getServersByCountry(int32_t countryId) {
+    if (this->_allServers.empty()) {
+        this->_allServers = ServerRepository::fetchServers();
+    }
+    std::vector<Server> servers;
+    for (auto server : this->_allServers) {
+        if (server.countryId == countryId)
+            servers.push_back(server);
+    }
+    return std::move(servers);
+}
+
+std::vector<Server> ServerController::getServersByCity(int32_t cityId) {
+    if (this->_allServers.empty()) {
+        this->_allServers = ServerRepository::fetchServers();
+    }
+    std::vector<Server> servers;
+    for (auto server : this->_allServers) {
+        if (server.cityId == cityId)
+            servers.push_back(server);
+    }
+    return std::move(servers);
 }
 
 std::vector<std::string> ServerController::getGroups() {
@@ -60,8 +86,21 @@ void ServerController::connectToCountryById(uint32_t id) {
     for (auto country : this->_allCountries) {
         if (country.id == id) {
             this->executeNonBlocking(config::cmd::CONNECT + " " +
-                                     std::string(country.connectName));
+                                     country.connectName);
             PreferencesRepository::addRecentCountryId(id);
+            this->_recents = this->getRecentCountries();
+            this->_notifySubscribers();
+            return;
+        }
+    }
+}
+
+void ServerController::connectToServerById(uint32_t id) {
+    for (auto server : this->_allServers) {
+        if (server.id == id) {
+            this->executeNonBlocking(config::cmd::CONNECT + " " +
+                                     server.connectName);
+            PreferencesRepository::addRecentCountryId(server.countryId);
             this->_recents = this->getRecentCountries();
             this->_notifySubscribers();
             return;

@@ -15,7 +15,7 @@ Item {
     z: 100
 
     Connections {
-        target: MapMediator
+        target: Mediator
         onIsRatingPossibleChanged: (possible) => _.showRating = possible
     }
 
@@ -56,24 +56,24 @@ Item {
                             radius: width/2
                             Layout.alignment: Qt.AlignVCenter
                             color: {
-                                if (MapMediator.isDisconnected) return Style.colorStatusPanelDisconnected
-                                if (MapMediator.isConnecting)   return Style.colorStatusPanelConnecting
-                                if (MapMediator.isConnected)    return Style.colorStatusPanelConnected
+                                if (Mediator.isDisconnected) return Style.colorStatusPanelDisconnected
+                                if (Mediator.isConnecting)   return Style.colorStatusPanelConnecting
+                                if (Mediator.isConnected)    return Style.colorStatusPanelConnected
                                 return 'transparent'
                             }
                         }
 
                         Text {
                             text: {
-                                if (MapMediator.isDisconnected) return 'Unprotected'
-                                if (MapMediator.isConnecting)   return 'Connecting'
-                                if (MapMediator.isConnected)    return 'Protected'
+                                if (Mediator.isDisconnected) return 'Unprotected'
+                                if (Mediator.isConnecting)   return 'Connecting'
+                                if (Mediator.isConnected)    return 'Protected'
                                 return ''
                             }
                             color: {
-                                if (MapMediator.isDisconnected) return Style.colorStatusPanelDisconnected
-                                if (MapMediator.isConnecting)   return Style.colorStatusPanelConnecting
-                                if (MapMediator.isConnected)    return Style.colorStatusPanelConnected
+                                if (Mediator.isDisconnected) return Style.colorStatusPanelDisconnected
+                                if (Mediator.isConnecting)   return Style.colorStatusPanelConnecting
+                                if (Mediator.isConnected)    return Style.colorStatusPanelConnected
                                 return 'transparent'
                             }
                             font.pixelSize: .8*Qt.application.font.pixelSize
@@ -84,20 +84,20 @@ Item {
                     RowLayout {
                         Text {
                             text: {
-                                const country = MapMediator.countryList.find((c) => {
-                                                                                 return c.id === MapMediator.connectedCountryId
+                                const country = Mediator.countryList.find((c) => {
+                                                                                 return c.id === Mediator.connectedCountryId
                                                                              })
                                 if (_.showRating)                       return 'Rate your connection speed'
-                                if (MapMediator.isDisconnected)         return 'Pick country or use quick connect'
-                                if (MapMediator.isConnecting)           return 'Finding the best server ...'
-                                if (MapMediator.isConnected && country) return 'Connected to ' + country.name + ' #' + MapMediator.connectedServerId
+                                if (Mediator.isDisconnected)         return 'Pick country or use quick connect'
+                                if (Mediator.isConnecting)           return 'Finding the best server ...'
+                                if (Mediator.isConnected && country) return 'Connected to ' + country.name + ' #' + Mediator.connectedServerId
                                 return ''
                             }
                         }
 
                         Text {
-                            text: MapMediator.isConnected && MapMediator.connectedIP
-                                  ? '(' + MapMediator.connectedIP + ')'
+                            text: Mediator.isConnected && Mediator.connectedIP
+                                  ? '(' + Mediator.connectedIP + ')'
                                   : ''
                             font.pixelSize: .9*Qt.application.font.pixelSize
                             color: Style.colorStatusPanelSeconary
@@ -119,20 +119,20 @@ Item {
 
                 Button {
                     id: btnQuickConnect
-                    visible: MapMediator.isDisconnected && !_.showRating
-                    enabled: !MapMediator.areConnectionCommandsPaused
+                    visible: Mediator.isDisconnected && !_.showRating
+                    enabled: !Mediator.areConnectionCommandsPaused
                     text: 'Quick Connect'
                     icon.name: 'network-wired'
-                    onClicked: MapMediator.quickConnect()
+                    onClicked: Mediator.quickConnect()
                 }
 
                 Button {
                     id: btnDisconnect
-                    visible: MapMediator.isConnected
-                    enabled: !MapMediator.areConnectionCommandsPaused
+                    visible: Mediator.isConnected
+                    enabled: !Mediator.areConnectionCommandsPaused
                     text: 'Disconnect'
                     icon.name: 'network-offline'
-                    onClicked: MapMediator.disconnect()
+                    onClicked: Mediator.disconnect()
                 }
 
                 RowLayout {
