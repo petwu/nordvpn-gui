@@ -50,7 +50,6 @@ class ConnectionInfo {
     uint64_t received = 0;
     uint64_t uptime = 0;
 
-    std::string toString(bool onLine = true) const;
     bool isEmpty() const;
 };
 

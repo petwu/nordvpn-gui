@@ -1,6 +1,9 @@
 #ifndef SERVERCONTROLLER_H
 #define SERVERCONTROLLER_H
 
+#include <atomic>
+#include <thread>
+
 #include "basecontroller.h"
 #include "data/repositories/preferencesrepository.h"
 #include "data/repositories/serverrepository.h"
@@ -28,6 +31,8 @@ class ServerController : public BaseController {
     void disconnect();
     void attach(IRecentCountriesSubscription *subscriber);
     void detach(IRecentCountriesSubscription *subscriber);
+    void startBackgroundTask();
+    void stopBackgroundTask();
 
   private:
     ServerController();
@@ -36,6 +41,8 @@ class ServerController : public BaseController {
     std::vector<Server> _allServers;
     std::vector<IRecentCountriesSubscription *> _subscribers;
     void _notifySubscribers();
+    std::atomic<bool> _performBackgroundTask = false;
+    void _backgroundTask();
 };
 
 #endif // SERVERCONTROLLER_H

@@ -3,6 +3,8 @@
 Mediator::Mediator() {
     this->_statusController.attach(this);
     this->_statusController.startBackgroundTask();
+    this->_serverController.attach(this);
+    this->_serverController.startBackgroundTask();
     this->_countries = this->_serverController.getAllCountries();
 }
 

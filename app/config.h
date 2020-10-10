@@ -16,6 +16,8 @@ namespace config {
         static const uint8_t RATING_MAX = 5;
         static const std::chrono::duration STATUS_UPDATE_INTERVAL =
             std::chrono::milliseconds(1000);
+        static const std::chrono::duration SERVER_LIST_UPDATE_INTERVAL =
+            std::chrono::minutes(15);
         static const uint8_t MAX_RECENTS = 5;
 
     } // namespace consts
@@ -31,6 +33,8 @@ namespace config {
             std::filesystem::path("..") / "res" / "data" / "countries.json";
         static const std::filesystem::path RECENTS_JSON =
             getHome() / ".nordvpn-gui" / "recents.list";
+        static const std::filesystem::path SERVER_CACHE_JSON =
+            getHome() / ".nordvpn-gui" / "servers.cache.json";
 
     } // namespace paths
 

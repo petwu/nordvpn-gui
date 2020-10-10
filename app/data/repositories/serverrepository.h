@@ -45,15 +45,20 @@ class Server : public Connectable {
     int32_t countryId = -1;
     int32_t cityId = -1;
     std::vector<Group> groups;
+
+    std::string toJSON();
+    static Server fromJSON(const std::string &s);
 };
 
 class ServerRepository : public BaseRepository {
   public:
     static std::vector<Server> fetchServers();
+    static std::vector<Server> fetchServersFromCache();
     static std::vector<Country> fetchCountries();
 
   private:
     static json::array_t getCountriesJSON();
+    static void saveServerListToFile(std::vector<Server> &serverList);
 };
 
 #endif // SERVERREPOSITORY_H

@@ -1,28 +1,5 @@
 #include "statuscontroller.h"
 
-std::string connectionStatusToString(const ConnectionStatus cs) {
-    switch (cs) {
-    case ConnectionStatus::Disconnected:
-        return "disconnected";
-    case ConnectionStatus::Connecting:
-        return "connecting";
-    case ConnectionStatus::Connected:
-        return "connected";
-    default:
-        return "";
-    }
-}
-std::string connectionTypeToString(const ConnectionType ct) {
-    switch (ct) {
-    case ConnectionType::TCP:
-        return "TCP";
-    case ConnectionType::UDP:
-        return "UDP";
-    default:
-        return "";
-    }
-}
-
 ConnectionType connectionTypeFromString(const std::string &s) {
     if (s == "TCP")
         return ConnectionType::TCP;
@@ -30,17 +7,6 @@ ConnectionType connectionTypeFromString(const std::string &s) {
         return ConnectionType::UDP;
     else
         return ConnectionType::Undefined;
-}
-
-std::string technologyToString(Technology t) {
-    switch (t) {
-    case Technology::OpenVPN:
-        return "OpenVPN";
-    case Technology::NordLynx:
-        return "NordLynx";
-    default:
-        return "";
-    }
 }
 
 Technology technologyFromString(const std::string &s) {
@@ -52,28 +18,11 @@ Technology technologyFromString(const std::string &s) {
         return Technology::Undefined;
 }
 
-std::string ConnectionInfo::toString(bool onLine) const {
-    std::string sb = onLine ? " " : "\n  ";
-    std::string s = onLine ? ", " : "\n  ";
-    std::string se = onLine ? " " : "\n";
-    return std::string("ConnectionInfo {") + sb +
-           "status = " + connectionStatusToString(this->status) + s +
-           "server = " + this->server + s +
-           "serverId = " + std::to_string(this->serverId) + s +
-           "country = " + this->country + s +
-           "countryId = " + std::to_string(this->countryId) + s +
-           "city = " + this->city + s + "ip = " + this->ip + s +
-           "technology = " + technologyToString(this->technology) + s +
-           "connectionType = " + connectionTypeToString(this->connectionType) +
-           s + "sent = " + std::to_string(this->sent) + s +
-           "received = " + std::to_string(this->received) + s +
-           "uptime = " + std::to_string(this->uptime) + "s" + se + "}";
-}
-
 bool ConnectionInfo::isEmpty() const {
     return this->status == ConnectionStatus::Disconnected &&
-           this->server == "" && this->serverId == 0 && this->country == "" &&
-           this->countryId == -1 && this->city == "" && this->ip == "" &&
+           this->server.empty() && this->serverId == 0 &&
+           this->country.empty() && this->countryId == -1 &&
+           this->city.empty() && this->ip.empty() &&
            this->technology == Technology::Undefined &&
            this->connectionType == ConnectionType::Undefined &&
            this->sent == 0 && this->received == 0 && this->uptime == 0;
@@ -264,8 +213,7 @@ int32_t StatusController::_getServerId(std::string name) {
 void StatusController::startBackgroundTask() {
     this->_performBackgroundTask = true;
     // create and run new daemon thread
-    std::thread t(&StatusController::_backgroundTask, this);
-    t.detach();
+    std::thread(&StatusController::_backgroundTask, this).detach();
 }
 
 void StatusController::stopBackgroundTask() {

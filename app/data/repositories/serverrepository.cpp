@@ -17,6 +17,46 @@ std::string group2string(Group g) {
     }
 }
 
+std::string Server::toJSON() {
+    json j;
+    j["id"] = this->id;
+    j["name"] = this->name;
+    j["hostname"] = this->hostname;
+    j["connectName"] = this->connectName;
+    j["load"] = this->load;
+    j["countryId"] = this->countryId;
+    j["cityId"] = this->cityId;
+    for (auto g : this->groups)
+        j["groups"].push_back(g);
+    return j.dump();
+}
+
+Server Server::fromJSON(const std::string &s) {
+    Server server;
+    json j = json::parse(s);
+    if (j["id"].is_number_integer())
+        server.id = json::number_integer_t(j["id"]);
+    if (j["name"].is_string())
+        server.name = json::string_t(j["name"]);
+    if (j["hostname"].is_string())
+        server.hostname = json::string_t(j["hostname"]);
+    if (j["connectName"].is_string())
+        server.connectName = json::string_t(j["connectName"]);
+    if (j["load"].is_number_integer())
+        server.load = json::number_integer_t(j["load"]);
+    if (j["countryId"].is_number_integer())
+        server.countryId = json::number_integer_t(j["countryId"]);
+    if (j["cityId"].is_number_integer())
+        server.cityId = json::number_integer_t(j["cityId"]);
+    if (j["groups"].is_array()) {
+        for (auto g : j["groups"])
+            if (g.is_number_integer())
+                server.groups.push_back(
+                    static_cast<Group>(json::number_integer_t(g)));
+    }
+    return std::move(server);
+}
+
 json::array_t ServerRepository::getCountriesJSON() {
     std::string fileContent =
         BaseRepository::readFile(config::paths::COUNTRIES_JSON);
@@ -80,6 +120,7 @@ std::vector<Server> ServerRepository::fetchServers() {
         }
         servers.push_back(std::move(server));
     }
+    saveServerListToFile(servers);
 
     return std::move(servers);
 }
@@ -135,4 +176,31 @@ std::vector<Country> ServerRepository::fetchCountries() {
     }
 
     return countries;
+}
+
+std::vector<Server> ServerRepository::fetchServersFromCache() {
+    std::string file =
+        BaseRepository::readFile(config::paths::SERVER_CACHE_JSON);
+    std::vector<Server> servers;
+    if (!file.empty()) {
+        json arr = json::parse(file);
+        if (arr.is_array()) {
+            for (auto elem : arr) {
+                servers.push_back(Server::fromJSON(elem.dump()));
+            }
+        }
+    }
+    return std::move(servers);
+}
+
+void ServerRepository::saveServerListToFile(std::vector<Server> &serverList) {
+    std::string file = "[";
+    auto n = serverList.size();
+    for (int i = 0; i < n; i++) {
+        file += serverList[i].toJSON();
+        if (i < n - 1)
+            file += ",";
+    }
+    file += "]";
+    BaseRepository::writeFile(config::paths::SERVER_CACHE_JSON, file);
 }

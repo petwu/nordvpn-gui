@@ -1,6 +1,17 @@
 #include "servercontroller.h"
 
-ServerController::ServerController() {}
+ServerController::ServerController() {
+    // use a cached server list which is stored on disk and can be read in fast
+    // so that the UI has something do display
+    this->_allServers = ServerRepository::fetchServersFromCache();
+    // then fetch the up to date server list from the NordVPN API in a
+    // background thread since the complete server list is a JSON file with a
+    // size of ~16 MiB (as of 2020-10-10) and hence might take some time to
+    // download and parse
+    std::thread([this] {
+        this->_allServers = ServerRepository::fetchServers();
+    }).detach();
+}
 
 ServerController &ServerController::getInstance() {
     static ServerController instance;
@@ -28,9 +39,6 @@ std::vector<Country> ServerController::getAllCountries() {
 }
 
 std::vector<Server> ServerController::getServersByCountry(int32_t countryId) {
-    if (this->_allServers.empty()) {
-        this->_allServers = ServerRepository::fetchServers();
-    }
     std::vector<Server> servers;
     for (auto server : this->_allServers) {
         if (server.countryId == countryId)
@@ -40,9 +48,6 @@ std::vector<Server> ServerController::getServersByCountry(int32_t countryId) {
 }
 
 std::vector<Server> ServerController::getServersByCity(int32_t cityId) {
-    if (this->_allServers.empty()) {
-        this->_allServers = ServerRepository::fetchServers();
-    }
     std::vector<Server> servers;
     for (auto server : this->_allServers) {
         if (server.cityId == cityId)
@@ -118,5 +123,23 @@ void ServerController::detach(IRecentCountriesSubscription *subscriber) {
 void ServerController::_notifySubscribers() {
     for (auto &subscriber : this->_subscribers) {
         subscriber->updateRecents(this->_recents);
+    }
+}
+
+void ServerController::startBackgroundTask() {
+    this->_performBackgroundTask = true;
+    // create and run new daemon thread
+    std::thread(&ServerController::_backgroundTask, this).detach();
+}
+void ServerController::stopBackgroundTask() {
+    this->_performBackgroundTask = false;
+}
+void ServerController::_backgroundTask() {
+    while (this->_performBackgroundTask) {
+        this->_allServers = ServerRepository::fetchServers();
+        std::cout << "fetched " << this->_allServers.size() << " servers"
+                  << std::endl;
+        std::this_thread::sleep_for(
+            config::consts::SERVER_LIST_UPDATE_INTERVAL);
     }
 }
