@@ -1,10 +1,9 @@
 #include "mediator.h"
 
-Mediator::Mediator(std::shared_ptr<ServerController> sc)
-    : _serverController(sc) {
+Mediator::Mediator() {
     this->_statusController.attach(this);
     this->_statusController.startBackgroundTask();
-    this->_countries = this->_serverController->getAllCountries();
+    this->_countries = this->_serverController.getAllCountries();
 }
 
 void Mediator::updateConnectionInfo(const ConnectionInfo &newInfo) {
@@ -122,9 +121,7 @@ void Mediator::_setConnectingCountryId(qint32 value) {
     }
 }
 
-qint32 Mediator::_getConnectedCountryId() {
-    return this->_connectedCountryId;
-}
+qint32 Mediator::_getConnectedCountryId() { return this->_connectedCountryId; }
 
 void Mediator::_setConnectedCountryId(qint32 value) {
     if (value != this->_connectedCountryId) {
@@ -155,7 +152,7 @@ void Mediator::_setConnectedIP(std::string value) {
 
 QVariantList Mediator::_getRecentCountries() {
     if (this->_recentCountries.size() == 0) {
-        this->_recentCountries = this->_serverController->getRecentCountries();
+        this->_recentCountries = this->_serverController.getRecentCountries();
     }
     QVariantList recents;
     for (auto r : this->_recentCountries) {
@@ -170,16 +167,16 @@ void Mediator::updateRecents(const std::vector<Country> &newRecents) {
 }
 
 void Mediator::removeFromRecentsList(quint32 countryId) {
-    this->_serverController->removeFromRecentsList(countryId);
+    this->_serverController.removeFromRecentsList(countryId);
 }
 
 QVariantList Mediator::getServers(qint32 countryId, qint32 cityId) {
     QVariantList servers;
     if (cityId < 0) {
-        for (auto s : this->_serverController->getServersByCountry(countryId))
+        for (auto s : this->_serverController.getServersByCountry(countryId))
             servers << QmlDataConverter::serverToQml(s);
     } else {
-        for (auto s : this->_serverController->getServersByCity(cityId))
+        for (auto s : this->_serverController.getServersByCity(cityId))
             servers << QmlDataConverter::serverToQml(s);
     }
     return servers;
@@ -188,25 +185,25 @@ QVariantList Mediator::getServers(qint32 countryId, qint32 cityId) {
 void Mediator::quickConnect() {
     if (this->_areConnectionCommandsPaused)
         return;
-    this->_serverController->quickConnect();
+    this->_serverController.quickConnect();
     this->_setAreConnectionCommandsPaused(true);
 }
 
 void Mediator::connectToCountryById(quint32 id) {
     if (this->_areConnectionCommandsPaused)
         return;
-    this->_serverController->connectToCountryById(id);
+    this->_serverController.connectToCountryById(id);
     this->_setAreConnectionCommandsPaused(true);
 }
 
 void Mediator::connectToServerById(quint32 serverId) {
-    this->_serverController->connectToServerById(serverId);
+    this->_serverController.connectToServerById(serverId);
 }
 
 void Mediator::disconnect() {
     if (this->_areConnectionCommandsPaused)
         return;
-    this->_serverController->disconnect();
+    this->_serverController.disconnect();
     this->_setAreConnectionCommandsPaused(true);
 }
 

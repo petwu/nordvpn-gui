@@ -4,7 +4,6 @@
 #include <QQmlContext>
 
 #include "logic/mediators/mediator.h"
-#include "logic/nordvpn/servercontroller.h"
 
 int main(int argc, char *argv[]) {
     // set the behavior of application-wide features
@@ -18,8 +17,7 @@ int main(int argc, char *argv[]) {
     // setup connection between QML/UI and C++/logic through a mediator object
     // that is available as a QML context object
     QQmlContext *ctx = engine.rootContext();
-    std::shared_ptr<ServerController> serverController(new ServerController{});
-    ctx->setContextProperty("Mediator", new Mediator(serverController));
+    ctx->setContextProperty("Mediator", new Mediator());
 
     // populate whether to use dark or light colors
     // isDark := (r+g+b)/2 < 128    with    r,g,b ∊ { x | 0≤x≤255 ∧ x∊ℤ}

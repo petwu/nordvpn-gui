@@ -14,7 +14,7 @@ class Mediator : public QObject,
     Q_OBJECT
 
   public:
-    Mediator(std::shared_ptr<ServerController> sc);
+    Mediator();
 
     Q_PROPERTY(
         bool areConnectionCommandsPaused READ _getAreConnectionCommandsPaused
@@ -61,7 +61,7 @@ class Mediator : public QObject,
     void recentCountriesChanged(QVariantList);
 
   private:
-    std::shared_ptr<ServerController> _serverController;
+    ServerController &_serverController = ServerController::getInstance();
     StatusController &_statusController = StatusController::getInstance();
     std::vector<Country> _countries;
     std::vector<Server> _servers;

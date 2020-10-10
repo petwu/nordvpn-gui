@@ -80,7 +80,7 @@ bool ConnectionInfo::isEmpty() const {
 }
 
 StatusController::StatusController() {
-    this->_countries = ServerController{}.getAllCountries();
+    this->_countries = ServerController::getInstance().getAllCountries();
 }
 
 StatusController &StatusController::getInstance() {

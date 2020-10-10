@@ -2,6 +2,11 @@
 
 ServerController::ServerController() {}
 
+ServerController &ServerController::getInstance() {
+    static ServerController instance;
+    return instance;
+}
+
 std::vector<Country> ServerController::getAllCountries() {
     if (this->_allCountries.empty()) {
         auto cmdResult = execute("nordvpn countries");
