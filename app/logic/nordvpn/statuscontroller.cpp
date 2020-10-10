@@ -94,18 +94,18 @@ bool StatusController::canExecuteShellCmds() {
 }
 
 bool StatusController::isNordVpnInstalled() {
-    auto result = this->execute(config::cmd::VERSION);
+    auto result = this->execute("nordvpn --version");
     return result.exitCode == 0 &&
            result.output.rfind("NordVPN Version", 0) == 0;
 }
 
 std::string StatusController::getVersion() {
-    auto result = this->execute(config::cmd::VERSION);
+    auto result = this->execute("nordvpn --version");
     return result.output;
 }
 
 ConnectionInfo StatusController::getStatus() {
-    std::string o = this->execute(config::cmd::STATUS).output;
+    std::string o = this->execute("nordvpn status").output;
     ConnectionInfo info;
     std::smatch m;
     bool matched;
@@ -305,5 +305,5 @@ void StatusController::rate(uint8_t rating) {
     if (rating < getRatingMin() || rating > getRatingMax()) {
         return;
     }
-    this->executeNonBlocking(config::cmd::RATE + " " + std::to_string(rating));
+    this->executeNonBlocking("nordvpn rate " + std::to_string(rating));
 }

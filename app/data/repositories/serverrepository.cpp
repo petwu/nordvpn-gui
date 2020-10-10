@@ -87,7 +87,7 @@ std::vector<Server> ServerRepository::fetchServers() {
 std::vector<Country> ServerRepository::fetchCountries() {
     std::vector<Country> countries;
     std::string httpReponse =
-        BaseRepository::curl("https://api.nordvpn.com/v1/servers/countries");
+        BaseRepository::curl(config::urls::NORDVPN_API_ALL_COUNTRIES);
     json j = json::parse(httpReponse);
     if (!j.is_array()) {
         return std::move(countries);

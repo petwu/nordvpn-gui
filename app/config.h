@@ -10,19 +10,6 @@
 
 namespace config {
 
-    namespace cmd {
-
-        static const std::string VERSION = "nordvpn --version";
-        static const std::string STATUS = "nordvpn status";
-        static const std::string RATE = "nordvpn rate";
-        static const std::string CITIES = "nordvpn cities";
-        static const std::string COUTRIES = "nordvpn countries";
-        static const std::string GROUPS = "nordvpn groups";
-        static const std::string CONNECT = "nordvpn connect";
-        static const std::string DISCONNECT = "nordvpn disconnect";
-
-    } // namespace cmd
-
     namespace consts {
 
         static const uint8_t RATING_MIN = 1;
@@ -51,8 +38,10 @@ namespace config {
 
         static const std::string NORDVPN_API_ALL_SERVERS =
             "https://api.nordvpn.com/v1/servers?limit=-1";
+        static const std::string NORDVPN_API_ALL_COUNTRIES =
+            "https://api.nordvpn.com/v1/servers/countries";
 
-    }
+    } // namespace urls
 
 } // namespace config
 

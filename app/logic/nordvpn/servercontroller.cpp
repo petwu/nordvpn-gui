@@ -4,7 +4,7 @@ ServerController::ServerController() {}
 
 std::vector<Country> ServerController::getAllCountries() {
     if (this->_allCountries.empty()) {
-        auto cmdResult = execute(config::cmd::COUTRIES);
+        auto cmdResult = execute("nordvpn countries");
         auto availableCountries = util::string::split(cmdResult.output, ", ");
         std::vector<Country> all = ServerRepository::fetchCountries();
         std::vector<Country> available;
@@ -20,11 +20,6 @@ std::vector<Country> ServerController::getAllCountries() {
         this->_allCountries = available;
     }
     return this->_allCountries;
-}
-
-std::vector<std::string> ServerController::getCities(std::string country) {
-    auto result = execute(config::cmd::CITIES + " " + country);
-    return util::string::split(result.output, ", ");
 }
 
 std::vector<Server> ServerController::getServersByCountry(int32_t countryId) {
@@ -51,11 +46,6 @@ std::vector<Server> ServerController::getServersByCity(int32_t cityId) {
     return std::move(servers);
 }
 
-std::vector<std::string> ServerController::getGroups() {
-    auto result = execute(config::cmd::GROUPS);
-    return util::string::split(result.output, ", ");
-}
-
 std::vector<Country> ServerController::getRecentCountries() {
     std::vector<Country> recents;
     std::vector<uint32_t> recentsIds =
@@ -79,14 +69,13 @@ void ServerController::removeFromRecentsList(uint32_t countryId) {
 }
 
 void ServerController::quickConnect() {
-    this->executeNonBlocking(config::cmd::CONNECT);
+    this->executeNonBlocking("nordvpn connect");
 }
 
 void ServerController::connectToCountryById(uint32_t id) {
     for (auto country : this->_allCountries) {
         if (country.id == id) {
-            this->executeNonBlocking(config::cmd::CONNECT + " " +
-                                     country.connectName);
+            this->executeNonBlocking("nordvpn connect " + country.connectName);
             PreferencesRepository::addRecentCountryId(id);
             this->_recents = this->getRecentCountries();
             this->_notifySubscribers();
@@ -98,8 +87,7 @@ void ServerController::connectToCountryById(uint32_t id) {
 void ServerController::connectToServerById(uint32_t id) {
     for (auto server : this->_allServers) {
         if (server.id == id) {
-            this->executeNonBlocking(config::cmd::CONNECT + " " +
-                                     server.connectName);
+            this->executeNonBlocking("nordvpn connect " + server.connectName);
             PreferencesRepository::addRecentCountryId(server.countryId);
             this->_recents = this->getRecentCountries();
             this->_notifySubscribers();
@@ -109,7 +97,7 @@ void ServerController::connectToServerById(uint32_t id) {
 }
 
 void ServerController::disconnect() {
-    this->executeNonBlocking(config::cmd::DISCONNECT);
+    this->executeNonBlocking("nordvpn disconnect");
 }
 
 void ServerController::attach(IRecentCountriesSubscription *subscriber) {

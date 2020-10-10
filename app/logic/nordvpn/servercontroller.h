@@ -14,10 +14,8 @@ class ServerController : public BaseController {
   public:
     ServerController();
     std::vector<Country> getAllCountries();
-    std::vector<std::string> getCities(std::string country);
     std::vector<Server> getServersByCountry(int32_t countryId);
     std::vector<Server> getServersByCity(int32_t cityId);
-    std::vector<std::string> getGroups();
     std::vector<Country> getRecentCountries();
     void removeFromRecentsList(uint32_t countryId);
     void quickConnect();
