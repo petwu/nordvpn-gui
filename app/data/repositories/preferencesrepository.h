@@ -10,6 +10,9 @@ class PreferencesRepository : public BaseRepository {
     static std::vector<uint32_t> getRecentCountriesIds();
     static void addRecentCountryId(uint32_t id);
     static void removeRecentCountryId(uint32_t id);
+
+  private:
+    static std::vector<uint32_t> _getRecentCountriesIds();
 };
 
 #endif // PREFERENCESREPOSITORY_H
