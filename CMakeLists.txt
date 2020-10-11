@@ -2,6 +2,18 @@ cmake_minimum_required(VERSION 3.12)
 project(nordvpn-gui LANGUAGES CXX)
 
 # --------------------------------------------------------------------------------
+# application description
+# --------------------------------------------------------------------------------
+
+set(AUTHOR "Peter Würth")
+set(REPOSITORY "https://github.com/petwu/nordvpn-gui")
+set(ORGANIZATION "NordVPN GUI")
+set(APPLICATION_NAME "NordVPN GUI")
+set(VERSION_MAJOR 0)
+set(VERSION_MINOR 0)
+set(VERSION_PATCH 0)
+
+# --------------------------------------------------------------------------------
 # C++ settings
 # --------------------------------------------------------------------------------
 
@@ -43,6 +55,12 @@ find_package(Threads REQUIRED)
 file(COPY ${CMAKE_SOURCE_DIR}/res/ DESTINATION ${CMAKE_BINARY_DIR}/res/)
 
 # --------------------------------------------------------------------------------
+# configure application with defines in app.h.in
+# --------------------------------------------------------------------------------
+
+configure_file(app/app.h.in app.h)
+
+# --------------------------------------------------------------------------------
 # main executable
 # --------------------------------------------------------------------------------
 
@@ -73,6 +91,7 @@ set(TS_FILES
 
 # main target
 add_executable(nordvpn-gui ${SRC_FILES} ${QRC_FILES} ${TS_FILES})
+target_include_directories(nordvpn-gui PUBLIC ${CMAKE_BINARY_DIR})
 target_include_directories(nordvpn-gui PUBLIC app/)
 target_link_libraries(nordvpn-gui PRIVATE Qt5::Core Qt5::Quick Qt5::Widgets Threads::Threads ${CONAN_TARGETS})
 qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})

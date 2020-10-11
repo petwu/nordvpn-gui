@@ -3,6 +3,7 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 
+#include "app.h"
 #include "logic/mediators/mediator.h"
 
 int main(int argc, char *argv[]) {
@@ -11,6 +12,10 @@ int main(int argc, char *argv[]) {
 
     // create Qt application
     QApplication app(argc, argv);
+    app.setOrganizationName(ORGANIZATION);
+    app.setOrganizationDomain(REPOSITORY);
+    app.setApplicationName(APPLICATION_NAME);
+    app.setApplicationVersion(VERSION);
     QQmlApplicationEngine engine;
     engine.addImportPath(":/style");
 
@@ -24,6 +29,12 @@ int main(int argc, char *argv[]) {
     auto base = QApplication::palette().base().color();
     bool isDark = (base.red() + base.green() + base.blue()) / 3 < 128;
     ctx->setContextProperty("IsDarkTheme", isDark);
+
+    // populate app information to QML
+    ctx->setContextProperty("ApplicationName", APPLICATION_NAME);
+    ctx->setContextProperty("Author", AUTHOR);
+    ctx->setContextProperty("RepositoryURL", REPOSITORY);
+    ctx->setContextProperty("Version", VERSION);
 
     // load QML entry point
     engine.load("qrc:/main.qml");

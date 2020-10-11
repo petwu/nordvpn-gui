@@ -137,8 +137,6 @@ void ServerController::stopBackgroundTask() {
 void ServerController::_backgroundTask() {
     while (this->_performBackgroundTask) {
         this->_allServers = ServerRepository::fetchServers();
-        std::cout << "fetched " << this->_allServers.size() << " servers"
-                  << std::endl;
         std::this_thread::sleep_for(
             config::consts::SERVER_LIST_UPDATE_INTERVAL);
     }

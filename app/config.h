@@ -29,12 +29,15 @@ namespace config {
             std::string home(pw->pw_dir);
             return std::filesystem::path(home);
         }
+        static const std::filesystem::path APP_DIR = getHome() / ".nordvpn-gui";
+        static const std::filesystem::path QT_SETTINGS_FILE =
+            APP_DIR / "app.settings";
         static const std::filesystem::path COUNTRIES_JSON =
             std::filesystem::path("..") / "res" / "data" / "countries.json";
         static const std::filesystem::path RECENTS_JSON =
-            getHome() / ".nordvpn-gui" / "recents.list";
+            APP_DIR / "recents.list";
         static const std::filesystem::path SERVER_CACHE_JSON =
-            getHome() / ".nordvpn-gui" / "servers.cache.json";
+            APP_DIR / "servers.cache.json";
 
     } // namespace paths
 
