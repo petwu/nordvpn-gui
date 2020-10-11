@@ -74,6 +74,10 @@ set(SRC_FILES
     app/data/enums/protocol.cpp
     app/data/enums/technology.cpp
     app/data/enums/securityprotocol.cpp
+    app/data/models/connectable.cpp
+    app/data/models/country.cpp
+    app/data/models/location.cpp
+    app/data/models/server.cpp
     app/data/repositories/baserepository.cpp
     app/data/repositories/preferencesrepository.cpp
     app/data/repositories/serverrepository.cpp
