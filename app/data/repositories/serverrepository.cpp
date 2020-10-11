@@ -135,16 +135,6 @@ std::vector<Server> ServerRepository::fetchServers() {
         for (auto g : s.groups)
             groupDistribution[g]++;
     }
-    std::cout << "total      = " << nServers << std::endl
-              << "-----------------" << std::endl
-              << "standard   = " << groupDistribution[Group::STANDARD]
-              << std::endl
-              << "double     = " << groupDistribution[Group::DOUBLE]
-              << std::endl
-              << "onion      = " << groupDistribution[Group::ONION] << std::endl
-              << "p2p        = " << groupDistribution[Group::P2P] << std::endl
-              << "obfuscated = " << groupDistribution[Group::OBFUSCATED]
-              << std::endl;
 
     return std::move(servers);
 }
