@@ -7,6 +7,11 @@ std::string boolToEnabledString(bool enabled) {
     return enabled ? ENABLED : DISABLED;
 }
 
+SettingsController &SettingsController::getInstance() {
+    static SettingsController instance;
+    return instance;
+}
+
 NordVpnSettings SettingsController::getSettings() {
     NordVpnSettings s;
     // get current settings from NordVPN CLI

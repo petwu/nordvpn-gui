@@ -37,7 +37,7 @@ class ServerController : public BaseController {
 
   private:
     ServerController();
-    SettingsController _settingsController;
+    SettingsController &_settingsController = SettingsController::getInstance();
     std::vector<Country> _allCountries;
     std::vector<Country> _recents;
     std::vector<Server> _allServers;
