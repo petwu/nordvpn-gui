@@ -22,6 +22,25 @@ Item {
 
     property bool markerDebug: false
 
+    // keep center of map centered on size changes by shifting the x/y Positioner
+    // by half of the width/height change
+    onWidthChanged: {
+        if (_.prevWidth === -1){
+            _.prevWidth = width
+            return
+        }
+        map.x += (width - _.prevWidth)/2
+        _.prevWidth = width
+    }
+    onHeightChanged: {
+        if (_.prevHeight === -1){
+            _.prevHeight = height
+            return
+        }
+        map.y += (height - _.prevHeight)/2
+        _.prevHeight = height
+    }
+
     // private properties
     QtObject {
         id: _
@@ -29,6 +48,8 @@ Item {
         property bool mapCentered: true
         // list of all countries with their marker positions
         property var countryList: Mediator.countryList
+        property double prevWidth: -1
+        property double prevHeight: -1
     }
 
     Connections {
