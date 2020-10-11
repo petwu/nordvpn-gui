@@ -7,6 +7,7 @@
 #include "basecontroller.h"
 #include "data/repositories/preferencesrepository.h"
 #include "data/repositories/serverrepository.h"
+#include "settingscontroller.h"
 
 class IRecentCountriesSubscription {
   public:
@@ -36,9 +37,11 @@ class ServerController : public BaseController {
 
   private:
     ServerController();
+    SettingsController _settingsController;
     std::vector<Country> _allCountries;
     std::vector<Country> _recents;
     std::vector<Server> _allServers;
+    std::vector<Server> _filterServerList(int32_t countryId, int32_t cityId);
     std::vector<IRecentCountriesSubscription *> _subscribers;
     void _notifySubscribers();
     std::atomic<bool> _performBackgroundTask = false;

@@ -67,14 +67,23 @@ configure_file(app/app.h.in app.h)
 # source files
 set(SRC_FILES
     app/main.cpp
+    # common
     app/common/util/strings.cpp
+    # data
+    app/data/enums/group.cpp
+    app/data/enums/protocol.cpp
+    app/data/enums/technology.cpp
+    app/data/enums/securityprotocol.cpp
     app/data/repositories/baserepository.cpp
     app/data/repositories/preferencesrepository.cpp
     app/data/repositories/serverrepository.cpp
+    # logic
     app/logic/mediators/mediator.cpp
     app/logic/mediators/qmldataconverter.cpp
+    app/logic/models/nordvpnsettings.cpp
     app/logic/nordvpn/basecontroller.cpp
     app/logic/nordvpn/servercontroller.cpp
+    app/logic/nordvpn/settingscontroller.cpp
     app/logic/nordvpn/statuscontroller.cpp
 )
 

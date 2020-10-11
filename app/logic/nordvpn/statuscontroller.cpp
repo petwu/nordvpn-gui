@@ -1,31 +1,13 @@
 #include "statuscontroller.h"
 
-ConnectionType connectionTypeFromString(const std::string &s) {
-    if (s == "TCP")
-        return ConnectionType::TCP;
-    if (s == "UDP")
-        return ConnectionType::UDP;
-    else
-        return ConnectionType::Undefined;
-}
-
-Technology technologyFromString(const std::string &s) {
-    if (s == "OpenVPN")
-        return Technology::OpenVPN;
-    if (s == "NordLynx")
-        return Technology::NordLynx;
-    else
-        return Technology::Undefined;
-}
-
 bool ConnectionInfo::isEmpty() const {
     return this->status == ConnectionStatus::Disconnected &&
            this->server.empty() && this->serverId == 0 &&
            this->country.empty() && this->countryId == -1 &&
            this->city.empty() && this->ip.empty() &&
            this->technology == Technology::Undefined &&
-           this->connectionType == ConnectionType::Undefined &&
-           this->sent == 0 && this->received == 0 && this->uptime == 0;
+           this->connectionType == Protocol::Undefined && this->sent == 0 &&
+           this->received == 0 && this->uptime == 0;
 }
 
 StatusController::StatusController() {
@@ -101,7 +83,7 @@ ConnectionInfo StatusController::getStatus() {
     // connection type
     matched = std::regex_search(o, m, std::regex("Current protocol: (.+)"));
     if (matched) {
-        info.connectionType = connectionTypeFromString(m[1].str());
+        info.connectionType = protocolFromString(m[1].str());
     }
 
     std::map<std::string, uint64_t> bytes = {

@@ -13,6 +13,10 @@ using json = nlohmann::json;
 
 #include "common/util/strings.h"
 #include "config.h"
+#include "data/enums/group.h"
+#include "data/enums/protocol.h"
+#include "data/enums/technology.h"
+#include "data/enums/securityprotocol.h"
 
 class BaseRepository {
   protected:

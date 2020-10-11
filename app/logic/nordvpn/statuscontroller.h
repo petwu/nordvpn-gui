@@ -17,18 +17,6 @@ enum class ConnectionStatus {
     Connected,
 };
 
-enum class ConnectionType {
-    Undefined,
-    TCP,
-    UDP,
-};
-
-enum class Technology {
-    Undefined,
-    OpenVPN,
-    NordLynx,
-};
-
 class ConnectionInfo {
   public:
     ConnectionInfo() = default;
@@ -45,7 +33,7 @@ class ConnectionInfo {
     std::string city = "";
     std::string ip = "";
     Technology technology = Technology::Undefined;
-    ConnectionType connectionType = ConnectionType::Undefined;
+    Protocol connectionType = Protocol::Undefined;
     uint64_t sent = 0;
     uint64_t received = 0;
     uint64_t uptime = 0;

@@ -39,21 +39,30 @@ std::vector<Country> ServerController::getAllCountries() {
 }
 
 std::vector<Server> ServerController::getServersByCountry(int32_t countryId) {
-    std::vector<Server> servers;
-    for (auto server : this->_allServers) {
-        if (server.countryId == countryId)
-            servers.push_back(server);
-    }
-    return std::move(servers);
+    return this->_filterServerList(countryId, -1);
 }
 
 std::vector<Server> ServerController::getServersByCity(int32_t cityId) {
-    std::vector<Server> servers;
+    return this->_filterServerList(-1, cityId);
+}
+
+std::vector<Server> ServerController::_filterServerList(int32_t countryId,
+                                                        int32_t cityId) {
+    std::vector<Server> filtered;
+    NordVpnSettings settings = this->_settingsController.getSettings();
     for (auto server : this->_allServers) {
-        if (server.cityId == cityId)
-            servers.push_back(server);
+        // skip all servers that do not meet the requirements
+        if ((settings.obfuscated && !server.supportsObfuscated()) ||
+            (settings.cybersec && !server.supportsCyberSec()) ||
+            !server.supportsProtocol(settings.protocol) ||
+            !server.supportsTechnology(settings.technology))
+            continue;
+        // only add servers that either match the county or city ID
+        if (server.countryId == countryId || server.cityId == cityId) {
+            filtered.push_back(server);
+        }
     }
-    return std::move(servers);
+    return std::move(filtered);
 }
 
 std::vector<Country> ServerController::getRecentCountries() {
@@ -136,8 +145,8 @@ void ServerController::stopBackgroundTask() {
 }
 void ServerController::_backgroundTask() {
     while (this->_performBackgroundTask) {
-        this->_allServers = ServerRepository::fetchServers();
         std::this_thread::sleep_for(
             config::consts::SERVER_LIST_UPDATE_INTERVAL);
+        this->_allServers = ServerRepository::fetchServers();
     }
 }

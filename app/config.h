@@ -30,8 +30,6 @@ namespace config {
             return std::filesystem::path(home);
         }
         static const std::filesystem::path APP_DIR = getHome() / ".nordvpn-gui";
-        static const std::filesystem::path QT_SETTINGS_FILE =
-            APP_DIR / "app.settings";
         static const std::filesystem::path COUNTRIES_JSON =
             std::filesystem::path("..") / "res" / "data" / "countries.json";
         static const std::filesystem::path RECENTS_JSON =

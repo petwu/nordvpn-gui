@@ -1,20 +1,82 @@
 #include "serverrepository.h"
 
-std::string group2string(Group g) {
-    switch (g) {
-    case Group::STANDARD:
-        return "Standard";
-    case Group::DOUBLE:
-        return "Double";
-    case Group::ONION:
-        return "Onion";
-    case Group::P2P:
-        return "P2P";
-    case Group::OBFUSCATED:
-        return "Obfuscated";
-    default:
-        return "";
+bool Server::supportsObfuscated() {
+    for (auto sp : this->securityProtocols) {
+        switch (sp) {
+        case SecurityProtocol::OpenVPN_TCP_Obfuscated:
+        case SecurityProtocol::OpenVPN_UDP_Obfuscated:
+            return true;
+        }
     }
+    return false;
+}
+
+bool Server::supportsCyberSec() {
+    for (auto sp : this->securityProtocols) {
+        switch (sp) {
+        case SecurityProtocol::HTTP_CyberSec_Proxy:
+        case SecurityProtocol::HTTP_CyberSec_Proxy_SSL:
+            return true;
+        }
+    }
+    return false;
+}
+
+bool Server::supportsProtocol(Protocol p) {
+    for (auto sp : this->securityProtocols) {
+        switch (p) {
+        case Protocol::TCP:
+            switch (sp) {
+            case SecurityProtocol::OpenVPN_TCP:
+            case SecurityProtocol::OpenVPN_TCP_IPv6:
+            case SecurityProtocol::OpenVPN_TCP_TLS_Crypt:
+            case SecurityProtocol::OpenVPN_TCP_Obfuscated:
+            case SecurityProtocol::OpenVPN_TCP_Dedicated:
+                return true;
+            }
+            break;
+        case Protocol::UDP:
+            switch (sp) {
+            case SecurityProtocol::OpenVPN_UDP:
+            case SecurityProtocol::OpenVPN_UDP_IPv6:
+            case SecurityProtocol::OpenVPN_UDP_TLS_Crypt:
+            case SecurityProtocol::OpenVPN_UDP_Obfuscated:
+            case SecurityProtocol::OpenVPN_UDP_Dedicated:
+                return true;
+            }
+            break;
+        }
+    }
+    return false;
+}
+
+bool Server::supportsTechnology(Technology t) {
+    for (auto sp : this->securityProtocols) {
+        switch (t) {
+        case Technology::OpenVPN:
+            switch (sp) {
+            case SecurityProtocol::OpenVPN_TCP:
+            case SecurityProtocol::OpenVPN_UDP:
+            case SecurityProtocol::OpenVPN_TCP_IPv6:
+            case SecurityProtocol::OpenVPN_UDP_IPv6:
+            case SecurityProtocol::OpenVPN_TCP_TLS_Crypt:
+            case SecurityProtocol::OpenVPN_UDP_TLS_Crypt:
+            case SecurityProtocol::OpenVPN_TCP_Obfuscated:
+            case SecurityProtocol::OpenVPN_UDP_Obfuscated:
+            case SecurityProtocol::OpenVPN_TCP_Dedicated:
+            case SecurityProtocol::OpenVPN_UDP_Dedicated:
+                return true;
+            }
+            break;
+        case Technology::NordLynx:
+            switch (sp) {
+            case SecurityProtocol::Wireguard:
+                return true;
+            }
+            break;
+        }
+    }
+    return false;
 }
 
 std::string Server::toJSON() {
@@ -28,6 +90,8 @@ std::string Server::toJSON() {
     j["cityId"] = this->cityId;
     for (auto g : this->groups)
         j["groups"].push_back(g);
+    for (auto sp : this->securityProtocols)
+        j["securityProtocols"].push_back(sp);
     return j.dump();
 }
 
@@ -48,12 +112,16 @@ Server Server::fromJSON(const std::string &s) {
         server.countryId = json::number_integer_t(j["countryId"]);
     if (j["cityId"].is_number_integer())
         server.cityId = json::number_integer_t(j["cityId"]);
-    if (j["groups"].is_array()) {
+    if (j["groups"].is_array())
         for (auto g : j["groups"])
             if (g.is_number_integer())
                 server.groups.push_back(
                     static_cast<Group>(json::number_integer_t(g)));
-    }
+    if (j["securityProtocols"].is_array())
+        for (auto sp : j["securityProtocols"])
+            if (sp.is_number_integer())
+                server.securityProtocols.push_back(
+                    static_cast<SecurityProtocol>(json::number_integer_t(sp)));
     return std::move(server);
 }
 
@@ -118,9 +186,90 @@ std::vector<Server> ServerRepository::fetchServers() {
                 }
             }
         }
+        if (s["technologies"].is_array()) {
+            for (json t : s["technologies"]) {
+                std::string identifier = json::string_t(t["identifier"]);
+                if (identifier == "openvpn_tcp")
+                    server.securityProtocols.push_back(
+                        SecurityProtocol::OpenVPN_TCP);
+                else if (identifier == "openvpn_udp")
+                    server.securityProtocols.push_back(
+                        SecurityProtocol::OpenVPN_UDP);
+                else if (identifier == "openvpn_tcp_tls_crypt")
+                    server.securityProtocols.push_back(
+                        SecurityProtocol::OpenVPN_TCP_TLS_Crypt);
+                else if (identifier == "openvpn_udp_tls_crypt")
+                    server.securityProtocols.push_back(
+                        SecurityProtocol::OpenVPN_UDP_TLS_Crypt);
+                else if (identifier == "openvpn_dedicated_tcp")
+                    server.securityProtocols.push_back(
+                        SecurityProtocol::OpenVPN_TCP_Dedicated);
+                else if (identifier == "openvpn_dedicated_udp")
+                    server.securityProtocols.push_back(
+                        SecurityProtocol::OpenVPN_UDP_Dedicated);
+                else if (identifier == "openvpn_xor_tcp")
+                    server.securityProtocols.push_back(
+                        SecurityProtocol::OpenVPN_TCP_Obfuscated);
+                else if (identifier == "openvpn_xor_udp")
+                    server.securityProtocols.push_back(
+                        SecurityProtocol::OpenVPN_UDP_Obfuscated);
+                else if (identifier == "wireguard_udp")
+                    server.securityProtocols.push_back(
+                        SecurityProtocol::Wireguard);
+                else if (identifier == "socks")
+                    server.securityProtocols.push_back(
+                        SecurityProtocol::Socks5);
+                else if (identifier == "proxy")
+                    server.securityProtocols.push_back(
+                        SecurityProtocol::HTTP_Proxy);
+                else if (identifier == "proxy_cybersec")
+                    server.securityProtocols.push_back(
+                        SecurityProtocol::HTTP_CyberSec_Proxy);
+                else if (identifier == "proxy_ssl")
+                    server.securityProtocols.push_back(
+                        SecurityProtocol::HTTP_Proxy_SSL);
+                else if (identifier == "proxy_ssl_cybersec")
+                    server.securityProtocols.push_back(
+                        SecurityProtocol::HTTP_CyberSec_Proxy_SSL);
+                else if (identifier == "ikev2")
+                    server.securityProtocols.push_back(
+                        SecurityProtocol::IKEv2_IPSec);
+                else if (identifier == "ikev2_v6")
+                    server.securityProtocols.push_back(
+                        SecurityProtocol::IKEv2_IPSec_IPv6);
+                else if (identifier == "openvpn_tcp_v6")
+                    server.securityProtocols.push_back(
+                        SecurityProtocol::OpenVPN_TCP_IPv6);
+                else if (identifier == "openvpn_udp_v6")
+                    server.securityProtocols.push_back(
+                        SecurityProtocol::OpenVPN_UDP_IPv6);
+            }
+        }
         servers.push_back(std::move(server));
     }
     saveServerListToFile(servers);
+    std::map<Group, int> groupDistribution;
+    groupDistribution[Group::STANDARD] = 0;
+    groupDistribution[Group::DOUBLE] = 0;
+    groupDistribution[Group::ONION] = 0;
+    groupDistribution[Group::P2P] = 0;
+    groupDistribution[Group::OBFUSCATED] = 0;
+    int nServers = 0;
+    for (auto s : servers) {
+        nServers++;
+        for (auto g : s.groups)
+            groupDistribution[g]++;
+    }
+    std::cout << "total      = " << nServers << std::endl
+              << "-----------------" << std::endl
+              << "standard   = " << groupDistribution[Group::STANDARD]
+              << std::endl
+              << "double     = " << groupDistribution[Group::DOUBLE]
+              << std::endl
+              << "onion      = " << groupDistribution[Group::ONION] << std::endl
+              << "p2p        = " << groupDistribution[Group::P2P] << std::endl
+              << "obfuscated = " << groupDistribution[Group::OBFUSCATED]
+              << std::endl;
 
     return std::move(servers);
 }
