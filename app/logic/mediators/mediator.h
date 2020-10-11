@@ -10,7 +10,7 @@
 
 class Mediator : public QObject,
                  public IConnectionInfoSubscription,
-                 public IRecentCountriesSubscription {
+                 public ICountriesSubscription {
     Q_OBJECT
 
   public:
@@ -99,6 +99,7 @@ class Mediator : public QObject,
 
     void updateConnectionInfo(const ConnectionInfo &newStatus) override;
     void updateRecents(const std::vector<Country> &newRecents) override;
+    void updateCountryList(const std::vector<Country> &countryList) override;
 };
 
 #endif // MEDIATOR_H

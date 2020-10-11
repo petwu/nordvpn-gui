@@ -9,9 +9,10 @@
 #include "data/repositories/serverrepository.h"
 #include "settingscontroller.h"
 
-class IRecentCountriesSubscription {
+class ICountriesSubscription {
   public:
     virtual void updateRecents(const std::vector<Country> &newRecents) = 0;
+    virtual void updateCountryList(const std::vector<Country> &countryList) = 0;
 };
 
 // Singleton:
@@ -21,7 +22,7 @@ class ServerController : public BaseController {
     ServerController(const ServerController &) = delete;
     void operator=(const ServerController &) = delete;
     static ServerController &getInstance();
-    std::vector<Country> getAllCountries();
+    std::vector<Country> getAllCountries(bool updateFromCache = false);
     std::vector<Server> getServersByCountry(int32_t countryId);
     std::vector<Server> getServersByCity(int32_t cityId);
     std::vector<Country> getRecentCountries();
@@ -30,8 +31,8 @@ class ServerController : public BaseController {
     void connectToCountryById(uint32_t id);
     void connectToServerById(uint32_t id);
     void disconnect();
-    void attach(IRecentCountriesSubscription *subscriber);
-    void detach(IRecentCountriesSubscription *subscriber);
+    void attach(ICountriesSubscription *subscriber);
+    void detach(ICountriesSubscription *subscriber);
     void startBackgroundTask();
     void stopBackgroundTask();
 
@@ -42,10 +43,12 @@ class ServerController : public BaseController {
     std::vector<Country> _recents;
     std::vector<Server> _allServers;
     std::vector<Server> _filterServerList(int32_t countryId, int32_t cityId);
-    std::vector<IRecentCountriesSubscription *> _subscribers;
-    void _notifySubscribers();
+    std::vector<ICountriesSubscription *> _subscribers;
+    void _notifySubscribersRecents();
+    void _notifySubscribersCountryList();
     std::atomic<bool> _performBackgroundTask = false;
-    void _backgroundTask();
+    void _backgroundTaskServerList();
+    void _backgroundTaskCountryList();
 };
 
 #endif // SERVERCONTROLLER_H

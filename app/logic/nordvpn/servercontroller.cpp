@@ -18,22 +18,42 @@ ServerController &ServerController::getInstance() {
     return instance;
 }
 
-std::vector<Country> ServerController::getAllCountries() {
-    if (this->_allCountries.empty()) {
+std::vector<Country> ServerController::getAllCountries(bool updateFromCache) {
+    if (this->_allCountries.empty() || updateFromCache) {
         auto cmdResult = execute("nordvpn countries");
-        auto availableCountries = util::string::split(cmdResult.output, ", ");
-        std::vector<Country> all = ServerRepository::fetchCountries();
-        std::vector<Country> available;
+        auto cliCountries = util::string::split(cmdResult.output, ", ");
+        std::vector<Country> all;
+        if (updateFromCache && !this->_allCountries.empty())
+            all = ServerRepository::fetchCountriesFromCache();
+        else
+            all = ServerRepository::fetchCountries();
+        std::vector<Country> availableCountries;
         // filter the vector to only contains countries that were returned
         // by the CLI command
-        for (std::string c : availableCountries) {
+        for (std::string c : cliCountries) {
             for (auto e : all) {
                 if (c == e.connectName) {
-                    available.push_back(e);
+                    availableCountries.push_back(e);
                 }
             }
         }
-        this->_allCountries = available;
+        // filter the countries to only contain cities that were returned by the
+        // CLI command
+        for (size_t i = 0; i < availableCountries.size(); i++) {
+            cmdResult =
+                execute("nordvpn cities " + availableCountries[i].connectName);
+            auto cliCities = util::string::split(cmdResult.output, ", ");
+            std::vector<Location> availableCities;
+            for (auto city : availableCountries[i].cities) {
+                for (auto cliCity : cliCities) {
+                    if (Connectable::fuzzyMatchNames(city.name, cliCity)) {
+                        availableCities.push_back(city);
+                    }
+                }
+            }
+            availableCountries[i].cities = availableCities;
+        }
+        this->_allCountries = availableCountries;
     }
     return this->_allCountries;
 }
@@ -57,7 +77,7 @@ std::vector<Server> ServerController::_filterServerList(int32_t countryId,
             !server.supportsProtocol(settings.protocol) ||
             !server.supportsTechnology(settings.technology))
             continue;
-        // only add servers that either match the county or city ID
+        // only add servers that either match the country or city ID
         if (server.countryId == countryId || server.cityId == cityId) {
             filtered.push_back(server);
         }
@@ -84,7 +104,7 @@ std::vector<Country> ServerController::getRecentCountries() {
 void ServerController::removeFromRecentsList(uint32_t countryId) {
     PreferencesRepository::removeRecentCountryId(countryId);
     this->_recents = this->getRecentCountries();
-    this->_notifySubscribers();
+    this->_notifySubscribersRecents();
 }
 
 void ServerController::quickConnect() {
@@ -97,7 +117,7 @@ void ServerController::connectToCountryById(uint32_t id) {
             this->executeNonBlocking("nordvpn connect " + country.connectName);
             PreferencesRepository::addRecentCountryId(id);
             this->_recents = this->getRecentCountries();
-            this->_notifySubscribers();
+            this->_notifySubscribersRecents();
             return;
         }
     }
@@ -109,7 +129,7 @@ void ServerController::connectToServerById(uint32_t id) {
             this->executeNonBlocking("nordvpn connect " + server.connectName);
             PreferencesRepository::addRecentCountryId(server.countryId);
             this->_recents = this->getRecentCountries();
-            this->_notifySubscribers();
+            this->_notifySubscribersRecents();
             return;
         }
     }
@@ -119,34 +139,52 @@ void ServerController::disconnect() {
     this->executeNonBlocking("nordvpn disconnect");
 }
 
-void ServerController::attach(IRecentCountriesSubscription *subscriber) {
+void ServerController::attach(ICountriesSubscription *subscriber) {
     this->_subscribers.push_back(subscriber);
 }
 
-void ServerController::detach(IRecentCountriesSubscription *subscriber) {
+void ServerController::detach(ICountriesSubscription *subscriber) {
     this->_subscribers.erase(std::remove(this->_subscribers.begin(),
                                          this->_subscribers.end(), subscriber),
                              this->_subscribers.end());
 }
 
-void ServerController::_notifySubscribers() {
+void ServerController::_notifySubscribersRecents() {
     for (auto &subscriber : this->_subscribers) {
         subscriber->updateRecents(this->_recents);
     }
 }
 
+void ServerController::_notifySubscribersCountryList() {
+    for (auto &subscriber : this->_subscribers) {
+        subscriber->updateCountryList(this->_allCountries);
+    }
+}
+
 void ServerController::startBackgroundTask() {
     this->_performBackgroundTask = true;
-    // create and run new daemon thread
-    std::thread(&ServerController::_backgroundTask, this).detach();
+    // create and run new daemon threads
+    std::thread(&ServerController::_backgroundTaskServerList, this).detach();
+    std::thread(&ServerController::_backgroundTaskCountryList, this).detach();
 }
+
 void ServerController::stopBackgroundTask() {
     this->_performBackgroundTask = false;
 }
-void ServerController::_backgroundTask() {
+
+void ServerController::_backgroundTaskServerList() {
     while (this->_performBackgroundTask) {
         std::this_thread::sleep_for(
             config::consts::SERVER_LIST_UPDATE_INTERVAL);
         this->_allServers = ServerRepository::fetchServers();
+    }
+}
+
+void ServerController::_backgroundTaskCountryList() {
+    while (this->_performBackgroundTask) {
+        std::this_thread::sleep_for(
+            config::consts::COUNTRY_LIST_UPDATE_INTERVAL);
+        this->getAllCountries(true);
+        this->_notifySubscribersCountryList();
     }
 }

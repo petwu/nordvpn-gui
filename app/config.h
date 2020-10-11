@@ -16,6 +16,8 @@ namespace config {
         static const uint8_t RATING_MAX = 5;
         static const std::chrono::duration STATUS_UPDATE_INTERVAL =
             std::chrono::milliseconds(1000);
+        static const std::chrono::duration COUNTRY_LIST_UPDATE_INTERVAL =
+            std::chrono::seconds(2);
         static const std::chrono::duration SERVER_LIST_UPDATE_INTERVAL =
             std::chrono::minutes(15);
         static const uint8_t MAX_RECENTS = 5;
@@ -34,7 +36,9 @@ namespace config {
             std::filesystem::path("..") / "res" / "data" / "countries.json";
         static const std::filesystem::path RECENTS_JSON =
             APP_DIR / "recents.list";
-        static const std::filesystem::path SERVER_CACHE_JSON =
+        static const std::filesystem::path COUNTRIES_CACHE_JSON =
+            APP_DIR / "countries.cache.json";
+        static const std::filesystem::path SERVERS_CACHE_JSON =
             APP_DIR / "servers.cache.json";
 
     } // namespace paths

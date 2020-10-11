@@ -57,6 +57,11 @@ void Mediator::updateConnectionInfo(const ConnectionInfo &newInfo) {
     this->_setConnectedIP(newInfo.ip);
 }
 
+void Mediator::updateCountryList(const std::vector<Country> &countryList) {
+    this->_countries = countryList;
+    this->countryListChanged(this->_getCountryList());
+}
+
 QVariant Mediator::_getCountryList() {
     QVariantList list;
     for (auto country : this->_countries) {
