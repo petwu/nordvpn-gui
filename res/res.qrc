@@ -7,9 +7,9 @@
         <file alias="tray-active">img/tray-active.svg</file>
         <file alias="tray-inactive">img/tray-inactive.svg</file>
     </qresource>
-    <qresource prefix="/style">
-        <file alias="Style/Style.qml">style/Style.qml</file>
-        <file alias="Style/qmldir">style/qmldir</file>
+    <qresource prefix="/Style">
+        <file alias="Style/Style.qml">Style/Style.qml</file>
+        <file alias="Style/qmldir">Style/qmldir</file>
     </qresource>
     <qresource prefix="/flag">
         <file alias="ru">icons/flags/ru.svg</file>

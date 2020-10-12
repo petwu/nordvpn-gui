@@ -27,6 +27,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
+set(QML_IMPORT_PATH ${CMAKE_SOURCE_DIR}/res
+    CACHE STRING "additional qml module paths for Qt Creator"
+    FORCE)
 
 # --------------------------------------------------------------------------------
 # install external dependencies (except Qt) with conan

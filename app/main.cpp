@@ -17,7 +17,7 @@ int main(int argc, char *argv[]) {
     app.setApplicationName(APPLICATION_NAME);
     app.setApplicationVersion(VERSION);
     QQmlApplicationEngine engine;
-    engine.addImportPath(":/style");
+    engine.addImportPath(":/Style");
 
     // setup connection between QML/UI and C++/logic through a mediator object
     // that is available as a QML context object
