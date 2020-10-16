@@ -52,4 +52,7 @@ Item {
 
     // spacing
     readonly property int marginMapButtons: 4
+
+    // sidebar popups
+    readonly property int sidebarPopupWidth: 320
 }

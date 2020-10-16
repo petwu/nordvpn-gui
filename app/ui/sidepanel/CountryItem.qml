@@ -44,7 +44,7 @@ Item {
 
     Rectangle {
         anchors.fill: parent
-        visible: hoverCountry.hovered
+        visible: hoverCountry.hovered || cityServerSelectionPopup.visible
         color: Style.colorBase
     }
 
@@ -116,7 +116,7 @@ Item {
         anchors.right: parent.right
         anchors.margins: (parent.height - height) / 2
         anchors.verticalCenter: parent.verticalCenter
-        visible: hoverCountry.hovered
+        visible: hoverCountry.hovered || cityServerSelectionPopup.visible
         onClicked: cityServerSelectionPopup.open()
     }
 
@@ -124,7 +124,7 @@ Item {
         id: cityServerSelectionPopup
         x: parent.width + popupArrow.width - 8
         y: (parent.height - height) / 2
-        width: 320
+        width: Style.sidebarPopupWidth
         height: popupContent.height + topPadding + bottomPadding
         closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
         topMargin: 0
