@@ -4,22 +4,12 @@
 #define READ 0
 #define WRITE 1
 
-Process::Process(std::string command)
-    : Process(command, std::vector<std::string>{}) {}
-
-Process::Process(std::string command, std::vector<std::string> argv) {
-    // append args as space seperated list to the command
-    for (auto arg : argv)
-        command += " " + arg;
-    this->_command = command;
-}
-
-ProcessResult Process::execute() {
+ProcessResult Process::execute(std::string command) {
     // use 3 pipes and fork+exec to run the _command
-    return this->_popen3();
+    return popen3(command, nullptr);
 }
 
-ProcessResult Process::_popen3() {
+ProcessResult popen3(std::string command, pid_t *pid) {
     // return values
     int rc = EXIT_SUCCESS;
     std::string out;
@@ -34,16 +24,21 @@ ProcessResult Process::_popen3() {
     int pipeOut[2];
     int pipeErr[2];
     if (pipe(pipeIn) != 0 || pipe(pipeOut) != 0 || pipe(pipeErr) != 0)
-        return this->_error("unable to create a pipe");
+        return ProcessResult{command, "", "error: unable to create a pipe",
+                             EXIT_FAILURE};
 
     // fork child process and remember its process ID
-    this->_pid = fork();
-    if (this->_pid < 0) {
+    pid_t _pid = fork();
+    if (pid != nullptr) {
+        *pid = _pid;
+    }
+    if (_pid < 0) {
 
         // --> fork failed
-        return this->_error("unable to fork a subprocess");
+        return ProcessResult{command, "", "error: unable to fork a subprocess",
+                             EXIT_FAILURE};
 
-    } else if (this->_pid == 0) {
+    } else if (_pid == 0) {
 
         // --> code that is run inside the new/child process
 
@@ -66,13 +61,12 @@ ProcessResult Process::_popen3() {
         dup2(pipeErr[WRITE], STDERR_FILENO);
 
         // execute as shell command
-        execl(_PATH_BSHELL, _PATH_BSHELL, "-c", this->_command.c_str(), NULL);
+        execl(_PATH_BSHELL, _PATH_BSHELL, "-c", command.c_str(), NULL);
 
         // the exec() family of functions replaces the current process image
         // with a new process image, which means the following code should not
         // be executed
-        perror(("error executing '" + this->_command + "' in child process")
-                   .c_str());
+        perror(("error executing '" + command + "' in child process").c_str());
         exit(EXIT_FAILURE);
 
     } else {
@@ -103,19 +97,9 @@ ProcessResult Process::_popen3() {
     }
 
     return std::move(ProcessResult{
-        this->_command,
+        command,
         util::string::trim(out),
         util::string::trim(err),
         static_cast<uint32_t>(WEXITSTATUS(rc)),
     });
-}
-
-ProcessResult Process::_error(std::string msg) {
-    // generic error
-    return ProcessResult{
-        this->_command,
-        "",
-        "error: " + msg,
-        EXIT_FAILURE,
-    };
 }

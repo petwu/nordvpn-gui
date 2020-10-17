@@ -15,7 +15,7 @@ SettingsController &SettingsController::getInstance() {
 NordVpnSettings SettingsController::getSettings() {
     NordVpnSettings s;
     // get current settings from NordVPN CLI
-    CmdResult result = this->execute("nordvpn settings");
+    auto result = Process::execute("nordvpn settings");
     if (result.exitCode != 0)
         return std::move(s);
 
@@ -77,17 +77,17 @@ void SettingsController::updateSettings(const NordVpnSettings &settings) {
 
     // autoconnect
     if (settings.autoconnect != current.autoconnect)
-        this->executeNonBlocking("nordvpn set autoconnect " +
-                                 boolToEnabledString(settings.autoconnect));
+        AsyncProcess::execute("nordvpn set autoconnect " +
+                              boolToEnabledString(settings.autoconnect));
 
     // cybersec
     if (settings.cybersec != current.cybersec)
-        this->executeNonBlocking("nordvpn set cybersec " +
-                                 boolToEnabledString(settings.cybersec));
+        AsyncProcess::execute("nordvpn set cybersec " +
+                              boolToEnabledString(settings.cybersec));
 
     // dns
     if (settings.dns != current.dns && settings.dns == false)
-        this->executeNonBlocking("nordvpn set dns " + DISABLED);
+        AsyncProcess::execute("nordvpn set dns " + DISABLED);
     if (settings.dns == true) {
         bool equal = true;
         std::string joinedIPs;
@@ -101,34 +101,34 @@ void SettingsController::updateSettings(const NordVpnSettings &settings) {
         }
         if (!equal) {
             if (joinedIPs != "")
-                this->executeNonBlocking("nordvpn set dns" + joinedIPs);
+                AsyncProcess::execute("nordvpn set dns" + joinedIPs);
             else
-                this->executeNonBlocking("nordvpn set dns " + DISABLED);
+                AsyncProcess::execute("nordvpn set dns " + DISABLED);
         }
     }
 
     // killswitch
     if (settings.killswitch != current.killswitch)
-        this->executeNonBlocking("nordvpn set killswitch " +
-                                 boolToEnabledString(settings.killswitch));
+        AsyncProcess::execute("nordvpn set killswitch " +
+                              boolToEnabledString(settings.killswitch));
 
     // notify
     if (settings.notify != current.notify)
-        this->executeNonBlocking("nordvpn set notify " +
-                                 boolToEnabledString(settings.notify));
+        AsyncProcess::execute("nordvpn set notify " +
+                              boolToEnabledString(settings.notify));
 
     // obfuscated
     if (settings.obfuscated != current.obfuscated)
-        this->executeNonBlocking("nordvpn set obfuscated " +
-                                 boolToEnabledString(settings.obfuscated));
+        AsyncProcess::execute("nordvpn set obfuscated " +
+                              boolToEnabledString(settings.obfuscated));
 
     // protocol
     if (settings.protocol != current.protocol)
-        this->executeNonBlocking("nordvpn set protocol " +
-                                 protocolToString(settings.protocol));
+        AsyncProcess::execute("nordvpn set protocol " +
+                              protocolToString(settings.protocol));
 
     // technology
     if (settings.technology != current.technology)
-        this->executeNonBlocking("nordvpn set technology " +
-                                 technologyToString(settings.technology));
+        AsyncProcess::execute("nordvpn set technology " +
+                              technologyToString(settings.technology));
 }

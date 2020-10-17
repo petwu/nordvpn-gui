@@ -20,7 +20,7 @@ ServerController &ServerController::getInstance() {
 
 std::vector<Country> ServerController::getAllCountries(bool updateFromCache) {
     if (this->_allCountries.empty() || updateFromCache) {
-        auto cmdResult = execute("nordvpn countries");
+        auto cmdResult = Process::execute("nordvpn countries");
         auto cliCountries = util::string::split(cmdResult.output, ", ");
         std::vector<Country> all;
         if (updateFromCache && !this->_allCountries.empty())
@@ -40,8 +40,8 @@ std::vector<Country> ServerController::getAllCountries(bool updateFromCache) {
         // filter the countries to only contain cities that were returned by the
         // CLI command
         for (size_t i = 0; i < availableCountries.size(); i++) {
-            cmdResult =
-                execute("nordvpn cities " + availableCountries[i].connectName);
+            cmdResult = Process::execute("nordvpn cities " +
+                                         availableCountries[i].connectName);
             auto cliCities = util::string::split(cmdResult.output, ", ");
             std::vector<Location> availableCities;
             for (auto city : availableCountries[i].cities) {
@@ -107,14 +107,15 @@ void ServerController::removeFromRecentsList(uint32_t countryId) {
     this->_notifySubscribersRecents();
 }
 
-void ServerController::quickConnect() {
-    this->executeNonBlocking("nordvpn connect");
+void ServerController::quickConnect() { //
+    AsyncProcess::execute("nordvpn connect", &this->_connectingPid);
 }
 
 void ServerController::connectToCountryById(uint32_t id) {
     for (auto country : this->_allCountries) {
         if (country.id == id) {
-            this->executeNonBlocking("nordvpn connect " + country.connectName);
+            AsyncProcess::execute("nordvpn connect " + country.connectName,
+                                  &this->_connectingPid);
             PreferencesRepository::addRecentCountryId(id);
             this->_recents = this->getRecentCountries();
             this->_notifySubscribersRecents();
@@ -126,7 +127,8 @@ void ServerController::connectToCountryById(uint32_t id) {
 void ServerController::connectToServerById(uint32_t id) {
     for (auto server : this->_allServers) {
         if (server.id == id) {
-            this->executeNonBlocking("nordvpn connect " + server.connectName);
+            AsyncProcess::execute("nordvpn connect " + server.connectName,
+                                  &this->_connectingPid);
             PreferencesRepository::addRecentCountryId(server.countryId);
             this->_recents = this->getRecentCountries();
             this->_notifySubscribersRecents();
@@ -135,8 +137,19 @@ void ServerController::connectToServerById(uint32_t id) {
     }
 }
 
+void ServerController::cancelConnection() {
+    // try to kill the process that is responsible for establishing the
+    // connection --> might not work
+    AsyncProcess::kill(this->_connectingPid, true);
+    // call disconnect as an additional measure since in most cases killing the
+    // connecting process does not prevent nordvpn from finishing the connection
+    // establishment, but calling disconnect while connection ensures that
+    // nordvpn aborts its ongoing connection operation
+    this->disconnect();
+}
+
 void ServerController::disconnect() {
-    this->executeNonBlocking("nordvpn disconnect");
+    AsyncProcess::execute("nordvpn disconnect");
 }
 
 void ServerController::attach(ICountriesSubscription *subscriber) {

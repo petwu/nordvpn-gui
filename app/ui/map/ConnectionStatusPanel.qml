@@ -118,7 +118,6 @@ Item {
                 }
 
                 Button {
-                    id: btnQuickConnect
                     visible: Mediator.isDisconnected && !_.showRating
                     enabled: !Mediator.areConnectionCommandsPaused
                     text: 'Quick Connect'
@@ -127,7 +126,13 @@ Item {
                 }
 
                 Button {
-                    id: btnDisconnect
+                    visible: Mediator.isConnecting
+                    text: 'Cancel'
+                    icon.name: 'process-stop'
+                    onClicked: Mediator.cancelConnection()
+                }
+
+                Button {
                     visible: Mediator.isConnected
                     enabled: !Mediator.areConnectionCommandsPaused
                     text: 'Disconnect'

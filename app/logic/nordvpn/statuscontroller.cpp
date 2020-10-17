@@ -20,23 +20,21 @@ StatusController &StatusController::getInstance() {
 }
 
 bool StatusController::canExecuteShellCmds() {
-    auto result = this->execute("");
-    return result != ERROR_POPEN_FAILED;
+    return Process::execute(":").success();
 }
 
 bool StatusController::isNordVpnInstalled() {
-    auto result = this->execute("nordvpn --version");
+    auto result = Process::execute("nordvpn --version");
     return result.exitCode == 0 &&
            result.output.rfind("NordVPN Version", 0) == 0;
 }
 
 std::string StatusController::getVersion() {
-    auto result = this->execute("nordvpn --version");
-    return result.output;
+    return Process::execute("nordvpn --version").output;
 }
 
 ConnectionInfo StatusController::getStatus() {
-    std::string o = this->execute("nordvpn status").output;
+    std::string o = Process::execute("nordvpn status").output;
     ConnectionInfo info;
     std::smatch m;
     bool matched;
@@ -231,9 +229,8 @@ uint8_t StatusController::getRatingMin() { return config::consts::RATING_MIN; }
 uint8_t StatusController::getRatingMax() { return config::consts::RATING_MAX; }
 
 void StatusController::rate(uint8_t rating) {
-    return;
     if (rating < getRatingMin() || rating > getRatingMax()) {
         return;
     }
-    this->executeNonBlocking("nordvpn rate " + std::to_string(rating));
+    AsyncProcess::execute("nordvpn rate " + std::to_string(rating));
 }

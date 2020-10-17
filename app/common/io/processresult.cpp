@@ -22,11 +22,10 @@ bool ProcessResult::success() { //
 std::string ProcessResult::toString() {
     auto err = util::string::replaceAll(this->error, "\n", "\n             ");
     auto out = util::string::replaceAll(this->output, "\n", "\n             ");
-    return std::string("ProcessResult {") +                                 //
-           "\n  command  = " + this->command +                              //
-           "\n  exitCode = " + std::to_string(this->exitCode) +             //
-           "\n  killed   = " + (this->killedIntentionally ? "yes" : "no") + //
-           "\n  stderr   = " + err +                                        //
-           "\n  stdout   = " + out +                                        //
+    return std::string("ProcessResult {") +                     //
+           "\n  command  = " + this->command +                  //
+           "\n  exitCode = " + std::to_string(this->exitCode) + //
+           "\n  stderr   = " + err +                            //
+           "\n  stdout   = " + out +                            //
            "\n}";
 }

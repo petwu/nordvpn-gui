@@ -1,22 +1,31 @@
 #include "asyncprocess.h"
 
-void AsyncProcess::execute(std::function<void(ProcessResult)> resultCallback) {
-    std::thread([this, resultCallback] {
+void AsyncProcess::execute(std::string command) { //
+    execute(command, nullptr);
+}
+
+void AsyncProcess::execute(std::string command, pid_t *pid) {
+    execute(command, pid, [](ProcessResult) {});
+}
+
+void AsyncProcess::execute(std::string command, pid_t *pid,
+                           std::function<void(ProcessResult)> resultCallback) {
+    std::thread([command, pid, resultCallback] {
         // run command
-        auto result = this->_popen3();
-        // set killed flag of result since this is not done in the synchronous
-        // version where _popen3 is inherited from
-        result.killedIntentionally = this->_killed;
+        auto result = popen3(command, pid);
+        // reset the pid since the child process has terminated when popen3
+        // returns and hence the pid is no longer valid
+        if (pid != nullptr)
+            *pid = -1;
         // notify the call as a last action before exiting the thread
         resultCallback(result);
     }).detach();
 }
 
-bool AsyncProcess::terminate(bool force) {
-    this->_killed = true;
+bool AsyncProcess::kill(pid_t pid, bool force) {
     // check if it is a unique process ID that only terminates one process and
     // not all processes in the process group
-    if (this->_pid <= 0)
+    if (pid <= 0)
         return false;
     /*
      * SIGTERM -- more polite: the process has the possibily to handle the
@@ -27,7 +36,10 @@ bool AsyncProcess::terminate(bool force) {
      * straight to the kernel which stops the process, hence no clean-up can be
      * done but the termination is guaranteed
      */
-    int rc = kill(this->_pid, force ? SIGKILL : SIGTERM);
+    int rc = ::kill(pid, force ? SIGKILL : SIGTERM);
     // check if successful
+    std::cout << "kill { pid = " << pid
+              << ", success = " << (rc == EXIT_SUCCESS ? "true" : "false")
+              << " }" << std::endl;
     return rc == EXIT_SUCCESS;
 }

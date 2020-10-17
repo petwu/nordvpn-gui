@@ -28,10 +28,6 @@ class ProcessResult {
     std::string error = "";
     /** @brief The exit code returned by the command. */
     uint32_t exitCode = EXIT_SUCCESS;
-    /** @brief Whether the child process executing the command was killed
-     * intentionally from withing the application. This only applied to async
-     * execution (see AsyncProcess). */
-    bool killedIntentionally = false;
 
     bool operator==(const ProcessResult &other) const;
     bool operator!=(const ProcessResult &other) const;

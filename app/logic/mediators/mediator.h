@@ -42,6 +42,7 @@ class Mediator : public QObject,
     void quickConnect();
     void connectToCountryById(quint32 id);
     void connectToServerById(quint32 serverId);
+    void cancelConnection();
     void disconnect();
     void removeFromRecentsList(quint32 countryId);
     QVariantList getServers(qint32 countryId, qint32 cityId);

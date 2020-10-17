@@ -30,6 +30,7 @@ class ServerController : public BaseController {
     void quickConnect();
     void connectToCountryById(uint32_t id);
     void connectToServerById(uint32_t id);
+    void cancelConnection();
     void disconnect();
     void attach(ICountriesSubscription *subscriber);
     void detach(ICountriesSubscription *subscriber);
@@ -43,6 +44,7 @@ class ServerController : public BaseController {
     std::vector<Country> _recents;
     std::vector<Server> _allServers;
     std::vector<Server> _filterServerList(int32_t countryId, int32_t cityId);
+    pid_t _connectingPid;
     std::vector<ICountriesSubscription *> _subscribers;
     void _notifySubscribersRecents();
     void _notifySubscribersCountryList();

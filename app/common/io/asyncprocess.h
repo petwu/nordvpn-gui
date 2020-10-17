@@ -9,21 +9,47 @@
  * @brief The AsyncProcess class extends the Process class and allows
  * asynchonous execution of the command.
  */
-class AsyncProcess : public Process {
+class AsyncProcess {
   public:
-    using Process::Process;
     /**
-     * @brief Executes the command passed to the constructor. The command is
-     * execution in a seperate thread, hence the function is non-blocking and
-     * will return immediately. Use Process for blocking execution.
-     * @param resultCallback The callback method that gets called once the
-     * command has finished and the result is available.
+     * @brief Execute a shell command. The command is executed in a seperate
+     * thread, thence the function is non-blocking and will return immediately.
+     * Use Process for blocking execution.
+     * @param command The shell command to execute.
      */
-    void execute(std::function<void(const ProcessResult)> resultCallback);
+    static void execute(std::string command);
+
+    /**
+     * @brief Execute a shell command. The command is executed in a seperate
+     * thread, thence the function is non-blocking and will return immediately.
+     * Use Process for blocking execution.
+     * @param command The shell command to execute.
+     * @param pid Pointer to a pid_t variable to write the process ID to. The
+     * pid gets written once the child process gets created and is therefore
+     * available before the command execution finished. Once the command is
+     * finished, pid is set to -1.
+     */
+    static void execute(std::string command, pid_t *pid);
+
+    /**
+     * @brief Execute a shell command. The command is executed in a seperate
+     * thread, thence the function is non-blocking and will return immediately.
+     * Use Process for blocking execution.
+     * @param command The shell command to execute.
+     * @param pid Pointer to a pid_t variable to write the process ID to. The
+     * pid gets written once the child process gets created and is therefore
+     * available before the command execution finished. Once the command is
+     * finished, pid is set to -1.
+     * @param callback The method that gets called once the command has finished
+     * and the result is available.
+     */
+    static void execute(std::string command, pid_t *pid,
+                        std::function<void(const ProcessResult)> callback);
 
     /**
      * @brief Send a termination request in order to kill the child process
      * running the command.
+     * @param pid The process ID of the process that should be killed.
      * @param force If true, the kill request sends the signal SIGKILL,
      * otherwise SIGTERM. Difference:
      * - SIGTERM is more polite. The process has the possibily to handle the
@@ -37,19 +63,7 @@ class AsyncProcess : public Process {
      * @return True, if the child process was killed sucessfully. False,
      * otherwise.
      */
-    bool terminate(bool force = false);
-
-  private:
-    // hide the public execute method of the base class
-    using Process::execute;
-
-    /**
-     * @brief Flag, that gets set to true when #terminal gets called. It
-     * therefore is only true, if the kill comes from within this application. A
-     * kill from outside (e.g. if the user kills the process in the task manager
-     * / system monitor) the kill will _not_ be detectable through this flag.
-     */
-    bool _killed = false;
+    static bool kill(pid_t pid, bool force = false);
 };
 
 #endif // ASYNCPROCESS_H

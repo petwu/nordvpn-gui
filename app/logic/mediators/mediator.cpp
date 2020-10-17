@@ -207,6 +207,10 @@ void Mediator::connectToServerById(quint32 serverId) {
     this->_serverController.connectToServerById(serverId);
 }
 
+void Mediator::cancelConnection() {
+    this->_serverController.cancelConnection();
+}
+
 void Mediator::disconnect() {
     if (this->_areConnectionCommandsPaused)
         return;
