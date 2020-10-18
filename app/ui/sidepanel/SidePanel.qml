@@ -45,8 +45,33 @@ ScrollView {
             }
         }
 
+        MenuSeparator {
+        }
+
         Collapsible {
+            id: sectionSpecialtySevers
             title: 'Specialty Servers'
+
+            Repeater {
+                model: [
+                    { name: 'Double VPN',     groupId: 2 }, // see 'enum class Group'
+                    { name: 'Onion over VPN', groupId: 3 }, // in data/enuums/group.h
+                    { name: 'P2P',            groupId: 4 }, // for the correct IDs
+                ]
+
+                SpecialityServerItem {
+                    name: modelData.name
+                    groupId: modelData.groupId
+                    width: sidePanel.width
+                    height: rowHeigth
+                    iconHorizontalCenter: sectionSpecialtySevers.headerPadding+sectionSpecialtySevers.handleSize/2
+                    onPopupOpened: scrollView.enabled = false
+                    onPopupClosed: scrollView.enabled = true
+                }
+            }
+        }
+
+        MenuSeparator {
         }
 
         Collapsible {

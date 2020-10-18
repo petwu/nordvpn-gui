@@ -16,5 +16,8 @@
         <file>ui/sidepanel/RecentConnection.qml</file>
         <file>ui/sidepanel/CountryItem.qml</file>
         <file>ui/general/ComboBox.qml</file>
+        <file>ui/sidepanel/SpecialityServerItem.qml</file>
+        <file>ui/icons/IconP2P.qml</file>
+        <file>ui/icons/IconDoubleVPN.qml</file>
     </qresource>
 </RCC>

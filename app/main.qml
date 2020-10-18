@@ -99,6 +99,14 @@ ApplicationWindow {
         }
     }
 
+    Rectangle {
+        width: 1
+        height: window.height
+        anchors.top: leftColumn.top
+        anchors.right: leftColumn.right
+        color: Style.colorLight
+    }
+
     Button {
         id: sidebarToggle
         text: '↹'

@@ -1,15 +1,5 @@
 #include "statuscontroller.h"
 
-bool ConnectionInfo::isEmpty() const {
-    return this->status == ConnectionStatus::Disconnected &&
-           this->server.empty() && this->serverId == 0 &&
-           this->country.empty() && this->countryId == -1 &&
-           this->city.empty() && this->ip.empty() &&
-           this->technology == Technology::Undefined &&
-           this->connectionType == Protocol::Undefined && this->sent == 0 &&
-           this->received == 0 && this->uptime == 0;
-}
-
 StatusController::StatusController() {
     this->_countries = ServerController::getInstance().getAllCountries();
 }
@@ -50,14 +40,15 @@ ConnectionInfo StatusController::getStatus() {
     matched = std::regex_search(o, m, std::regex("Current server: (.+)"));
     if (matched) {
         info.server = m[1].str();
-        info.serverId = this->_getServerId(info.server);
+        info.serverNr = this->_getServerNr(info.server);
     }
 
     // country
     matched = std::regex_search(o, m, std::regex("Country: (.+)"));
     if (matched) {
         info.country = m[1].str();
-        info.countryId = this->_getCountryId(info.country);
+        info.countryId =
+            ServerController::getInstance().getCountryId(info.country);
     }
 
     // city
@@ -164,25 +155,16 @@ ConnectionInfo StatusController::getStatus() {
         }
     }
 
+    // additonal server information
+    Server server =
+        ServerController::getInstance().getServerByHostname(info.server);
+    info.groups = server.groups;
+    info.load = server.load;
+
     return std::move(info);
 }
 
-int32_t StatusController::_getCountryId(std::string name) {
-    std::vector<Country> countries = this->_countries;
-    for (auto i = 0; i < countries.size(); i++) {
-        auto country = countries[i];
-        std::string sName = util::string::toLower(country.name);
-        std::string cName = util::string::toLower(country.connectName);
-        std::string n1 = util::string::toLower(name);
-        std::string n2 = util::string::replaceAll(n1, "_", " ");
-        if (sName == n1 || sName == n2 || cName == n1 || cName == n2) {
-            return country.id;
-        }
-    }
-    return -1;
-}
-
-int32_t StatusController::_getServerId(std::string name) {
+int32_t StatusController::_getServerNr(std::string name) {
     std::smatch m;
     if (std::regex_search(name, m, std::regex("^([a-zA-Z-]+)(\\d+)\\..+"))) {
         return std::atoi(m[2].str().c_str());

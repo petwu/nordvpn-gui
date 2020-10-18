@@ -10,7 +10,6 @@ Column {
             ? childrenRect.height
             : header.height
     spacing: 0
-    clip: !expanded
 
     property string title: ''
     property color titleColor: Style.colorCollapsibleTitle
@@ -18,8 +17,12 @@ Column {
     property int handleSize: 22
     property color handleColor: Style.colorCollapsibleHandle
     property int headerPadding: 8
-    property int animationDuration: 100
+    property int animationDuration: 200
     property bool expanded: true
+
+    Component.onCompleted: {
+        collapsible.clip = !collapsible.expanded
+    }
 
     /*!
       delay waits the given delayTime in millisecons an the executes the callback
@@ -49,7 +52,7 @@ Column {
         Item {
             id: header
             width: parent.width
-            height: title.height + 2*collapsible.headerPadding
+            height: collapsible.handleSize + 2*collapsible.headerPadding
             anchors.margins: collapsible.headerPadding
 
             RowLayout {
@@ -110,9 +113,11 @@ Column {
                 anchors.fill: parent
                 onClicked: {
                     heightAnimation.duration = collapsible.animationDuration
+                    collapsible.clip = true
                     collapsible.expanded = !collapsible.expanded
                     delay(collapsible.animationDuration, () => {
                               heightAnimation.duration = 0
+                              collapsible.clip = !collapsible.expanded
                           })
                 }
             }

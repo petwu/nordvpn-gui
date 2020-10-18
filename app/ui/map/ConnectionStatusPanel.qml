@@ -87,10 +87,10 @@ Item {
                                 const country = Mediator.countryList.find((c) => {
                                                                                  return c.id === Mediator.connectedCountryId
                                                                              })
-                                if (_.showRating)                       return 'Rate your connection speed'
+                                if (_.showRating)                    return 'Rate your connection speed'
                                 if (Mediator.isDisconnected)         return 'Pick country or use quick connect'
                                 if (Mediator.isConnecting)           return 'Finding the best server ...'
-                                if (Mediator.isConnected && country) return 'Connected to ' + country.name + ' #' + Mediator.connectedServerId
+                                if (Mediator.isConnected && country) return 'Connected to ' + country.name + ' #' + Mediator.connectedServerNr
                                 return ''
                             }
                         }

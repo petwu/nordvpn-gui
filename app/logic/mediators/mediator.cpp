@@ -53,8 +53,16 @@ void Mediator::updateConnectionInfo(const ConnectionInfo &newInfo) {
     this->_setIsConnected(connected);
     this->_setConnectingCountryId(connectingId);
     this->_setConnectedCountryId(connectedId);
-    this->_setConnectedServerId(newInfo.serverId);
+    this->_setConnectedServerNr(newInfo.serverNr);
     this->_setConnectedIP(newInfo.ip);
+    if (connected)
+        this->_setConnectedServerGroups(newInfo.groups);
+    else
+        this->_setConnectedServerGroups(std::vector<Group>{});
+    if (connecting)
+        this->_setConnectingServerGroups(newInfo.groups);
+    else
+        this->_setConnectingServerGroups(std::vector<Group>{});
 }
 
 void Mediator::updateCountryList(const std::vector<Country> &countryList) {
@@ -137,12 +145,12 @@ void Mediator::_setConnectedCountryId(qint32 value) {
     }
 }
 
-qint32 Mediator::_getConnectedServerId() { return this->_connectedServerId; }
+qint32 Mediator::_getConnectedServerNr() { return this->_connectedServerNr; }
 
-void Mediator::_setConnectedServerId(qint32 value) {
-    if (value != this->_connectedServerId) {
-        this->_connectedServerId = value;
-        this->connectedServerIdChanged(value);
+void Mediator::_setConnectedServerNr(qint32 value) {
+    if (value != this->_connectedServerNr) {
+        this->_connectedServerNr = value;
+        this->connectedServerNrChanged(value);
     }
 }
 
@@ -177,6 +185,30 @@ void Mediator::removeFromRecentsList(quint32 countryId) {
     this->_serverController.removeFromRecentsList(countryId);
 }
 
+QVariantList Mediator::_getConnectedServerGroups() {
+    QVariantList serverGroups;
+    for (auto group : this->_connectedServerGroups)
+        serverGroups << static_cast<int>(group);
+    return std::move(serverGroups);
+}
+
+void Mediator::_setConnectedServerGroups(std::vector<Group> groups) {
+    this->_connectedServerGroups = groups;
+    this->connectedServerGroupsChanged(this->_getConnectedServerGroups());
+}
+
+QVariantList Mediator::_getConnectingServerGroups() {
+    QVariantList serverGroups;
+    for (auto group : this->_connectingServerGroups)
+        serverGroups << static_cast<int>(group);
+    return std::move(serverGroups);
+}
+
+void Mediator::_setConnectingServerGroups(std::vector<Group> groups) {
+    this->_connectingServerGroups = groups;
+    this->connectingServerGroupsChanged(this->_getConnectingServerGroups());
+}
+
 QVariantList Mediator::getServers(qint32 countryId, qint32 cityId) {
     QVariantList servers;
     if (cityId < 0) {
@@ -186,7 +218,26 @@ QVariantList Mediator::getServers(qint32 countryId, qint32 cityId) {
         for (auto s : this->_serverController.getServersByCity(cityId))
             servers << QmlDataConverter::serverToQml(s);
     }
-    return servers;
+    return std::move(servers);
+}
+
+QVariantList Mediator::getSpecialtyCountries(quint32 groupId) {
+    QVariantList countries;
+    auto group = groupFromInt(groupId);
+    if (group != Group::UNDEFINED)
+        for (auto country : this->_serverController.getCountriesByGroup(group))
+            countries << QmlDataConverter::countryToQml(country);
+    return std::move(countries);
+}
+
+QVariantList Mediator::getSpecialtyServers(quint32 groupId, qint32 countryId) {
+    QVariantList servers;
+    auto group = groupFromInt(groupId);
+    if (group != Group::UNDEFINED)
+        for (auto server :
+             this->_serverController.getServersByGroup(group, countryId))
+            servers << QmlDataConverter::serverToQml(server);
+    return std::move(servers);
 }
 
 void Mediator::quickConnect() {
@@ -205,6 +256,11 @@ void Mediator::connectToCountryById(quint32 id) {
 
 void Mediator::connectToServerById(quint32 serverId) {
     this->_serverController.connectToServerById(serverId);
+}
+
+void Mediator::connectToSpecialtyGroup(quint32 groupId) {
+    Group group = groupFromInt(groupId);
+    this->_serverController.connectToSpecialtyGroup(group);
 }
 
 void Mediator::cancelConnection() {

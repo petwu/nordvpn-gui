@@ -4,6 +4,7 @@
 #include <string>
 
 enum class Group {
+    UNDEFINED,
     STANDARD,
     DOUBLE,
     ONION,
@@ -12,5 +13,9 @@ enum class Group {
 };
 
 std::string group2string(Group g);
+
+std::string group2connectName(Group g);
+
+Group groupFromInt(int32_t groupId);
 
 #endif // GROUP_H

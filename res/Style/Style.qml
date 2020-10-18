@@ -14,6 +14,7 @@ Item {
     readonly property color colorShadow: systemTheme.shadow
     readonly property color colorText: systemTheme.text
     readonly property color colorMid: systemTheme.mid
+    readonly property color colorLight: systemTheme.light
     readonly property color colorButton: systemTheme.button
     readonly property color colorButtonText: systemTheme.buttonText
 

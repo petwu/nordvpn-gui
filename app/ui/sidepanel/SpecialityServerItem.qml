@@ -1,17 +1,17 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.12
 import QtQuick.Layouts 1.12
-import QtGraphicalEffects 1.12
 
 import Style 1.0
 
-import '../general'
 import '../icons'
+import '../general'
 
 Item {
-    id: countryItem
+    id: specialityServerItem
 
-    property var country: undefined
+    property string name: ''
+    property int groupId: -1
     property int iconTextSpacing: 8
     property int iconSize: 20
     property double iconHorizontalCenter: 0
@@ -21,12 +21,13 @@ Item {
 
     QtObject {
         id: _
-        property var cityList: [{ name: 'Fastest', value: -1 }].concat(country.cities)
-
+        property var countryList: []
         property var serverList: []
 
-        function updateServerList(cityId = -1) {
-            let servers = Mediator.getServers(country.id, cityId)
+        function updateCountryAndServerList(countryId = -1) {
+            const countries = Mediator.getSpecialtyCountries(groupId)
+            _.countryList = [{ name : 'Fastest', id: -1 }].concat(countries)
+            const servers = Mediator.getSpecialtyServers(groupId, countryId)
             servers.forEach((s) => {
                                 s.text = s.load + '%  |  ' + s.name
                             })
@@ -41,53 +42,35 @@ Item {
 
     Rectangle {
         anchors.fill: parent
-        visible: hoverCountry.hovered || cityServerSelectionPopup.visible
+        visible: hoverGroup.hovered || specialtyServerSelectionPopup.visible
         color: Style.colorBase
     }
 
-    Rectangle {
-        id: flag
-        x: countryItem.iconHorizontalCenter-width/2
-        width: countryItem.iconSize
+    Item {
+        id: icon
+        x: specialityServerItem.iconHorizontalCenter-width/2
+        width: specialityServerItem.iconSize
         height: width
         anchors.verticalCenter: parent.verticalCenter
-        color: 'transparent'
 
-        Image {
-            id: flagImg
-            source: 'qrc:/flag/'+countryItem.country.countryCode
-            sourceSize.height: parent.height
-            anchors.centerIn: parent
-            fillMode: Image.PreserveAspectFit
-            smooth: true
-            visible: false
+        IconDoubleVPN {
+            visible: specialityServerItem.groupId === 2
         }
 
-        OpacityMask {
-            anchors.fill: parent
-            source: flagImg
-            maskSource: Rectangle {
-                width: flag.width
-                height: flag.height
-                radius: width
-            }
+        IconOnion {
+            visible: specialityServerItem.groupId === 3
         }
 
-        Rectangle {
-            anchors.fill: flag
-            radius: width
-            color: '#ffffff'
-            opacity: Mediator.areConnectionCommandsPaused
-                     ? .33
-                     : 0
+        IconP2P {
+            visible: specialityServerItem.groupId === 4
         }
     }
 
     Text {
         id: text
-        text: countryItem.country.name
-        anchors.left: flag.right
-        anchors.leftMargin: countryItem.iconTextSpacing
+        text: specialityServerItem.name
+        anchors.left: icon.right
+        anchors.leftMargin: specialityServerItem.iconTextSpacing
         anchors.verticalCenter: parent.verticalCenter
     }
 
@@ -96,17 +79,17 @@ Item {
         height: width
         radius: width/2
         anchors.left: text.right
-        anchors.leftMargin: countryItem.iconTextSpacing
+        anchors.leftMargin: specialityServerItem.iconTextSpacing
         anchors.verticalCenter: parent.verticalCenter
-        color: countryItem.country.id === Mediator.connectedCountryId
+        color: Mediator.connectedServerGroups.includes(specialityServerItem.groupId)
                ? Style.colorGreen
-               : (countryItem.country.id === Mediator.connectingCountryId
+               : (Mediator.connectingServerGroups.includes(specialityServerItem.groupId)
                   ? Style.colorOrange
                   : 'transparent')
     }
 
     HoverHandler {
-        id: hoverCountry
+        id: hoverGroup
     }
 
     MouseArea {
@@ -114,7 +97,7 @@ Item {
         cursorShape: Mediator.areConnectionCommandsPaused
                      ? Qt.ArrowCursor
                      : Qt.PointingHandCursor
-        onClicked: Mediator.connectToCountryById(countryItem.country.id)
+        onClicked: Mediator.connectToSpecialtyGroup(specialityServerItem.groupId)
     }
 
     ToolButton {
@@ -124,12 +107,12 @@ Item {
         anchors.right: parent.right
         anchors.margins: (parent.height - height) / 2
         anchors.verticalCenter: parent.verticalCenter
-        visible: hoverCountry.hovered || cityServerSelectionPopup.visible
-        onClicked: cityServerSelectionPopup.open()
+        visible: hoverGroup.hovered || specialtyServerSelectionPopup.visible
+        onClicked: specialtyServerSelectionPopup.open()
     }
 
     Popup {
-        id: cityServerSelectionPopup
+        id: specialtyServerSelectionPopup
         x: parent.width + popupArrow.width - 8
         y: (parent.height - height) / 2
         width: Style.sidebarPopupWidth
@@ -139,7 +122,7 @@ Item {
         bottomMargin: 0
         onOpened: {
             popupOpened()
-            _.updateServerList()
+            _.updateCountryAndServerList()
         }
         onClosed: popupClosed()
 
@@ -149,25 +132,22 @@ Item {
 
             RowLayout {
                 Layout.fillWidth: true
-                spacing: cityServerSelectionPopup.leftPadding
+                spacing: specialtyServerSelectionPopup.leftPadding
 
-                Image {
-                    source: 'qrc:/flag/'+countryItem.country.countryCode
-                    sourceSize.height: countryItem.iconSize
-                    fillMode: Image.PreserveAspectFit
-                    smooth: true
+                IconDoubleVPN {
+                    visible: specialityServerItem.groupId === 2
                 }
 
-                Column {
-                    Text {
-                        text: country.name
-                    }
+                IconOnion {
+                    visible: specialityServerItem.groupId === 3
+                }
 
-                    Text {
-                        text: country.cities.length + ' cities/regions'
-                        font.pixelSize: .8*Qt.application.font.pixelSize
-                        color: Style.colorStatusPanelSeconary
-                    }
+                IconP2P {
+                    visible: specialityServerItem.groupId === 4
+                }
+
+                Text {
+                    text: specialityServerItem.name
                 }
 
                 Item {
@@ -175,7 +155,7 @@ Item {
                 }
 
                 CloseButton {
-                    onClicked: cityServerSelectionPopup.close()
+                    onClicked: specialtyServerSelectionPopup.close()
                 }
             }
 
@@ -187,21 +167,21 @@ Item {
                 columns: 2
 
                 Text {
-                    visible: country.cities.length > 1
-                    text: 'City:'
+                    visible: _.countryList.length > 1
+                    text: 'Country:'
                 }
 
                 ComboBox {
-                    id: citySelector
-                    visible: country.cities.length > 1
+                    id: countrySelector
+                    visible: _.countryList.length > 1
                     Layout.fillWidth: true
-                    model: _.cityList
+                    model: _.countryList
                     textRole: 'name'
                     onActivated: (i) => {
                                      if (i === 0)
-                                        _.updateServerList()
+                                        _.updateCountryAndServerList()
                                      else
-                                        _.updateServerList(country.cities[i-1].id)
+                                        _.updateCountryAndServerList(_.countryList[i].id)
                                  }
                 }
 
@@ -227,11 +207,11 @@ Item {
                 onClicked: {
                     const server = serverSelector.model[serverSelector.currentIndex]
                     if (server.id < 0) {
-                        Mediator.connectToCountryById(country.id)
+                        Mediator.connectToSpecialtyGroup(groupId)
                     } else {
                         Mediator.connectToServerById(server.id)
                     }
-                    cityServerSelectionPopup.close()
+                    specialtyServerSelectionPopup.close()
                 }
             }
         }
@@ -242,10 +222,10 @@ Item {
         x: parent.width - 8
         y: {
             const optimal = (parent.height - height) / 2
-            if (cityServerSelectionPopup.y > optimal) {
-                return cityServerSelectionPopup.y
-            } else if (cityServerSelectionPopup.y < -(cityServerSelectionPopup.height-parent.height)) {
-                return optimal + cityServerSelectionPopup.y + (cityServerSelectionPopup.height-parent.height)
+            if (specialtyServerSelectionPopup.y > optimal) {
+                return specialtyServerSelectionPopup.y
+            } else if (specialtyServerSelectionPopup.y < -(specialtyServerSelectionPopup.height-parent.height)) {
+                return optimal + specialtyServerSelectionPopup.y + (specialtyServerSelectionPopup.height-parent.height)
             } else {
                 return optimal
             }
@@ -253,8 +233,8 @@ Item {
         width: 16
         height: 2*width
         z: 10001
-        visible: cityServerSelectionPopup.visible
-        opacity: cityServerSelectionPopup.opacity
+        visible: specialtyServerSelectionPopup.visible
+        opacity: specialtyServerSelectionPopup.opacity
         onPaint: {
             const ctx = getContext('2d')
             const w = width
@@ -263,13 +243,13 @@ Item {
             ctx.lineTo(w, 0)
             ctx.lineTo(w, h)
             ctx.closePath()
-            ctx.fillStyle = cityServerSelectionPopup.background.color
+            ctx.fillStyle = specialtyServerSelectionPopup.background.color
             ctx.fill()
             ctx.moveTo(w, 0)
             ctx.lineTo(0, h/2)
             ctx.lineTo(w, h)
-            ctx.lineWidth = cityServerSelectionPopup.background.border.width
-            ctx.strokeStyle = cityServerSelectionPopup.background.border.color
+            ctx.lineWidth = specialtyServerSelectionPopup.background.border.width
+            ctx.strokeStyle = specialtyServerSelectionPopup.background.border.color
             ctx.stroke()
         }
     }
