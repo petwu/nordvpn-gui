@@ -16,10 +16,12 @@ std::vector<Server> ServerRepository::fetchServers() {
     std::vector<Server> servers;
     std::string httpReponse =
         BaseRepository::curl(config::urls::NORDVPN_API_ALL_SERVERS);
+    if (httpReponse == "")
+        return fetchServersFromCache();
+
     json j = json::parse(httpReponse);
-    if (!j.is_array()) {
+    if (!j.is_array())
         return std::move(servers);
-    }
 
     for (json s : j) {
         if (s["status"].is_string() &&
@@ -170,10 +172,12 @@ std::vector<Country> ServerRepository::fetchCountries() {
     std::vector<Country> countries;
     std::string httpReponse =
         BaseRepository::curl(config::urls::NORDVPN_API_ALL_COUNTRIES);
+    if (httpReponse == "")
+        return fetchCountriesFromCache();
+
     json j = json::parse(httpReponse);
-    if (!j.is_array()) {
+    if (!j.is_array())
         return std::move(countries);
-    }
     json myCountries = getCountriesJSON();
 
     for (auto c : j) {

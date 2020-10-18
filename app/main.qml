@@ -100,6 +100,7 @@ ApplicationWindow {
     }
 
     Rectangle {
+        z: 1000
         width: 1
         height: window.height
         anchors.top: leftColumn.top

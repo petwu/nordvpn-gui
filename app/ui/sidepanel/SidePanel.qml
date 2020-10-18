@@ -46,6 +46,7 @@ ScrollView {
         }
 
         MenuSeparator {
+            visible: Mediator.recentCountries.length > 0
         }
 
         Collapsible {
