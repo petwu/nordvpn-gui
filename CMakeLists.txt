@@ -89,13 +89,15 @@ set(SRC_FILES
     app/data/repositories/serverrepository.cpp
     # logic
     app/logic/mediators/mediator.cpp
+    app/logic/mediators/navmediator.cpp
+    app/logic/mediators/preferencesmediator.cpp
     app/logic/mediators/qmldataconverter.cpp
     app/logic/models/connectioninfo.cpp
     app/logic/models/nordvpnsettings.cpp
     app/logic/nordvpn/basecontroller.cpp
     app/logic/nordvpn/envcontroller.cpp
     app/logic/nordvpn/servercontroller.cpp
-    app/logic/nordvpn/settingscontroller.cpp
+    app/logic/nordvpn/preferencescontroller.cpp
     app/logic/nordvpn/statuscontroller.cpp
 )
 

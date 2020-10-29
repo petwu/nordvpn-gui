@@ -1,25 +1,25 @@
 #include "qmldataconverter.h"
 
 QVariant QmlDataConverter::jsonToQml(const json &j) {
-    QVariant qVar;
+    QVariant qObj;
     // check JSON type and convert to appropriate Qt/QVariant type
     // (recursively for arrays and objects)
     if (j.is_null()) {
-        qVar = QVariant::fromValue(nullptr);
+        qObj = QVariant::fromValue(nullptr);
     } else if (j.is_string()) {
-        qVar = QString(json::string_t(j).c_str());
+        qObj = QString(json::string_t(j).c_str());
     } else if (j.is_boolean()) {
-        qVar = json::boolean_t(j);
+        qObj = json::boolean_t(j);
     } else if (j.is_number_integer()) {
-        qVar = QVariant((long long int)(json::number_integer_t(j)));
+        qObj = QVariant((long long int)(json::number_integer_t(j)));
     } else if (j.is_number_float()) {
-        qVar = QVariant(json::number_float_t(j));
+        qObj = QVariant(json::number_float_t(j));
     } else if (j.is_array()) {
         QVariantList array;
         for (auto i = j.begin(); i != j.end(); ++i) {
             array << jsonToQml(i.value());
         }
-        qVar = array;
+        qObj = array;
     } else if (j.is_object()) {
         QVariantMap object;
         for (auto i = j.begin(); i != j.end(); ++i) {
@@ -27,12 +27,12 @@ QVariant QmlDataConverter::jsonToQml(const json &j) {
             QVariant v = jsonToQml(i.value());
             object.insert(k, v);
         }
-        qVar = object;
+        qObj = object;
     } else {
         // default constructor of QVariant is equivalent to 'undefined' in
         // JavaScript
     }
-    return std::move(qVar);
+    return std::move(qObj);
 }
 
 QVariantMap QmlDataConverter::countryToQml(const Country &country) {
@@ -45,7 +45,7 @@ QVariantMap QmlDataConverter::countryToQml(const Country &country) {
         cities << locationToQml(city);
     }
     qObj["cities"] = cities;
-    return qObj;
+    return std::move(qObj);
 }
 
 QVariantMap QmlDataConverter::locationToQml(const Location &location) {
@@ -54,7 +54,7 @@ QVariantMap QmlDataConverter::locationToQml(const Location &location) {
     qObj["name"] = QString(location.name.c_str());
     qObj["lat"] = location.lat;
     qObj["lng"] = location.lng;
-    return qObj;
+    return std::move(qObj);
 }
 
 QVariantMap QmlDataConverter::serverToQml(const Server &server) {
@@ -71,5 +71,84 @@ QVariantMap QmlDataConverter::serverToQml(const Server &server) {
         groups << QString(group2string(g).c_str());
     }
     qObj["groups"] = groups;
-    return qObj;
+    return std::move(qObj);
+}
+
+QVariantMap
+QmlDataConverter::nordvpnSettingsToQml(const NordVpnSettings &settings) {
+    QVariantMap qObj;
+    qObj["autoconnect"] = settings.getAutoconnect();
+    qObj["cybersec"] = settings.getCybersec();
+    qObj["dns"] = settings.getDns();
+    QVariantList dnsAddrs;
+    for (auto addr : settings.getDnsAddresses())
+        dnsAddrs << QString(addr.c_str());
+    qObj["dnsAddresses"] = dnsAddrs;
+    qObj["maxNumberOfDnsAddresses"] = settings.getMaxNumberOfDnsAddresses();
+    qObj["killswitch"] = settings.getKillswitch();
+    qObj["notify"] = settings.getNotify();
+    qObj["obfuscated"] =
+        (settings.getObfuscated().isNull() ? QVariant::fromValue(nullptr)
+                                           : settings.getObfuscated().value());
+    auto p = protocolToString(settings.getProtocol());
+    qObj["protocol"] =
+        (p == "null" ? QVariant::fromValue(nullptr) : QString(p.c_str()));
+    qObj["technology"] =
+        QString(technologyToString(settings.getTechnology()).c_str());
+    return std::move(qObj);
+}
+
+NordVpnSettings
+QmlDataConverter::nordvpnSettingsFromQml(const QVariantMap &qObj) {
+    NordVpnSettings settings;
+    auto propMap = qObj.toStdMap();
+
+    if (propMap.count("autoconnect") == 1 &&
+        propMap["autoconnect"].canConvert<bool>())
+        settings.setAutoconnect(propMap["autoconnect"].value<bool>());
+
+    if (propMap.count("cybersec") == 1 &&
+        propMap["cybersec"].canConvert<bool>())
+        settings.setCybersec(propMap["cybersec"].value<bool>());
+
+    if (propMap.count("dns") == 1 && propMap["dns"].canConvert<bool>())
+        settings.setDns(propMap["dns"].value<bool>());
+
+    if (settings.getDns() == true && propMap.count("dnsAddresses") == 1 &&
+        propMap["dnsAddresses"].canConvert<QVariantList>()) {
+        int i = 0;
+        int n = settings.getMaxNumberOfDnsAddresses();
+        for (auto addrVar : propMap["dnsAddresses"].value<QVariantList>()) {
+            if (i == n)
+                break;
+            if (addrVar.canConvert<QString>())
+                settings.setDnsAddress(i, addrVar.toString().toStdString());
+            i++;
+        }
+    }
+
+    if (propMap.count("killswitch") == 1 &&
+        propMap["killswitch"].canConvert<bool>())
+        settings.setKillswitch(propMap["killswitch"].value<bool>());
+
+    if (propMap.count("notify") == 1 && propMap["notify"].canConvert<bool>())
+        settings.setNotify(propMap["notify"].value<bool>());
+
+    if (propMap.count("obfuscated") == 1 &&
+        propMap["obfuscated"].canConvert<bool>())
+        settings.setObfuscated(propMap["obfuscated"].value<bool>());
+
+    if (propMap.count("protocol") == 1 &&
+        propMap["protocol"].canConvert<QString>() &&
+        !propMap["protocol"].canConvert(QMetaType::Nullptr))
+        settings.setProtocol(
+            protocolFromString(propMap["protocol"].toString().toStdString()));
+
+    if (propMap.count("technology") == 1 &&
+        propMap["technology"].canConvert<QString>() &&
+        !propMap["technology"].canConvert(QMetaType::Nullptr))
+        settings.setTechnology(technologyFromString(
+            propMap["technology"].toString().toStdString()));
+
+    return std::move(settings);
 }

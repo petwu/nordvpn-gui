@@ -44,7 +44,7 @@ std::vector<Country> ServerController::getAllCountries(bool updateFromCache) {
         auto cmdResult = Process::execute("nordvpn countries");
         auto cliCountries = util::string::split(cmdResult.output, ", ");
         std::vector<Country> all;
-        if (updateFromCache && !this->_allCountries.empty())
+        if (updateFromCache)
             all = ServerRepository::fetchCountriesFromCache();
         else
             all = ServerRepository::fetchCountries();
@@ -150,13 +150,16 @@ std::vector<Server> ServerController::getServersByGroup(Group g,
 std::vector<Server> ServerController::_filterServerList(int32_t countryId,
                                                         int32_t cityId) {
     std::vector<Server> filtered;
-    NordVpnSettings settings = this->_settingsController.getSettings();
+    NordVpnSettings settings =
+        this->_preferencesController.getNordvpnSettings();
     for (auto server : this->_allServers) {
         // skip all servers that do not meet the requirements
-        if ((settings.obfuscated && !server.supportsObfuscated()) ||
-            (settings.cybersec && !server.supportsCyberSec()) ||
-            !server.supportsProtocol(settings.protocol) ||
-            !server.supportsTechnology(settings.technology))
+        if ((settings.getObfuscated().isNotNull() &&
+             settings.getObfuscated().value() &&
+             !server.supportsObfuscated()) ||
+            (settings.getCybersec() && !server.supportsCyberSec()) ||
+            !server.supportsProtocol(settings.getProtocol()) ||
+            !server.supportsTechnology(settings.getTechnology()))
             continue;
         // only add servers that either match the country or city ID or both IDs
         // are unspecified
@@ -288,7 +291,7 @@ void ServerController::_backgroundTaskCountryList() {
     while (this->_performBackgroundTask) {
         std::this_thread::sleep_for(
             config::consts::COUNTRY_LIST_UPDATE_INTERVAL);
-        this->getAllCountries(true);
+        this->getAllCountries();
         this->_notifySubscribersCountryList();
     }
 }

@@ -1,7 +1,14 @@
 #include "protocol.h"
 
-std::string protocolToString(const Protocol ct) {
-    switch (ct) {
+std::string protocolToString(const Nullable<Protocol> p) {
+    if (p.isNull()) {
+        return "null";
+    }
+    return protocolToString(p.value());
+}
+
+std::string protocolToString(const Protocol p) {
+    switch (p) {
     case Protocol::TCP:
         return "TCP";
     case Protocol::UDP:

@@ -37,9 +37,5 @@ bool AsyncProcess::kill(pid_t pid, bool force) {
      * done but the termination is guaranteed
      */
     int rc = ::kill(pid, force ? SIGKILL : SIGTERM);
-    // check if successful
-    std::cout << "kill { pid = " << pid
-              << ", success = " << (rc == EXIT_SUCCESS ? "true" : "false")
-              << " }" << std::endl;
     return rc == EXIT_SUCCESS;
 }

@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>main.qml</file>
         <file>ui/map/Map.qml</file>
         <file>ui/map/Marker.qml</file>
         <file>ui/map/ConnectionStatusPanel.qml</file>
@@ -19,5 +18,11 @@
         <file>ui/sidepanel/SpecialityServerItem.qml</file>
         <file>ui/icons/IconP2P.qml</file>
         <file>ui/icons/IconDoubleVPN.qml</file>
+        <file>ui/views/MainView.qml</file>
+        <file>ui/windows/MainWindow.qml</file>
+        <file>ui/windows/PreferencesWindow.qml</file>
+        <file>ui/general/MenuButton.qml</file>
+        <file>ui/general/DescriptionCheckBox.qml</file>
+        <file>ui/general/DescriptionComboBox.qml</file>
     </qresource>
 </RCC>

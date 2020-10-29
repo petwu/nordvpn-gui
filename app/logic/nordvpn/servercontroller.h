@@ -7,7 +7,7 @@
 #include "basecontroller.h"
 #include "data/repositories/preferencesrepository.h"
 #include "data/repositories/serverrepository.h"
-#include "settingscontroller.h"
+#include "preferencescontroller.h"
 
 class ICountriesSubscription {
   public:
@@ -44,7 +44,8 @@ class ServerController : public BaseController {
 
   private:
     ServerController();
-    SettingsController &_settingsController = SettingsController::getInstance();
+    PreferencesController &_preferencesController =
+        PreferencesController::getInstance();
     std::vector<Country> _allCountries;
     std::vector<Country> _recents;
     std::vector<Server> _allServers;

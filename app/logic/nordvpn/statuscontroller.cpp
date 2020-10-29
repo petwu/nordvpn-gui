@@ -1,7 +1,7 @@
 #include "statuscontroller.h"
 
 StatusController::StatusController() {
-    this->_countries = ServerController::getInstance().getAllCountries();
+    this->_countries = ServerController::getInstance().getAllCountries(true);
 }
 
 StatusController &StatusController::getInstance() {

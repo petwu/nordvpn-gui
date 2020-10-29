@@ -5,6 +5,8 @@
 
 #include "app.h"
 #include "logic/mediators/mediator.h"
+#include "logic/mediators/navmediator.h"
+#include "logic/mediators/preferencesmediator.h"
 
 int main(int argc, char *argv[]) {
     // set the behavior of application-wide features
@@ -23,6 +25,8 @@ int main(int argc, char *argv[]) {
     // that is available as a QML context object
     QQmlContext *ctx = engine.rootContext();
     ctx->setContextProperty("Mediator", new Mediator());
+    ctx->setContextProperty("NavMediator", new NavMediator());
+    ctx->setContextProperty("PreferencesMediator", new PreferencesMediator());
 
     // populate whether to use dark or light colors
     // isDark := (r+g+b)/2 < 128    with    r,g,b ∊ { x | 0≤x≤255 ∧ x∊ℤ}
@@ -37,7 +41,7 @@ int main(int argc, char *argv[]) {
     ctx->setContextProperty("Version", VERSION);
 
     // load QML entry point
-    engine.load("qrc:/main.qml");
+    engine.load("qrc:/ui/windows/MainWindow.qml");
 
     // enter main loop
     return app.exec();

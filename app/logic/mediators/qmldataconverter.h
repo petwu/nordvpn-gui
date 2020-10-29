@@ -13,6 +13,7 @@
 using json = nlohmann::json;
 
 #include "data/repositories/serverrepository.h"
+#include "logic/models/nordvpnsettings.h"
 
 class QmlDataConverter {
   public:
@@ -20,6 +21,8 @@ class QmlDataConverter {
     static QVariantMap countryToQml(const Country &country);
     static QVariantMap locationToQml(const Location &location);
     static QVariantMap serverToQml(const Server &server);
+    static QVariantMap nordvpnSettingsToQml(const NordVpnSettings &settings);
+    static NordVpnSettings nordvpnSettingsFromQml(const QVariantMap &qObj);
 };
 
 #endif // JSONCONVERTER_H

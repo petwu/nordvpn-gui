@@ -7,6 +7,10 @@ Item {
         id: systemTheme
         colorGroup: SystemPalette.Active
     }
+    SystemPalette {
+        id: systemThemeDisabled
+        colorGroup: SystemPalette.Disabled
+    }
 
     // system colors
     readonly property color colorBase: systemTheme.base
@@ -17,6 +21,11 @@ Item {
     readonly property color colorLight: systemTheme.light
     readonly property color colorButton: systemTheme.button
     readonly property color colorButtonText: systemTheme.buttonText
+    readonly property color colorHighlight: systemTheme.highlight
+    readonly property color colorHighlightText: systemTheme.highlightedText
+
+    // system colors (disabled)
+    readonly property color colorTextDisabled: systemThemeDisabled.text
 
     // base colors
     readonly property color colorPrimary: '#1e6291'
@@ -25,6 +34,7 @@ Item {
     readonly property color colorRed: '#dc5152'
     readonly property color colorOrange: '#f18129'
     readonly property color colorYellow: '#ffc805'
+    readonly property color colorTextAlternate: IsDarkTheme ? Qt.darker(colorText, 1.5) : Qt.ligher(colorText, 1.5)
 
     // map
     readonly property color colorMarkerDefault: colorPrimary
@@ -40,7 +50,7 @@ Item {
     readonly property color colorStatusPanelDisconnected: colorRed
     readonly property color colorStatusPanelConnecting: colorOrange
     readonly property color colorStatusPanelConnected: colorGreen
-    readonly property color colorStatusPanelSeconary: IsDarkTheme ? Qt.darker(colorText, 1.5) : Qt.ligher(colorText, 1.5)
+    readonly property color colorStatusPanelSeconary: colorTextAlternate
     readonly property color colorStatusPanelStarsOutline: colorYellow
 
     // sidebar
@@ -49,7 +59,7 @@ Item {
     readonly property color colorCollapsibleHandle: colorIcon
 
     // canvas icons (derived from IconBase)
-    readonly property color colorIcon: IsDarkTheme ? Qt.darker(colorText, 1.5) : Qt.ligher(colorText, 1.5)
+    readonly property color colorIcon: colorTextAlternate
 
     // spacing
     readonly property int marginMapButtons: 4
