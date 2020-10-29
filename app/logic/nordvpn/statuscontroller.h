@@ -25,10 +25,6 @@ class StatusController : public BaseController {
     void operator=(const StatusController &) = delete;
     static StatusController &getInstance();
 
-    bool canExecuteShellCmds();
-    bool isNordVpnInstalled();
-    std::string getVersion();
-
     ConnectionInfo getStatus();
     void startBackgroundTask();
     void stopBackgroundTask();

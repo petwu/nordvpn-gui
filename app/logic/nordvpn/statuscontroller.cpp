@@ -9,20 +9,6 @@ StatusController &StatusController::getInstance() {
     return instance;
 }
 
-bool StatusController::canExecuteShellCmds() {
-    return Process::execute(":").success();
-}
-
-bool StatusController::isNordVpnInstalled() {
-    auto result = Process::execute("nordvpn --version");
-    return result.exitCode == 0 &&
-           result.output.rfind("NordVPN Version", 0) == 0;
-}
-
-std::string StatusController::getVersion() {
-    return Process::execute("nordvpn --version").output;
-}
-
 ConnectionInfo StatusController::getStatus() {
     std::string o = Process::execute("nordvpn status").output;
     ConnectionInfo info;
