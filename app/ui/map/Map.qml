@@ -62,7 +62,7 @@ Item {
     */
     function delay(delayTime, callback) {
         function Timer() {
-            return Qt.createQmlObject("import QtQuick 2.0; Timer {}", parent);
+            return Qt.createQmlObject('import QtQuick 2.0; Timer {}', parent);
         }
         let timer = new Timer()
         timer.interval = delayTime
@@ -240,7 +240,7 @@ Item {
 
         Image {
             id: mapImg
-            source: "qrc:/img/map.svg"
+            source: 'qrc:/img/map.svg'
             sourceSize: Qt.size(0, mapMaxHeight)
             fillMode: Image.PreserveAspectFit
             x: 0

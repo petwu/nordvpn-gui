@@ -7,35 +7,46 @@
 #include <QObject>
 #include <QString>
 
-enum class View {
+#include "logic/nordvpn/envcontroller.h"
+
+enum class MainWindowView {
+    Startup,
     Main,
     Login,
-    Preferences,
     NoConnection,
+    NoShell,
     NotInstalled,
 };
 
-class NavMediator : public QObject {
+class NavMediator : public QObject, public IEnvInfoSubscription {
     Q_OBJECT
 
-    Q_PROPERTY(QString viewSource READ _getViewSource NOTIFY viewSourceChanged)
+    Q_PROPERTY(QString mainWindowViewSource READ _getMainWindowViewSource NOTIFY
+                   mainWindowViewSourceChanged)
+
+  public:
+    NavMediator();
 
   public slots:
-    /*
-    void openSettings();
-    void closeSettings();
-    */
+    void showViewAfterSuccessfulLogin();
 
   signals:
-    void viewSourceChanged(QString);
+    void mainWindowViewSourceChanged(QString);
 
   private:
-    std::map<View, std::string> _viewSourceMap{
-        {View::Main, "qrc:/ui/views/MainView.qml"},
+    std::map<MainWindowView, std::string> _viewSourceMap{
+        {MainWindowView::Startup, /**/ "qrc:/ui/views/StartupView.qml"},
+        {MainWindowView::Main, /*   */ "qrc:/ui/views/MainView.qml"},
+        {MainWindowView::Login, /*  */ "qrc:/ui/views/LoginView.qml"},
+        {MainWindowView::NoConnection, "qrc:/ui/views/NoConnectionView.qml"},
+        {MainWindowView::NoShell, /**/ "qrc:/ui/views/NoShellView.qml"},
+        {MainWindowView::NotInstalled, "qrc:/ui/views/NotInstalledView.qml"},
     };
-    View _currentView = View::Main;
-    QString _getViewSource();
-    void _setCurrentView(View v);
+    MainWindowView _currentMainWindowView = MainWindowView::Startup;
+    QString _getMainWindowViewSource();
+    void _setCurrentMainWindowView(MainWindowView v);
+
+    void updateEnv(const EnvInfo &envInfo) override;
 };
 
 #endif // NAVMEDIATOR_H

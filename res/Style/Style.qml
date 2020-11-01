@@ -36,6 +36,10 @@ Item {
     readonly property color colorYellow: '#ffc805'
     readonly property color colorTextAlternate: IsDarkTheme ? Qt.darker(colorText, 1.5) : Qt.ligher(colorText, 1.5)
 
+    // semantic colors
+    readonly property color colorError: colorRed
+    readonly property color colorSuccess: colorGreen
+
     // map
     readonly property color colorMarkerDefault: colorPrimary
     readonly property color colorMarkerInactive: colorPrimaryAlternate
@@ -66,4 +70,8 @@ Item {
 
     // sidebar popups
     readonly property int sidebarPopupWidth: 320
+
+    // font related
+    readonly property int fontSizeSmall: 0.8 * Qt.application.font.pixelSize
+    readonly property int fontSizeLarge: 1.3 *Qt.application.font.pixelSize
 }

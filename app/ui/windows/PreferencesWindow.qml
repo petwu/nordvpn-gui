@@ -19,6 +19,7 @@ ApplicationWindow {
     maximumHeight: height
     flags: Qt.Dialog
     modality: Qt.ApplicationModal
+    Component.onCompleted: PreferencesMediator.refreshSettings()
 
     Shortcut {
         // close on 'Esc' pressed
@@ -31,6 +32,7 @@ ApplicationWindow {
 
         property int spacing: 16
         property var settings: PreferencesMediator.nordvpnSettings
+        onSettingsChanged: console.log(JSON.stringify(PreferencesMediator.nordvpnSettings, null, 2))
     }
 
     Row {
@@ -58,9 +60,10 @@ ApplicationWindow {
                 currentIndex: 0
                 model: [
                     { text: 'Appearance', icon: 'preferences-desktop-theme' },
-                    { text: 'Technology', icon: 'document-properties' },
-                    { text: 'Security', icon: 'security-high' },
-                    { text: 'DNS', icon: 'network-server' },
+                    { text: 'Technology', icon: 'document-properties'       },
+                    { text: 'Security',   icon: 'security-high'             },
+                    { text: 'Whitelist',  icon: 'view-sort-ascending'       },
+                    { text: 'DNS',        icon: 'network-server'            },
                 ]
                 delegate: MenuItem {
                     width: listView.width
@@ -159,8 +162,215 @@ ApplicationWindow {
             }
         }
 
-        Column {
+        Item {
             visible: listView.currentIndex === 3
+            width: cols.width - groups.width - cols.spacing
+            height: parent.height
+
+            TabBar {
+                id: whitelistTabs
+                width: parent.width
+                z: 10
+
+                TabButton {
+                    text: 'Subnets'
+                }
+                TabButton {
+                    text: 'Ports'
+                }
+            }
+
+            Frame {
+                anchors {
+                    topMargin: -1
+                    top: whitelistTabs.bottom
+                    left: parent.left
+                    right: parent.right
+                    bottom: parent.bottom
+                }
+                padding: background.border ? background.border.width : 1
+
+                StackLayout {
+                    currentIndex: whitelistTabs.currentIndex
+                    anchors.fill: parent
+
+                    ScrollView {
+                        width: parent.width
+                        height: parent.height
+                        ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+                        ScrollBar.vertical.policy: ScrollBar.AsNeeded
+                        onAvailableWidthChanged: {
+                            whitelistSubnetsColumn.width = availableWidth
+                        }
+
+                        Column {
+                            id: whitelistSubnetsColumn
+                            padding: _.spacing
+                            spacing: 4
+
+                            Repeater {
+                                id: whitelistSubnetsRepeater
+                                model: _.settings.whitelistSubnets
+
+                                RowLayout {
+                                    spacing: 6
+                                    width: parent.width - 2*_.spacing
+
+                                    TextField {
+                                        Layout.fillWidth: true
+                                        text: modelData
+                                        color: valid ? Style.colorText : Style.colorError
+                                        onTextChanged: {
+                                            PreferencesMediator.updateWhitelistSubnet(index, text)
+                                            valid = PreferencesMediator.isValidSubnetMask(text)
+                                        }
+                                        Component.onCompleted: {
+                                            valid = PreferencesMediator.isValidSubnetMask(text)
+                                        }
+                                        property bool valid: false
+                                    }
+
+                                    Button {
+                                        icon.name: 'list-remove'
+                                        onClicked: PreferencesMediator.removeSubnetFromWhitelist(index)
+                                    }
+                                }
+                            }
+
+                            Button {
+                                icon.name: 'list-add'
+                                anchors.right: parent.right
+                                anchors.rightMargin: _.spacing
+                                onClicked: PreferencesMediator.addSubnetToWhitelist()
+                            }
+                        }
+                    }
+
+                    ScrollView {
+                        width: parent.width
+                        height: parent.height
+                        ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
+                        ScrollBar.vertical.policy: ScrollBar.AsNeeded
+                        onAvailableWidthChanged: {
+                            whitelistPortsColumn.width = availableWidth
+                        }
+
+                        Column {
+                            id: whitelistPortsColumn
+                            padding: _.spacing
+                            spacing: 4
+
+                            Repeater {
+                                id: whitelistPortsRepeater
+                                model: _.settings.whitelistPorts
+
+                                RowLayout {
+                                    spacing: 6
+                                    width: parent.width - 2*_.spacing
+
+                                    TextField {
+                                        id: portFromField
+                                        Layout.fillWidth: true
+                                        text: modelData.portFrom
+                                        placeholderText: 'from'
+                                        color: valid ? Style.colorText : Style.colorError
+                                        validator: IntValidator { }
+                                        onTextChanged: {
+                                            PreferencesMediator.updateWhitelistPorts(index,
+                                                                                     portFromField.text,
+                                                                                     portToField.text,
+                                                                                     protocolRadios.getCheckedProtocolFlag())
+                                            valid = PreferencesMediator.isValidPort(text)
+                                            portToField.valid = PreferencesMediator.isValidPort(portToField.text) &&
+                                                    parseInt(text) <= parseInt(portToField.text)
+                                        }
+                                        Component.onCompleted: {
+                                            valid = PreferencesMediator.isValidPort(text)
+                                        }
+                                        property bool valid: false
+                                    }
+
+                                    Text {
+                                        text: '—'
+                                    }
+
+                                    TextField {
+                                        id: portToField
+                                        Layout.fillWidth: true
+                                        text: modelData.portTo
+                                        placeholderText: 'to'
+                                        color: valid ? Style.colorText : Style.colorError
+                                        validator: IntValidator { }
+                                        onTextChanged: {
+                                            PreferencesMediator.updateWhitelistPorts(index,
+                                                                                     portFromField.text,
+                                                                                     portToField.text,
+                                                                                     protocolRadios.getCheckedProtocolFlag())
+                                            valid = PreferencesMediator.isValidPort(text) &&
+                                                    parseInt(text) >= parseInt(portFromField.text)
+                                        }
+                                        Component.onCompleted: {
+                                            valid = PreferencesMediator.isValidPort(text)
+                                        }
+                                        property bool valid: false
+                                    }
+
+                                    ButtonGroup {
+                                        id: protocolRadios
+                                        onCheckedButtonChanged: PreferencesMediator.updateWhitelistPorts(index,
+                                                                                                         portFromField.text,
+                                                                                                         portToField.text,
+                                                                                                         protocolRadios.getCheckedProtocolFlag())
+                                        function getCheckedProtocolFlag() {
+                                            switch (checkedButton.text) {
+                                            case 'UDP':  return 1
+                                            case 'TCP':  return 2
+                                            case 'both': return 3
+                                            default:     return 0
+                                            }
+                                        }
+                                    }
+
+                                    RadioButton {
+                                        text: 'UDP'
+                                        checked: modelData.protocolFlag === 1
+                                        ButtonGroup.group: protocolRadios
+                                    }
+
+                                    RadioButton {
+                                        text: 'TCP'
+                                        checked: modelData.protocolFlag === 2
+                                        ButtonGroup.group: protocolRadios
+                                    }
+
+                                    RadioButton {
+                                        text: 'both'
+                                        checked: modelData.protocolFlag === 3
+                                        ButtonGroup.group: protocolRadios
+                                    }
+
+                                    Button {
+                                        icon.name: 'list-remove'
+                                        onClicked: PreferencesMediator.removePortsFromWhitelist(index)
+                                    }
+                                }
+                            }
+
+                            Button {
+                                icon.name: 'list-add'
+                                anchors.right: parent.right
+                                anchors.rightMargin: _.spacing
+                                onClicked: PreferencesMediator.addPortsToWhitelist()
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
+        Column {
+            visible: listView.currentIndex === 4
             width: cols.width - groups.width - cols.spacing
             spacing: _.spacing
 
@@ -169,7 +379,8 @@ ApplicationWindow {
                 label: 'Custom DNS'
                 description: 'If enabled, you may specify up to 3 custom DNS (Domain Name' +
                              'System) servers. Supported values are valid IPv4 or IPv6 addresses.\n' +
-                             'This disables CyberSec.'
+                             'This disables CyberSec.\n' +
+                             'Note: Invalid addresses will be ignored upon saving.'
                 checked: _.settings.dns
                 onCheckedChanged: PreferencesMediator.setDns(checked)
             }
@@ -190,14 +401,13 @@ ApplicationWindow {
                     TextField {
                         id: ipInput
                         color: enabled
-                               ? (valid ? Style.colorText : Style.colorRed)
+                               ? (valid ? Style.colorText : Style.colorError)
                                : Style.colorTextDisabled
                         text: _.settings.dnsAddresses[index]
                         Layout.fillWidth: true
                         onTextChanged: {
                             valid = PreferencesMediator.isValidIpAddress(text)
-                            if (valid)
-                                PreferencesMediator.setDnsAddress(index, text)
+                            PreferencesMediator.setDnsAddress(index, text)
                         }
                         Component.onCompleted: {
                             valid = PreferencesMediator.isValidIpAddress(text)
@@ -208,7 +418,7 @@ ApplicationWindow {
                     Label {
                         opacity: ipInput.text.length && enabled > 0 ? 1 : 0
                         text: ipInput.valid ? '✓' : '🗙'
-                        color: ipInput.valid ? Style.colorGreen : Style.colorRed
+                        color: ipInput.valid ? Style.colorSuccess : Style.colorError
                         ToolTip.visible: validHintHoverHandler.hovered
                         ToolTip.text: ipInput.valid ? 'IP address is valid' : 'IP address is invalid'
                         HoverHandler {

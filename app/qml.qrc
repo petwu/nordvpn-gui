@@ -24,5 +24,11 @@
         <file>ui/general/MenuButton.qml</file>
         <file>ui/general/DescriptionCheckBox.qml</file>
         <file>ui/general/DescriptionComboBox.qml</file>
+        <file>ui/views/NoShellView.qml</file>
+        <file>ui/icons/Fa5Icon.qml</file>
+        <file>ui/views/NoConnectionView.qml</file>
+        <file>ui/views/NotInstalledView.qml</file>
+        <file>ui/views/LoginView.qml</file>
+        <file>ui/views/StartupView.qml</file>
     </qresource>
 </RCC>

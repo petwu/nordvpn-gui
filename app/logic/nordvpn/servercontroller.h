@@ -7,6 +7,7 @@
 #include "basecontroller.h"
 #include "data/repositories/preferencesrepository.h"
 #include "data/repositories/serverrepository.h"
+#include "envcontroller.h"
 #include "preferencescontroller.h"
 
 class ICountriesSubscription {

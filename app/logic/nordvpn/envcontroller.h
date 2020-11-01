@@ -4,17 +4,7 @@
 #include "curl/curl.h"
 
 #include "basecontroller.h"
-
-class EnvInfo {
-  public:
-    bool internetConnected = false;
-    bool nordvpnApiAvailable = false;
-    bool shellAvailable = false;
-    bool nordvpnInstalled = false;
-    bool loggedIn = false;
-
-    std::string toString();
-};
+#include "logic/models/envinfo.h"
 
 class IEnvInfoSubscription {
   public:
@@ -30,6 +20,9 @@ class EnvController : public BaseController {
     static EnvController &getInstance();
 
     EnvInfo getEnvInfo();
+    void setLoggedIn(bool loggedIn);
+    void startBackgroundTask();
+    void stopBackgroundTask();
     void attach(IEnvInfoSubscription *subscriber);
     void detach(IEnvInfoSubscription *subscriber);
 
@@ -38,8 +31,9 @@ class EnvController : public BaseController {
     EnvInfo _envInfo;
     std::vector<IEnvInfoSubscription *> _subscribers;
     void _notifySubscribers();
+    std::atomic<bool> _performBackgroundTask = false;
+    void _backgroundTask();
     bool _isInternetConnected();
-    bool _isNordvpnApiAvailable();
     bool _isShellAvailable();
     bool _isNordvpnInstalled();
     bool _isLoggedIn();

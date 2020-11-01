@@ -1,20 +1,5 @@
 #include "envcontroller.h"
 
-std::string EnvInfo::toString() {
-    return std::string("EnvInfo {") +                       //
-           "\n  internetConnected   = " +                   //
-           (this->internetConnected ? "true" : "false") +   //
-           "\n  nordvpnApiAvailable = " +                   //
-           (this->nordvpnApiAvailable ? "true" : "false") + //
-           "\n  shellAvailable      = " +                   //
-           (this->shellAvailable ? "true" : "false") +      //
-           "\n  nordvpnInstalled    = " +                   //
-           (this->nordvpnInstalled ? "true" : "false") +    //
-           "\n  loggedIn            = " +                   //
-           (this->loggedIn ? "true" : "false") +            //
-           "\n}";
-}
-
 EnvController &EnvController::getInstance() {
     static EnvController instance;
     return instance;
@@ -22,12 +7,17 @@ EnvController &EnvController::getInstance() {
 
 EnvInfo EnvController::getEnvInfo() {
     EnvInfo envInfo;
-    envInfo.internetConnected = this->_isInternetConnected();
-    envInfo.nordvpnApiAvailable = this->_isNordvpnApiAvailable();
     envInfo.shellAvailable = this->_isShellAvailable();
     envInfo.nordvpnInstalled = this->_isNordvpnInstalled();
-    envInfo.loggedIn = this->_isLoggedIn();
+    envInfo.internetConnected = this->_isInternetConnected();
+    if (envInfo.internetConnected == true)
+        envInfo.loggedIn = this->_isLoggedIn();
     return std::move(envInfo);
+}
+
+void EnvController::setLoggedIn(bool loggedIn) {
+    this->_envInfo.loggedIn = loggedIn;
+    this->_notifySubscribers();
 }
 
 bool EnvController::_isInternetConnected() {
@@ -74,33 +64,6 @@ bool EnvController::_isInternetConnected() {
     return false;
 }
 
-bool EnvController::_isNordvpnApiAvailable() {
-    // try to request data from one API endpoint:
-    // https://api.nordvpn.com/v1/technologies was chosen because it returns a
-    // relatively small amount of data (< 1 kiB as of 2020-10-18) that is
-    // unlikely to increase
-    long httpCode = 0;
-    std::string httpData;
-    CURL *curl = curl_easy_init();
-    curl_easy_setopt(curl, CURLOPT_URL,
-                     "https://api.nordvpn.com/v1/technologies");
-    curl_easy_setopt(curl, CURLOPT_TIMEOUT, 10);
-    curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
-    curl_easy_setopt(
-        curl, CURLOPT_WRITEFUNCTION,
-        *[](const char *in, size_t size, size_t num,
-            std::string *out) -> size_t {
-            size_t totalBytes = size * num;
-            out->append(in, totalBytes);
-            return totalBytes;
-        });
-    curl_easy_setopt(curl, CURLOPT_WRITEDATA, &httpData);
-    CURLcode curlCode = curl_easy_perform(curl);
-    curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &httpCode);
-    curl_easy_cleanup(curl);
-    return curlCode == CURLE_OK && httpCode == 200 && httpData != "";
-}
-
 bool EnvController::_isShellAvailable() {
     // execute the no-op command that has to exit successfully
     return Process::execute(":").success();
@@ -108,8 +71,7 @@ bool EnvController::_isShellAvailable() {
 
 bool EnvController::_isNordvpnInstalled() {
     auto result = Process::execute("nordvpn --version");
-    return result.exitCode == 0 &&
-           result.output.rfind("NordVPN Version", 0) == 0;
+    return result.success() && result.output.rfind("NordVPN Version", 0) == 0;
 }
 
 bool EnvController::_isLoggedIn() {
@@ -138,5 +100,42 @@ void EnvController::_notifySubscribers() {
     for (auto &subscriber : this->_subscribers) {
         if (subscriber != nullptr)
             subscriber->updateEnv(this->_envInfo);
+    }
+}
+
+void EnvController::startBackgroundTask() {
+    this->_performBackgroundTask = true;
+    // create and run new daemon thread
+    std::thread(&EnvController::_backgroundTask, this).detach();
+}
+
+void EnvController::stopBackgroundTask() {
+    this->_performBackgroundTask = false;
+}
+
+void EnvController::_backgroundTask() {
+    // get complete env info only once
+    this->_envInfo = this->getEnvInfo();
+    int i = 0;
+    // then periodically do partial updates
+    while (this->_performBackgroundTask) {
+        i++;
+        this->_envInfo.internetConnected = this->_isInternetConnected();
+        this->_envInfo.shellAvailable = this->_isShellAvailable();
+        this->_envInfo.nordvpnInstalled = this->_isNordvpnInstalled();
+        if (this->_envInfo.internetConnected == true && i == 30) {
+            i = 0;
+            /*
+             * Calling "nordvpn account" probably performs a request to the
+             * NordVPN API. The number of request is limited to 250 per hour
+             * (empirically tested on 2020-10-31). Hence, the loggedIn property
+             * gets updated only once per minute (= 60 request per hour) to
+             * leave enough scope for unknown changes on the part of the
+             * NordVPN API.
+             */
+            this->_envInfo.loggedIn = this->_isLoggedIn();
+        }
+        this->_notifySubscribers();
+        std::this_thread::sleep_for(std::chrono::seconds(2));
     }
 }

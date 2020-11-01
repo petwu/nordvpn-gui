@@ -165,7 +165,7 @@ Item {
 
                     Text {
                         text: country.cities.length + ' cities/regions'
-                        font.pixelSize: .8*Qt.application.font.pixelSize
+                        font.pixelSize: Style.fontSizeSmall
                         color: Style.colorStatusPanelSeconary
                     }
                 }

@@ -194,18 +194,31 @@ void ServerController::removeFromRecentsList(uint32_t countryId) {
 }
 
 void ServerController::quickConnect() { //
-    AsyncProcess::execute("nordvpn connect", &this->_connectingPid);
+    AsyncProcess::execute(
+        "nordvpn connect", &this->_connectingPid, [](ProcessResult result) {
+            if (result.success() == false &&
+                result.output.find("login") != std::string::npos) {
+                EnvController::getInstance().setLoggedIn(false);
+            }
+        });
 }
 
 void ServerController::connectToCountryById(uint32_t id) {
     for (auto country : this->_allCountries) {
         if (country.id == id) {
-            AsyncProcess::execute("nordvpn connect " + country.connectName,
-                                  &this->_connectingPid);
-            PreferencesRepository::addRecentCountryId(id);
-            this->_recents = this->getRecentCountries();
-            this->_notifySubscribersRecents();
-            return;
+            AsyncProcess::execute(
+                "nordvpn connect " + country.connectName, &this->_connectingPid,
+                [this, &id](ProcessResult result) {
+                    if (result.success() == false &&
+                        result.output.find("login") != std::string::npos) {
+                        EnvController::getInstance().setLoggedIn(false);
+                    } else {
+                        PreferencesRepository::addRecentCountryId(id);
+                        this->_recents = this->getRecentCountries();
+                        this->_notifySubscribersRecents();
+                    }
+                });
+            break;
         }
     }
 }
@@ -213,12 +226,20 @@ void ServerController::connectToCountryById(uint32_t id) {
 void ServerController::connectToServerById(uint32_t id) {
     for (auto server : this->_allServers) {
         if (server.id == id) {
-            AsyncProcess::execute("nordvpn connect " + server.connectName,
-                                  &this->_connectingPid);
-            PreferencesRepository::addRecentCountryId(server.countryId);
-            this->_recents = this->getRecentCountries();
-            this->_notifySubscribersRecents();
-            return;
+            AsyncProcess::execute(
+                "nordvpn connect " + server.connectName, &this->_connectingPid,
+                [this, &server](ProcessResult result) {
+                    if (result.success() == false &&
+                        result.output.find("login") != std::string::npos) {
+                        EnvController::getInstance().setLoggedIn(false);
+                    } else {
+                        PreferencesRepository::addRecentCountryId(
+                            server.countryId);
+                        this->_recents = this->getRecentCountries();
+                        this->_notifySubscribersRecents();
+                    }
+                });
+            break;
         }
     }
 }

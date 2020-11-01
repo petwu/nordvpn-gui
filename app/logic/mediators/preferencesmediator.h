@@ -18,6 +18,8 @@ class PreferencesMediator : public QObject {
     PreferencesMediator();
 
   public slots:
+    void refreshSettings();
+
     void setAutoconnect(bool enabled);
     void setCybersec(bool enabled);
     void setDns(bool enabled);
@@ -27,9 +29,20 @@ class PreferencesMediator : public QObject {
     void setObfuscated(bool enabled);
     void setProtocol(QString protocol);
     void setTechnology(QString technology);
+    void addSubnetToWhitelist();
+    void updateWhitelistSubnet(int index, QString subnet);
+    void removeSubnetFromWhitelist(int index);
+    void addPortsToWhitelist();
+    void updateWhitelistPorts(int index, QString portFrom, QString portTo,
+                              uint protocolFlag);
+    void removePortsFromWhitelist(int index);
+
     void saveNordvpnSettings();
     void restoreDefaultNordvpnSettings();
+
     bool isValidIpAddress(QString ip);
+    bool isValidSubnetMask(QString subnet);
+    bool isValidPort(QString port);
 
   signals:
     void nordvpnSettingsChanged(QVariantMap);

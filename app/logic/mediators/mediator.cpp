@@ -86,6 +86,13 @@ void Mediator::_setAreConnectionCommandsPaused(bool value) {
     if (value != this->_areConnectionCommandsPaused) {
         this->_areConnectionCommandsPaused = value;
         this->areConnectionCommandsPausedChanged(value);
+        // timeout to prevent blocking states
+        if (value == true)
+            std::thread([this] {
+                std::this_thread::sleep_for(std::chrono::seconds(30));
+                if (this != nullptr)
+                    this->_setAreConnectionCommandsPaused(false);
+            }).detach();
     }
 }
 

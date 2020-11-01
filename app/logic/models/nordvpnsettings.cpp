@@ -1,5 +1,14 @@
 #include "nordvpnsettings.h"
 
+bool WhitelistPortEntry::operator==(const WhitelistPortEntry &other) const {
+    return this->portFrom == other.portFrom && this->portTo == other.portTo &&
+           this->protocolFlag == other.protocolFlag;
+}
+
+bool WhitelistPortEntry::operator<(const WhitelistPortEntry &other) const {
+    return this->portFrom < other.portFrom || this->portTo < other.portTo;
+}
+
 bool NordVpnSettings::getAutoconnect() const { //
     return this->autoconnect;
 }
@@ -103,53 +112,42 @@ void NordVpnSettings::setTechnology(Technology t) {
     }
 }
 
-std::string NordVpnSettings::toJSON() {
-    json j;
-    j["autoconnect"] = this->autoconnect;
-    j["cybersec"] = this->cybersec;
-    j["dns"] = this->dns;
-    for (auto address : this->dnsAddresses)
-        j["dnsAddresses"].push_back(address);
-    j["killswitch"] = this->killswitch;
-    j["notify"] = this->notify;
-    if (this->obfuscated.isNotNull())
-        j["obfuscated"] = this->obfuscated.value();
-    else
-        j["obfuscated"] = nullptr;
-    j["protocol"] = protocolToString(this->protocol);
-    j["technology"] = technologyToString(this->technology);
-    return std::move(j.dump());
+std::vector<std::string> NordVpnSettings::getWhitelistSubnets() const {
+    return this->whitelistSubnets;
 }
 
-NordVpnSettings NordVpnSettings::fromJSON(std::string settingsJson) {
-    json j = json::parse(settingsJson);
-    NordVpnSettings s;
-    if (j["autoconnect"].is_boolean())
-        s.autoconnect = json::boolean_t(j["autoconnect"]);
-    if (j["cybersec"].is_boolean())
-        s.cybersec = json::boolean_t(j["cybersec"]);
-    if (j["dns"].is_boolean())
-        s.dns = json::boolean_t(j["dns"]);
-    if (j["dnsAddresses"].is_array()) {
-        int i = 0;
-        int n = s.dnsAddresses.size();
-        for (auto address : j["dnsAddresses"]) {
-            if (i == n)
-                break;
-            if (address.is_string())
-                s.dnsAddresses[i] = json::string_t(address);
-            i++;
-        }
-    }
-    if (j["killswitch"].is_boolean())
-        s.killswitch = json::boolean_t(j["killswitch"]);
-    if (j["notify"].is_boolean())
-        s.notify = json::boolean_t(j["notify"]);
-    if (j["obfuscated"].is_boolean())
-        s.obfuscated = json::boolean_t(j["obfuscated"]);
-    if (j["protocol"].is_string())
-        s.protocol = protocolFromString(json::string_t(j["protocol"]));
-    if (j["technology"].is_string())
-        s.technology = technologyFromString(json::string_t(j["technology"]));
-    return std::move(s);
+void NordVpnSettings::addSubnetToWhitelist(std::string subnet) {
+    this->whitelistSubnets.push_back(subnet);
+}
+
+void NordVpnSettings::updateWhitelistSubnet(int index, std::string subnet) {
+    if (index < 0 || index >= this->whitelistSubnets.size())
+        return;
+    this->whitelistSubnets[index] = subnet;
+}
+
+void NordVpnSettings::removeSubnetFromWhitelist(int index) {
+    if (index < 0 || index >= this->whitelistSubnets.size())
+        return;
+    this->whitelistSubnets.erase(this->whitelistSubnets.begin() + index);
+}
+
+std::vector<WhitelistPortEntry> NordVpnSettings::getWhitelistPorts() const {
+    return this->whitelistPorts;
+}
+
+void NordVpnSettings::addPortsToWhitelist(WhitelistPortEntry p) {
+    this->whitelistPorts.push_back(p);
+}
+
+void NordVpnSettings::updatePortsOfWhitelist(int index, WhitelistPortEntry p) {
+    if (index < 0 || index >= this->whitelistPorts.size())
+        return;
+    this->whitelistPorts[index] = p;
+}
+
+void NordVpnSettings::removePortsFromWhitelist(int index) {
+    if (index < 0 || index >= this->whitelistPorts.size())
+        return;
+    this->whitelistPorts.erase(this->whitelistPorts.begin() + index);
 }

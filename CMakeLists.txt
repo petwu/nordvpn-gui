@@ -7,11 +7,14 @@ project(nordvpn-gui LANGUAGES CXX)
 
 set(AUTHOR "Peter Würth")
 set(REPOSITORY "https://github.com/petwu/nordvpn-gui")
+set(ISSUES_BOARD "https://github.com/petwu/nordvpn-gui/issues")
 set(ORGANIZATION "NordVPN GUI")
 set(APPLICATION_NAME "NordVPN GUI")
 set(VERSION_MAJOR 0)
 set(VERSION_MINOR 0)
 set(VERSION_PATCH 0)
+set(NORDVPN_DOWNLOAD_LINUX_URL "https://nordvpn.com/download/linux")
+set(NORD_ACCOUNT_URL "https://my.nordaccount.com")
 
 # --------------------------------------------------------------------------------
 # C++ settings
@@ -88,12 +91,15 @@ set(SRC_FILES
     app/data/repositories/preferencesrepository.cpp
     app/data/repositories/serverrepository.cpp
     # logic
+    app/logic/mediators/accountmediator.cpp
     app/logic/mediators/mediator.cpp
     app/logic/mediators/navmediator.cpp
     app/logic/mediators/preferencesmediator.cpp
     app/logic/mediators/qmldataconverter.cpp
     app/logic/models/connectioninfo.cpp
+    app/logic/models/envinfo.cpp
     app/logic/models/nordvpnsettings.cpp
+    app/logic/nordvpn/accountcontroller.cpp
     app/logic/nordvpn/basecontroller.cpp
     app/logic/nordvpn/envcontroller.cpp
     app/logic/nordvpn/servercontroller.cpp

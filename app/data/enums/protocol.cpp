@@ -26,3 +26,11 @@ Protocol protocolFromString(const std::string &s) {
     else
         return Protocol::Undefined;
 }
+
+Protocol operator|(Protocol lhs, Protocol rhs) {
+    return static_cast<Protocol>(static_cast<int>(lhs) | static_cast<int>(rhs));
+}
+
+Protocol operator&(Protocol lhs, Protocol rhs) {
+    return static_cast<Protocol>(static_cast<int>(lhs) & static_cast<int>(rhs));
+}

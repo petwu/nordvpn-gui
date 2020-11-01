@@ -22,7 +22,8 @@ class QmlDataConverter {
     static QVariantMap locationToQml(const Location &location);
     static QVariantMap serverToQml(const Server &server);
     static QVariantMap nordvpnSettingsToQml(const NordVpnSettings &settings);
-    static NordVpnSettings nordvpnSettingsFromQml(const QVariantMap &qObj);
+    static QVariantMap
+    whitelistPortsEntryToQml(const WhitelistPortEntry &entry);
 };
 
 #endif // JSONCONVERTER_H

@@ -15,15 +15,6 @@ Item {
     width: btn.width
     height: btn.height
 
-    Action {
-        id: preferencesAction
-        onTriggered: {
-            Qt.createComponent('qrc:/ui/windows/PreferencesWindow.qml')
-                .createObject(menuBtn)
-                .show()
-        }
-    }
-
     Button {
         id: btn
         anchors.centerIn: parent
@@ -41,6 +32,27 @@ Item {
         MenuItem {
             text: 'Preferences'
             action: preferencesAction
+        }
+
+        MenuItem {
+            text: 'Logout'
+            action: logoutAction
+        }
+    }
+
+    Action {
+        id: preferencesAction
+        onTriggered: {
+            Qt.createComponent('qrc:/ui/windows/PreferencesWindow.qml')
+                .createObject(menuBtn)
+                .show()
+        }
+    }
+
+    Action {
+        id: logoutAction
+        onTriggered: {
+            AccountMediator.logout()
         }
     }
 }

@@ -19,7 +19,13 @@ std::vector<Server> ServerRepository::fetchServers() {
     if (httpReponse == "")
         return fetchServersFromCache();
 
-    json j = json::parse(httpReponse);
+    json j;
+    try {
+        j = json::parse(httpReponse);
+    } catch (...) {
+        return fetchServersFromCache();
+    }
+
     if (!j.is_array())
         return std::move(servers);
 
@@ -175,7 +181,13 @@ std::vector<Country> ServerRepository::fetchCountries() {
     if (httpReponse == "")
         return fetchCountriesFromCache();
 
-    json j = json::parse(httpReponse);
+    json j;
+    try {
+        j = json::parse(httpReponse);
+    } catch (...) {
+        return fetchCountriesFromCache();
+    }
+
     if (!j.is_array())
         return std::move(countries);
     json myCountries = getCountriesJSON();

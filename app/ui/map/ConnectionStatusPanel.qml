@@ -76,7 +76,7 @@ Item {
                                 if (Mediator.isConnected)    return Style.colorStatusPanelConnected
                                 return 'transparent'
                             }
-                            font.pixelSize: .8*Qt.application.font.pixelSize
+                            font.pixelSize: Style.fontSizeSmall
                             font.capitalization: Font.AllUppercase
                         }
                     }
@@ -108,7 +108,7 @@ Item {
                     Text {
                         visible: _.showRating
                         text: 'Your feedback helps us improve!'
-                        font.pixelSize: .8*Qt.application.font.pixelSize
+                        font.pixelSize: Style.fontSizeSmall
                         color: Style.colorStatusPanelSeconary
                     }
                 }
