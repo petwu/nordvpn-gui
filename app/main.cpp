@@ -10,8 +10,13 @@
 #include "logic/mediators/mediator.h"
 #include "logic/mediators/navmediator.h"
 #include "logic/mediators/preferencesmediator.h"
+#include "runguard.h"
 
 int main(int argc, char *argv[]) {
+    RunGuard guard(APPLICATION_NAME);
+    if (!guard.tryToRun())
+        return 0;
+
     // set the behavior of application-wide features
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 

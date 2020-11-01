@@ -73,6 +73,7 @@ configure_file(app/app.h.in app.h)
 # source files
 set(SRC_FILES
     app/main.cpp
+    app/runguard.cpp
     # common
     app/common/io/asyncprocess.cpp
     app/common/io/process.cpp
