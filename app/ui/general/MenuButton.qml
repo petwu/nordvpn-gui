@@ -15,6 +15,24 @@ Item {
     width: btn.width
     height: btn.height
 
+    Component.onCompleted: setTrayIcon()
+
+    Connections {
+        target: Mediator
+        onIsConnectedChanged: setTrayIcon()
+    }
+
+    Connections {
+        target: TrayMediator
+        onOpenPreferencesWindowAction: preferencesAction.trigger()
+    }
+
+    function setTrayIcon() {
+        TrayMediator.setIconSource(Mediator.isConnected
+                                   ? ':/img/tray-active'
+                                   : ':/img/tray-inactive')
+    }
+
     Button {
         id: btn
         anchors.centerIn: parent
@@ -31,28 +49,35 @@ Item {
 
         MenuItem {
             text: 'Preferences'
+            icon.name: 'settings-configure'
             action: preferencesAction
         }
 
         MenuItem {
             text: 'Logout'
+            icon.name: 'system-log-out'
             action: logoutAction
+        }
+
+        MenuItem {
+            text: 'Quit'
+            icon.name: 'application-exit'
+            action: quitAction
         }
     }
 
     Action {
         id: preferencesAction
-        onTriggered: {
-            Qt.createComponent('qrc:/ui/windows/PreferencesWindow.qml')
-                .createObject(menuBtn)
-                .show()
-        }
+        onTriggered: Qt.createComponent('qrc:/ui/windows/PreferencesWindow.qml').createObject(menuBtn).show()
     }
 
     Action {
         id: logoutAction
-        onTriggered: {
-            AccountMediator.logout()
-        }
+        onTriggered: AccountMediator.logout()
+    }
+
+    Action {
+        id: quitAction
+        onTriggered: Qt.quit()
     }
 }

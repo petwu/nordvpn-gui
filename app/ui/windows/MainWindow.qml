@@ -20,12 +20,31 @@ ApplicationWindow {
         property alias height: window.height
     }
 
-    Component.onCompleted: setView()
+    Connections {
+        target: TrayMediator
+        onToggleMainWindowAction: {
+            if (window.visible){
+                window.hide()
+            } else {
+                window.show()
+                window.raise()
+                window.requestActivate()
+            }
+        }
+        onShowMainWindowAction: {
+            window.show()
+            window.raise()
+            window.requestActivate()
+        }
+        onQuitApplicationAction: Qt.quit()
+    }
 
     Connections {
         target: NavMediator
         onMainWindowViewSourceChanged: setView()
     }
+
+    Component.onCompleted: setView()
 
     function setView() {
         /*

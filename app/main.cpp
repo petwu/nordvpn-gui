@@ -10,6 +10,7 @@
 #include "logic/mediators/mediator.h"
 #include "logic/mediators/navmediator.h"
 #include "logic/mediators/preferencesmediator.h"
+#include "logic/mediators/traymediator.h"
 #include "runguard.h"
 
 int main(int argc, char *argv[]) {
@@ -34,6 +35,7 @@ int main(int argc, char *argv[]) {
     QQmlContext *ctx = engine.rootContext();
     ctx->setContextProperty("Mediator", new Mediator());
     ctx->setContextProperty("NavMediator", new NavMediator());
+    ctx->setContextProperty("TrayMediator", new TrayMediator());
     ctx->setContextProperty("AccountMediator", new AccountMediator());
     ctx->setContextProperty("PreferencesMediator", new PreferencesMediator());
 

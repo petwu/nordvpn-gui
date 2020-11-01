@@ -97,6 +97,7 @@ set(SRC_FILES
     app/logic/mediators/navmediator.cpp
     app/logic/mediators/preferencesmediator.cpp
     app/logic/mediators/qmldataconverter.cpp
+    app/logic/mediators/traymediator.cpp
     app/logic/models/connectioninfo.cpp
     app/logic/models/envinfo.cpp
     app/logic/models/nordvpnsettings.cpp
