@@ -19,6 +19,8 @@
  *   action gets triggered. See all members below the 'signals:' label for more
  *   information.
  *
+ * @details Implemented as a singleton since only once tray icon should exists.
+ *
  * @note The is also a pure QML type names SystemTrayIcon
  * (https://doc.qt.io/qt-5/qml-qt-labs-platform-systemtrayicon.html), but at the
  * time of writing it was still part of the experimental Qt Labs module and
@@ -28,8 +30,9 @@ class TrayMediator : public QObject {
     Q_OBJECT
 
   public:
-    TrayMediator();
     ~TrayMediator();
+
+    static TrayMediator &getInstance();
 
   public slots:
     /**
@@ -62,6 +65,10 @@ class TrayMediator : public QObject {
     void quitApplicationAction();
 
   private:
+    TrayMediator();
+    TrayMediator(const TrayMediator &) = delete;
+    void operator=(const TrayMediator &) = delete;
+
     /** @brief Object holding the tray icon. */
     QSystemTrayIcon _trayIcon;
     /** @brief The tray icons context menu. (opens on right-click) */

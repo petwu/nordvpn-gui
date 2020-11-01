@@ -1,5 +1,10 @@
 #include "traymediator.h"
 
+TrayMediator &TrayMediator::getInstance() {
+    static TrayMediator instance;
+    return instance;
+}
+
 TrayMediator::TrayMediator() {
     // init context menu
     this->_trayContextMenu = new QMenu();
