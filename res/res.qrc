@@ -4,10 +4,6 @@
     </qresource>
     <qresource prefix="/img">
         <file alias="logo.svg">img/logo.svg</file>
-        <file alias="logo-horizontal-dark.svg">img/logo-horizontal-dark.svg</file>
-        <file alias="logo-horizontal-light.svg">img/logo-horizontal-light.svg</file>
-        <file alias="logo-vertical-dark.svg">img/logo-vertical-dark.svg</file>
-        <file alias="logo-vertical-light.svg">img/logo-vertical-light.svg</file>
         <file alias="map.svg">img/map.svg</file>
         <file alias="tray-active">img/tray-active.svg</file>
         <file alias="tray-inactive">img/tray-inactive.svg</file>
