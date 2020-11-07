@@ -33,6 +33,10 @@ Item {
                                    : ':/img/tray-inactive')
     }
 
+    function openWindow(qml) {
+        Qt.createComponent(qml).createObject(menuBtn).show()
+    }
+
     Button {
         id: btn
         anchors.centerIn: parent
@@ -53,6 +57,30 @@ Item {
             action: preferencesAction
         }
 
+        MenuSeparator { }
+
+        /* TODO
+        MenuItem {
+            text: 'Donate'
+            icon.name: 'help-donate'
+            action: donateAction
+        }
+        */
+
+        MenuItem {
+            text: 'Credits'
+            icon.name: 'help-contents'
+            action: creditsAction
+        }
+
+        MenuItem {
+            text: 'About'
+            icon.name: 'help-about'
+            action: aboutAction
+        }
+
+        MenuSeparator { }
+
         MenuItem {
             text: 'Logout'
             icon.name: 'system-log-out'
@@ -68,7 +96,22 @@ Item {
 
     Action {
         id: preferencesAction
-        onTriggered: Qt.createComponent('qrc:/ui/windows/PreferencesWindow.qml').createObject(menuBtn).show()
+        onTriggered: openWindow('qrc:/ui/windows/PreferencesWindow.qml')
+    }
+
+    Action {
+        id: donateAction
+        onTriggered: Qt.openUrlExternally(RepositoryURL)
+    }
+
+    Action {
+        id: creditsAction
+        onTriggered: openWindow('qrc:/ui/windows/CreditsWindow.qml')
+    }
+
+    Action {
+        id: aboutAction
+        onTriggered: openWindow('qrc:/ui/windows/AboutWindow.qml')
     }
 
     Action {

@@ -30,5 +30,8 @@
         <file>ui/views/NotInstalledView.qml</file>
         <file>ui/views/LoginView.qml</file>
         <file>ui/views/StartupView.qml</file>
+        <file>ui/windows/AboutWindow.qml</file>
+        <file>ui/windows/CreditsWindow.qml</file>
+        <file>ui/windows/LicenseWindow.qml</file>
     </qresource>
 </RCC>

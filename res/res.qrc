@@ -1,4 +1,13 @@
 <RCC>
+    <qresource prefix="/credits">
+        <file alias="credits.mjs">credits/_credits.mjs</file>
+        <file alias="flagkit.mjs">credits/flagkit.mjs</file>
+        <file alias="fontawesome.mjs">credits/fontawesome.mjs</file>
+        <file alias="libcurl.mjs">credits/libcurl.mjs</file>
+        <file alias="nlohmann-json.mjs">credits/nlohmann-json.mjs</file>
+        <file alias="qt.mjs">credits/qt.mjs</file>
+        <file alias="simple-world-map.mjs">credits/simple-world-map.mjs</file>
+    </qresource>
     <qresource prefix="/data">
         <file alias="countries.json">data/countries.json</file>
     </qresource>

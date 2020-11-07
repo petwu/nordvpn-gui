@@ -32,7 +32,6 @@ ApplicationWindow {
 
         property int spacing: 16
         property var settings: PreferencesMediator.nordvpnSettings
-        onSettingsChanged: console.log(JSON.stringify(PreferencesMediator.nordvpnSettings, null, 2))
     }
 
     Row {

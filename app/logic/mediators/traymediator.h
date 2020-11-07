@@ -37,7 +37,7 @@ class TrayMediator : public QObject {
   public slots:
     /**
      * @brief Changes the try icon and shows it if not visible yet.
-     * @param filename Path or QRC ressource to the icon.
+     * @param filename Path or QRC resource to the icon.
      */
     void setIconSource(QString filename);
 

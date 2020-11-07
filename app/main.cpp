@@ -62,13 +62,19 @@ int main(int argc, char *argv[]) {
                             fontDb.applicationFontFamilies(fa5SolidId)[0]);
     ctx->setContextProperty("Fa5BrandsFontFamily",
                             fontDb.applicationFontFamilies(fa5BrandsId)[0]);
+    ctx->setContextProperty(
+        "MonospaceFontFamily",
+        QFontDatabase::systemFont(QFontDatabase::FixedFont));
 
     // populate app information to QML
     ctx->setContextProperty("ApplicationName", APPLICATION_NAME);
+    ctx->setContextProperty("ApplicationDescription", APPLICATION_DESCRIPTION);
     ctx->setContextProperty("Author", AUTHOR);
     ctx->setContextProperty("RepositoryURL", REPOSITORY);
     ctx->setContextProperty("IssuesURL", ISSUES_BOARD);
     ctx->setContextProperty("Version", VERSION);
+    ctx->setContextProperty("License", LICENSE);
+    ctx->setContextProperty("LicenseText", LICENSE_TEXT);
     ctx->setContextProperty("DownloadForLinuxURL", NORDVPN_DOWNLOAD_LINUX_URL);
     ctx->setContextProperty("NordAccountURL", NORD_ACCOUNT_URL);
 

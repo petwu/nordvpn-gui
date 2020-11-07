@@ -23,6 +23,9 @@ Item {
         }
     }
 
+    MenuButton {
+    }
+
     RowLayout {
         anchors.centerIn: parent
         spacing: 64
