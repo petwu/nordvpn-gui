@@ -31,7 +31,7 @@ Item {
         anchors.left: iconClock.right
         anchors.leftMargin: recent.iconTextSpacing
         anchors.verticalCenter: parent.verticalCenter
-        text: recent.countryName
+        text: qsTranslate('Country', recent.countryName)
     }
 
     HoverHandler {

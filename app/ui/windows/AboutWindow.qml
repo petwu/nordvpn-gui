@@ -9,7 +9,8 @@ import '../general'
 ApplicationWindow {
     id: aboutWindow
     visible: true
-    title: 'About — ' + ApplicationName
+    //: Title of the about window.
+    title: qsTr('About') + ' — ' + ApplicationName
     width: 520
     height: 240
     minimumWidth: width
@@ -57,7 +58,8 @@ ApplicationWindow {
             }
 
             Text {
-                text: 'Version: ' + Version
+                //: Version of the application.
+                text: qsTr('Version') + ': ' + Version
             }
 
             Text {
@@ -68,7 +70,8 @@ ApplicationWindow {
             }
 
             Text {
-                text: 'Copyright © ' + Author
+                //: Legal term that stands before the copyright symbol ©. May not be translated.
+                text: qsTr('Copyright') + ' © ' + Author
             }
 
             Item {
@@ -79,12 +82,14 @@ ApplicationWindow {
                 Layout.fillWidth: true
 
                 Button {
-                    text: 'Source Code'
+                    //: Link text the the repository containing the source code of the application.
+                    text: qsTr('Source Code')
                     onClicked: Qt.openUrlExternally(RepositoryURL)
                 }
 
                 Button {
-                    text: 'License: ' + License
+                    //: Legal term for a software license that regulates how the software may be used, modified and redistributed by the user.
+                    text: qsTr('License') + ': ' + License
                     onClicked: {
                         Qt.createComponent('qrc:/ui/windows/LicenseWindow.qml').createObject(aboutWindow).show()
                     }

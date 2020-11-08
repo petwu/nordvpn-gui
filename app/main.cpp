@@ -1,9 +1,10 @@
 #include <QApplication>
-#include <QDebug>
 #include <QFontDatabase>
+#include <QLocale>
 #include <QPalette>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
+#include <QTranslator>
 
 #include "app.h"
 #include "logic/mediators/accountmediator.h"
@@ -38,6 +39,11 @@ int main(int argc, char *argv[]) {
         // other windows)
         TrayMediator::getInstance().showMainWindowAction();
     };
+
+    // add translations for current system locale
+    QTranslator translator;
+    translator.load(QLocale(), "", "", ":/translations");
+    app.installTranslator(&translator);
 
     // setup connection between QML/UI and C++/logic through mediator objects
     // that are available as a QML context objects

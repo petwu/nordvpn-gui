@@ -10,7 +10,8 @@ import '../general'
 ApplicationWindow {
     id: preferencesWindow
     visible: true
-    title: 'Preferences — ' + ApplicationName
+    //: TItle of the preferences/settings window.
+    title: qsTr('Preferences') + ' — ' + ApplicationName
     width: 640
     height: 360
     minimumWidth: width
@@ -58,11 +59,16 @@ ApplicationWindow {
                 focus: true
                 currentIndex: 0
                 model: [
-                    { text: 'Appearance', icon: 'preferences-desktop-theme' },
-                    { text: 'Technology', icon: 'document-properties'       },
-                    { text: 'Security',   icon: 'security-high'             },
-                    { text: 'Whitelist',  icon: 'view-sort-ascending'       },
-                    { text: 'DNS',        icon: 'network-server'            },
+                    //: Category title for settings regarding the visual appearance or feedback of the application.
+                    { text: qsTr('Appearance'), icon: 'preferences-desktop-theme' },
+                    //: Category title for settings regarding technology and protocol used to connect VPN servers.
+                    { text: qsTr('Technology'), icon: 'document-properties'       },
+                    //: Category title for settings regarding additional security settings like a kill-switch.
+                    { text: qsTr('Security'),   icon: 'security-high'             },
+                    //: Category title for settings to manage a whitelist of allowed ports and subnets.
+                    { text: qsTr('Whitelist'),  icon: 'view-sort-ascending'       },
+                    //: Category title for setting custom DNS (Domain Name Service) server IPs.
+                    { text: qsTr('DNS'),        icon: 'network-server'            },
                 ]
                 delegate: MenuItem {
                     width: listView.width
@@ -84,8 +90,10 @@ ApplicationWindow {
             spacing: _.spacing
 
             DescriptionCheckBox {
-                label: 'Notifications'
-                description: 'Show desktop contifications when the connection status changes.'
+                //: Checkbox label.
+                label: qsTr('Notifications')
+                //: Checkbox description.
+                description: qsTr('Show desktop contifications when the connection status changes.')
                 checked: _.settings.notify
                 onCheckedChanged: PreferencesMediator.setNotify(checked)
             }
@@ -97,25 +105,28 @@ ApplicationWindow {
             spacing: _.spacing
 
             DescriptionComboBox {
-                label: 'Technology'
-                description: 'OpenVPN is a robust open-source software for VPN services that supports' +
-                             'both, TCP and UDP based connections. It is suggested for security-conscious' +
-                             'users. NordLynx is a technology NordVPN built around WireGuard, a more' +
-                             'recent alternative to OpenVPN. NordLynx promises to be faster than' +
-                             'OpenVPN but it is less mature and only supports UDP connections.'
+                // Dropdown label.
+                label: qsTr('Technology')
+                // Dropdown description.
+                description: qsTr('OpenVPN is a robust open-source software for VPN services that supports' +
+                                  'both, TCP and UDP based connections. It is suggested for security-conscious' +
+                                  'users. NordLynx is a technology NordVPN built around WireGuard, a more' +
+                                  'recent alternative to OpenVPN. NordLynx promises to be faster than' +
+                                  'OpenVPN but it is less mature and only supports UDP connections.')
                 model: ['OpenVPN', 'NordLynx']
                 defaultText: _.settings.technology
                 onActivated: (i) => PreferencesMediator.setTechnology(model[i])
             }
 
             DescriptionComboBox {
-                id: protocolDropdown
                 enabled: _.settings.protocol !== null
-                label: 'Protocol'
-                description: 'TCP (Transmittion Control Protocol) is a connection-oriented protocol that' +
-                             'guarantees that all sent data is received correctly. UDP (User Datagram' +
-                             'Protocol) on the other hand does not provide any error-detection to reduce' +
-                             'the network overhead. UDP is therefore fasert but less reliable than TCP.'
+                // Dropdown label.
+                label: qsTr('Protocol')
+                // Dropdown description.
+                description: qsTr('TCP (Transmittion Control Protocol) is a connection-oriented protocol that' +
+                                  'guarantees that all sent data is received correctly. UDP (User Datagram' +
+                                  'Protocol) on the other hand does not provide any error-detection to reduce' +
+                                  'the network overhead. UDP is therefore fasert but less reliable than TCP.')
                 model: ['UDP', 'TCP']
                 defaultText: _.settings.protocol
                 onActivated: (i) => PreferencesMediator.setProtocol(model[i])
@@ -128,33 +139,41 @@ ApplicationWindow {
             spacing: _.spacing
 
             DescriptionCheckBox {
-                label: 'Auto Connect'
-                description: 'Automatically try to connect to a VPN server on operating system' +
-                             'startup.'
+                //: Checkbox label.
+                label: qsTr('Auto Connect')
+                //: Checkbox description.
+                description: qsTr('Automatically try to connect to a VPN server on operating system' +
+                                  'startup.')
                 checked: _.settings.autoconnect
                 onCheckedChanged: PreferencesMediator.setAutoconnect(checked)
             }
 
             DescriptionCheckBox {
-                label: 'CyberSec'
-                description: 'Block suspicious websites, botnets and ads. This disables custom DNS.'
+                //: Checkbox label.
+                label: qsTr('CyberSec')
+                //: Checkbox description.
+                description: qsTr('Block suspicious websites, botnets and ads. This disables custom DNS.')
                 checked: _.settings.cybersec
                 onCheckedChanged: PreferencesMediator.setCybersec(checked)
             }
 
             DescriptionCheckBox {
-                label: 'Kill Switch'
-                description: 'Prevent your device from accessing the internet while not connected to' +
-                             'a VPN server or in case connection with a VPN server is lost.'
+                //: Checkbox label.
+                label: qsTr('Kill Switch')
+                //: Checkbox description.
+                description: qsTr('Prevent your device from accessing the internet while not connected to' +
+                                  'a VPN server or in case connection with a VPN server is lost.')
                 checked: _.settings.killswitch
                 onCheckedChanged: PreferencesMediator.setKillswitch(checked)
             }
 
             DescriptionCheckBox {
+                //: Checkbox label.
                 id: obfuscatedCheckbox
-                label: 'Obfuscated'
-                description: 'Bypass network traffic sensors which aim to detect usage of VPN' +
-                             'services and log, throttle or block them. (OpenVPN only)'
+                label: qsTr('Obfuscated')
+                //: Checkbox description.
+                description: qsTr('Bypass network traffic sensors which aim to detect usage of VPN' +
+                                  'services and log, throttle or block them. (OpenVPN only)')
                 enabled: _.settings.obfuscated !== null
                 checked: _.settings.obfuscated === true
                 onCheckedChanged: PreferencesMediator.setObfuscated(checked)
@@ -172,10 +191,12 @@ ApplicationWindow {
                 z: 10
 
                 TabButton {
-                    text: 'Subnets'
+                    //: Tab label. IP addresses of subnets.
+                    text: qsTr('Subnets')
                 }
                 TabButton {
-                    text: 'Ports'
+                    //: Tab label. Network ports (numbers from 0 to 65535).
+                    text: qsTr('Ports')
                 }
             }
 
@@ -271,7 +292,8 @@ ApplicationWindow {
                                         id: portFromField
                                         Layout.fillWidth: true
                                         text: modelData.portFrom
-                                        placeholderText: 'from'
+                                        //: Placeholder text for the start of a number range.
+                                        placeholderText: qsTr('from')
                                         color: valid ? Style.colorText : Style.colorError
                                         validator: IntValidator { }
                                         onTextChanged: {
@@ -290,14 +312,15 @@ ApplicationWindow {
                                     }
 
                                     Text {
-                                        text: '—'
+                                        text: /* no qsTr() */ '—'
                                     }
 
                                     TextField {
                                         id: portToField
                                         Layout.fillWidth: true
                                         text: modelData.portTo
-                                        placeholderText: 'to'
+                                        //: Placeholder text for the end of a number range.
+                                        placeholderText: qsTr('to')
                                         color: valid ? Style.colorText : Style.colorError
                                         validator: IntValidator { }
                                         onTextChanged: {
@@ -324,26 +347,26 @@ ApplicationWindow {
                                             switch (checkedButton.text) {
                                             case 'UDP':  return 1
                                             case 'TCP':  return 2
-                                            case 'both': return 3
-                                            default:     return 0
+                                            default:     return 3
                                             }
                                         }
                                     }
 
                                     RadioButton {
-                                        text: 'UDP'
+                                        text: /* no qsTr() */ 'UDP'
                                         checked: modelData.protocolFlag === 1
                                         ButtonGroup.group: protocolRadios
                                     }
 
                                     RadioButton {
-                                        text: 'TCP'
+                                        text: /* no qsTr() */ 'TCP'
                                         checked: modelData.protocolFlag === 2
                                         ButtonGroup.group: protocolRadios
                                     }
 
                                     RadioButton {
-                                        text: 'both'
+                                        //: Radio button to whitelist both, TCP and UDP ports.
+                                        text: qsTr('both')
                                         checked: modelData.protocolFlag === 3
                                         ButtonGroup.group: protocolRadios
                                     }
@@ -375,11 +398,13 @@ ApplicationWindow {
 
             DescriptionCheckBox {
                 id: dnsCheckbox
-                label: 'Custom DNS'
-                description: 'If enabled, you may specify up to 3 custom DNS (Domain Name' +
-                             'System) servers. Supported values are valid IPv4 or IPv6 addresses.\n' +
-                             'This disables CyberSec.\n' +
-                             'Note: Invalid addresses will be ignored upon saving.'
+                //: Checkbox label.
+                label: qsTr('Custom DNS')
+                //: Checkbox description.
+                description: qsTr('If enabled, you may specify up to 3 custom DNS (Domain Name' +
+                                  'System) servers. Supported values are valid IPv4 or IPv6 addresses.\n' +
+                                  'This disables CyberSec.\n' +
+                                  'Note: Invalid addresses will be ignored upon saving.')
                 checked: _.settings.dns
                 onCheckedChanged: PreferencesMediator.setDns(checked)
             }
@@ -441,15 +466,18 @@ ApplicationWindow {
             anchors.top: parent.top
 
             Button {
-                text: 'Defaults'
+                //: Text of the button to restore the default settings/preferences.
+                text: qsTr('Defaults')
                 DialogButtonBox.buttonRole: DialogButtonBox.RestoreDefaults
                 onClicked: confirmDefaultsDialog.open()
 
                 MessageDialog {
                     id: confirmDefaultsDialog
-                    title: 'Restore Default Settings — ' + ApplicationName
-                    text: 'Do you really want to discard your current settings and restore the default ones?\n\n' +
-                          'CAUTION: You will be logged out automatically and have to log in again!'
+                    //: Title of a dialog window to confirm the restoring of the default settings.
+                    title: qsTr('Restore Default Settings') + ' — ' + ApplicationName
+                    //: Description/warning text of a dialog window to confirm the restoring of the default settings.
+                    text: qsTr('Do you really want to discard your current settings and restore the default ones?\n\n' +
+                               'CAUTION: You will be logged out automatically and have to log in again!')
                     icon: StandardIcon.Warning
                     standardButtons: StandardButton.Yes | StandardButton.No
                     onNo: close()
@@ -468,7 +496,8 @@ ApplicationWindow {
                 padding: 0
 
                 Button {
-                    text: 'Ok'
+                    //: Dialog button to approve the made changes and close the settings.
+                    text: qsTr('Ok')
                     icon.name: 'dialog-ok-apply'
                     DialogButtonBox.buttonRole: DialogButtonBox.AcceptRole
                 }
@@ -478,7 +507,8 @@ ApplicationWindow {
                 }
 
                 Button {
-                    text: 'Cancel'
+                    //: Dialog button to discard the made changes and close the settings.
+                    text: qsTr('Cancel')
                     icon.name: 'dialog-cancel'
                     DialogButtonBox.buttonRole: DialogButtonBox.RejectRole
                 }

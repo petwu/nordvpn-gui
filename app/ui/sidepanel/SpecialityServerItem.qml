@@ -7,6 +7,8 @@ import Style 1.0
 import '../icons'
 import '../general'
 
+import 'TranslationHelper.js' as TranslationHelper
+
 Item {
     id: specialityServerItem
 
@@ -26,17 +28,21 @@ Item {
 
         function updateCountryAndServerList(countryId = -1) {
             const countries = Mediator.getSpecialtyCountries(groupId)
-            _.countryList = [{ name : 'Fastest', id: -1 }].concat(countries)
+            _.countryList = [
+                        //: Fastest server available.
+                        { name : qsTr('Fastest'), id: -1 }
+                    ].concat(countries.map(c => { c.name = qsTranslate('Country', c.name); return c }))
             const servers = Mediator.getSpecialtyServers(groupId, countryId)
             servers.forEach((s) => {
-                                s.text = s.load + '%  |  ' + s.name
+                                s.text = s.load + '%  |  ' + TranslationHelper.qsTrServer(s.name)
                             })
             servers.sort((a, b) => {
                              if (a.load < b.load) return -1
                              if (a.load > b.load) return 1
                              return 0
                          })
-            _.serverList = [{ text: 'Fastest', id: -1 }].concat(servers)
+            //: Fastest server available.
+            _.serverList = [{ text: qsTr('Fastest'), id: -1 }].concat(servers)
         }
     }
 
@@ -101,7 +107,7 @@ Item {
     }
 
     ToolButton {
-        text: '⋯'
+        text: /* no qsTr() */ '⋯'
         display: AbstractButton.TextOnly
         width: height
         anchors.right: parent.right
@@ -168,7 +174,8 @@ Item {
 
                 Text {
                     visible: _.countryList.length > 1
-                    text: 'Country:'
+                    //: The country to connect to or select a server from.
+                    text: qsTr('Country') + ':'
                 }
 
                 ComboBox {
@@ -186,7 +193,8 @@ Item {
                 }
 
                 Text {
-                    text: 'Server:'
+                    //: List of servers as dropdown to select on from.
+                    text: qsTr('Server') + ':'
                 }
 
                 ComboBox {
@@ -203,7 +211,8 @@ Item {
 
             Button {
                 Layout.fillWidth: true
-                text: 'Connect'
+                //: Button to connect to the selected country, city/region or server.
+                text: qsTr('Connect')
                 onClicked: {
                     const server = serverSelector.model[serverSelector.currentIndex]
                     if (server.id < 0) {

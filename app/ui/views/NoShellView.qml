@@ -29,17 +29,20 @@ Item {
             Layout.maximumWidth: 440
 
             Text {
-                text: 'Error'
+                //: Title on the error view that is shown, when the device does not provide a shell to execute commands.
+                text: qsTr('Error')
                 font.bold: true
                 font.pixelSize: Style.fontSizeLarge
             }
 
             Text {
                 textFormat: Text.RichText
-                text: 'Unable to execute shell commands. ' +
-                      'This is required in order to make calls to the NordVPN CLI application.<br />' +
-                      'Is <code>/bin/sh</code> available on your machine?' +
-                      'Test it by executing the following command inside your terminal:'
+                // Text 1 on the error view that is shown, when the device does not provide a shell to execute commands.
+                //~ Note Keep the HTML tags (words with angle brackets, e.g. <br />).
+                text: qsTr('Unable to execute shell commands. ' +
+                           'This is required in order to make calls to the NordVPN CLI application.<br />' +
+                           'Is <code>/bin/sh</code> available on your machine?' +
+                           'Test it by executing the following command inside your terminal:')
                 wrapMode: Text.WordWrap
                 Layout.fillWidth: true
             }
@@ -50,7 +53,7 @@ Item {
                 leftPadding: 12
                 rightPadding: 12
                 textFormat: Text.RichText
-                text: '<code>/bin/sh -c "echo success"</code>'
+                text: /* no qsTr() */ '<code>/bin/sh -c "echo success"</code>'
                 readOnly: true
                 selectByMouse: true
                 color: Style.colorText
@@ -71,7 +74,9 @@ Item {
 
             Text {
                 textFormat: Text.RichText
-                text: 'Consider creating an <a href="' + IssuesURL + '">issue</a> if you cannot resolve the problem yourself.'
+                // Text 2 on the error view that is shown, when the device does not provide a shell to execute commands.
+                //~ Note Keep the HTML tags (words with angle brackets, e.g. <br />).
+                text: qsTr('Consider creating an <a href="%1">issue</a> if you cannot resolve the problem yourself.').arg(IssuesURL)
                 wrapMode: Text.WordWrap
                 Layout.fillWidth: true
                 onLinkActivated: Qt.openUrlExternally(link)

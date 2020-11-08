@@ -9,7 +9,8 @@ import '../general'
 ApplicationWindow {
     id: licenseWindow
     visible: true
-    title: 'License — ' + ApplicationName
+    //: Title of the license window.
+    title: qsTr('License') + ' — ' + ApplicationName
     width: scrollView.width
     height: 480
     minimumWidth: width

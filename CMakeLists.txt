@@ -35,7 +35,8 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(QML_IMPORT_PATH ${CMAKE_SOURCE_DIR}/res
     CACHE STRING "additional qml module paths for Qt Creator"
-    FORCE)
+    FORCE
+)
 
 # --------------------------------------------------------------------------------
 # install external dependencies (except Qt) with conan
@@ -56,12 +57,6 @@ conan_cmake_run(CONANFILE conanfile.txt BUILD missing BASIC_SETUP CMAKE_TARGETS)
 
 find_package(Qt5 5.12 COMPONENTS Core Quick Widgets LinguistTools REQUIRED)
 find_package(Threads REQUIRED)
-
-# --------------------------------------------------------------------------------
-# copy resources directory
-# --------------------------------------------------------------------------------
-
-file(COPY ${CMAKE_SOURCE_DIR}/res/ DESTINATION ${CMAKE_BINARY_DIR}/res/)
 
 # --------------------------------------------------------------------------------
 # configure application with defines in app.h.in
@@ -112,20 +107,35 @@ set(SRC_FILES
     app/logic/nordvpn/statuscontroller.cpp
 )
 
-# resource files
-set(QRC_FILES
-    app/qml.qrc
-    res/res.qrc
+# add translations
+set(TS_FILES
+    res/translations/en.ts
+    res/translations/de.ts
+)
+set_source_files_properties(${TS_FILES} PROPERTIES OUTPUT_LOCATION res/translations)
+qt5_add_translation(QM_FILES ${TS_FILES})
+configure_file(res/translations/translations.qrc.in res/translations/translations.qrc COPYONLY)
+add_custom_target(lupdate
+    COMMAND ${Qt5_LUPDATE_EXECUTABLE} -source-language en_US -no-obsolete -recursive app -ts ${TS_FILES}
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    COMMENT "Updating translations res/translations/*.ts"
 )
 
-# translations
-set(TS_FILES
-    locale/en_US.ts
+# add resource files
+qt5_add_resources(SRC_FILES
+    app/qml.qrc
+    res/res.qrc
+    ${CMAKE_BINARY_DIR}/res/translations/translations.qrc
 )
 
 # main target
-add_executable(nordvpn-gui ${SRC_FILES} ${QRC_FILES} ${TS_FILES})
-target_include_directories(nordvpn-gui PUBLIC ${CMAKE_BINARY_DIR})
-target_include_directories(nordvpn-gui PUBLIC app/)
-target_link_libraries(nordvpn-gui PRIVATE Qt5::Core Qt5::Quick Qt5::Widgets Threads::Threads ${CONAN_TARGETS})
-qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
+add_executable(nordvpn-gui ${SRC_FILES} ${QM_FILES})
+target_include_directories(nordvpn-gui PUBLIC
+    app
+    ${CMAKE_BINARY_DIR}
+)
+target_link_libraries(nordvpn-gui PRIVATE
+    Qt5::Core Qt5::Quick Qt5::Widgets
+    Threads::Threads
+    ${CONAN_TARGETS}
+)

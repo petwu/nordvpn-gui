@@ -23,14 +23,16 @@ Item {
             Layout.maximumWidth: 440
 
             Text {
-                text: 'Disconnected'
+                //: Title on the error view that is shown, when the device does not have an active internet connection.
+                text: qsTr('Disconnected')
                 font.bold: true
                 font.pixelSize: Style.fontSizeLarge
             }
 
             Text {
-                text: 'An active internet connection is required in order to connect to a VPN server. ' +
-                      'Restarting your device and/or your router are typical things to try while troubleshooting connection issues.'
+                //: Text on the error view that is shown, when the device does not have an active internet connection.
+                text: qsTr('An active internet connection is required in order to connect to a VPN server. ' +
+                           'Restarting your device and/or your router are typical things to try while troubleshooting connection issues.')
                 wrapMode: Text.WordWrap
                 Layout.fillWidth: true
             }

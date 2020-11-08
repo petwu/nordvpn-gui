@@ -39,7 +39,8 @@ Item {
             spacing: 16
 
             Text {
-                text: 'Login'
+                //: Title for the login screen.
+                text: qsTr('Login')
                 font.bold: true
                 font.pixelSize: Style.fontSizeLarge
             }
@@ -49,7 +50,8 @@ Item {
                 columnSpacing: 12
 
                 Label {
-                    text: 'E-mail:'
+                    //: Label of the e-mail input on the login screen.
+                    text: qsTr('E-mail') + ':'
                 }
 
                 TextField {
@@ -60,7 +62,8 @@ Item {
                 }
 
                 Label {
-                    text: 'Password:'
+                    //: Label of the password input on the login screen.
+                    text: qsTr('Password') + ':'
                 }
 
                 TextField {
@@ -100,7 +103,8 @@ Item {
 
             Text {
                 id: invalidHint
-                text: 'Invalid Credentials'
+                //: Hint that appears on the login screen when the user entered invalud credentials (e-mail or password).
+                text: qsTr('Invalid Credentials')
                 color: Style.colorError
                 Layout.fillWidth: true
                 horizontalAlignment: Text.AlignHCenter
@@ -125,7 +129,8 @@ Item {
 
                 Text {
                     textFormat: Text.RichText
-                    text: '<a href="' + NordAccountURL + '">Register / Reset Password</a>'
+                    //: Link text that opens the browser to a webpage that allows a user to create a new NordVPN account or reset his password.
+                    text: /* no qsTr() */ '<a href="' + NordAccountURL + '">' + qsTr('Register / Reset Password') + '</a>'
                     Layout.fillWidth: true
                     onLinkActivated: Qt.openUrlExternally(link)
 
@@ -139,7 +144,8 @@ Item {
                 }
 
                 Button {
-                    text: 'Login'
+                    //: Button the user presses when he/she attempts to login with the provided credentials.
+                    text: qsTr('Login')
                     onClicked: tryLogin()
                 }
             }

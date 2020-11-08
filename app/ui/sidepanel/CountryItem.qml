@@ -8,6 +8,8 @@ import Style 1.0
 import '../general'
 import '../icons'
 
+import 'TranslationHelper.js' as TranslationHelper
+
 Item {
     id: countryItem
 
@@ -21,21 +23,25 @@ Item {
 
     QtObject {
         id: _
-        property var cityList: [{ name: 'Fastest', value: -1 }].concat(country.cities)
+        property var cityList: [
+            //: Fastest server available.
+            { name: qsTr('Fastest'), value: -1 }
+        ].concat(country.cities.map(c => { c.name = qsTranslate('City', c.name); return c }))
 
         property var serverList: []
 
         function updateServerList(cityId = -1) {
             let servers = Mediator.getServers(country.id, cityId)
             servers.forEach((s) => {
-                                s.text = s.load + '%  |  ' + s.name
+                                s.text = s.load + '%  |  ' + TranslationHelper.qsTrServer(s.name)
                             })
             servers.sort((a, b) => {
                              if (a.load < b.load) return -1
                              if (a.load > b.load) return 1
                              return 0
                          })
-            _.serverList = [{ text: 'Fastest', id: -1 }].concat(servers)
+            //: Fastest server available.
+            _.serverList = [{ text: qsTr('Fastest'), id: -1 }].concat(servers)
         }
     }
 
@@ -85,7 +91,7 @@ Item {
 
     Text {
         id: text
-        text: countryItem.country.name
+        text: qsTranslate('Country', countryItem.country.name)
         anchors.left: flag.right
         anchors.leftMargin: countryItem.iconTextSpacing
         anchors.verticalCenter: parent.verticalCenter
@@ -118,7 +124,7 @@ Item {
     }
 
     ToolButton {
-        text: '⋯'
+        text: /* no qsTr() */ '⋯'
         display: AbstractButton.TextOnly
         width: height
         anchors.right: parent.right
@@ -164,7 +170,8 @@ Item {
                     }
 
                     Text {
-                        text: country.cities.length + ' cities/regions'
+                        //: The number of cities or regions with VPN servers in that country.
+                        text: country.cities.length + ' ' + qsTr('cities/regions')
                         font.pixelSize: Style.fontSizeSmall
                         color: Style.colorStatusPanelSeconary
                     }
@@ -188,7 +195,8 @@ Item {
 
                 Text {
                     visible: country.cities.length > 1
-                    text: 'City:'
+                    //: The region or city of a country to connect to or select a server from.
+                    text: qsTr('City') + ':'
                 }
 
                 ComboBox {
@@ -206,7 +214,8 @@ Item {
                 }
 
                 Text {
-                    text: 'Server:'
+                    //: List of servers as dropdown to select on from.
+                    text: qsTr('Server') + ':'
                 }
 
                 ComboBox {
@@ -223,7 +232,8 @@ Item {
 
             Button {
                 Layout.fillWidth: true
-                text: 'Connect'
+                //: Button to connect to the selected country, city/region or server.
+                text: qsTr('Connect')
                 onClicked: {
                     const server = serverSelector.model[serverSelector.currentIndex]
                     if (server.id < 0) {

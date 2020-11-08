@@ -11,17 +11,17 @@
     <qresource prefix="/data">
         <file alias="countries.json">data/countries.json</file>
     </qresource>
-    <qresource prefix="/img">
-        <file alias="logo.svg">img/logo.svg</file>
-        <file alias="map.svg">img/map.svg</file>
-        <file alias="tray-active">img/tray-active.svg</file>
-        <file alias="tray-inactive">img/tray-inactive.svg</file>
-    </qresource>
     <qresource prefix="/fonts">
         <file alias="fontawesome5-brands">fonts/Font Awesome 5 Brands-Regular-400.otf</file>
         <file alias="fontawesome5-brands.js">fonts/Font Awesome 5 Brands-Regular-400.js</file>
         <file alias="fontawesome5-solid">fonts/Font Awesome 5 Free-Solid-900.otf</file>
         <file alias="fontawesome5-solid.js">fonts/Font Awesome 5 Free-Solid-900.js</file>
+    </qresource>
+    <qresource prefix="/img">
+        <file alias="logo.svg">img/logo.svg</file>
+        <file alias="map.svg">img/map.svg</file>
+        <file alias="tray-active">img/tray-active.svg</file>
+        <file alias="tray-inactive">img/tray-inactive.svg</file>
     </qresource>
     <qresource prefix="/Style">
         <file alias="Style/Style.qml">Style/Style.qml</file>

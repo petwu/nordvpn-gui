@@ -33,5 +33,7 @@
         <file>ui/windows/AboutWindow.qml</file>
         <file>ui/windows/CreditsWindow.qml</file>
         <file>ui/windows/LicenseWindow.qml</file>
+        <file>ui/Translations.qml</file>
+        <file>ui/sidepanel/TranslationHelper.js</file>
     </qresource>
 </RCC>

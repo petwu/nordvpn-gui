@@ -45,7 +45,7 @@ Item {
 
     Button {
         id: sidebarToggle
-        text: '↹'
+        text: /* no qsTr() */ '↹'
         z: 100
         width: height
         anchors.left: leftColumn.right

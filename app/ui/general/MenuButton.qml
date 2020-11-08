@@ -52,7 +52,8 @@ Item {
         y: btn.height + 4
 
         MenuItem {
-            text: 'Preferences'
+            //: Preferences or settings where the user may configure the apps behavior.
+            text: qsTr('Preferences')
             icon.name: 'settings-configure'
             action: preferencesAction
         }
@@ -61,20 +62,22 @@ Item {
 
         /* TODO
         MenuItem {
-            text: 'Donate'
+            text: qsTr('Donate')
             icon.name: 'help-donate'
             action: donateAction
         }
         */
 
         MenuItem {
-            text: 'Credits'
+            //: Creadits to pay attribution to open source software used by this project.
+            text: qsTr('Credits')
             icon.name: 'help-contents'
             action: creditsAction
         }
 
         MenuItem {
-            text: 'About'
+            //: About this application (version info, copyright, license, etc.).
+            text: qsTr('About')
             icon.name: 'help-about'
             action: aboutAction
         }
@@ -82,13 +85,15 @@ Item {
         MenuSeparator { }
 
         MenuItem {
-            text: 'Logout'
+            //: Logout from the NordVPN service.
+            text: qsTr('Logout')
             icon.name: 'system-log-out'
             action: logoutAction
         }
 
         MenuItem {
-            text: 'Quit'
+            //: Terminate the app (including the system tray icon).
+            text: qsTr('Quit')
             icon.name: 'application-exit'
             action: quitAction
         }

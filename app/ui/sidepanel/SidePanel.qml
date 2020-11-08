@@ -28,7 +28,8 @@ ScrollView {
 
         Collapsible {
             id: sectionRecents
-            title: 'Recents'
+            //: Title for a list of recently connected country names.
+            title: qsTr('Recents')
             visible: Mediator.recentCountries.length > 0
             spacing: 0
 
@@ -51,7 +52,8 @@ ScrollView {
 
         Collapsible {
             id: sectionSpecialtySevers
-            title: 'Specialty Servers'
+            //: Title for a list of specialty servers (Double VPN, Onion over VPN and P2P).
+            title: qsTr('Specialty Servers')
 
             Repeater {
                 model: [
@@ -77,7 +79,8 @@ ScrollView {
 
         Collapsible {
             id: sectionCountries
-            title: 'Countries'
+            //: Title for a list of all countries with VPN servers available.
+            title: qsTr('Countries')
             spacing: 0
 
             Repeater {

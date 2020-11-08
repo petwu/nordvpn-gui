@@ -297,7 +297,7 @@ Item {
     */
     Button {
         id: zoomInBtn
-        text: '＋'
+        text: /* no qsTr() */ '＋'
         z: 100
         width: height
         anchors.right: parent.right
@@ -309,7 +309,7 @@ Item {
 
     Button {
         id: zoomOutBtn
-        text: '－'
+        text: /* no qsTr() */ '－'
         z: 100
         width: height
         anchors.right: parent.right
@@ -337,7 +337,7 @@ Item {
         visible: markerDebug
         anchors.left: mapArea.left
         anchors.bottom: mapArea.bottom
-        text: 'Test'
+        text: ''
     }
 
     Repeater {

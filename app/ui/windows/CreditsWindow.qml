@@ -11,7 +11,8 @@ import 'qrc:/credits/credits.mjs' as Credits
 ApplicationWindow {
     id: creditsWindow
     visible: true
-    title: 'Credits — ' + ApplicationName
+    //: Title of the credits window that pays attribution to open source software used in this project.
+    title: qsTr('Credits') + ' — ' + ApplicationName
     width: 960
     height: 540
     minimumWidth: 640
@@ -45,7 +46,7 @@ ApplicationWindow {
         spacing: _.spacing
 
         Text {
-            text: 'Credits'
+            text: qsTr('Credits')
             wrapMode: Text.Wrap
             Layout.fillWidth: true
             font.pixelSize: Style.fontSizeLarge
@@ -56,11 +57,13 @@ ApplicationWindow {
             textFormat: Text.RichText
             wrapMode: Text.Wrap
             Layout.fillWidth: true
-            text: ApplicationName + ' is made possible by Qt and other Open Source Software (OSS)' +
-                  'provided by third parties free of charge. These include software libraries' +
-                  'providing some funtionality or resource files like fonts, icons or images. ' +
-                  'They are used under the licenses listed below.<br />' +
-                  '<b><i>Thanks to everyone who contributed to them!</i></b>'
+            //: Text displayed on the top of the credits window to explain the user the purpose of this window.
+            //~ Note %1 gets replaced by the application name. Keep the HTML tags (words in angle brackets, e.g. <br />).
+            text: qsTr('%1 is made possible by Qt and other Open Source Software (OSS)' +
+                       'provided by third parties free of charge. These include software libraries' +
+                       'providing some funtionality or resource files like fonts, icons or images. ' +
+                       'They are used under the licenses listed below.<br />' +
+                       '<b><i>Thanks to everyone who contributed to them!</i></b>')
         }
 
         MenuSeparator {
@@ -130,13 +133,15 @@ ApplicationWindow {
                     }
 
                     Text {
-                        text: 'by ' + modelData.author
+                        //: Word to denote the author(s), e.g. 'by John Doe'
+                        text: qsTr('by') + ' ' + modelData.author
                         font.italic: true
                     }
 
                     Text {
                         textFormat: Text.RichText
-                        text: 'Website: &nbsp; <a href="' + modelData.website + '">' + modelData.website + '</a>'
+                        //: Label before the link to the website of the attributed project.
+                        text: qsTr('Website') + ': &nbsp; <a href="' + modelData.website + '">' + modelData.website + '</a>'
                         onLinkActivated: Qt.openUrlExternally(link)
 
                         MouseArea {
@@ -149,7 +154,8 @@ ApplicationWindow {
                     }
 
                     Text {
-                        text: 'License:    ' + modelData.license
+                        //: Label before the license identifier, e.g. GPLv3, MIT, Apache 2.0, BSD 3-clause
+                        text: qsTr('License') + ':   ' + modelData.license
                     }
 
                     ScrollView {
@@ -164,7 +170,7 @@ ApplicationWindow {
 
                         Text {
                             text: modelData.licenseFullText
-                            font.family: 'monospace'
+                            font.family: MonospaceFontFamily
                             padding: _.spacing
                         }
                     }
