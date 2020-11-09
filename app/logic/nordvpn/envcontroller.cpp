@@ -10,8 +10,13 @@ EnvInfo EnvController::getEnvInfo() {
     envInfo.shellAvailable = this->_isShellAvailable();
     envInfo.nordvpnInstalled = this->_isNordvpnInstalled();
     envInfo.internetConnected = this->_isInternetConnected();
-    if (envInfo.internetConnected == true)
+    if (envInfo.internetConnected == true) {
         envInfo.loggedIn = this->_isLoggedIn();
+        if (envInfo.loggedIn == false)
+            // double check, because for some unknown reason it sometimes
+            // returns false erroneously
+            envInfo.loggedIn = this->_isLoggedIn();
+    }
     return std::move(envInfo);
 }
 
@@ -134,6 +139,10 @@ void EnvController::_backgroundTask() {
              * NordVPN API.
              */
             this->_envInfo.loggedIn = this->_isLoggedIn();
+            if (this->_envInfo.loggedIn == false)
+                // double check, because for some unknown reason it sometimes
+                // returns false erroneously
+                this->_envInfo.loggedIn = this->_isLoggedIn();
         }
         this->_notifySubscribers();
         std::this_thread::sleep_for(std::chrono::seconds(2));
