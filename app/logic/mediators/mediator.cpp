@@ -38,15 +38,12 @@ void Mediator::updateConnectionInfo(const ConnectionInfo &newInfo) {
         this->_setAreConnectionCommandsPaused(true);
     }
 
-    if (this->_isConnected && disconnected) {
+    if (this->_isConnected && disconnected)
         // allow rating only when transitioning from connected to disconnected
-        this->_isRatingPossbile = true;
-        this->isRatingPossibleChanged(true);
-    } else if (this->_isDisconnected && !disconnected) {
+        this->_setIsRatingPossible(true);
+    else if (this->_isDisconnected && !disconnected)
         // disallow rating when not disconnected anymore
-        this->_isRatingPossbile = false;
-        this->isRatingPossibleChanged(false);
-    }
+        this->_setIsRatingPossible(false);
 
     this->_setIsDisconnected(disconnected);
     this->_setIsConnecting(connecting);
@@ -129,6 +126,15 @@ void Mediator::_setIsRatingPossible(bool value) {
     if (value != this->_isRatingPossbile) {
         this->_isRatingPossbile = value;
         this->isRatingPossibleChanged(value);
+        if (value == true) {
+            // set to false (= hide rating widget) after a period of 1 min,
+            // this should give everybody enough time to commit their rating
+            std::thread([this] {
+                std::this_thread::sleep_for(std::chrono::minutes(1));
+                if (this->_isRatingPossbile)
+                    this->_setIsRatingPossible(false);
+            }).detach();
+        }
     }
 }
 
