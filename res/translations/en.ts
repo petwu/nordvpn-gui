@@ -37,407 +37,407 @@
 <context>
     <name>City</name>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="92"/>
+        <location filename="../../app/ui/Translations.qml" line="90"/>
         <source>Adelaide</source>
         <translation>Adelaide</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="93"/>
+        <location filename="../../app/ui/Translations.qml" line="91"/>
         <source>Amsterdam</source>
         <translation>Amsterdam</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="94"/>
+        <location filename="../../app/ui/Translations.qml" line="92"/>
         <source>Athens</source>
         <translation>Athens</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="95"/>
+        <location filename="../../app/ui/Translations.qml" line="93"/>
         <source>Atlanta</source>
         <translation>Atlanta</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="96"/>
+        <location filename="../../app/ui/Translations.qml" line="94"/>
         <source>Auckland</source>
         <translation>Auckland</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="97"/>
+        <location filename="../../app/ui/Translations.qml" line="95"/>
         <source>Bangkok</source>
         <translation>Bangkok</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="98"/>
+        <location filename="../../app/ui/Translations.qml" line="96"/>
         <source>Belgrad</source>
         <translation>Belgrad</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="99"/>
+        <location filename="../../app/ui/Translations.qml" line="97"/>
         <source>Berlin</source>
         <translation>Berlin</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="100"/>
+        <location filename="../../app/ui/Translations.qml" line="98"/>
         <source>Bratislava</source>
         <translation>Bratislava</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="101"/>
+        <location filename="../../app/ui/Translations.qml" line="99"/>
         <source>Brisbane</source>
         <translation>Brisbane</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="102"/>
+        <location filename="../../app/ui/Translations.qml" line="100"/>
         <source>Brussels</source>
         <translation>Brussels</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="103"/>
+        <location filename="../../app/ui/Translations.qml" line="101"/>
         <source>Bucharest</source>
         <translation>Bucharest</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="104"/>
+        <location filename="../../app/ui/Translations.qml" line="102"/>
         <source>Budapest</source>
         <translation>Budapest</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="105"/>
+        <location filename="../../app/ui/Translations.qml" line="103"/>
         <source>Buenos Aires</source>
         <translation>Buenos Aires</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="106"/>
+        <location filename="../../app/ui/Translations.qml" line="104"/>
         <source>Buffalo</source>
         <translation>Buffalo</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="107"/>
+        <location filename="../../app/ui/Translations.qml" line="105"/>
         <source>Charlotte</source>
         <translation>Charlotte</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="108"/>
+        <location filename="../../app/ui/Translations.qml" line="106"/>
         <source>Chennai</source>
         <translation>Chennai</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="109"/>
+        <location filename="../../app/ui/Translations.qml" line="107"/>
         <source>Chicago</source>
         <translation>Chicago</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="110"/>
+        <location filename="../../app/ui/Translations.qml" line="108"/>
         <source>Chisinau</source>
         <translation>Chisinau</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="111"/>
+        <location filename="../../app/ui/Translations.qml" line="109"/>
         <source>Copenhagen</source>
         <translation>Copenhagen</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="112"/>
+        <location filename="../../app/ui/Translations.qml" line="110"/>
         <source>Dallas</source>
         <translation>Dallas</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="113"/>
+        <location filename="../../app/ui/Translations.qml" line="111"/>
         <source>Denver</source>
         <translation>Denver</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="114"/>
+        <location filename="../../app/ui/Translations.qml" line="112"/>
         <source>Dubai</source>
         <translation>Dubai</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="115"/>
+        <location filename="../../app/ui/Translations.qml" line="113"/>
         <source>Dublin</source>
         <translation>Dublin</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="116"/>
+        <location filename="../../app/ui/Translations.qml" line="114"/>
         <source>Frankfurt</source>
         <translation>Frankfurt</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="117"/>
+        <location filename="../../app/ui/Translations.qml" line="115"/>
         <source>Hanoi</source>
         <translation>Hanoi</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="118"/>
+        <location filename="../../app/ui/Translations.qml" line="116"/>
         <source>Helsinki</source>
         <translation>Helsinki</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="119"/>
+        <location filename="../../app/ui/Translations.qml" line="117"/>
         <source>Hong Kong</source>
         <translation>Hong Kong</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="120"/>
+        <location filename="../../app/ui/Translations.qml" line="118"/>
         <source>Istanbul</source>
         <translation>Istanbul</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="121"/>
+        <location filename="../../app/ui/Translations.qml" line="119"/>
         <source>Jakarta</source>
         <translation>Jakarta</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="122"/>
+        <location filename="../../app/ui/Translations.qml" line="120"/>
         <source>Johannesburg</source>
         <translation>Johannesburg</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="123"/>
+        <location filename="../../app/ui/Translations.qml" line="121"/>
         <source>Kiev</source>
         <translation>Kiev</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="124"/>
+        <location filename="../../app/ui/Translations.qml" line="122"/>
         <source>Kuala Lumpur</source>
         <translation>Kuala Lumpur</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="125"/>
+        <location filename="../../app/ui/Translations.qml" line="123"/>
         <source>Lisbon</source>
         <translation>Lisbon</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="126"/>
+        <location filename="../../app/ui/Translations.qml" line="124"/>
         <source>Ljubljana</source>
         <translation>Ljubljana</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="127"/>
+        <location filename="../../app/ui/Translations.qml" line="125"/>
         <source>London</source>
         <translation>London</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="128"/>
+        <location filename="../../app/ui/Translations.qml" line="126"/>
         <source>Los Angeles</source>
         <translation>Los Angeles</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="129"/>
+        <location filename="../../app/ui/Translations.qml" line="127"/>
         <source>Madrid</source>
         <translation>Madrid</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="130"/>
+        <location filename="../../app/ui/Translations.qml" line="128"/>
         <source>Manassas</source>
         <translation>Manassas</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="131"/>
+        <location filename="../../app/ui/Translations.qml" line="129"/>
         <source>Melbourne</source>
         <translation>Melbourne</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="132"/>
+        <location filename="../../app/ui/Translations.qml" line="130"/>
         <source>Mexico</source>
         <translation>Mexico</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="133"/>
+        <location filename="../../app/ui/Translations.qml" line="131"/>
         <source>Miami</source>
         <translation>Miami</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="134"/>
+        <location filename="../../app/ui/Translations.qml" line="132"/>
         <source>Milan</source>
         <translation>Milan</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="135"/>
+        <location filename="../../app/ui/Translations.qml" line="133"/>
         <source>Montreal</source>
         <translation>Montreal</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="136"/>
+        <location filename="../../app/ui/Translations.qml" line="134"/>
         <source>Mumbai</source>
         <translation>Mumbai</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="137"/>
+        <location filename="../../app/ui/Translations.qml" line="135"/>
         <source>New York</source>
         <translation>New York</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="138"/>
+        <location filename="../../app/ui/Translations.qml" line="136"/>
         <source>Nicosia</source>
         <translation>Nicosia</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="139"/>
+        <location filename="../../app/ui/Translations.qml" line="137"/>
         <source>Oslo</source>
         <translation>Oslo</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="140"/>
+        <location filename="../../app/ui/Translations.qml" line="138"/>
         <source>Paris</source>
         <translation>Paris</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="141"/>
+        <location filename="../../app/ui/Translations.qml" line="139"/>
         <source>Perth</source>
         <translation>Perth</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="142"/>
+        <location filename="../../app/ui/Translations.qml" line="140"/>
         <source>Phoenix</source>
         <translation>Phoenix</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="143"/>
+        <location filename="../../app/ui/Translations.qml" line="141"/>
         <source>Prague</source>
         <translation>Prague</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="144"/>
+        <location filename="../../app/ui/Translations.qml" line="142"/>
         <source>Reykjavik</source>
         <translation>Reykjavik</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="145"/>
+        <location filename="../../app/ui/Translations.qml" line="143"/>
         <source>Riga</source>
         <translation>Riga</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="146"/>
+        <location filename="../../app/ui/Translations.qml" line="144"/>
         <source>Saint Louis</source>
         <translation>Saint Louis</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="147"/>
+        <location filename="../../app/ui/Translations.qml" line="145"/>
         <source>Salt Lake City</source>
         <translation>Salt Lake City</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="148"/>
+        <location filename="../../app/ui/Translations.qml" line="146"/>
         <source>San Francisco</source>
         <translation>San Francisco</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="149"/>
+        <location filename="../../app/ui/Translations.qml" line="147"/>
         <source>San Jose</source>
         <translation>San Jose</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="150"/>
+        <location filename="../../app/ui/Translations.qml" line="148"/>
         <source>San Paulo</source>
         <translation>San Paulo</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="151"/>
+        <location filename="../../app/ui/Translations.qml" line="149"/>
         <source>Santiago</source>
         <translation>Santiago</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="152"/>
+        <location filename="../../app/ui/Translations.qml" line="150"/>
         <source>Sarajevo</source>
         <translation>Sarajevo</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="153"/>
+        <location filename="../../app/ui/Translations.qml" line="151"/>
         <source>Seattle</source>
         <translation>Seattle</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="154"/>
+        <location filename="../../app/ui/Translations.qml" line="152"/>
         <source>Seoul</source>
         <translation>Seoul</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="155"/>
+        <location filename="../../app/ui/Translations.qml" line="153"/>
         <source>Singapore</source>
         <translation>Singapore</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="156"/>
+        <location filename="../../app/ui/Translations.qml" line="154"/>
         <source>Skopje</source>
         <translation>Skopje</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="157"/>
+        <location filename="../../app/ui/Translations.qml" line="155"/>
         <source>Sofia</source>
         <translation>Sofia</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="158"/>
+        <location filename="../../app/ui/Translations.qml" line="156"/>
         <source>Steinsel</source>
         <translation>Steinsel</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="159"/>
+        <location filename="../../app/ui/Translations.qml" line="157"/>
         <source>Stockholm</source>
         <translation>Stockholm</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="160"/>
+        <location filename="../../app/ui/Translations.qml" line="158"/>
         <source>Sydney</source>
         <translation>Sydney</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="161"/>
+        <location filename="../../app/ui/Translations.qml" line="159"/>
         <source>Taipei</source>
         <translation>Taipei</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="162"/>
+        <location filename="../../app/ui/Translations.qml" line="160"/>
         <source>Tallinn</source>
         <translation>Tallinn</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="163"/>
+        <location filename="../../app/ui/Translations.qml" line="161"/>
         <source>Tbilisi</source>
         <translation>Tbilisi</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="164"/>
+        <location filename="../../app/ui/Translations.qml" line="162"/>
         <source>Tel Aviv</source>
         <translation>Tel Aviv</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="165"/>
+        <location filename="../../app/ui/Translations.qml" line="163"/>
         <source>Tirana</source>
         <translation>Tirana</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="166"/>
+        <location filename="../../app/ui/Translations.qml" line="164"/>
         <source>Tokyo</source>
         <translation>Tokyo</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="167"/>
+        <location filename="../../app/ui/Translations.qml" line="165"/>
         <source>Toronto</source>
         <translation>Toronto</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="168"/>
+        <location filename="../../app/ui/Translations.qml" line="166"/>
         <source>Vancouver</source>
         <translation>Vancouver</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="169"/>
+        <location filename="../../app/ui/Translations.qml" line="167"/>
         <source>Vienna</source>
         <translation>Vienna</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="170"/>
+        <location filename="../../app/ui/Translations.qml" line="168"/>
         <source>Warsaw</source>
         <translation>Warsaw</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="171"/>
+        <location filename="../../app/ui/Translations.qml" line="169"/>
         <source>Zagreb</source>
         <translation>Zagreb</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="172"/>
+        <location filename="../../app/ui/Translations.qml" line="170"/>
         <source>Zurich</source>
         <translation>Zurich</translation>
     </message>
@@ -700,126 +700,116 @@
     </message>
     <message>
         <location filename="../../app/ui/Translations.qml" line="62"/>
-        <source>Netherlands Onion</source>
-        <translation>Netherlands Onion</translation>
-    </message>
-    <message>
-        <location filename="../../app/ui/Translations.qml" line="63"/>
         <source>New Zealand</source>
         <translation>New Zealand</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="64"/>
+        <location filename="../../app/ui/Translations.qml" line="63"/>
         <source>North Macedonia</source>
         <translation>North Macedonia</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="65"/>
+        <location filename="../../app/ui/Translations.qml" line="64"/>
         <source>Norway</source>
         <translation>Norway</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="66"/>
+        <location filename="../../app/ui/Translations.qml" line="65"/>
         <source>Poland</source>
         <translation>Poland</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="67"/>
+        <location filename="../../app/ui/Translations.qml" line="66"/>
         <source>Portugal</source>
         <translation>Portugal</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="68"/>
+        <location filename="../../app/ui/Translations.qml" line="67"/>
         <source>Romania</source>
         <translation>Romania</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="69"/>
+        <location filename="../../app/ui/Translations.qml" line="68"/>
         <source>Serbia</source>
         <translation>Serbia</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="70"/>
+        <location filename="../../app/ui/Translations.qml" line="69"/>
         <source>Singapore</source>
         <translation>Singapore</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="71"/>
+        <location filename="../../app/ui/Translations.qml" line="70"/>
         <source>Slovakia</source>
         <translation>Slovakia</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="72"/>
+        <location filename="../../app/ui/Translations.qml" line="71"/>
         <source>Slovenia</source>
         <translation>Slovenia</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="73"/>
+        <location filename="../../app/ui/Translations.qml" line="72"/>
         <source>South Africa</source>
         <translation>South Africa</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="74"/>
+        <location filename="../../app/ui/Translations.qml" line="73"/>
         <source>South Korea</source>
         <translation>South Korea</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="75"/>
+        <location filename="../../app/ui/Translations.qml" line="74"/>
         <source>Spain</source>
         <translation>Spain</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="76"/>
+        <location filename="../../app/ui/Translations.qml" line="75"/>
         <source>Sweden</source>
         <translation>Sweden</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="77"/>
+        <location filename="../../app/ui/Translations.qml" line="76"/>
         <source>Switzerland</source>
         <translation>Switzerland</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="78"/>
-        <source>Switzerland Onion</source>
-        <translation>Switzerland Onion</translation>
-    </message>
-    <message>
-        <location filename="../../app/ui/Translations.qml" line="79"/>
+        <location filename="../../app/ui/Translations.qml" line="77"/>
         <source>Taiwan</source>
         <translation>Taiwan</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="80"/>
+        <location filename="../../app/ui/Translations.qml" line="78"/>
         <source>Thailand</source>
         <translation>Thailand</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="81"/>
+        <location filename="../../app/ui/Translations.qml" line="79"/>
         <source>Turkey</source>
         <translation>Turkey</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="82"/>
+        <location filename="../../app/ui/Translations.qml" line="80"/>
         <source>Ukraine</source>
         <translation>Ukraine</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="83"/>
+        <location filename="../../app/ui/Translations.qml" line="81"/>
         <source>United Arab Emirates</source>
         <translation>United Arab Emirates</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="84"/>
+        <location filename="../../app/ui/Translations.qml" line="82"/>
         <source>United Kingdom</source>
         <translation>United Kingdom</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="85"/>
+        <location filename="../../app/ui/Translations.qml" line="83"/>
         <source>United States</source>
         <translation>United States</translation>
     </message>
     <message>
-        <location filename="../../app/ui/Translations.qml" line="86"/>
+        <location filename="../../app/ui/Translations.qml" line="84"/>
         <source>Vietnam</source>
         <translation>Vietnam</translation>
     </message>
@@ -833,11 +823,14 @@
         <extracomment>Fastest server available.</extracomment>
         <translation>Fastest</translation>
     </message>
-    <message>
+    <message numerus="yes">
         <location filename="../../app/ui/sidepanel/CountryItem.qml" line="174"/>
-        <source>cities/regions</source>
+        <source>%n cities/regions</source>
         <extracomment>The number of cities or regions with VPN servers in that country.</extracomment>
-        <translation>cities/regions</translation>
+        <translation>
+            <numerusform>%n city/region</numerusform>
+            <numerusform>%n cities/regions</numerusform>
+        </translation>
     </message>
     <message>
         <location filename="../../app/ui/sidepanel/CountryItem.qml" line="199"/>
@@ -1088,14 +1081,47 @@ Button the user presses when he/she attempts to login with the provided credenti
     </message>
     <message>
         <location filename="../../app/ui/windows/PreferencesWindow.qml" line="96"/>
-        <source>Show desktop contifications when the connection status changes.</source>
+        <source>Show desktop notifications when the connection status changes.</source>
         <extracomment>Checkbox description.</extracomment>
-        <translation>Show desktop contifications when the connection status changes.</translation>
+        <translation>Show desktop notifications when the connection status changes.</translation>
     </message>
     <message>
         <location filename="../../app/ui/windows/PreferencesWindow.qml" line="111"/>
-        <source>OpenVPN is a robust open-source software for VPN services that supportsboth, TCP and UDP based connections. It is suggested for security-conscioususers. NordLynx is a technology NordVPN built around WireGuard, a morerecent alternative to OpenVPN. NordLynx promises to be faster thanOpenVPN but it is less mature and only supports UDP connections.</source>
-        <translation>OpenVPN is a robust open-source software for VPN services that supportsboth, TCP and UDP based connections. It is suggested for security-conscioususers. NordLynx is a technology NordVPN built around WireGuard, a morerecent alternative to OpenVPN. NordLynx promises to be faster thanOpenVPN but it is less mature and only supports UDP connections.</translation>
+        <source>OpenVPN is a robust open-source software for VPN services that supports both, TCP and UDP based connections. It is suggested for security-conscious users. NordLynx is a technology NordVPN built around WireGuard, a more recent alternative to OpenVPN. NordLynx promises to be faster than OpenVPN but it is less mature and only supports UDP connections.</source>
+        <translation>OpenVPN is a robust open-source software for VPN services that supports both, TCP and UDP based connections. It is suggested for security-conscious users. NordLynx is a technology NordVPN built around WireGuard, a more recent alternative to OpenVPN. NordLynx promises to be faster than OpenVPN but it is less mature and only supports UDP connections.</translation>
+    </message>
+    <message>
+        <location filename="../../app/ui/windows/PreferencesWindow.qml" line="126"/>
+        <source>TCP (Transmittion Control Protocol) is a connection-oriented protocol that guarantees that all sent data is received correctly. UDP (User Datagram Protocol) on the other hand does not provide any error-detection to reduce the network overhead. UDP is therefore fasert but less reliable than TCP.</source>
+        <translation>TCP (Transmittion Control Protocol) is a connection-oriented protocol that guarantees that all sent data is received correctly. UDP (User Datagram Protocol) on the other hand does not provide any error-detection to reduce the network overhead. UDP is therefore fasert but less reliable than TCP.</translation>
+    </message>
+    <message>
+        <location filename="../../app/ui/windows/PreferencesWindow.qml" line="145"/>
+        <source>Automatically try to connect to a VPN server on operating system startup.</source>
+        <extracomment>Checkbox description.</extracomment>
+        <translation>Automatically try to connect to a VPN server on operating system startup.</translation>
+    </message>
+    <message>
+        <location filename="../../app/ui/windows/PreferencesWindow.qml" line="164"/>
+        <source>Prevent your device from accessing the internet while not connected to a VPN server or in case connection with a VPN server is lost.</source>
+        <extracomment>Checkbox description.</extracomment>
+        <translation>Prevent your device from accessing the internet while not connected to a VPN server or in case connection with a VPN server is lost.</translation>
+    </message>
+    <message>
+        <location filename="../../app/ui/windows/PreferencesWindow.qml" line="175"/>
+        <source>Bypass network traffic sensors which aim to detect usage of VPN services and log, throttle or block them. (OpenVPN only)</source>
+        <extracomment>Checkbox description.</extracomment>
+        <translation>Bypass network traffic sensors which aim to detect usage of VPN services and log, throttle or block them. (OpenVPN only)</translation>
+    </message>
+    <message>
+        <location filename="../../app/ui/windows/PreferencesWindow.qml" line="404"/>
+        <source>If enabled, you may specify up to 3 custom DNS (Domain Name System) servers. Supported values are valid IPv4 or IPv6 addresses.
+This disables CyberSec.
+Note: Invalid addresses will be ignored upon saving.</source>
+        <extracomment>Checkbox description.</extracomment>
+        <translation>If enabled, you may specify up to 3 custom DNS (Domain Name System) servers. Supported values are valid IPv4 or IPv6 addresses.
+This disables CyberSec.
+Note: Invalid addresses will be ignored upon saving.</translation>
     </message>
     <message>
         <location filename="../../app/ui/windows/PreferencesWindow.qml" line="124"/>
@@ -1103,21 +1129,10 @@ Button the user presses when he/she attempts to login with the provided credenti
         <translation>Protocol</translation>
     </message>
     <message>
-        <location filename="../../app/ui/windows/PreferencesWindow.qml" line="126"/>
-        <source>TCP (Transmittion Control Protocol) is a connection-oriented protocol thatguarantees that all sent data is received correctly. UDP (User DatagramProtocol) on the other hand does not provide any error-detection to reducethe network overhead. UDP is therefore fasert but less reliable than TCP.</source>
-        <translation>TCP (Transmittion Control Protocol) is a connection-oriented protocol thatguarantees that all sent data is received correctly. UDP (User DatagramProtocol) on the other hand does not provide any error-detection to reducethe network overhead. UDP is therefore fasert but less reliable than TCP.</translation>
-    </message>
-    <message>
         <location filename="../../app/ui/windows/PreferencesWindow.qml" line="143"/>
         <source>Auto Connect</source>
         <extracomment>Checkbox label.</extracomment>
         <translation>Auto Connect</translation>
-    </message>
-    <message>
-        <location filename="../../app/ui/windows/PreferencesWindow.qml" line="145"/>
-        <source>Automatically try to connect to a VPN server on operating systemstartup.</source>
-        <extracomment>Checkbox description.</extracomment>
-        <translation>Automatically try to connect to a VPN server on operating systemstartup.</translation>
     </message>
     <message>
         <location filename="../../app/ui/windows/PreferencesWindow.qml" line="153"/>
@@ -1138,21 +1153,9 @@ Button the user presses when he/she attempts to login with the provided credenti
         <translation>Kill Switch</translation>
     </message>
     <message>
-        <location filename="../../app/ui/windows/PreferencesWindow.qml" line="164"/>
-        <source>Prevent your device from accessing the internet while not connected toa VPN server or in case connection with a VPN server is lost.</source>
-        <extracomment>Checkbox description.</extracomment>
-        <translation>Prevent your device from accessing the internet while not connected toa VPN server or in case connection with a VPN server is lost.</translation>
-    </message>
-    <message>
         <location filename="../../app/ui/windows/PreferencesWindow.qml" line="173"/>
         <source>Obfuscated</source>
         <translation>Obfuscated</translation>
-    </message>
-    <message>
-        <location filename="../../app/ui/windows/PreferencesWindow.qml" line="175"/>
-        <source>Bypass network traffic sensors which aim to detect usage of VPNservices and log, throttle or block them. (OpenVPN only)</source>
-        <extracomment>Checkbox description.</extracomment>
-        <translation>Bypass network traffic sensors which aim to detect usage of VPNservices and log, throttle or block them. (OpenVPN only)</translation>
     </message>
     <message>
         <location filename="../../app/ui/windows/PreferencesWindow.qml" line="195"/>
@@ -1189,16 +1192,6 @@ Button the user presses when he/she attempts to login with the provided credenti
         <source>Custom DNS</source>
         <extracomment>Checkbox label.</extracomment>
         <translation>Custom DNS</translation>
-    </message>
-    <message>
-        <location filename="../../app/ui/windows/PreferencesWindow.qml" line="404"/>
-        <source>If enabled, you may specify up to 3 custom DNS (Domain NameSystem) servers. Supported values are valid IPv4 or IPv6 addresses.
-This disables CyberSec.
-Note: Invalid addresses will be ignored upon saving.</source>
-        <extracomment>Checkbox description.</extracomment>
-        <translation>If enabled, you may specify up to 3 custom DNS (Domain NameSystem) servers. Supported values are valid IPv4 or IPv6 addresses.
-This disables CyberSec.
-Note: Invalid addresses will be ignored upon saving.</translation>
     </message>
     <message>
         <location filename="../../app/ui/windows/PreferencesWindow.qml" line="470"/>

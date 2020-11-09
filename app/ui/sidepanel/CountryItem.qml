@@ -171,7 +171,7 @@ Item {
 
                     Text {
                         //: The number of cities or regions with VPN servers in that country.
-                        text: country.cities.length + ' ' + qsTr('cities/regions')
+                        text: qsTr('%n cities/regions', '', country.cities.length)
                         font.pixelSize: Style.fontSizeSmall
                         color: Style.colorStatusPanelSeconary
                     }

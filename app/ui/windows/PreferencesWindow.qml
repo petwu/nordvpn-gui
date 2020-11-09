@@ -93,7 +93,7 @@ ApplicationWindow {
                 //: Checkbox label.
                 label: qsTr('Notifications')
                 //: Checkbox description.
-                description: qsTr('Show desktop contifications when the connection status changes.')
+                description: qsTr('Show desktop notifications when the connection status changes.')
                 checked: _.settings.notify
                 onCheckedChanged: PreferencesMediator.setNotify(checked)
             }
@@ -108,10 +108,10 @@ ApplicationWindow {
                 // Dropdown label.
                 label: qsTr('Technology')
                 // Dropdown description.
-                description: qsTr('OpenVPN is a robust open-source software for VPN services that supports' +
-                                  'both, TCP and UDP based connections. It is suggested for security-conscious' +
-                                  'users. NordLynx is a technology NordVPN built around WireGuard, a more' +
-                                  'recent alternative to OpenVPN. NordLynx promises to be faster than' +
+                description: qsTr('OpenVPN is a robust open-source software for VPN services that supports ' +
+                                  'both, TCP and UDP based connections. It is suggested for security-conscious ' +
+                                  'users. NordLynx is a technology NordVPN built around WireGuard, a more ' +
+                                  'recent alternative to OpenVPN. NordLynx promises to be faster than ' +
                                   'OpenVPN but it is less mature and only supports UDP connections.')
                 model: ['OpenVPN', 'NordLynx']
                 defaultText: _.settings.technology
@@ -123,9 +123,9 @@ ApplicationWindow {
                 // Dropdown label.
                 label: qsTr('Protocol')
                 // Dropdown description.
-                description: qsTr('TCP (Transmittion Control Protocol) is a connection-oriented protocol that' +
-                                  'guarantees that all sent data is received correctly. UDP (User Datagram' +
-                                  'Protocol) on the other hand does not provide any error-detection to reduce' +
+                description: qsTr('TCP (Transmittion Control Protocol) is a connection-oriented protocol that ' +
+                                  'guarantees that all sent data is received correctly. UDP (User Datagram ' +
+                                  'Protocol) on the other hand does not provide any error-detection to reduce ' +
                                   'the network overhead. UDP is therefore fasert but less reliable than TCP.')
                 model: ['UDP', 'TCP']
                 defaultText: _.settings.protocol
@@ -142,7 +142,7 @@ ApplicationWindow {
                 //: Checkbox label.
                 label: qsTr('Auto Connect')
                 //: Checkbox description.
-                description: qsTr('Automatically try to connect to a VPN server on operating system' +
+                description: qsTr('Automatically try to connect to a VPN server on operating system ' +
                                   'startup.')
                 checked: _.settings.autoconnect
                 onCheckedChanged: PreferencesMediator.setAutoconnect(checked)
@@ -161,7 +161,7 @@ ApplicationWindow {
                 //: Checkbox label.
                 label: qsTr('Kill Switch')
                 //: Checkbox description.
-                description: qsTr('Prevent your device from accessing the internet while not connected to' +
+                description: qsTr('Prevent your device from accessing the internet while not connected to ' +
                                   'a VPN server or in case connection with a VPN server is lost.')
                 checked: _.settings.killswitch
                 onCheckedChanged: PreferencesMediator.setKillswitch(checked)
@@ -172,7 +172,7 @@ ApplicationWindow {
                 id: obfuscatedCheckbox
                 label: qsTr('Obfuscated')
                 //: Checkbox description.
-                description: qsTr('Bypass network traffic sensors which aim to detect usage of VPN' +
+                description: qsTr('Bypass network traffic sensors which aim to detect usage of VPN ' +
                                   'services and log, throttle or block them. (OpenVPN only)')
                 enabled: _.settings.obfuscated !== null
                 checked: _.settings.obfuscated === true
@@ -401,7 +401,7 @@ ApplicationWindow {
                 //: Checkbox label.
                 label: qsTr('Custom DNS')
                 //: Checkbox description.
-                description: qsTr('If enabled, you may specify up to 3 custom DNS (Domain Name' +
+                description: qsTr('If enabled, you may specify up to 3 custom DNS (Domain Name ' +
                                   'System) servers. Supported values are valid IPv4 or IPv6 addresses.\n' +
                                   'This disables CyberSec.\n' +
                                   'Note: Invalid addresses will be ignored upon saving.')
