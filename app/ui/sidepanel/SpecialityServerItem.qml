@@ -103,7 +103,15 @@ Item {
         cursorShape: Mediator.areConnectionCommandsPaused
                      ? Qt.ArrowCursor
                      : Qt.PointingHandCursor
-        onClicked: Mediator.connectToSpecialtyGroup(specialityServerItem.groupId)
+        onClicked: Mediator.connectToCountryById(countryItem.country.id)
+    }
+
+    MouseArea {
+        anchors.fill: parent
+        cursorShape: Mediator.areConnectionCommandsPaused
+                     ? Qt.ArrowCursor
+                     : Qt.PointingHandCursor
+        onClicked: Mediator.connectToSpecialtyGroup(groupId)
     }
 
     ToolButton {
