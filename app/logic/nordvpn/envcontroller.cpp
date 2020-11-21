@@ -32,10 +32,8 @@ bool EnvController::_isInternetConnected() {
     std::vector<std::string> testUrls = {
         // Google DNS
         "https://8.8.8.8",
-        "https://8.8.4.4",
         // Cloudflare DNS
         "https://1.1.1.1",
-        "https://1.0.0.1",
         // Microsoft's Network Connectivity Status Indicator
         "http://www.msftncsi.com/ncsi.txt",
     };
@@ -45,7 +43,7 @@ bool EnvController::_isInternetConnected() {
         std::string httpData;
         CURL *curl = curl_easy_init();
         curl_easy_setopt(curl, CURLOPT_URL, testUrls[i].c_str());
-        curl_easy_setopt(curl, CURLOPT_TIMEOUT, 10);
+        curl_easy_setopt(curl, CURLOPT_TIMEOUT, 8);
         curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
         curl_easy_setopt(
             curl, CURLOPT_WRITEFUNCTION,
@@ -121,6 +119,7 @@ void EnvController::stopBackgroundTask() {
 void EnvController::_backgroundTask() {
     // get complete env info only once
     this->_envInfo = this->getEnvInfo();
+    this->_notifySubscribers();
     int i = 0;
     // then periodically do partial updates
     while (this->_performBackgroundTask) {

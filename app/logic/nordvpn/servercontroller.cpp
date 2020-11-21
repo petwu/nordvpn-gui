@@ -39,15 +39,15 @@ Server ServerController::getServerByHostname(std::string hostname) {
     return Server{};
 }
 
-std::vector<Country> ServerController::getAllCountries(bool updateFromCache) {
-    if (this->_allCountries.empty() || updateFromCache) {
+std::vector<Country> ServerController::getAllCountries(bool updateCache) {
+    if (this->_allCountries.empty() || updateCache) {
         auto cmdResult = Process::execute("nordvpn countries");
         auto cliCountries = util::string::split(cmdResult.output, ", ");
         std::vector<Country> all;
-        if (updateFromCache)
-            all = ServerRepository::fetchCountriesFromCache();
-        else
+        if (updateCache)
             all = ServerRepository::fetchCountries();
+        else
+            all = ServerRepository::fetchCountriesFromCache();
         std::vector<Country> availableCountries;
         // filter the vector to only contains countries that were returned
         // by the CLI command
@@ -309,10 +309,16 @@ void ServerController::_backgroundTaskServerList() {
 }
 
 void ServerController::_backgroundTaskCountryList() {
+    int i = 0;
     while (this->_performBackgroundTask) {
-        std::this_thread::sleep_for(
-            config::consts::COUNTRY_LIST_UPDATE_INTERVAL);
-        this->getAllCountries();
+        // update the cache the first time (on app start) ...
+        this->getAllCountries(i == 0);
+        if (i == 0)
+            // ... and the only every 43.200 * 2s = 24h
+            // (it's an unlikely use case, that the list of countries changes)
+            i = 43200;
+        i--;
         this->_notifySubscribersCountryList();
+        std::this_thread::sleep_for(std::chrono::seconds(2));
     }
 }
