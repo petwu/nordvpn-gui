@@ -25,7 +25,7 @@ class ServerController : public BaseController {
     static ServerController &getInstance();
     int32_t getCountryId(std::string name);
     Server getServerByHostname(std::string hostname);
-    std::vector<Country> getAllCountries(bool updateFromCache = false);
+    std::vector<Country> getAllCountries(bool updateCache = false);
     std::vector<Server> getServersByCountry(int32_t countryId);
     std::vector<Server> getServersByCity(int32_t cityId);
     std::vector<Country> getCountriesByGroup(Group g);

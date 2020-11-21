@@ -237,7 +237,7 @@ QVariantList Mediator::getServers(qint32 countryId, qint32 cityId) {
 QVariantList Mediator::getSpecialtyCountries(quint32 groupId) {
     QVariantList countries;
     auto group = groupFromInt(groupId);
-    if (group != Group::UNDEFINED)
+    if (group != Group::Undefined)
         for (auto country : this->_serverController.getCountriesByGroup(group))
             countries << QmlDataConverter::countryToQml(country);
     return std::move(countries);
@@ -246,7 +246,7 @@ QVariantList Mediator::getSpecialtyCountries(quint32 groupId) {
 QVariantList Mediator::getSpecialtyServers(quint32 groupId, qint32 countryId) {
     QVariantList servers;
     auto group = groupFromInt(groupId);
-    if (group != Group::UNDEFINED)
+    if (group != Group::Undefined)
         for (auto server :
              this->_serverController.getServersByGroup(group, countryId))
             servers << QmlDataConverter::serverToQml(server);

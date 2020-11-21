@@ -245,7 +245,7 @@ void ServerController::connectToServerById(uint32_t id) {
 }
 
 void ServerController::connectToSpecialtyGroup(Group g) {
-    if (g != Group::UNDEFINED)
+    if (g != Group::Undefined)
         AsyncProcess::execute("nordvpn connect " + group2connectName(g),
                               &this->_connectingPid);
 }

@@ -2,15 +2,15 @@
 
 std::string group2string(Group g) {
     switch (g) {
-    case Group::STANDARD:
+    case Group::Standard:
         return "Standard";
-    case Group::DOUBLE:
+    case Group::Double:
         return "Double";
-    case Group::ONION:
+    case Group::Onion:
         return "Onion";
     case Group::P2P:
         return "P2P";
-    case Group::OBFUSCATED:
+    case Group::Obfuscated:
         return "Obfuscated";
     default:
         return "";
@@ -19,15 +19,15 @@ std::string group2string(Group g) {
 
 std::string group2connectName(Group g) {
     switch (g) {
-    case Group::STANDARD:
+    case Group::Standard:
         return "Standard_VPN_Servers";
-    case Group::DOUBLE:
+    case Group::Double:
         return "Double_VPN";
-    case Group::ONION:
+    case Group::Onion:
         return "Onion_Over_VPN";
     case Group::P2P:
         return "P2P";
-    case Group::OBFUSCATED:
+    case Group::Obfuscated:
         return "Obfuscated_Servers";
     default:
         return "";
@@ -36,17 +36,17 @@ std::string group2connectName(Group g) {
 
 Group groupFromInt(int32_t groupId) {
     switch (groupId) {
-    case static_cast<int32_t>(Group::STANDARD):
-        return Group::STANDARD;
-    case static_cast<int32_t>(Group::DOUBLE):
-        return Group::DOUBLE;
-    case static_cast<int32_t>(Group::ONION):
-        return Group::ONION;
+    case static_cast<int32_t>(Group::Standard):
+        return Group::Standard;
+    case static_cast<int32_t>(Group::Double):
+        return Group::Double;
+    case static_cast<int32_t>(Group::Onion):
+        return Group::Onion;
     case static_cast<int32_t>(Group::P2P):
         return Group::P2P;
-    case static_cast<int32_t>(Group::OBFUSCATED):
-        return Group::OBFUSCATED;
+    case static_cast<int32_t>(Group::Obfuscated):
+        return Group::Obfuscated;
     default:
-        return Group::UNDEFINED;
+        return Group::Undefined;
     }
 }

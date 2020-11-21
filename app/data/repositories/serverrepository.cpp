@@ -57,15 +57,15 @@ std::vector<Server> ServerRepository::fetchServers() {
             for (json g : s["groups"]) {
                 std::string identifier = json::string_t(g["identifier"]);
                 if (identifier == "legacy_standard") {
-                    server.groups.push_back(Group::STANDARD);
+                    server.groups.push_back(Group::Standard);
                 } else if (identifier == "legacy_double_vpn") {
-                    server.groups.push_back(Group::DOUBLE);
+                    server.groups.push_back(Group::Double);
                 } else if (identifier == "legacy_onion_over_vpn") {
-                    server.groups.push_back(Group::ONION);
+                    server.groups.push_back(Group::Onion);
                 } else if (identifier == "legacy_p2p") {
                     server.groups.push_back(Group::P2P);
                 } else if (identifier == "legacy_obfuscated_servers") {
-                    server.groups.push_back(Group::OBFUSCATED);
+                    server.groups.push_back(Group::Obfuscated);
                 }
             }
         }
@@ -132,11 +132,11 @@ std::vector<Server> ServerRepository::fetchServers() {
     }
     saveServerListToFile(servers);
     std::map<Group, int> groupDistribution;
-    groupDistribution[Group::STANDARD] = 0;
-    groupDistribution[Group::DOUBLE] = 0;
-    groupDistribution[Group::ONION] = 0;
+    groupDistribution[Group::Standard] = 0;
+    groupDistribution[Group::Double] = 0;
+    groupDistribution[Group::Onion] = 0;
     groupDistribution[Group::P2P] = 0;
-    groupDistribution[Group::OBFUSCATED] = 0;
+    groupDistribution[Group::Obfuscated] = 0;
     int nServers = 0;
     for (auto s : servers) {
         nServers++;

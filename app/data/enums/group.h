@@ -4,12 +4,12 @@
 #include <string>
 
 enum class Group {
-    UNDEFINED,
-    STANDARD,
-    DOUBLE,
-    ONION,
+    Undefined,
+    Standard,
+    Double,
+    Onion,
     P2P,
-    OBFUSCATED,
+    Obfuscated,
 };
 
 std::string group2string(Group g);
