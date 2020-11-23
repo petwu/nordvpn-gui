@@ -103,7 +103,7 @@ Item {
         cursorShape: Mediator.areConnectionCommandsPaused
                      ? Qt.ArrowCursor
                      : Qt.PointingHandCursor
-        onClicked: Mediator.connectToCountryById(countryItem.country.id)
+        onClicked: Mediator.connectToSpecialtyGroup(groupId)
     }
 
     MouseArea {
