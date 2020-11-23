@@ -223,10 +223,13 @@ Item {
                 text: qsTr('Connect')
                 onClicked: {
                     const server = serverSelector.model[serverSelector.currentIndex]
-                    if (server.id < 0) {
-                        Mediator.connectToSpecialtyGroup(groupId)
-                    } else {
+                    const country = countrySelector.model[countrySelector.currentIndex]
+                    if (server.id >= 0) {
                         Mediator.connectToServerById(server.id)
+                    } else if (country.id >= 0) {
+                        Mediator.connectToCountryByIdAndGroup(country.id, groupId)
+                    } else {
+                        Mediator.connectToSpecialtyGroup(groupId)
                     }
                     specialtyServerSelectionPopup.close()
                 }

@@ -262,6 +262,25 @@ void ServerController::connectToSpecialtyGroup(Group g) {
                               &this->_connectingPid);
 }
 
+void ServerController::connectToCountryByIdAndGroup(uint32_t id, Group g) {
+    std::string groupName = group2connectName(g);
+    if (groupName == "") {
+        this->connectToCountryById(id);
+    } else {
+        for (auto country : this->_allCountries) {
+            if (country.id == id) {
+                AsyncProcess::execute("nordvpn connect --group " + groupName +
+                                          " " + country.connectName,
+                                      &this->_connectingPid,
+                                      [this, id](ProcessResult result) {
+                                          this->_checkConnectResult(result, id);
+                                      });
+                break;
+            }
+        }
+    }
+}
+
 void ServerController::cancelConnection() {
     // try to kill the process that is responsible for establishing the
     // connection --> might not work

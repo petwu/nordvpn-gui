@@ -171,6 +171,12 @@ class ServerController : public BaseController {
     void connectToSpecialtyGroup(Group g);
 
     /**
+     * @brief Connect to a country within a specific server group. Let NordVPN
+     * decide which server in the group and county is best.
+     */
+    void connectToCountryByIdAndGroup(uint32_t id, Group g);
+
+    /**
      * @brief Abort an connection attempt.
      * @details This kills the process establishing the connection and performs
      * a disconnect. Hence, if already connected, this function has the same

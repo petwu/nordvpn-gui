@@ -314,6 +314,11 @@ void Mediator::connectToSpecialtyGroup(quint32 groupId) {
     this->_serverController.connectToSpecialtyGroup(group);
 }
 
+void Mediator::connectToCountryByIdAndGroup(quint32 id, quint32 groupId) {
+    Group group = groupFromInt(groupId);
+    this->_serverController.connectToCountryByIdAndGroup(id, group);
+}
+
 void Mediator::cancelConnection() {
     this->_serverController.cancelConnection();
 }

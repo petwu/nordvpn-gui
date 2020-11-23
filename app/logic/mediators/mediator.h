@@ -54,6 +54,7 @@ class Mediator : public QObject,
     void connectToCityById(quint32 id);
     void connectToServerById(quint32 serverId);
     void connectToSpecialtyGroup(quint32 groupId);
+    void connectToCountryByIdAndGroup(quint32 id, quint32 groupId);
     void cancelConnection();
     void disconnect();
     void removeFromRecentsList(quint32 countryId);
