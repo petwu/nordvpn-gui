@@ -73,6 +73,12 @@ class ConnectionInfo {
     int32_t countryId = -1;
 
     /**
+     * @brief The cities ID according to the NordVPN API.
+     * @see https://api.nordvpn.com/v1/servers/countries
+     */
+    int32_t cityId = -1;
+
+    /**
      * @brief The name of the city the server is located in. Examples:
      * Frankfurt, New York, Zurich, etc.
      */

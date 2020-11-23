@@ -19,6 +19,25 @@ Item {
         onIsRatingPossibleChanged: (possible) => _.showRating = possible
     }
 
+    /*!
+     * @brief Format a byte number (integer) as a smaller number with the appropriate unit.
+     * Examples:
+     *     1024 --> 1 kiB
+     *     1,468,006 --> 1.4 MiB
+     *
+     * @param bytes The number of bytes as integer.
+     * @param decimals The number of decimal places.
+     */
+    function formatBytes(bytes, decimals = 2) {
+        // source (slightly modified):
+        // https://stackoverflow.com/questions/15900485/correct-way-to-convert-size-in-bytes-to-kb-mb-gb-in-javascript#answer-18650828
+        if (bytes <= 0) return '0 B'
+        const base = 1024
+        const sizes = ['B', 'kiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB']
+        const i = Math.floor(Math.log(bytes) / Math.log(base))
+        return parseFloat((bytes / Math.pow(base, i)).toFixed(Math.max(0, decimals))) + ' ' + sizes[i]
+    }
+
     QtObject {
         id: _
         property bool showRating: false
@@ -35,6 +54,20 @@ Item {
         width: content.width + 24
         height: content.height + 24
 
+        Behavior on height {
+            NumberAnimation {
+                duration: 100
+                easing.type: Easing.InOutQuad
+            }
+        }
+
+        Behavior on width {
+            NumberAnimation {
+                duration: 100
+                easing.type: Easing.InOutQuad
+            }
+        }
+
         RowLayout {
             x: 12
             y: 12
@@ -45,6 +78,7 @@ Item {
 
                 Column {
                     Layout.alignment: Qt.AlignBottom
+                    spacing: 2
 
                     RowLayout {
                         visible: !_.showRating
@@ -87,9 +121,8 @@ Item {
                     RowLayout {
                         Text {
                             text: {
-                                const country = Mediator.countryList.find((c) => {
-                                                                                 return c.id === Mediator.connectedCountryId
-                                                                             })
+                                const country = Mediator.countryList.find((c) => c.id === Mediator.connectedCountryId)
+                                const city = country ? country.cities.find((c) => c.id === Mediator.connectedCityId) : ''
                                 //: Feedback to NordVPN by rating the connection with 1 to 5 starts.
                                 if (_.showRating)                    return qsTr('Rate your connection speed')
                                 //: Status hint while disconnected.
@@ -97,19 +130,18 @@ Item {
                                 //: Status hint while connecting.
                                 if (Mediator.isConnecting)           return qsTr('Finding the best server ...')
                                 //: Status hint while connected.
-                                if (Mediator.isConnected && country) return qsTr('Connected to %1 #%2').arg(country.name).arg(Mediator.connectedServerNr)
-                                return ''
+                                if (Mediator.isConnected && country) return qsTr('Connected to %1, %2 #%3').arg(city.name).arg(country.name).arg(Mediator.connectedServerNr)
+                                return 'Error'
                             }
                         }
+                    }
 
-                        Text {
-                            text: Mediator.isConnected && Mediator.connectedIP
-                                  ? '(' + Mediator.connectedIP + ')'
-                                  : ''
-                            font.pixelSize: .9*Qt.application.font.pixelSize
-                            color: Style.colorStatusPanelSeconary
-                            font.weight: Font.Thin
-                        }
+                    Text {
+                        visible: Mediator.isConnected
+                        text: Mediator.connectedIP + '    ↑' + formatBytes(Mediator.sentBytes) + '    ↓' + formatBytes(Mediator.receivedBytes)
+                        font.pixelSize: .9*Qt.application.font.pixelSize
+                        color: Style.colorStatusPanelSeconary
+                        font.weight: Font.Thin
                     }
 
                     Text {

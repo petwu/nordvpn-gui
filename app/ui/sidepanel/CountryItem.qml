@@ -236,10 +236,13 @@ Item {
                 text: qsTr('Connect')
                 onClicked: {
                     const server = serverSelector.model[serverSelector.currentIndex]
-                    if (server.id < 0) {
-                        Mediator.connectToCountryById(country.id)
-                    } else {
+                    const city = citySelector.model[citySelector.currentIndex]
+                    if (server.id >= 0) {
                         Mediator.connectToServerById(server.id)
+                    } else if (city.id >= 0) {
+                        Mediator.connectToCityById(city.id)
+                    } else {
+                        Mediator.connectToCountryById(country.id)
                     }
                     cityServerSelectionPopup.close()
                 }

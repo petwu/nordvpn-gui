@@ -26,13 +26,18 @@ class Mediator : public QObject,
     Q_PROPERTY(bool isRatingPossbile READ _getIsRatingPossible NOTIFY
                    isRatingPossibleChanged)
     Q_PROPERTY(qint32 connectingCountryId READ _getConnectingCountryId NOTIFY
-                   connectingIdChanged)
+                   connectingCountryIdChanged)
     Q_PROPERTY(qint32 connectedCountryId READ _getConnectedCountryId NOTIFY
-                   connectedIdChanged)
+                   connectedCountryIdChanged)
+    Q_PROPERTY(qint32 connectedCityId READ _getConnectedCityId NOTIFY
+                   connectedCityIdChanged)
     Q_PROPERTY(qint32 connectedServerNr READ _getConnectedServerNr NOTIFY
                    connectedServerNrChanged)
     Q_PROPERTY(
         QString connectedIP READ _getConnectedIP NOTIFY connectedIPChanged)
+    Q_PROPERTY(
+        qint64 receivedBytes READ _getReceivedBytes NOTIFY receivedBytesChanged)
+    Q_PROPERTY(qint64 sentBytes READ _getSentBytes NOTIFY sentBytesChanged)
     Q_PROPERTY(
         QVariant countryList READ _getCountryList NOTIFY countryListChanged)
     Q_PROPERTY(QVariantList recentCountries READ _getRecentCountries NOTIFY
@@ -46,6 +51,7 @@ class Mediator : public QObject,
   public slots:
     void quickConnect();
     void connectToCountryById(quint32 id);
+    void connectToCityById(quint32 id);
     void connectToServerById(quint32 serverId);
     void connectToSpecialtyGroup(quint32 groupId);
     void cancelConnection();
@@ -62,10 +68,13 @@ class Mediator : public QObject,
     void connectingChanged(bool);
     void connectedChanged(bool);
     void isRatingPossibleChanged(bool);
-    void connectingIdChanged(qint32);
-    void connectedIdChanged(qint32);
+    void connectingCountryIdChanged(qint32);
+    void connectedCountryIdChanged(qint32);
+    void connectedCityIdChanged(qint32);
     void connectedServerNrChanged(qint32);
     void connectedIPChanged(QString);
+    void receivedBytesChanged(qint64);
+    void sentBytesChanged(qint64);
     void countryListChanged(QVariant);
     void recentCountriesChanged(QVariantList);
     void connectedServerGroupsChanged(QVariantList);
@@ -98,12 +107,21 @@ class Mediator : public QObject,
     int32_t _connectedCountryId = -1;
     qint32 _getConnectedCountryId();
     void _setConnectedCountryId(qint32 value);
+    int32_t _connectedCityId = -1;
+    qint32 _getConnectedCityId();
+    void _setConnectedCityId(qint32 value);
     int32_t _connectedServerNr = 0;
     qint32 _getConnectedServerNr();
     void _setConnectedServerNr(qint32 value);
     std::string _connectedIP = "";
     QString _getConnectedIP();
     void _setConnectedIP(std::string value);
+    uint64_t _receivedBytes = 0;
+    qint64 _getReceivedBytes();
+    void _setReceivedBytes(uint64_t value);
+    uint64_t _sentBytes = 0;
+    qint64 _getSentBytes();
+    void _setSentBytes(uint64_t value);
     QVariant _getCountryList();
     std::vector<Country> _recentCountries;
     QVariantList _getRecentCountries();

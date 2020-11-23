@@ -1,474 +1,565 @@
 [
-    {
-        "name": "Albania",
-        "connectName": "Albania",
-        "offsetLeft": 0.5372,
-        "offsetTop": 0.397,
-        "lat": 41.153332,
-        "lng": 20.168331
-    },
-    {
-        "name": "Argentina",
-        "connectName": "Argentina",
-        "offsetLeft": 0.2917,
-        "offsetTop": 0.8416,
-        "lat": -38.416097,
-        "lng": -63.616672
-    },
-    {
-        "name": "Australia",
-        "connectName": "Australia",
-        "offsetLeft": 0.8873,
-        "offsetTop": 0.8116,
-        "lat": -25.274398,
-        "lng": 133.775136
-    },
-    {
-        "name": "Austria",
-        "connectName": "Austria",
-        "offsetLeft": 0.5189,
-        "offsetTop": 0.3548,
-        "lat": 47.516231,
-        "lng": 14.550072
-    },
-    {
-        "name": "Belgium",
-        "connectName": "Belgium",
-        "offsetLeft": 0.4923,
-        "offsetTop": 0.3325,
-        "lat": 50.503887,
-        "lng": 4.469936
-    },
-    {
-        "name": "Bosnia and Herzegovina",
-        "connectName": "Bosnia_And_Herzegovina",
-        "offsetLeft": 0.5310,
-        "offsetTop": 0.3756,
-        "lat": 43.915886,
-        "lng": 17.679076
-    },
-    {
-        "name": "Brazil",
-        "connectName": "Brazil",
-        "offsetLeft": 0.3274,
-        "offsetTop": 0.7161,
-        "lat": -14.235004,
-        "lng": -51.92528
-    },
-    {
-        "name": "Bulgaria",
-        "connectName": "Bulgaria",
-        "offsetLeft": 0.5508,
-        "offsetTop": 0.3867,
-        "lat": 42.733883,
-        "lng": 25.48583
-    },
-    {
-        "name": "Canada",
-        "connectName": "Canada",
-        "offsetLeft": 0.1988,
-        "offsetTop": 0.2472,
-        "lat": 56.130366,
-        "lng": -106.346771
-    },
-    {
-        "name": "Chile",
-        "connectName": "Chile",
-        "offsetLeft": 0.2717,
-        "offsetTop": 0.8809,
-        "lat": -35.675147,
-        "lng": -71.542969
-    },
-    {
-        "name": "Costa Rica",
-        "connectName": "Costa_Rica",
-        "offsetLeft": 0.2177,
-        "offsetTop": 0.5768,
-        "lat": 9.748917,
-        "lng": -83.753428
-    },
-    {
-        "name": "Croatia",
-        "connectName": "Croatia",
-        "offsetLeft": 0.5246,
-        "offsetTop": 0.3780,
-        "lat": 45.1,
-        "lng": 15.2
-    },
-    {
-        "name": "Cyprus",
-        "connectName": "Cyprus",
-        "offsetLeft": 0.553,
-        "offsetTop": 0.4329,
-        "lat": 35.126413,
-        "lng": 33.429859
-    },
-    {
-        "name": "Czech Republic",
-        "connectName": "Czech_Republic",
-        "offsetLeft": 0.5219,
-        "offsetTop": 0.338,
-        "lat": 49.817492,
-        "lng": 15.472962
-    },
-    {
-        "name": "Denmark",
-        "connectName": "Denmark",
-        "offsetLeft": 0.5039,
-        "offsetTop": 0.2942,
-        "lat": 56.26392,
-        "lng": 9.501785
-    },
-    {
-        "name": "Estonia",
-        "connectName": "Estonia",
-        "offsetLeft": 0.5463,
-        "offsetTop": 0.2717,
-        "lat": 58.595272,
-        "lng": 25.013607
-    },
-    {
-        "name": "Finland",
-        "connectName": "Finland",
-        "offsetLeft": 0.5459,
-        "offsetTop": 0.2392,
-        "lat": 61.92411,
-        "lng": 25.748151
-    },
-    {
-        "name": "France",
-        "connectName": "France",
-        "offsetLeft": 0.4876,
-        "offsetTop": 0.3636,
-        "lat": 46.227638,
-        "lng": 2.213749
-    },
-    {
-        "name": "Georgia",
-        "connectName": "Georgia",
-        "offsetLeft": 0.6008,
-        "offsetTop": 0.3856,
-        "lat": 42.315407,
-        "lng": 43.356892
-    },
-    {
-        "name": "Germany",
-        "connectName": "Germany",
-        "offsetLeft": 0.5083,
-        "offsetTop": 0.334,
-        "lat": 51.165691,
-        "lng": 10.451526
-    },
-    {
-        "name": "Greece",
-        "connectName": "Greece",
-        "offsetLeft": 0.5445,
-        "offsetTop": 0.4198,
-        "lat": 39.074208,
-        "lng": 21.824312
-    },
-    {
-        "name": "Hong Kong",
-        "connectName": "Hong_Kong",
-        "offsetLeft": 0.8290,
-        "offsetTop": 0.4847,
-        "lat": 22.396428,
-        "lng": 114.109497
-    },
-    {
-        "name": "Hungary",
-        "connectName": "Hungary",
-        "offsetLeft": 0.5316,
-        "offsetTop": 0.3580,
-        "lat": 47.162494,
-        "lng": 19.503304
-    },
-    {
-        "name": "Iceland",
-        "connectName": "Iceland",
-        "offsetLeft": 0.4348,
-        "offsetTop": 0.2318,
-        "lat": 64.963051,
-        "lng": -19.020835
-    },
-    {
-        "name": "India",
-        "connectName": "India",
-        "offsetLeft": 0.72,
-        "offsetTop": 0.51,
-        "lat": 20.593684,
-        "lng": 78.96288
-    },
-    {
-        "name": "Indonesia",
-        "connectName": "Indonesia",
-        "offsetLeft": 0.8351,
-        "offsetTop": 0.6412,
-        "lat": -0.789275,
-        "lng": 113.921327
-    },
-    {
-        "name": "Ireland",
-        "connectName": "Ireland",
-        "offsetLeft": 0.4582,
-        "offsetTop": 0.3164,
-        "lat": 53.41291,
-        "lng": -8.24389
-    },
-    {
-        "name": "Israel",
-        "connectName": "Israel",
-        "offsetLeft": 0.5816,
-        "offsetTop": 0.4522,
-        "lat": 31.046051,
-        "lng": 34.851612
-    },
-    {
-        "name": "Italy",
-        "connectName": "Italy",
-        "offsetLeft": 0.5169,
-        "offsetTop": 0.3894,
-        "lat": 41.87194,
-        "lng": 12.56738
-    },
-    {
-        "name": "Japan",
-        "connectName": "Japan",
-        "offsetLeft": 0.8853,
-        "offsetTop": 0.3816,
-        "lat": 36.204824,
-        "lng": 138.252924
-    },
-    {
-        "name": "Latvia",
-        "connectName": "Latvia",
-        "offsetLeft": 0.5473,
-        "offsetTop": 0.2864,
-        "lat": 56.879635,
-        "lng": 24.603189
-    },
-    {
-        "name": "Luxembourg",
-        "connectName": "Luxembourg",
-        "offsetLeft": 0.4983,
-        "offsetTop": 0.3401,
-        "lat": 49.815273,
-        "lng": 6.129583
-    },
-    {
-        "name": "Malaysia",
-        "connectName": "Malaysia",
-        "offsetLeft": 0.7957,
-        "offsetTop": 0.6100,
-        "lat": 4.210484,
-        "lng": 101.975766
-    },
-    {
-        "name": "Mexico",
-        "connectName": "Mexico",
-        "offsetLeft": 0.1711,
-        "offsetTop": 0.5067,
-        "lat": 23.634501,
-        "lng": -102.552784
-    },
-    {
-        "name": "Moldova",
-        "connectName": "Moldova",
-        "offsetLeft": 0.5581,
-        "offsetTop": 0.3544,
-        "lat": 47.411631,
-        "lng": 28.369885
-    },
-    {
-        "name": "Netherlands",
-        "connectName": "Netherlands",
-        "offsetLeft": 0.4960,
-        "offsetTop": 0.3223,
-        "lat": 52.132633,
-        "lng": 5.291266
-    },
-    {
-        "name": "New Zealand",
-        "connectName": "New_Zealand",
-        "offsetLeft": 0.965,
-        "offsetTop": 0.9768,
-        "lat": -40.900557,
-        "lng": 174.885971
-    },
-    {
-        "name": "North Macedonia",
-        "connectName": "North_Macedonia",
-        "offsetLeft": 0.5417,
-        "offsetTop": 0.3922,
-        "lat": 41.608635,
-        "lng": 21.745275
-    },
-    {
-        "name": "Norway",
-        "connectName": "Norway",
-        "offsetLeft": 0.5025,
-        "offsetTop": 0.2553,
-        "lat": 60.472024,
-        "lng": 8.468946
-    },
-    {
-        "name": "Poland",
-        "connectName": "Poland",
-        "offsetLeft": 0.5323,
-        "offsetTop": 0.3230,
-        "lat": 51.919438,
-        "lng": 19.145136
-    },
-    {
-        "name": "Portugal",
-        "connectName": "Portugal",
-        "offsetLeft": 0.4564,
-        "offsetTop": 0.4092,
-        "lat": 39.399872,
-        "lng": -8.224454
-    },
-    {
-        "name": "Romania",
-        "connectName": "Romania",
-        "offsetLeft": 0.5494,
-        "offsetTop": 0.3660,
-        "lat": 45.943161,
-        "lng": 24.96676
-    },
-    {
-        "name": "Serbia",
-        "connectName": "Serbia",
-        "offsetLeft": 0.5390,
-        "offsetTop": 0.3778,
-        "lat": 44.016521,
-        "lng": 21.005859
-    },
-    {
-        "name": "Singapore",
-        "connectName": "Singapore",
-        "offsetLeft": 0.8020,
-        "offsetTop": 0.6239,
-        "lat": 1.352083,
-        "lng": 103.819836
-    },
-    {
-        "name": "Slovakia",
-        "connectName": "Slovakia",
-        "offsetLeft": 0.5344,
-        "offsetTop": 0.3466,
-        "lat": 48.669026,
-        "lng": 19.699024
-    },
-    {
-        "name": "Slovenia",
-        "connectName": "Slovenia",
-        "offsetLeft": 0.5217,
-        "offsetTop": 0.3637,
-        "lat": 46.151241,
-        "lng": 14.995463
-    },
-    {
-        "name": "South Africa",
-        "connectName": "South_Africa",
-        "offsetLeft": 0.5513,
-        "offsetTop": 0.8070,
-        "lat": -30.559482,
-        "lng": 22.937506
-    },
-    {
-        "name": "South Korea",
-        "connectName": "South_Korea",
-        "offsetLeft": 0.8523,
-        "offsetTop": 0.3868,
-        "lat": 35.907757,
-        "lng": 127.766922
-    },
-    {
-        "name": "Spain",
-        "connectName": "Spain",
-        "offsetLeft": 0.47,
-        "offsetTop": 0.4047,
-        "lat": 40.463667,
-        "lng": -3.74922
-    },
-    {
-        "name": "Sweden",
-        "connectName": "Sweden",
-        "offsetLeft": 0.5183,
-        "offsetTop": 0.2608,
-        "lat": 60.128161,
-        "lng": 18.643501
-    },
-    {
-        "name": "Switzerland",
-        "connectName": "Switzerland",
-        "offsetLeft": 0.5024,
-        "offsetTop": 0.3588,
-        "lat": 46.818188,
-        "lng": 8.227512
-    },
-    {
-        "name": "Taiwan",
-        "connectName": "Taiwan",
-        "offsetLeft": 0.8462,
-        "offsetTop": 0.4748,
-        "lat": 23.69781,
-        "lng": 120.960515
-    },
-    {
-        "name": "Thailand",
-        "connectName": "Thailand",
-        "offsetLeft": 0.7896,
-        "offsetTop": 0.5386,
-        "lat": 15.870032,
-        "lng": 100.992541
-    },
-    {
-        "name": "Turkey",
-        "connectName": "Turkey",
-        "offsetLeft": 0.5799,
-        "offsetTop": 0.4099,
-        "lat": 38.963745,
-        "lng": 35.243322
-    },
-    {
-        "name": "Ukraine",
-        "connectName": "Ukraine",
-        "offsetLeft": 0.5675,
-        "offsetTop": 0.3405,
-        "lat": 48.379433,
-        "lng": 31.16558
-    },
-    {
-        "name": "United Arab Emirates",
-        "connectName": "United_Arab_Emirates",
-        "offsetLeft": 0.6415,
-        "offsetTop": 0.4984,
-        "lat": 23.424076,
-        "lng": 53.847818
-    },
-    {
-        "name": "United Kingdom",
-        "connectName": "United_Kingdom",
-        "offsetLeft": 0.4762,
-        "offsetTop": 0.3248,
-        "lat": 55.378051,
-        "lng": -3.435973
-    },
-    {
-        "name": "United States",
-        "connectName": "United_States",
-        "offsetLeft": 0.1922,
-        "offsetTop": 0.3871,
-        "lat": 37.09024,
-        "lng": -95.712891
-    },
-    {
-        "name": "Vietnam",
-        "connectName": "Vietnam",
-        "offsetLeft": 0.8133,
-        "offsetTop": 0.5476,
-        "lat": 14.058324,
-        "lng": 108.277199
-    }
+  {
+    "name": "Albania",
+    "connectName": "Albania",
+    "offsetLeft": 0.5372,
+    "offsetTop": 0.397,
+    "lat": 41.153332,
+    "lng": 20.168331,
+    "cities": [{ "name": "Tirana", "connectName": "Tirana" }]
+  },
+  {
+    "name": "Argentina",
+    "connectName": "Argentina",
+    "offsetLeft": 0.2917,
+    "offsetTop": 0.8416,
+    "lat": -38.416097,
+    "lng": -63.616672,
+    "cities": [{ "name": "Buenos Aires", "connectName": "Buenos_Aires" }]
+  },
+  {
+    "name": "Australia",
+    "connectName": "Australia",
+    "offsetLeft": 0.8873,
+    "offsetTop": 0.8116,
+    "lat": -25.274398,
+    "lng": 133.775136,
+    "cities": [
+      { "name": "Adelaide", "connectName": "Adelaide" },
+      { "name": "Brisbane", "connectName": "Brisbane" },
+      { "name": "Melbourne", "connectName": "Melbourne" },
+      { "name": "Perth", "connectName": "Perth" },
+      { "name": "Sydney", "connectName": "Sydney" }
+    ]
+  },
+  {
+    "name": "Austria",
+    "connectName": "Austria",
+    "offsetLeft": 0.5189,
+    "offsetTop": 0.3548,
+    "lat": 47.516231,
+    "lng": 14.550072,
+    "cities": [{ "name": "Vienna", "connectName": "Vienna" }]
+  },
+  {
+    "name": "Belgium",
+    "connectName": "Belgium",
+    "offsetLeft": 0.4923,
+    "offsetTop": 0.3325,
+    "lat": 50.503887,
+    "lng": 4.469936,
+    "cities": [{ "name": "Brussels", "connectName": "Brussels" }]
+  },
+  {
+    "name": "Bosnia and Herzegovina",
+    "connectName": "Bosnia_And_Herzegovina",
+    "offsetLeft": 0.531,
+    "offsetTop": 0.3756,
+    "lat": 43.915886,
+    "lng": 17.679076,
+    "cities": [{ "name": "Sarajevo", "connectName": "Sarajevo" }]
+  },
+  {
+    "name": "Brazil",
+    "connectName": "Brazil",
+    "offsetLeft": 0.3274,
+    "offsetTop": 0.7161,
+    "lat": -14.235004,
+    "lng": -51.92528,
+    "cities": [{ "name": "San Paulo", "connectName": "San_Paulo" }]
+  },
+  {
+    "name": "Bulgaria",
+    "connectName": "Bulgaria",
+    "offsetLeft": 0.5508,
+    "offsetTop": 0.3867,
+    "lat": 42.733883,
+    "lng": 25.48583,
+    "cities": [{ "name": "Sofia", "connectName": "Sofia" }]
+  },
+  {
+    "name": "Canada",
+    "connectName": "Canada",
+    "offsetLeft": 0.1988,
+    "offsetTop": 0.2472,
+    "lat": 56.130366,
+    "lng": -106.346771,
+    "cities": [
+      { "name": "Montreal", "connectName": "Montreal" },
+      { "name": "Toronto", "connectName": "Toronto" },
+      { "name": "Vancouver", "connectName": "Vancouver" }
+    ]
+  },
+  {
+    "name": "Chile",
+    "connectName": "Chile",
+    "offsetLeft": 0.2717,
+    "offsetTop": 0.8809,
+    "lat": -35.675147,
+    "lng": -71.542969,
+    "cities": [{ "name": "Santiago", "connectName": "Santiago" }]
+  },
+  {
+    "name": "Costa Rica",
+    "connectName": "Costa_Rica",
+    "offsetLeft": 0.2177,
+    "offsetTop": 0.5768,
+    "lat": 9.748917,
+    "lng": -83.753428,
+    "cities": [{ "name": "San Jose", "connectName": "San_Jose" }]
+  },
+  {
+    "name": "Croatia",
+    "connectName": "Croatia",
+    "offsetLeft": 0.5246,
+    "offsetTop": 0.378,
+    "lat": 45.1,
+    "lng": 15.2,
+    "cities": [{ "name": "Zagreb", "connectName": "Zagreb" }]
+  },
+  {
+    "name": "Cyprus",
+    "connectName": "Cyprus",
+    "offsetLeft": 0.553,
+    "offsetTop": 0.4329,
+    "lat": 35.126413,
+    "lng": 33.429859,
+    "cities": [{ "name": "Nicosia", "connectName": "Nicosia" }]
+  },
+  {
+    "name": "Czech Republic",
+    "connectName": "Czech_Republic",
+    "offsetLeft": 0.5219,
+    "offsetTop": 0.338,
+    "lat": 49.817492,
+    "lng": 15.472962,
+    "cities": [{ "name": "Prague", "connectName": "Prague" }]
+  },
+  {
+    "name": "Denmark",
+    "connectName": "Denmark",
+    "offsetLeft": 0.5039,
+    "offsetTop": 0.2942,
+    "lat": 56.26392,
+    "lng": 9.501785,
+    "cities": [{ "name": "Copenhagen", "connectName": "Copenhagen" }]
+  },
+  {
+    "name": "Estonia",
+    "connectName": "Estonia",
+    "offsetLeft": 0.5463,
+    "offsetTop": 0.2717,
+    "lat": 58.595272,
+    "lng": 25.013607,
+    "cities": [{ "name": "Tallinn", "connectName": "Tallinn" }]
+  },
+  {
+    "name": "Finland",
+    "connectName": "Finland",
+    "offsetLeft": 0.5459,
+    "offsetTop": 0.2392,
+    "lat": 61.92411,
+    "lng": 25.748151,
+    "cities": [{ "name": "Helsinki", "connectName": "Helsinki" }]
+  },
+  {
+    "name": "France",
+    "connectName": "France",
+    "offsetLeft": 0.4876,
+    "offsetTop": 0.3636,
+    "lat": 46.227638,
+    "lng": 2.213749,
+    "cities": [{ "name": "Paris", "connectName": "Paris" }]
+  },
+  {
+    "name": "Georgia",
+    "connectName": "Georgia",
+    "offsetLeft": 0.6008,
+    "offsetTop": 0.3856,
+    "lat": 42.315407,
+    "lng": 43.356892,
+    "cities": [{ "name": "Tbilisi", "connectName": "Tbilisi" }]
+  },
+  {
+    "name": "Germany",
+    "connectName": "Germany",
+    "offsetLeft": 0.5083,
+    "offsetTop": 0.334,
+    "lat": 51.165691,
+    "lng": 10.451526,
+    "cities": [
+      { "name": "Berlin", "connectName": "Berlin" },
+      { "name": "Frankfurt", "connectName": "Frankfurt" }
+    ]
+  },
+  {
+    "name": "Greece",
+    "connectName": "Greece",
+    "offsetLeft": 0.5445,
+    "offsetTop": 0.4198,
+    "lat": 39.074208,
+    "lng": 21.824312,
+    "cities": [{ "name": "Athens", "connectName": "Athens" }]
+  },
+  {
+    "name": "Hong Kong",
+    "connectName": "Hong_Kong",
+    "offsetLeft": 0.829,
+    "offsetTop": 0.4847,
+    "lat": 22.396428,
+    "lng": 114.109497,
+    "cities": [{ "name": "Hong Kong", "connectName": "Hong_Kong" }]
+  },
+  {
+    "name": "Hungary",
+    "connectName": "Hungary",
+    "offsetLeft": 0.5316,
+    "offsetTop": 0.358,
+    "lat": 47.162494,
+    "lng": 19.503304,
+    "cities": [{ "name": "Budapest", "connectName": "Budapest" }]
+  },
+  {
+    "name": "Iceland",
+    "connectName": "Iceland",
+    "offsetLeft": 0.4348,
+    "offsetTop": 0.2318,
+    "lat": 64.963051,
+    "lng": -19.020835,
+    "cities": [{ "name": "Reykjavik", "connectName": "Reykjavik" }]
+  },
+  {
+    "name": "India",
+    "connectName": "India",
+    "offsetLeft": 0.72,
+    "offsetTop": 0.51,
+    "lat": 20.593684,
+    "lng": 78.96288,
+    "cities": [
+      { "name": "Chennai", "connectName": "Chennai" },
+      { "name": "Mumbai", "connectName": "Mumbai" }
+    ]
+  },
+  {
+    "name": "Indonesia",
+    "connectName": "Indonesia",
+    "offsetLeft": 0.8351,
+    "offsetTop": 0.6412,
+    "lat": -0.789275,
+    "lng": 113.921327,
+    "cities": [{ "name": "Jakarta", "connectName": "Jakarta" }]
+  },
+  {
+    "name": "Ireland",
+    "connectName": "Ireland",
+    "offsetLeft": 0.4582,
+    "offsetTop": 0.3164,
+    "lat": 53.41291,
+    "lng": -8.24389,
+    "cities": [{ "name": "Dublin", "connectName": "Dublin" }]
+  },
+  {
+    "name": "Israel",
+    "connectName": "Israel",
+    "offsetLeft": 0.5816,
+    "offsetTop": 0.4522,
+    "lat": 31.046051,
+    "lng": 34.851612,
+    "cities": [{ "name": "Tel Aviv", "connectName": "Tel_Aviv" }]
+  },
+  {
+    "name": "Italy",
+    "connectName": "Italy",
+    "offsetLeft": 0.5169,
+    "offsetTop": 0.3894,
+    "lat": 41.87194,
+    "lng": 12.56738,
+    "cities": [{ "name": "Milan", "connectName": "Milan" }]
+  },
+  {
+    "name": "Japan",
+    "connectName": "Japan",
+    "offsetLeft": 0.8853,
+    "offsetTop": 0.3816,
+    "lat": 36.204824,
+    "lng": 138.252924,
+    "cities": [{ "name": "Tokyo", "connectName": "Tokyo" }]
+  },
+  {
+    "name": "Latvia",
+    "connectName": "Latvia",
+    "offsetLeft": 0.5473,
+    "offsetTop": 0.2864,
+    "lat": 56.879635,
+    "lng": 24.603189,
+    "cities": [{ "name": "Riga", "connectName": "Riga" }]
+  },
+  {
+    "name": "Luxembourg",
+    "connectName": "Luxembourg",
+    "offsetLeft": 0.4983,
+    "offsetTop": 0.3401,
+    "lat": 49.815273,
+    "lng": 6.129583,
+    "cities": [{ "name": "Steinsel", "connectName": "Steinsel" }]
+  },
+  {
+    "name": "Malaysia",
+    "connectName": "Malaysia",
+    "offsetLeft": 0.7957,
+    "offsetTop": 0.61,
+    "lat": 4.210484,
+    "lng": 101.975766,
+    "cities": [{ "name": "Kuala Lumpur", "connectName": "Kuala_Lumpur" }]
+  },
+  {
+    "name": "Mexico",
+    "connectName": "Mexico",
+    "offsetLeft": 0.1711,
+    "offsetTop": 0.5067,
+    "lat": 23.634501,
+    "lng": -102.552784,
+    "cities": [{ "name": "Mexico", "connectName": "Mexico" }]
+  },
+  {
+    "name": "Moldova",
+    "connectName": "Moldova",
+    "offsetLeft": 0.5581,
+    "offsetTop": 0.3544,
+    "lat": 47.411631,
+    "lng": 28.369885,
+    "cities": [{ "name": "Chisinau", "connectName": "Chisinau" }]
+  },
+  {
+    "name": "Netherlands",
+    "connectName": "Netherlands",
+    "offsetLeft": 0.496,
+    "offsetTop": 0.3223,
+    "lat": 52.132633,
+    "lng": 5.291266,
+    "cities": [{ "name": "Amsterdam", "connectName": "Amsterdam" }]
+  },
+  {
+    "name": "New Zealand",
+    "connectName": "New_Zealand",
+    "offsetLeft": 0.965,
+    "offsetTop": 0.9768,
+    "lat": -40.900557,
+    "lng": 174.885971,
+    "cities": [{ "name": "Auckland", "connectName": "Auckland" }]
+  },
+  {
+    "name": "North Macedonia",
+    "connectName": "North_Macedonia",
+    "offsetLeft": 0.5417,
+    "offsetTop": 0.3922,
+    "lat": 41.608635,
+    "lng": 21.745275,
+    "cities": [{ "name": "Skopje", "connectName": "Skopje" }]
+  },
+  {
+    "name": "Norway",
+    "connectName": "Norway",
+    "offsetLeft": 0.5025,
+    "offsetTop": 0.2553,
+    "lat": 60.472024,
+    "lng": 8.468946,
+    "cities": [{ "name": "Oslo", "connectName": "Oslo" }]
+  },
+  {
+    "name": "Poland",
+    "connectName": "Poland",
+    "offsetLeft": 0.5323,
+    "offsetTop": 0.323,
+    "lat": 51.919438,
+    "lng": 19.145136,
+    "cities": [{ "name": "Warsaw", "connectName": "Warsaw" }]
+  },
+  {
+    "name": "Portugal",
+    "connectName": "Portugal",
+    "offsetLeft": 0.4564,
+    "offsetTop": 0.4092,
+    "lat": 39.399872,
+    "lng": -8.224454,
+    "cities": [{ "name": "Lisbon", "connectName": "Lisbon" }]
+  },
+  {
+    "name": "Romania",
+    "connectName": "Romania",
+    "offsetLeft": 0.5494,
+    "offsetTop": 0.366,
+    "lat": 45.943161,
+    "lng": 24.96676,
+    "cities": [{ "name": "Bucharest", "connectName": "Bucharest" }]
+  },
+  {
+    "name": "Serbia",
+    "connectName": "Serbia",
+    "offsetLeft": 0.539,
+    "offsetTop": 0.3778,
+    "lat": 44.016521,
+    "lng": 21.005859,
+    "cities": [{ "name": "Belgrad", "connectName": "Belgrad" }]
+  },
+  {
+    "name": "Singapore",
+    "connectName": "Singapore",
+    "offsetLeft": 0.802,
+    "offsetTop": 0.6239,
+    "lat": 1.352083,
+    "lng": 103.819836,
+    "cities": [{ "name": "Singapore", "connectName": "Singapore" }]
+  },
+  {
+    "name": "Slovakia",
+    "connectName": "Slovakia",
+    "offsetLeft": 0.5344,
+    "offsetTop": 0.3466,
+    "lat": 48.669026,
+    "lng": 19.699024,
+    "cities": [{ "name": "Bratislava", "connectName": "Bratislava" }]
+  },
+  {
+    "name": "Slovenia",
+    "connectName": "Slovenia",
+    "offsetLeft": 0.5217,
+    "offsetTop": 0.3637,
+    "lat": 46.151241,
+    "lng": 14.995463,
+    "cities": [{ "name": "Ljubljana", "connectName": "Ljubljana" }]
+  },
+  {
+    "name": "South Africa",
+    "connectName": "South_Africa",
+    "offsetLeft": 0.5513,
+    "offsetTop": 0.807,
+    "lat": -30.559482,
+    "lng": 22.937506,
+    "cities": [{ "name": "Johannesburg", "connectName": "Johannesburg" }]
+  },
+  {
+    "name": "South Korea",
+    "connectName": "South_Korea",
+    "offsetLeft": 0.8523,
+    "offsetTop": 0.3868,
+    "lat": 35.907757,
+    "lng": 127.766922,
+    "cities": [{ "name": "Seoul", "connectName": "Seoul" }]
+  },
+  {
+    "name": "Spain",
+    "connectName": "Spain",
+    "offsetLeft": 0.47,
+    "offsetTop": 0.4047,
+    "lat": 40.463667,
+    "lng": -3.74922,
+    "cities": [{ "name": "Madrid", "connectName": "Madrid" }]
+  },
+  {
+    "name": "Sweden",
+    "connectName": "Sweden",
+    "offsetLeft": 0.5183,
+    "offsetTop": 0.2608,
+    "lat": 60.128161,
+    "lng": 18.643501,
+    "cities": [{ "name": "Stockholm", "connectName": "Stockholm" }]
+  },
+  {
+    "name": "Switzerland",
+    "connectName": "Switzerland",
+    "offsetLeft": 0.5024,
+    "offsetTop": 0.3588,
+    "lat": 46.818188,
+    "lng": 8.227512,
+    "cities": [{ "name": "Zurich", "connectName": "Zurich" }]
+  },
+  {
+    "name": "Taiwan",
+    "connectName": "Taiwan",
+    "offsetLeft": 0.8462,
+    "offsetTop": 0.4748,
+    "lat": 23.69781,
+    "lng": 120.960515,
+    "cities": [{ "name": "Taipei", "connectName": "Taipei" }]
+  },
+  {
+    "name": "Thailand",
+    "connectName": "Thailand",
+    "offsetLeft": 0.7896,
+    "offsetTop": 0.5386,
+    "lat": 15.870032,
+    "lng": 100.992541,
+    "cities": [{ "name": "Bangkok", "connectName": "Bangkok" }]
+  },
+  {
+    "name": "Turkey",
+    "connectName": "Turkey",
+    "offsetLeft": 0.5799,
+    "offsetTop": 0.4099,
+    "lat": 38.963745,
+    "lng": 35.243322,
+    "cities": [{ "name": "Istanbul", "connectName": "Istanbul" }]
+  },
+  {
+    "name": "Ukraine",
+    "connectName": "Ukraine",
+    "offsetLeft": 0.5675,
+    "offsetTop": 0.3405,
+    "lat": 48.379433,
+    "lng": 31.16558,
+    "cities": [{ "name": "Kiev", "connectName": "Kiev" }]
+  },
+  {
+    "name": "United Arab Emirates",
+    "connectName": "United_Arab_Emirates",
+    "offsetLeft": 0.6415,
+    "offsetTop": 0.4984,
+    "lat": 23.424076,
+    "lng": 53.847818,
+    "cities": [{ "name": "Dubai", "connectName": "Dubai" }]
+  },
+  {
+    "name": "United Kingdom",
+    "connectName": "United_Kingdom",
+    "offsetLeft": 0.4762,
+    "offsetTop": 0.3248,
+    "lat": 55.378051,
+    "lng": -3.435973,
+    "cities": [{ "name": "London", "connectName": "London" }]
+  },
+  {
+    "name": "United States",
+    "connectName": "United_States",
+    "offsetLeft": 0.1922,
+    "offsetTop": 0.3871,
+    "lat": 37.09024,
+    "lng": -95.712891,
+    "cities": [
+      { "name": "Atlanta", "connectName": "Atlanta" },
+      { "name": "Buffalo", "connectName": "Buffalo" },
+      { "name": "Charlotte", "connectName": "Charlotte" },
+      { "name": "Chicago", "connectName": "Chicago" },
+      { "name": "Dallas", "connectName": "Dallas" },
+      { "name": "Denver", "connectName": "Denver" },
+      { "name": "Los Angeles", "connectName": "Los_Angeles" },
+      { "name": "Manassas", "connectName": "Manassas" },
+      { "name": "Miami", "connectName": "Miami" },
+      { "name": "New York", "connectName": "New_York" },
+      { "name": "Phoenix", "connectName": "Phoenix" },
+      { "name": "Saint Louis", "connectName": "Saint_Louis" },
+      { "name": "Salt Lake City", "connectName": "Salt_Lake_City" },
+      { "name": "San Francisco", "connectName": "San_Francisco" },
+      { "name": "Seattle", "connectName": "Seattle" }
+    ]
+  },
+  {
+    "name": "Vietnam",
+    "connectName": "Vietnam",
+    "offsetLeft": 0.8133,
+    "offsetTop": 0.5476,
+    "lat": 14.058324,
+    "lng": 108.277199,
+    "cities": [{ "name": "Hanoi", "connectName": "Hanoi" }]
+  }
 ]

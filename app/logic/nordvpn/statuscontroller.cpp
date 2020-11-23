@@ -27,35 +27,28 @@ ConnectionInfo StatusController::getStatus() {
 
     // country
     matched = std::regex_search(o, m, std::regex("Country: (.+)"));
-    if (matched) {
+    if (matched)
         info.country = m[1].str();
-        info.countryId =
-            ServerController::getInstance().getCountryId(info.country);
-    }
 
     // city
     matched = std::regex_search(o, m, std::regex("City: (.+)"));
-    if (matched) {
+    if (matched)
         info.city = m[1].str();
-    }
 
     // ip
     matched = std::regex_search(o, m, std::regex("Your new IP: (.+)"));
-    if (matched) {
+    if (matched)
         info.ip = m[1].str();
-    }
 
     // technology
     matched = std::regex_search(o, m, std::regex("Current technology: (.+)"));
-    if (matched) {
+    if (matched)
         info.technology = technologyFromString(m[1].str());
-    }
 
     // connection type
     matched = std::regex_search(o, m, std::regex("Current protocol: (.+)"));
-    if (matched) {
+    if (matched)
         info.connectionType = protocolFromString(m[1].str());
-    }
 
     std::map<std::string, uint64_t> bytes = {
         {"B", 1},
@@ -67,24 +60,22 @@ ConnectionInfo StatusController::getStatus() {
     // sent
     matched = std::regex_search(
         o, m, std::regex("([\\d\\.]+) (B|KiB|MiB|GiB|TiB) sent"));
-    if (matched) {
+    if (matched)
         info.sent = uint64_t(std::atof(m[1].str().c_str()) * bytes[m[2].str()]);
-    }
 
     // received
     matched = std::regex_search(
         o, m, std::regex("([\\d\\.]+) (B|KiB|MiB|GiB|TiB) received"));
-    if (matched) {
+    if (matched)
         info.received =
             uint64_t(std::atof(m[1].str().c_str()) * bytes[m[2].str()]);
-    }
 
     // uptime
     matched = std::regex_search(
         o, m,
         std::regex("Uptime: ?((\\d+) years?)? ?((\\d+) days?)? ?((\\d+) "
                    "hours?)? ?((\\d+) minutes?)? ?((\\d+) seconds?)?"));
-    if (matched) {
+    if (matched)
         info.uptime = std::atoi(m[10].str().c_str()) +     // seconds
                       (std::atoi(m[8].str().c_str()) +     // minutes
                        (std::atoi(m[6].str().c_str()) +    // hours
@@ -94,7 +85,6 @@ ConnectionInfo StatusController::getStatus() {
                             24) *                          // days -> hours
                            60) *                           // hours -> minutes
                           60;                              // minutes -> seconds
-    }
 
     // connection status => connecting or connected ?
     matched = std::regex_search(o, m, std::regex("Status: (\\w+)"));
@@ -142,6 +132,8 @@ ConnectionInfo StatusController::getStatus() {
         ServerController::getInstance().getServerByHostname(info.server);
     info.groups = server.groups;
     info.load = server.load;
+    info.countryId = server.countryId;
+    info.cityId = server.cityId;
 
     return std::move(info);
 }

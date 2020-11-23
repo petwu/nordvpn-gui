@@ -6,10 +6,14 @@
 #include "nlohmann/json.hpp"
 using json = nlohmann::json;
 
+#include "connectable.h"
+
 /**
  * @brief The Location class is a minimal representation of a location on a map.
+ * It extends Connectable since every location has to contain server you can
+ * connect to.
  */
-class Location {
+class Location : public Connectable {
   public:
     /**
      * @brief Every location is identified by a unique ID.

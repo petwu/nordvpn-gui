@@ -11,11 +11,9 @@ using json = nlohmann::json;
 #include "location.h"
 
 /**
- * @brief The Country class represents a country with NordVPN servers. It
- * extends Connectable since you can connect to a server by specifying only the
- * country.
+ * @brief The Country class represents a country with NordVPN servers.
  */
-class Country : public Location, public Connectable {
+class Country : public Location {
   public:
     /**
      * @brief ISO 3166-1 Alpha-2 country code.

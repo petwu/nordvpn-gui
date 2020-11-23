@@ -18,20 +18,6 @@ ServerController &ServerController::getInstance() {
     return instance;
 }
 
-int32_t ServerController::getCountryId(std::string name) {
-    for (auto i = 0; i < this->_allCountries.size(); i++) {
-        auto country = this->_allCountries[i];
-        std::string sName = util::string::toLower(country.name);
-        std::string cName = util::string::toLower(country.connectName);
-        std::string n1 = util::string::toLower(name);
-        std::string n2 = util::string::replaceAll(n1, "_", " ");
-        if (sName == n1 || sName == n2 || cName == n1 || cName == n2) {
-            return country.id;
-        }
-    }
-    return -1;
-}
-
 Server ServerController::getServerByHostname(std::string hostname) {
     for (auto server : this->_allServers)
         if (server.hostname == hostname)
@@ -206,20 +192,35 @@ void ServerController::quickConnect() { //
 void ServerController::connectToCountryById(uint32_t id) {
     for (auto country : this->_allCountries) {
         if (country.id == id) {
-            AsyncProcess::execute(
-                "nordvpn connect " + country.connectName, &this->_connectingPid,
-                [this, id](ProcessResult result) {
-                    if (result.success() == false &&
-                        result.output.find("login") != std::string::npos) {
-                        EnvController::getInstance().setLoggedIn(false);
-                    } else {
-                        PreferencesRepository::addRecentCountryId(id);
-                        this->_recents = this->getRecentCountries();
-                        this->_notifySubscribersRecents();
-                    }
-                });
+            AsyncProcess::execute("nordvpn connect " + country.connectName,
+                                  &this->_connectingPid,
+                                  [this, id](ProcessResult result) {
+                                      this->_checkConnectResult(result, id);
+                                  });
             break;
         }
+    }
+}
+
+void ServerController::connectToCityById(uint32_t id) {
+    bool found = false;
+    for (auto country : this->_allCountries) {
+        for (auto city : country.cities) {
+            if (city.id == id) {
+                found = true;
+                auto countryId = country.id;
+                AsyncProcess::execute(
+                    "nordvpn connect " + country.connectName + " " +
+                        city.connectName,
+                    &this->_connectingPid,
+                    [this, countryId](ProcessResult result) { //
+                        this->_checkConnectResult(result, countryId);
+                    });
+                break;
+            }
+        }
+        if (found)
+            break;
     }
 }
 
@@ -230,17 +231,28 @@ void ServerController::connectToServerById(uint32_t id) {
             AsyncProcess::execute(
                 "nordvpn connect " + server.connectName, &this->_connectingPid,
                 [this, countryId](ProcessResult result) {
-                    if (result.success() == false &&
-                        result.output.find("login") != std::string::npos) {
-                        EnvController::getInstance().setLoggedIn(false);
-                    } else {
-                        PreferencesRepository::addRecentCountryId(countryId);
-                        this->_recents = this->getRecentCountries();
-                        this->_notifySubscribersRecents();
-                    }
+                    this->_checkConnectResult(result, countryId);
                 });
             break;
         }
+    }
+}
+
+void ServerController::_checkConnectResult(ProcessResult &result,
+                                           int32_t countryId) {
+    if (result.success() == false &&
+        result.output.find("login") != std::string::npos) {
+        // if the process returned an error code and the output contains the
+        // word "login" this means, we tried to connect despite not being logged
+        // in --> the the EnvController about it, that will propagate it to the
+        // UI so that the login view will be displayed
+        EnvController::getInstance().setLoggedIn(false);
+    } else {
+        // otherwise we assume a successful connection establishment and update
+        // the recents list
+        PreferencesRepository::addRecentCountryId(countryId);
+        this->_recents = this->getRecentCountries();
+        this->_notifySubscribersRecents();
     }
 }
 

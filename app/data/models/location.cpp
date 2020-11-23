@@ -2,6 +2,7 @@
 
 std::string Location::toJSON() {
     json j;
+    j["connectName"] = this->connectName;
     j["id"] = this->id;
     j["name"] = this->name;
     j["lat"] = this->lat;
@@ -12,6 +13,8 @@ std::string Location::toJSON() {
 Location Location::fromJSON(const std::string &s) {
     Location location;
     json j = json::parse(s);
+    if (j["connectName"].is_string())
+        location.connectName = json::string_t(j["connectName"]);
     if (j["id"].is_number_integer())
         location.id = json::number_integer_t(j["id"]);
     if (j["name"].is_string())

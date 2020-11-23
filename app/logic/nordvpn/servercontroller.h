@@ -87,15 +87,6 @@ class ServerController : public BaseController {
     static ServerController &getInstance();
 
     /**
-     * @brief Get the ID of a country based on its name or connect name (see
-     * #Connectable).
-     * @param name The name of the country.
-     * @return The countries ID as provided by the NordVPN API. -1 in case the
-     * country isn't recognized.
-     */
-    int32_t getCountryId(std::string name);
-
-    /**
      * @brief Get the first #Server whose #Server.hostname attribute equals the
      * provided `hostname`.
      */
@@ -161,6 +152,12 @@ class ServerController : public BaseController {
      * which city and server in this country is best.
      */
     void connectToCountryById(uint32_t id);
+
+    /**
+     * @brief Connect to a VPN server in a specific city. Let NordVPN decide
+     * which server in this city is best.
+     */
+    void connectToCityById(uint32_t id);
 
     /**
      * @brief Connect to a specific VPN server.
@@ -257,6 +254,20 @@ class ServerController : public BaseController {
      * Use a value < 0 to include all cities.
      */
     std::vector<Server> _filterServerList(int32_t countryId, int32_t cityId);
+
+    /**
+     * @brief Inspect the #ProcessResult of a connection attempt and check
+     * whether it was successful. The most common reason it was not successful
+     * is, if the user is not logged in. In this case, this information gets
+     * passed to the #EnvController that is repsonsible for taking further
+     * actions.
+     * @param result The #ProcessResult that is returned by #Process of
+     * #AsyncProcess in one of the `connectTo*()` methods of this class.
+     * @param countryId The ID of the country trying to connect to. This is used
+     * to update the list of recently connected countries in case of a
+     * successful connection establishment.
+     */
+    void _checkConnectResult(ProcessResult &result, int32_t countryId);
 
     /**
      * @brief The process ID (PID) of the process that is performing a

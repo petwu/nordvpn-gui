@@ -220,6 +220,17 @@ std::vector<Country> ServerRepository::fetchCountries() {
                 city.lat = json::number_float_t(y["latitude"]);
             if (y["longitude"].is_number_float())
                 city.lng = json::number_float_t(y["longitude"]);
+            for (auto myC : myCountries) {
+                if (!myC["cities"].is_array())
+                    continue;
+                for (auto myCC : myC["cities"]) {
+                    if (myCC["name"] == city.name &&
+                        myCC["connectName"].is_string()) {
+                        city.connectName = json::string_t(myCC["connectName"]);
+                        break;
+                    }
+                }
+            }
             country.cities.push_back(city);
         }
         countries.push_back(country);
