@@ -86,9 +86,9 @@ void Mediator::_setAreConnectionCommandsPaused(bool value) {
         // timeout to prevent blocking states
         if (value == true)
             std::thread([this] {
-                std::this_thread::sleep_for(std::chrono::seconds(30));
-                if (this != nullptr)
-                    this->_setAreConnectionCommandsPaused(false);
+                std::this_thread::sleep_for(
+                    config::consts::CONNECTION_COMMANDS_PAUSE_PERIOD);
+                this->_setAreConnectionCommandsPaused(false);
             }).detach();
     }
 }
@@ -130,7 +130,7 @@ void Mediator::_setIsRatingPossible(bool value) {
             // set to false (= hide rating widget) after a period of 1 min,
             // this should give everybody enough time to commit their rating
             std::thread([this] {
-                std::this_thread::sleep_for(std::chrono::minutes(1));
+                std::this_thread::sleep_for(config::consts::RATING_PERIOD);
                 if (this->_isRatingPossbile)
                     this->_setIsRatingPossible(false);
             }).detach();

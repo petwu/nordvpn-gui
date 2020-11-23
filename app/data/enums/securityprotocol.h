@@ -3,6 +3,10 @@
 
 #include <string>
 
+/**
+ * @brief The SecurityProtocol enum identifies a VPN security protocol used by
+ * data from the NordVPN API.
+ */
 enum class SecurityProtocol {
     Undefined,
     // OpenVPN

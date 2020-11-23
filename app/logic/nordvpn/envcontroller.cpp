@@ -120,14 +120,20 @@ void EnvController::_backgroundTask() {
     // get complete env info only once
     this->_envInfo = this->getEnvInfo();
     this->_notifySubscribers();
+    // counter
     int i = 0;
+    // limit, when i gets reset to 0 --> once every ~60s
+    // (depends on the update interval)
+    int iMax = 60 / std::chrono::duration_cast<std::chrono::seconds>(
+                        config::consts::ENV_UPDATE_INTERVAL)
+                        .count();
     // then periodically do partial updates
     while (this->_performBackgroundTask) {
         i++;
         this->_envInfo.internetConnected = this->_isInternetConnected();
         this->_envInfo.shellAvailable = this->_isShellAvailable();
         this->_envInfo.nordvpnInstalled = this->_isNordvpnInstalled();
-        if (this->_envInfo.internetConnected == true && i == 30) {
+        if (this->_envInfo.internetConnected == true && i == iMax) {
             i = 0;
             /*
              * Calling "nordvpn account" probably performs a request to the
@@ -144,6 +150,6 @@ void EnvController::_backgroundTask() {
                 this->_envInfo.loggedIn = this->_isLoggedIn();
         }
         this->_notifySubscribers();
-        std::this_thread::sleep_for(std::chrono::seconds(2));
+        std::this_thread::sleep_for(config::consts::ENV_UPDATE_INTERVAL);
     }
 }

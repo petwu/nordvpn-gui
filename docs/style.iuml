@@ -1,0 +1,74 @@
+/' WHITESPACE-HACK: >>> <<< '/
+
+/' IMPORTANT: NOT FOR RENDERING BUT JUST FOR INCLUDES '/
+
+!define LINE_COLOR #333
+!define BKGD_COLOR #fff8f0
+!define ARBURG_TURQUOISE #3c9
+!define WHITE #fff
+!define GREY #999
+!define BLACK #000
+!define NOTE_COLOR #fefece
+
+!define ENUM_COLOR #f0f8ff
+!define INTERFACE_COLOR #f0fff8
+
+skinparam {
+    DefaultFontName Segoe UI
+    DefaultTextAlignment left
+
+    Shadowing false
+    Linetype ortho
+    ArrowColor LINE_COLOR
+
+    BackgroundColor transparent
+
+    AgentBackgroundColor ARBURG_TURQUOISE
+    NoteBackgroundColor NOTE_COLOR
+    NoteBorderColor LINE_COLOR
+
+    ComponentStyle uml2
+    ComponentBackgroundColor WHITE
+    ComponentBorderColor BLACK
+    ComponentBorderThickness 2
+    ComponentFontStyle bold
+    
+    InterfaceBorderColor LINE_COLOR
+    InterfaceBackgroundColor WHITE
+
+    ClassAttributeIconSize 0
+    ClassBackgroundColor BKGD_COLOR
+    ' ClassBackgroundColor #fcf2e3
+    ' ClassBackgroundColor #87cefa
+    ClassBorderColor LINE_COLOR
+    ClassFontStyle bold
+    ClassFontSize 14
+    Nodesep 50
+    Ranksep 50
+
+    ActivityBackgroundColor BKGD_COLOR
+    ActivityBorderColor LINE_COLOR
+    ActivityDiamondBackgroundColor BKGD_COLOR
+    ActivityDiamondBorderColor LINE_COLOR
+
+    ParticipantBackgroundColor BKGD_COLOR
+    ParticipantBorderColor LINE_COLOR
+    SequenceLifeLineBorderColor LINE_COLOR
+    SequenceMessageAlignment center
+    SequenceBoxBorderColor GREY
+    SequenceGroupBodyBackgroundColor transparent
+
+    UsecaseBackgroundColor BKGD_COLOR
+    UsecaseBorderColor LINE_COLOR
+
+    ActorBackgroundColor BKGD_COLOR
+    ActorBorderColor LINE_COLOR
+    
+    RectangleFontStyle bold
+}
+
+hide empty members
+hide circle
+' hide stereotype
+
+!define fa https://github.com/tupadr3/plantuml-icon-font-sprites/font-awesome-5

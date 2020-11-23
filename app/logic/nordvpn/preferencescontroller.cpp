@@ -205,9 +205,9 @@ void PreferencesController::updateNordvpnSettings(
                            " " + std::to_string(port.portTo)) +
                 (port.protocolFlag == Protocol::UDP
                      ? " protocol UDP" // only UDP port
-                     : port.protocolFlag == Protocol::TCP
-                           ? " protocol TCP" // only TCP port
-                           : "")             // default is both protocols
+                 : port.protocolFlag == Protocol::TCP
+                     ? " protocol TCP" // only TCP port
+                     : "")             // default is both protocols
             );
     for (auto port : currentPorts)
         if (std::find(settingsPorts.begin(), settingsPorts.end(), port) ==
@@ -221,9 +221,9 @@ void PreferencesController::updateNordvpnSettings(
                            " " + std::to_string(port.portTo)) +
                 (port.protocolFlag == Protocol::UDP
                      ? " protocol UDP" // only UDP port
-                     : port.protocolFlag == Protocol::TCP
-                           ? " protocol TCP" // only TCP port
-                           : "")             // default is both protocols
+                 : port.protocolFlag == Protocol::TCP
+                     ? " protocol TCP" // only TCP port
+                     : "")             // default is both protocols
             );
 
     std::thread([cmds] {

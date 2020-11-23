@@ -6,6 +6,8 @@ bool Server::supportsObfuscated() {
         case SecurityProtocol::OpenVPN_TCP_Obfuscated:
         case SecurityProtocol::OpenVPN_UDP_Obfuscated:
             return true;
+        default:
+            break;
         }
     }
     return false;
@@ -17,6 +19,8 @@ bool Server::supportsCyberSec() {
         case SecurityProtocol::HTTP_CyberSec_Proxy:
         case SecurityProtocol::HTTP_CyberSec_Proxy_SSL:
             return true;
+        default:
+            break;
         }
     }
     return false;
@@ -33,6 +37,8 @@ bool Server::supportsProtocol(Protocol p) {
             case SecurityProtocol::OpenVPN_TCP_Obfuscated:
             case SecurityProtocol::OpenVPN_TCP_Dedicated:
                 return true;
+            default:
+                break;
             }
             break;
         case Protocol::UDP:
@@ -43,7 +49,11 @@ bool Server::supportsProtocol(Protocol p) {
             case SecurityProtocol::OpenVPN_UDP_Obfuscated:
             case SecurityProtocol::OpenVPN_UDP_Dedicated:
                 return true;
+            default:
+                break;
             }
+            break;
+        default:
             break;
         }
     }
@@ -66,13 +76,19 @@ bool Server::supportsTechnology(Technology t) {
             case SecurityProtocol::OpenVPN_TCP_Dedicated:
             case SecurityProtocol::OpenVPN_UDP_Dedicated:
                 return true;
+            default:
+                break;
             }
             break;
         case Technology::NordLynx:
             switch (sp) {
             case SecurityProtocol::Wireguard:
                 return true;
+            default:
+                break;
             }
+            break;
+        default:
             break;
         }
     }

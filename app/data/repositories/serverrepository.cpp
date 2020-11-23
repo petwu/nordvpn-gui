@@ -1,17 +1,5 @@
 #include "serverrepository.h"
 
-json::array_t ServerRepository::getCountriesJSON() {
-    std::string fileContent =
-        BaseRepository::readFile(config::paths::COUNTRIES_JSON);
-    if (fileContent != "") {
-        json data = json::parse(fileContent);
-        if (data.is_array()) {
-            return data;
-        }
-    }
-    return json::array();
-}
-
 std::vector<Server> ServerRepository::fetchServers() {
     std::vector<Server> servers;
     std::string httpReponse =
@@ -190,7 +178,12 @@ std::vector<Country> ServerRepository::fetchCountries() {
 
     if (!j.is_array())
         return std::move(countries);
-    json myCountries = getCountriesJSON();
+    std::string fileContent =
+        BaseRepository::readFile(config::paths::COUNTRIES_JSON);
+    json myCountries =
+        fileContent != "" ? json::parse(fileContent) : json::array();
+    if (!myCountries.is_array())
+        myCountries = json::array();
 
     for (auto c : j) {
         Country country;

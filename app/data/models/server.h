@@ -14,23 +14,97 @@ using json = nlohmann::json;
 #include "data/enums/technology.h"
 #include "location.h"
 
+/**
+ * @brief The Server class is a representation of a server. It is modeled after
+ * the data one can retrieve from the NordVPN API. It extends Connectable since
+ * you can connect to a specific server directly.
+ */
 class Server : public Connectable {
   public:
+    /**
+     * @brief Unique server ID as given by the NordVPN API.
+     */
     int32_t id = -1;
+
+    /**
+     * @brief Human readable server name.
+     * Example: Germany #123
+     */
     std::string name = "";
+
+    /**
+     * @brief Hostname of the server that may be resolved into an IP address.
+     * Example: fr752.nordvpn.com
+     */
     std::string hostname = "";
+
+    /**
+     * @brief The load percentage. A value between 0 and 100.
+     */
     uint8_t load = 0;
+
+    /**
+     * @brief ID of the country the server resides in. Given by the NordVPN API.
+     */
     int32_t countryId = -1;
+
+    /**
+     * @brief ID of the city the server resides in. Given by the NordVPN API.
+     */
     int32_t cityId = -1;
+
+    /**
+     * @brief List of server groups the server is part of.
+     */
     std::vector<Group> groups;
+
+    /**
+     * @brief List of protocols the server supports.
+     */
     std::vector<SecurityProtocol> securityProtocols;
 
+    /**
+     * @brief Check whether the server supports SecurityProtocols for obfuscated
+     * connections.
+     * @return
+     */
     bool supportsObfuscated();
+
+    /**
+     * @brief Check whether the server supports a thing thats is called CyberSec
+     * by NordVPN. With CyberSec, e.g. vicious Ads and Malware are blocked by
+     * the server.
+     * @return
+     */
     bool supportsCyberSec();
+
+    /**
+     * @brief Check whether the server supports SecurityProtocols that are
+     * applicable to a network Protocol.
+     * @param p
+     * @return
+     */
     bool supportsProtocol(Protocol p);
+
+    /**
+     * @brief Check whether the server supports SecurityProtocols for the passed
+     * Technology.
+     * @param t
+     * @return
+     */
     bool supportsTechnology(Technology t);
 
+    /**
+     * @brief Convert the object into a JSON string representation.
+     * @return
+     */
     std::string toJSON();
+
+    /**
+     * @brief Inverse operation of #toJSON.
+     * @param s
+     * @return
+     */
     static Server fromJSON(const std::string &s);
 };
 

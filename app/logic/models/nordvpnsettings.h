@@ -11,38 +11,7 @@ using json = nlohmann::json;
 #include "common/types/nullable.h"
 #include "data/enums/protocol.h"
 #include "data/enums/technology.h"
-
-/**
- * @brief The WhitelistPortEntry class represents an entry in the ports
- * whitelist. A port number is a 16 bit unsigned integer and thus ranging from 0
- * to 65535. Hence uint16_t would be enough, but choosing uint32_t as a data
- * type allows to represent invalid ports (provided through user input).
- */
-class WhitelistPortEntry {
-  public:
-    /** @brief Start of the port range. */
-    uint32_t portFrom = 0;
-    /** @brief End of the port range. */
-    uint32_t portTo = 0;
-    /** @brief Flag that inicates the used protocols. Use the binary or operator
-     * to set multple protocols, e.g. Protocol::TCP | Protocol::UDP . */
-    Protocol protocolFlag = Protocol::TCP | Protocol::UDP;
-
-    /**
-     * @brief operator == for a member-by-member equality check.
-     * @param other
-     * @return True, if every member variables of the two compared objects
-     * match, false otherwise.
-     */
-    bool operator==(const WhitelistPortEntry &other) const;
-
-    /**
-     * @brief operator < is required in order to be used as a std::set<> key.
-     * @param other The other object to compare with.
-     * @return True, if considered to be smaller. False otherwise.
-     */
-    bool operator<(const WhitelistPortEntry &other) const;
-};
+#include "logic/models/whitelistportentry.h"
 
 /**
  * @brief The NordVpnSettings class that wraps all settings that are applyable
@@ -53,53 +22,225 @@ class WhitelistPortEntry {
  *
  * The rules are as follows:
  *
- * - If #technology is set to Technology::NordLynx, the #protocol and
- *   #obfuscated settings are unavailable and hence set to null.
- * - The #dns and #cybersec settings are mutually exclusive. Enabling #dns
- *   disabled #cbersec and vice versa.
+ * - If `technology` is set to Technology::NordLynx, the `protocol` and
+ *   `obfuscated` settings are unavailable and hence set to null.
+ * - The `dns` and `cybersec` settings are mutually exclusive. Enabling `dns`
+ *   disabled `cbersec` and vice versa.
  */
 class NordVpnSettings {
   public:
+    /**
+     * @brief Get whether autoconnect is enabled or not.
+     */
     bool getAutoconnect() const;
+
+    /**
+     * @brief Set whether autoconnect is enabled or not.
+     */
     void setAutoconnect(bool enabled);
+
+    /**
+     * @brief Get whether cybersec is enabled or not.
+     */
     bool getCybersec() const;
+
+    /**
+     * @brief Set whether cybersec is enabled or not.
+     */
     void setCybersec(bool enabled);
+
+    /**
+     * @brief Get whether custom DNS is enabled or not.
+     */
     bool getDns() const;
+
+    /**
+     * @brief Set whether custom DNS is enabled or not.
+     */
     void setDns(bool enabled);
+
+    /**
+     * @brief Get the list of custom DNS addresses.
+     * @details The list has a fixed size (see getMaxNumberOfDnsAddresses())
+     * and might contain empty string.
+     */
     std::vector<std::string> getDnsAddresses() const;
+
+    /**
+     * @brief Return the max. number of custom DNS addresses that can be set.
+     * The limit is specified by the NordVPN CLI.
+     */
     int getMaxNumberOfDnsAddresses() const;
+
+    /**
+     * @brief Set all custom DNS addresses at once.
+     */
     void setDnsAddresses(std::string addrs[3]);
+
+    /**
+     * @brief Set the nth custom DNS address.
+     */
     void setDnsAddress(int nth, std::string addr);
+
+    /**
+     * @brief Get whether the killswitch is enabled or not.
+     */
     bool getKillswitch() const;
+
+    /**
+     * @brief Set whether the killswitch is enabled or not.
+     */
     void setKillswitch(bool enabled);
+
+    /**
+     * @brief Get whether notifications are enabled or not.
+     */
     bool getNotify() const;
+
+    /**
+     * @brief Set whether notifications are enabled or not.
+     */
     void setNotify(bool enabled);
+
+    /**
+     * @brief Get whether obfuscated connections are enabled or not.
+     * @return A Nullable bool and not a simple bool, since depending on the
+     * #Technology, the obfuscated setting might be unavailable. In this case a
+     * null value is returned. This can be checked with Nullable::isNull().
+     */
     Nullable<bool> getObfuscated() const;
+
+    /**
+     * @brief Set whether obfuscated connections are enabled or not.
+     * @details Depending on the #Technology, the obfuscated setting might not
+     * be available. In this case, calling this function has no effect.
+     */
     void setObfuscated(bool enabled);
+
+    /**
+     * @brief Get the network protocol setting.
+     * @return A Nullable bool and not a simple bool, since depending on the
+     * #Technology, the #Protocol setting might be unavailable. In this case a
+     * null value is returned. This can be checked with Nullable::isNull().
+     */
     Nullable<Protocol> getProtocol() const;
+
+    /**
+     * @brief Set the network #Protocol used for connections.
+     * @details Depending on the #Technology, the #Protocol setting might not be
+     * available. In this case, calling this function has no effect.
+     */
     void setProtocol(Protocol p);
+
+    /**
+     * @brief Get the #Technology setting.
+     */
     Technology getTechnology() const;
+
+    /**
+     * @brief Set the #Technology used for connections.
+     */
     void setTechnology(Technology t);
+
+    /**
+     * @brief Get a list of whitelisted subnets.
+     */
     std::vector<std::string> getWhitelistSubnets() const;
+
+    /**
+     * @brief Add a subnet to the whitelist.
+     */
     void addSubnetToWhitelist(std::string subnet);
+
+    /**
+     * @brief Update the value of a whitelist entry by index.
+     */
     void updateWhitelistSubnet(int index, std::string subnet);
+
+    /**
+     * @brief Remove an entry from the whitelisted subnets by index.
+     */
     void removeSubnetFromWhitelist(int index);
+
+    /**
+     * @brief Get a list of whitelisted ports/port ranges and the network
+     * #Protocol they apply to.
+     */
     std::vector<WhitelistPortEntry> getWhitelistPorts() const;
+
+    /**
+     * @brief Add a port/port range to the whitelist.
+     */
     void addPortsToWhitelist(WhitelistPortEntry p);
+
+    /**
+     * @brief Update the value of a whitelist entry by index.
+     */
     void updatePortsOfWhitelist(int index, WhitelistPortEntry p);
+
+    /**
+     * @brief Remove an entry from the whitelisted ports/port ranges by index.
+     */
     void removePortsFromWhitelist(int index);
 
   private:
+    /**
+     * @brief Whether autoconnect is enabled or not.
+     */
     bool autoconnect = false;
+
+    /**
+     * @brief Whether autoconnect is enabled or not.
+     */
     bool cybersec = false;
+
+    /**
+     * @brief Whether autoconnect is enabled or not.
+     */
     bool dns = false;
+
+    /**
+     * @brief Whether cybersec is enabled or not.
+     */
     std::vector<std::string> dnsAddresses = {"", "", ""};
+
+    /**
+     * @brief Whether the killswitch is enabled or not.
+     */
     bool killswitch = false;
+
+    /**
+     * @brief Whether desktop notifications are enabled or not.
+     */
     bool notify = false;
+
+    /**
+     * @brief Whether obfuscated connections are enabled or not.
+     * @details Depending on the #Technology, this settings is unavailable and
+     * will be null.
+     */
     Nullable<bool> obfuscated;
+
+    /**
+     * @brief The network #Protocol used for connections.
+     * @details Depending on the #Technology, this settings is unavailable and
+     * will be null.
+     */
     Nullable<Protocol> protocol;
+
+    /**
+     * @brief The VPN #Technology used for connections.
+     */
     Technology technology = Technology::Undefined;
+
+    /**
+     * @brief The list of whitelisted subnets.
+     */
     std::vector<std::string> whitelistSubnets;
+
+    /**
+     * @brief The list of whitelisted ports/port ranges.
+     */
     std::vector<WhitelistPortEntry> whitelistPorts;
 };
 

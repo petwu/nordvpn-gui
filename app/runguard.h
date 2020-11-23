@@ -60,7 +60,7 @@ class RunGuard : QObject {
      */
     QSharedMemory _sharedMem;
     /**
-     * @brief Loch for accessing #_sharedMem.
+     * @brief Loch for accessing `_sharedMem`.
      */
     QSystemSemaphore _memLock;
 

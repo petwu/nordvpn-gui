@@ -310,15 +310,19 @@ void ServerController::_backgroundTaskServerList() {
 
 void ServerController::_backgroundTaskCountryList() {
     int i = 0;
+    int iMax = 86400 / std::chrono::duration_cast<std::chrono::seconds>(
+                           config::consts::COUNTRY_LIST_UPDATE_INTERVAL)
+                           .count();
     while (this->_performBackgroundTask) {
         // update the cache the first time (on app start) ...
         this->getAllCountries(i == 0);
         if (i == 0)
             // ... and the only every 43.200 * 2s = 24h
             // (it's an unlikely use case, that the list of countries changes)
-            i = 43200;
+            i = iMax;
         i--;
         this->_notifySubscribersCountryList();
-        std::this_thread::sleep_for(std::chrono::seconds(2));
+        std::this_thread::sleep_for(
+            config::consts::COUNTRY_LIST_UPDATE_INTERVAL);
     }
 }

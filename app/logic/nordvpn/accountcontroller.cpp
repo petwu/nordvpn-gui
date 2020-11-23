@@ -1,7 +1,5 @@
 #include "accountcontroller.h"
 
-AccountController::AccountController() {}
-
 bool AccountController::login(std::string username, std::string password) {
     std::string cmd = "nordvpn login --username '" + username +
                       "' --password '" + password + "'";

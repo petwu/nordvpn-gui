@@ -23,8 +23,12 @@ set(NORD_ACCOUNT_URL "https://my.nordaccount.com")
 # C++ settings
 # --------------------------------------------------------------------------------
 
+# C++ standard
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+# create compile_commands.json aka. compilation database
+# (only make and ninja generators)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # --------------------------------------------------------------------------------
 # Qt settings
@@ -55,14 +59,21 @@ conan_cmake_run(CONANFILE conanfile.txt BUILD missing BASIC_SETUP CMAKE_TARGETS)
 # find required packages
 # --------------------------------------------------------------------------------
 
-find_package(Qt5 5.12 COMPONENTS Core Quick Widgets LinguistTools REQUIRED)
+find_package(Qt5 COMPONENTS Core Quick Widgets LinguistTools REQUIRED)
 find_package(Threads REQUIRED)
+find_package(Doxygen)
 
 # --------------------------------------------------------------------------------
 # configure application with defines in app.h.in
 # --------------------------------------------------------------------------------
 
 configure_file(app/app.h.in app.h)
+
+# --------------------------------------------------------------------------------
+# copy resources that are not compiled in by rcc (qrc)
+# --------------------------------------------------------------------------------
+
+file(COPY res/data/ DESTINATION res/data/)
 
 # --------------------------------------------------------------------------------
 # main executable
@@ -99,6 +110,7 @@ set(SRC_FILES
     app/logic/models/connectioninfo.cpp
     app/logic/models/envinfo.cpp
     app/logic/models/nordvpnsettings.cpp
+    app/logic/models/whitelistportentry.cpp
     app/logic/nordvpn/accountcontroller.cpp
     app/logic/nordvpn/basecontroller.cpp
     app/logic/nordvpn/envcontroller.cpp
@@ -139,3 +151,24 @@ target_link_libraries(nordvpn-gui PRIVATE
     Threads::Threads
     ${CONAN_TARGETS}
 )
+
+# --------------------------------------------------------------------------------
+# generate documentation with doxygen
+# --------------------------------------------------------------------------------
+
+if(Doxygen_FOUND)
+
+    configure_file(docs/doxyfile.in doxyfile @ONLY)
+    add_custom_target(docs
+        COMMAND ${DOXYGEN_EXECUTABLE} doxyfile
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+        COMMENT "Generating API documentation with Doxygen"
+    )
+
+else()
+
+    add_custom_target(docs
+        COMMAND ${CMAKE_COMMAND} -E echo "Error: Doxygen not found"
+    )
+
+endif()

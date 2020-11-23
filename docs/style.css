@@ -1,0 +1,21 @@
+/* container for logo, title and description (header) */
+#titlearea {
+	padding: .5em 0;
+}
+
+/* container for project name and description (header) */
+#projectalign {
+	padding: 0 !important;
+}
+
+/* project logo (header) */
+#projectlogo img {
+	margin: 4px 12px;
+}
+
+/* footer */
+#nav-path {
+	display: none;
+	max-height: 0;
+	overflow: hidden;
+}
