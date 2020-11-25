@@ -140,6 +140,11 @@ Item {
         }
         onClosed: popupClosed()
 
+        Connections {
+            target: NavMediator
+            onMainWindowViewSourceChanged: specialtyServerSelectionPopup.close()
+        }
+
         ColumnLayout {
             id: popupContent
             width: parent.width
