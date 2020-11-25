@@ -445,67 +445,67 @@
 <context>
     <name>ConnectionStatusPanel</name>
     <message>
-        <location filename="../../app/ui/map/ConnectionStatusPanel.qml" line="69"/>
+        <location filename="../../app/ui/map/ConnectionStatusPanel.qml" line="103"/>
         <source>Unprotected</source>
         <extracomment>Not connected the a VPN server.</extracomment>
         <translation>Unprotected</translation>
     </message>
     <message>
-        <location filename="../../app/ui/map/ConnectionStatusPanel.qml" line="71"/>
+        <location filename="../../app/ui/map/ConnectionStatusPanel.qml" line="105"/>
         <source>Connecting</source>
         <extracomment>Establishing a connection to a VPN server.</extracomment>
         <translation>Connecting</translation>
     </message>
     <message>
-        <location filename="../../app/ui/map/ConnectionStatusPanel.qml" line="73"/>
+        <location filename="../../app/ui/map/ConnectionStatusPanel.qml" line="107"/>
         <source>Protected</source>
         <extracomment>Connected to a VPN server.</extracomment>
         <translation>Protected</translation>
     </message>
     <message>
-        <location filename="../../app/ui/map/ConnectionStatusPanel.qml" line="94"/>
+        <location filename="../../app/ui/map/ConnectionStatusPanel.qml" line="127"/>
         <source>Rate your connection speed</source>
         <extracomment>Feedback to NordVPN by rating the connection with 1 to 5 starts.</extracomment>
         <translation>Rate your connection speed</translation>
     </message>
     <message>
-        <location filename="../../app/ui/map/ConnectionStatusPanel.qml" line="96"/>
+        <location filename="../../app/ui/map/ConnectionStatusPanel.qml" line="129"/>
         <source>Pick country or use quick connect</source>
         <extracomment>Status hint while disconnected.</extracomment>
         <translation>Pick country or use quick connect</translation>
     </message>
     <message>
-        <location filename="../../app/ui/map/ConnectionStatusPanel.qml" line="98"/>
+        <location filename="../../app/ui/map/ConnectionStatusPanel.qml" line="131"/>
         <source>Finding the best server ...</source>
         <extracomment>Status hint while connecting.</extracomment>
         <translation>Finding the best server ...</translation>
     </message>
     <message>
-        <location filename="../../app/ui/map/ConnectionStatusPanel.qml" line="100"/>
-        <source>Connected to %1 #%2</source>
+        <location filename="../../app/ui/map/ConnectionStatusPanel.qml" line="133"/>
+        <source>Connected to %1, %2 #%3</source>
         <extracomment>Status hint while connected.</extracomment>
-        <translation>Connected to %1 #%2</translation>
+        <translation>Connected to %1, %2 #%3</translation>
     </message>
     <message>
-        <location filename="../../app/ui/map/ConnectionStatusPanel.qml" line="118"/>
+        <location filename="../../app/ui/map/ConnectionStatusPanel.qml" line="150"/>
         <source>Your feedback helps us improve!</source>
         <extracomment>Small additional hint when rating the connection with 1 to 5 stars.</extracomment>
         <translation>Your feedback helps us improve!</translation>
     </message>
     <message>
-        <location filename="../../app/ui/map/ConnectionStatusPanel.qml" line="132"/>
+        <location filename="../../app/ui/map/ConnectionStatusPanel.qml" line="164"/>
         <source>Quick Connect</source>
         <extracomment>Button to pick the fastest server and connect to it.</extracomment>
         <translation>Quick Connect</translation>
     </message>
     <message>
-        <location filename="../../app/ui/map/ConnectionStatusPanel.qml" line="140"/>
+        <location filename="../../app/ui/map/ConnectionStatusPanel.qml" line="172"/>
         <source>Cancel</source>
         <extracomment>Button to abort the currently running connection establishment.</extracomment>
         <translation>Cancel</translation>
     </message>
     <message>
-        <location filename="../../app/ui/map/ConnectionStatusPanel.qml" line="149"/>
+        <location filename="../../app/ui/map/ConnectionStatusPanel.qml" line="181"/>
         <source>Disconnect</source>
         <extracomment>Button to disconnect from the currently connected server.</extracomment>
         <translation>Disconnect</translation>
@@ -824,7 +824,7 @@
         <translation>Fastest</translation>
     </message>
     <message numerus="yes">
-        <location filename="../../app/ui/sidepanel/CountryItem.qml" line="174"/>
+        <location filename="../../app/ui/sidepanel/CountryItem.qml" line="179"/>
         <source>%n cities/regions</source>
         <extracomment>The number of cities or regions with VPN servers in that country.</extracomment>
         <translation>
@@ -833,19 +833,19 @@
         </translation>
     </message>
     <message>
-        <location filename="../../app/ui/sidepanel/CountryItem.qml" line="199"/>
+        <location filename="../../app/ui/sidepanel/CountryItem.qml" line="204"/>
         <source>City</source>
         <extracomment>The region or city of a country to connect to or select a server from.</extracomment>
         <translation>City</translation>
     </message>
     <message>
-        <location filename="../../app/ui/sidepanel/CountryItem.qml" line="218"/>
+        <location filename="../../app/ui/sidepanel/CountryItem.qml" line="223"/>
         <source>Server</source>
         <extracomment>List of servers as dropdown to select on from.</extracomment>
         <translation>Server</translation>
     </message>
     <message>
-        <location filename="../../app/ui/sidepanel/CountryItem.qml" line="236"/>
+        <location filename="../../app/ui/sidepanel/CountryItem.qml" line="241"/>
         <source>Connect</source>
         <extracomment>Button to connect to the selected country, city/region or server.</extracomment>
         <translation>Connect</translation>
@@ -1259,19 +1259,19 @@ CAUTION: You will be logged out automatically and have to log in again!</transla
         <translation>Fastest</translation>
     </message>
     <message>
-        <location filename="../../app/ui/sidepanel/SpecialityServerItem.qml" line="178"/>
+        <location filename="../../app/ui/sidepanel/SpecialityServerItem.qml" line="191"/>
         <source>Country</source>
         <extracomment>The country to connect to or select a server from.</extracomment>
         <translation>Country</translation>
     </message>
     <message>
-        <location filename="../../app/ui/sidepanel/SpecialityServerItem.qml" line="197"/>
+        <location filename="../../app/ui/sidepanel/SpecialityServerItem.qml" line="210"/>
         <source>Server</source>
         <extracomment>List of servers as dropdown to select on from.</extracomment>
         <translation>Server</translation>
     </message>
     <message>
-        <location filename="../../app/ui/sidepanel/SpecialityServerItem.qml" line="215"/>
+        <location filename="../../app/ui/sidepanel/SpecialityServerItem.qml" line="228"/>
         <source>Connect</source>
         <extracomment>Button to connect to the selected country, city/region or server.</extracomment>
         <translation>Connect</translation>
