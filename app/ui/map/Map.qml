@@ -55,6 +55,7 @@ Item {
     Connections {
         target: ConnectionMediator
         onConnectingCountryIdChanged: (id) => (id !== -1) ? focusCountry(id) : null
+        onConnectedCountryIdChanged: (id) => (id !== -1) ? focusCountry(id) : null
     }
 
     /*!
