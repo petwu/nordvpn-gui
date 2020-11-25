@@ -30,11 +30,11 @@ ScrollView {
             id: sectionRecents
             //: Title for a list of recently connected country names.
             title: qsTr('Recents')
-            visible: ConnectionMediator.recentCountries.length > 0
+            visible: RecentsMediator.recentCountries.length > 0
             spacing: 0
 
             Repeater {
-                model: ConnectionMediator.recentCountries
+                model: RecentsMediator.recentCountries
 
                 RecentConnection {
                     width: sidePanel.width
@@ -47,7 +47,7 @@ ScrollView {
         }
 
         MenuSeparator {
-            visible: ConnectionMediator.recentCountries.length > 0
+            visible: RecentsMediator.recentCountries.length > 0
         }
 
         Collapsible {

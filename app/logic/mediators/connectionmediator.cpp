@@ -126,19 +126,19 @@ void ConnectionMediator::_setIsConnected(bool value) {
 }
 
 bool ConnectionMediator::_getIsRatingPossible() {
-    return this->_isRatingPossbile;
+    return this->_isRatingPossible;
 }
 
 void ConnectionMediator::_setIsRatingPossible(bool value) {
-    if (value != this->_isRatingPossbile) {
-        this->_isRatingPossbile = value;
+    if (value != this->_isRatingPossible) {
+        this->_isRatingPossible = value;
         this->isRatingPossibleChanged(value);
         if (value == true) {
             // set to false (= hide rating widget) after a period of 1 min,
             // this should give everybody enough time to commit their rating
             std::thread([this] {
                 std::this_thread::sleep_for(config::consts::RATING_PERIOD);
-                if (this->_isRatingPossbile)
+                if (this->_isRatingPossible)
                     this->_setIsRatingPossible(false);
             }).detach();
         }
@@ -216,26 +216,6 @@ void ConnectionMediator::_setSentBytes(uint64_t value) {
         this->_sentBytes = value;
         this->sentBytesChanged(value);
     }
-}
-
-QVariantList ConnectionMediator::_getRecentCountries() {
-    if (this->_recentCountries.size() == 0) {
-        this->_recentCountries = this->_serverController.getRecentCountries();
-    }
-    QVariantList recents;
-    for (auto r : this->_recentCountries) {
-        recents << QmlDataConverter::countryToQml(r);
-    }
-    return std::move(recents);
-}
-
-void ConnectionMediator::updateRecents(const std::vector<Country> &newRecents) {
-    this->_recentCountries = newRecents;
-    this->recentCountriesChanged(this->_getRecentCountries());
-}
-
-void ConnectionMediator::removeFromRecentsList(quint32 countryId) {
-    this->_serverController.removeFromRecentsList(countryId);
 }
 
 QVariantList ConnectionMediator::_getConnectedServerGroups() {

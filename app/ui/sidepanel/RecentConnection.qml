@@ -43,7 +43,7 @@ Item {
         cursorShape: ConnectionMediator.areConnectionCommandsPaused
                      ? Qt.ArrowCursor
                      : Qt.PointingHandCursor
-        onClicked: ConnectionMediator.connectToCountryById(recent.countryId)
+        onClicked: RecentsMediator.connectToCountryById(recent.countryId)
     }
 
     CloseButton {
@@ -51,6 +51,6 @@ Item {
         anchors.margins: (parent.height-height)/2
         anchors.verticalCenter: parent.verticalCenter
         visible: hoverRecent.hovered
-        onClicked: ConnectionMediator.removeFromRecentsList(recent.countryId)
+        onClicked: RecentsMediator.removeFromRecentsList(recent.countryId)
     }
 }

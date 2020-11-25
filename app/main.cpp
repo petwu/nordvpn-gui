@@ -11,6 +11,7 @@
 #include "logic/mediators/connectionmediator.h"
 #include "logic/mediators/navmediator.h"
 #include "logic/mediators/preferencesmediator.h"
+#include "logic/mediators/recentsmediator.h"
 #include "logic/mediators/traymediator.h"
 #include "runguard.h"
 
@@ -52,6 +53,7 @@ int main(int argc, char *argv[]) {
     ctx->setContextProperty("ConnectionMediator", new ConnectionMediator());
     ctx->setContextProperty("NavMediator", new NavMediator());
     ctx->setContextProperty("PreferencesMediator", new PreferencesMediator());
+    ctx->setContextProperty("RecentsMediator", new RecentsMediator());
     ctx->setContextProperty("TrayMediator", &TrayMediator::getInstance());
 
     // populate whether to use dark or light colors
