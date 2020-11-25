@@ -40,10 +40,10 @@ Item {
 
     MouseArea {
         anchors.fill: parent
-        cursorShape: Mediator.areConnectionCommandsPaused
+        cursorShape: ConnectionMediator.areConnectionCommandsPaused
                      ? Qt.ArrowCursor
                      : Qt.PointingHandCursor
-        onClicked: Mediator.connectToCountryById(recent.countryId)
+        onClicked: ConnectionMediator.connectToCountryById(recent.countryId)
     }
 
     CloseButton {
@@ -51,6 +51,6 @@ Item {
         anchors.margins: (parent.height-height)/2
         anchors.verticalCenter: parent.verticalCenter
         visible: hoverRecent.hovered
-        onClicked: Mediator.removeFromRecentsList(recent.countryId)
+        onClicked: ConnectionMediator.removeFromRecentsList(recent.countryId)
     }
 }

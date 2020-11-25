@@ -18,7 +18,7 @@ Item {
     Component.onCompleted: setTrayIcon()
 
     Connections {
-        target: Mediator
+        target: ConnectionMediator
         onIsConnectedChanged: setTrayIcon()
     }
 
@@ -28,7 +28,7 @@ Item {
     }
 
     function setTrayIcon() {
-        TrayMediator.setIconSource(Mediator.isConnected
+        TrayMediator.setIconSource(ConnectionMediator.isConnected
                                    ? ':/img/tray-active'
                                    : ':/img/tray-inactive')
     }

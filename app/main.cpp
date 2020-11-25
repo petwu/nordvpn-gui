@@ -8,7 +8,7 @@
 
 #include "app.h"
 #include "logic/mediators/accountmediator.h"
-#include "logic/mediators/mediator.h"
+#include "logic/mediators/connectionmediator.h"
 #include "logic/mediators/navmediator.h"
 #include "logic/mediators/preferencesmediator.h"
 #include "logic/mediators/traymediator.h"
@@ -48,9 +48,9 @@ int main(int argc, char *argv[]) {
     // setup connection between QML/UI and C++/logic through mediator objects
     // that are available as a QML context objects
     QQmlContext *ctx = engine.rootContext();
-    ctx->setContextProperty("Mediator", new Mediator());
-    ctx->setContextProperty("NavMediator", new NavMediator());
     ctx->setContextProperty("AccountMediator", new AccountMediator());
+    ctx->setContextProperty("ConnectionMediator", new ConnectionMediator());
+    ctx->setContextProperty("NavMediator", new NavMediator());
     ctx->setContextProperty("PreferencesMediator", new PreferencesMediator());
     ctx->setContextProperty("TrayMediator", &TrayMediator::getInstance());
 

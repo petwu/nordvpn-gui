@@ -27,12 +27,12 @@ Item {
         property var serverList: []
 
         function updateCountryAndServerList(countryId = -1) {
-            const countries = Mediator.getSpecialtyCountries(groupId)
+            const countries = ConnectionMediator.getSpecialtyCountries(groupId)
             _.countryList = [
                         //: Fastest server available.
                         { name : qsTr('Fastest'), id: -1 }
                     ].concat(countries.map(c => { c.name = qsTranslate('Country', c.name); return c }))
-            const servers = Mediator.getSpecialtyServers(groupId, countryId)
+            const servers = ConnectionMediator.getSpecialtyServers(groupId, countryId)
             servers.forEach((s) => {
                                 s.text = s.load + '%  |  ' + TranslationHelper.qsTrServer(s.name)
                             })
@@ -87,9 +87,9 @@ Item {
         anchors.left: text.right
         anchors.leftMargin: specialityServerItem.iconTextSpacing
         anchors.verticalCenter: parent.verticalCenter
-        color: Mediator.connectedServerGroups.includes(specialityServerItem.groupId)
+        color: ConnectionMediator.connectedServerGroups.includes(specialityServerItem.groupId)
                ? Style.colorGreen
-               : (Mediator.connectingServerGroups.includes(specialityServerItem.groupId)
+               : (ConnectionMediator.connectingServerGroups.includes(specialityServerItem.groupId)
                   ? Style.colorOrange
                   : 'transparent')
     }
@@ -100,18 +100,18 @@ Item {
 
     MouseArea {
         anchors.fill: parent
-        cursorShape: Mediator.areConnectionCommandsPaused
+        cursorShape: ConnectionMediator.areConnectionCommandsPaused
                      ? Qt.ArrowCursor
                      : Qt.PointingHandCursor
-        onClicked: Mediator.connectToSpecialtyGroup(groupId)
+        onClicked: ConnectionMediator.connectToSpecialtyGroup(groupId)
     }
 
     MouseArea {
         anchors.fill: parent
-        cursorShape: Mediator.areConnectionCommandsPaused
+        cursorShape: ConnectionMediator.areConnectionCommandsPaused
                      ? Qt.ArrowCursor
                      : Qt.PointingHandCursor
-        onClicked: Mediator.connectToSpecialtyGroup(groupId)
+        onClicked: ConnectionMediator.connectToSpecialtyGroup(groupId)
     }
 
     ToolButton {
@@ -225,11 +225,11 @@ Item {
                     const server = serverSelector.model[serverSelector.currentIndex]
                     const country = countrySelector.model[countrySelector.currentIndex]
                     if (server.id >= 0) {
-                        Mediator.connectToServerById(server.id)
+                        ConnectionMediator.connectToServerById(server.id)
                     } else if (country.id >= 0) {
-                        Mediator.connectToCountryByIdAndGroup(country.id, groupId)
+                        ConnectionMediator.connectToCountryByIdAndGroup(country.id, groupId)
                     } else {
-                        Mediator.connectToSpecialtyGroup(groupId)
+                        ConnectionMediator.connectToSpecialtyGroup(groupId)
                     }
                     specialtyServerSelectionPopup.close()
                 }

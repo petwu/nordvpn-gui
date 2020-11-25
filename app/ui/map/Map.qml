@@ -47,13 +47,13 @@ Item {
         // flag that keeps the map centered until the first click/drag
         property bool mapCentered: true
         // list of all countries with their marker positions
-        property var countryList: Mediator.countryList
+        property var countryList: ConnectionMediator.countryList
         property double prevWidth: -1
         property double prevHeight: -1
     }
 
     Connections {
-        target: Mediator
+        target: ConnectionMediator
         onConnectingCountryIdChanged: (id) => (id !== -1) ? focusCountry(id) : null
     }
 

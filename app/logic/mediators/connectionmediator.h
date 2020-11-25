@@ -1,5 +1,5 @@
-#ifndef MEDIATOR_H
-#define MEDIATOR_H
+#ifndef CONNECTIONMEDIATOR_H
+#define CONNECTIONMEDIATOR_H
 
 #include <QObject>
 #include <QVariant>
@@ -8,13 +8,13 @@
 #include "logic/nordvpn/statuscontroller.h"
 #include "qmldataconverter.h"
 
-class Mediator : public QObject,
-                 public IConnectionInfoSubscription,
-                 public ICountriesSubscription {
+class ConnectionMediator : public QObject,
+                           public IConnectionInfoSubscription,
+                           public ICountriesSubscription {
     Q_OBJECT
 
   public:
-    Mediator();
+    ConnectionMediator();
 
     Q_PROPERTY(
         bool areConnectionCommandsPaused READ _getAreConnectionCommandsPaused
@@ -138,4 +138,4 @@ class Mediator : public QObject,
     void updateCountryList(const std::vector<Country> &countryList) override;
 };
 
-#endif // MEDIATOR_H
+#endif // CONNECTIONMEDIATOR_H

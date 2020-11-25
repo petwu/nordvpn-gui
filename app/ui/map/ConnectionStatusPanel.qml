@@ -15,7 +15,7 @@ Item {
     z: 100
 
     Connections {
-        target: Mediator
+        target: ConnectionMediator
         onIsRatingPossibleChanged: (possible) => _.showRating = possible
     }
 
@@ -90,9 +90,9 @@ Item {
                             radius: width/2
                             Layout.alignment: Qt.AlignVCenter
                             color: {
-                                if (Mediator.isDisconnected) return Style.colorStatusPanelDisconnected
-                                if (Mediator.isConnecting)   return Style.colorStatusPanelConnecting
-                                if (Mediator.isConnected)    return Style.colorStatusPanelConnected
+                                if (ConnectionMediator.isDisconnected) return Style.colorStatusPanelDisconnected
+                                if (ConnectionMediator.isConnecting)   return Style.colorStatusPanelConnecting
+                                if (ConnectionMediator.isConnected)    return Style.colorStatusPanelConnected
                                 return 'transparent'
                             }
                         }
@@ -100,17 +100,17 @@ Item {
                         Text {
                             text: {
                                 //: Not connected the a VPN server.
-                                if (Mediator.isDisconnected) return qsTr('Unprotected')
+                                if (ConnectionMediator.isDisconnected) return qsTr('Unprotected')
                                 //: Establishing a connection to a VPN server.
-                                if (Mediator.isConnecting)   return qsTr('Connecting')
+                                if (ConnectionMediator.isConnecting)   return qsTr('Connecting')
                                 //: Connected to a VPN server.
-                                if (Mediator.isConnected)    return qsTr('Protected')
+                                if (ConnectionMediator.isConnected)    return qsTr('Protected')
                                 return ''
                             }
                             color: {
-                                if (Mediator.isDisconnected) return Style.colorStatusPanelDisconnected
-                                if (Mediator.isConnecting)   return Style.colorStatusPanelConnecting
-                                if (Mediator.isConnected)    return Style.colorStatusPanelConnected
+                                if (ConnectionMediator.isDisconnected) return Style.colorStatusPanelDisconnected
+                                if (ConnectionMediator.isConnecting)   return Style.colorStatusPanelConnecting
+                                if (ConnectionMediator.isConnected)    return Style.colorStatusPanelConnected
                                 return 'transparent'
                             }
                             font.pixelSize: Style.fontSizeSmall
@@ -121,24 +121,24 @@ Item {
                     RowLayout {
                         Text {
                             text: {
-                                const country = Mediator.countryList.find((c) => c.id === Mediator.connectedCountryId)
-                                const city = country ? country.cities.find((c) => c.id === Mediator.connectedCityId) : ''
+                                const country = ConnectionMediator.countryList.find((c) => c.id === ConnectionMediator.connectedCountryId)
+                                const city = country ? country.cities.find((c) => c.id === ConnectionMediator.connectedCityId) : ''
                                 //: Feedback to NordVPN by rating the connection with 1 to 5 starts.
                                 if (_.showRating)                    return qsTr('Rate your connection speed')
                                 //: Status hint while disconnected.
-                                if (Mediator.isDisconnected)         return qsTr('Pick country or use quick connect')
+                                if (ConnectionMediator.isDisconnected)         return qsTr('Pick country or use quick connect')
                                 //: Status hint while connecting.
-                                if (Mediator.isConnecting)           return qsTr('Finding the best server ...')
+                                if (ConnectionMediator.isConnecting)           return qsTr('Finding the best server ...')
                                 //: Status hint while connected.
-                                if (Mediator.isConnected && country) return qsTr('Connected to %1, %2 #%3').arg(city.name).arg(country.name).arg(Mediator.connectedServerNr)
+                                if (ConnectionMediator.isConnected && country) return qsTr('Connected to %1, %2 #%3').arg(city.name).arg(country.name).arg(ConnectionMediator.connectedServerNr)
                                 return 'Error'
                             }
                         }
                     }
 
                     Text {
-                        visible: Mediator.isConnected
-                        text: Mediator.connectedIP + '    ↑' + formatBytes(Mediator.sentBytes) + '    ↓' + formatBytes(Mediator.receivedBytes)
+                        visible: ConnectionMediator.isConnected
+                        text: ConnectionMediator.connectedIP + '    ↑' + formatBytes(ConnectionMediator.sentBytes) + '    ↓' + formatBytes(ConnectionMediator.receivedBytes)
                         font.pixelSize: .9*Qt.application.font.pixelSize
                         color: Style.colorStatusPanelSeconary
                         font.weight: Font.Thin
@@ -158,29 +158,29 @@ Item {
                 }
 
                 Button {
-                    visible: Mediator.isDisconnected && !_.showRating
-                    enabled: !Mediator.areConnectionCommandsPaused
+                    visible: ConnectionMediator.isDisconnected && !_.showRating
+                    enabled: !ConnectionMediator.areConnectionCommandsPaused
                     //: Button to pick the fastest server and connect to it.
                     text: qsTr('Quick Connect')
                     icon.name: 'network-wired'
-                    onClicked: Mediator.quickConnect()
+                    onClicked: ConnectionMediator.quickConnect()
                 }
 
                 Button {
-                    visible: Mediator.isConnecting
+                    visible: ConnectionMediator.isConnecting
                     //: Button to abort the currently running connection establishment.
                     text: qsTr('Cancel')
                     icon.name: 'process-stop'
-                    onClicked: Mediator.cancelConnection()
+                    onClicked: ConnectionMediator.cancelConnection()
                 }
 
                 Button {
-                    visible: Mediator.isConnected
-                    enabled: !Mediator.areConnectionCommandsPaused
+                    visible: ConnectionMediator.isConnected
+                    enabled: !ConnectionMediator.areConnectionCommandsPaused
                     //: Button to disconnect from the currently connected server.
                     text: qsTr('Disconnect')
                     icon.name: 'network-offline'
-                    onClicked: Mediator.disconnect()
+                    onClicked: ConnectionMediator.disconnect()
                 }
 
                 RowLayout {

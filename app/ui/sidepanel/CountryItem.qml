@@ -31,7 +31,7 @@ Item {
         property var serverList: []
 
         function updateServerList(cityId = -1) {
-            let servers = Mediator.getServers(country.id, cityId)
+            let servers = ConnectionMediator.getServers(country.id, cityId)
             servers.forEach((s) => {
                                 s.text = s.load + '%  |  ' + TranslationHelper.qsTrServer(s.name)
                             })
@@ -83,7 +83,7 @@ Item {
             anchors.fill: flag
             radius: width
             color: '#ffffff'
-            opacity: Mediator.areConnectionCommandsPaused
+            opacity: ConnectionMediator.areConnectionCommandsPaused
                      ? .33
                      : 0
         }
@@ -104,9 +104,9 @@ Item {
         anchors.left: text.right
         anchors.leftMargin: countryItem.iconTextSpacing
         anchors.verticalCenter: parent.verticalCenter
-        color: countryItem.country.id === Mediator.connectedCountryId
+        color: countryItem.country.id === ConnectionMediator.connectedCountryId
                ? Style.colorGreen
-               : (countryItem.country.id === Mediator.connectingCountryId
+               : (countryItem.country.id === ConnectionMediator.connectingCountryId
                   ? Style.colorOrange
                   : 'transparent')
     }
@@ -117,10 +117,10 @@ Item {
 
     MouseArea {
         anchors.fill: parent
-        cursorShape: Mediator.areConnectionCommandsPaused
+        cursorShape: ConnectionMediator.areConnectionCommandsPaused
                      ? Qt.ArrowCursor
                      : Qt.PointingHandCursor
-        onClicked: Mediator.connectToCountryById(countryItem.country.id)
+        onClicked: ConnectionMediator.connectToCountryById(countryItem.country.id)
     }
 
     ToolButton {
@@ -238,11 +238,11 @@ Item {
                     const server = serverSelector.model[serverSelector.currentIndex]
                     const city = citySelector.model[citySelector.currentIndex]
                     if (server.id >= 0) {
-                        Mediator.connectToServerById(server.id)
+                        ConnectionMediator.connectToServerById(server.id)
                     } else if (city.id >= 0) {
-                        Mediator.connectToCityById(city.id)
+                        ConnectionMediator.connectToCityById(city.id)
                     } else {
-                        Mediator.connectToCountryById(country.id)
+                        ConnectionMediator.connectToCountryById(country.id)
                     }
                     cityServerSelectionPopup.close()
                 }

@@ -6,7 +6,7 @@ Item {
     id: marker
     width: 0
     height: 0
-    z: _.disconnected ? 1 : Mediator.countryList.length+1
+    z: _.disconnected ? 1 : ConnectionMediator.countryList.length+1
 
     property int countryId: -1
     property string name: ''
@@ -19,14 +19,14 @@ Item {
     QtObject {
         id: _
         property double scaleFactor: marker.scaleFactor
-        property bool disconnected: Mediator.connectedCountryId !== marker.countryId &&
-                                    Mediator.connectingCountryId !== marker.countryId
-        property bool connecting: Mediator.connectingCountryId === marker.countryId
-        property bool connected: Mediator.connectedCountryId === marker.countryId
+        property bool disconnected: ConnectionMediator.connectedCountryId !== marker.countryId &&
+                                    ConnectionMediator.connectingCountryId !== marker.countryId
+        property bool connecting: ConnectionMediator.connectingCountryId === marker.countryId
+        property bool connected: ConnectionMediator.connectedCountryId === marker.countryId
         property color colorPrimary: connected
                                      /* if connected => highlight */
                                      ? Style.colorMarkerConnected
-                                     : (Mediator.connectingCountryId === -1
+                                     : (ConnectionMediator.connectingCountryId === -1
                                         /* else if idle/nothing connected or connecting => use default color for all markers */
                                         ? Style.colorMarkerDefault
                                         : (connecting
@@ -39,7 +39,7 @@ Item {
             _.scaleFactor = marker.scaleFactor + (connected ? marker.scaleDiff : 0)
         }
         onDisconnectedChanged: {
-            marker.z = disconnected ? 1 : Mediator.countryList.length+1
+            marker.z = disconnected ? 1 : ConnectionMediator.countryList.length+1
         }
         onConnectingChanged: {
             _.scaleFactor = marker.scaleFactor + (connecting ? marker.scaleDiff : 0)
@@ -47,7 +47,7 @@ Item {
     }
 
     Connections {
-        target: Mediator
+        target: ConnectionMediator
         onConnectedCountryIdChanged: triangle.requestPaint()
         onConnectingCountryIdChanged: triangle.requestPaint()
     }
@@ -92,7 +92,7 @@ Item {
         }
         onClicked: {
             if (_.disconnected) {
-                Mediator.connectToCountryById(marker.countryId)
+                ConnectionMediator.connectToCountryById(marker.countryId)
             }
         }
 

@@ -102,7 +102,7 @@ set(SRC_FILES
     app/data/repositories/serverrepository.cpp
     # logic
     app/logic/mediators/accountmediator.cpp
-    app/logic/mediators/mediator.cpp
+    app/logic/mediators/connectionmediator.cpp
     app/logic/mediators/navmediator.cpp
     app/logic/mediators/preferencesmediator.cpp
     app/logic/mediators/qmldataconverter.cpp
