@@ -25,6 +25,7 @@ int main(int argc, char *argv[]) {
     app.setOrganizationDomain(REPOSITORY);
     app.setApplicationName(APPLICATION_NAME);
     app.setApplicationVersion(VERSION);
+    app.setWindowIcon(QIcon(":/icons/icon.ico"));
     QQmlApplicationEngine engine;
     engine.addImportPath(":/Style");
 
