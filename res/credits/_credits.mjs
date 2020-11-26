@@ -1,5 +1,5 @@
 /**
- * This modules is imported by app/ui/windows/credits.qml in order to display
+ * This modules is imported by src/ui/windows/credits.qml in order to display
  * credits/attribution for open source software (OSS) used by this project.
  * 
  * How to add another attribution:

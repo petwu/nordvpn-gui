@@ -67,7 +67,7 @@ find_package(Doxygen)
 # configure application with defines in app.h.in
 # --------------------------------------------------------------------------------
 
-configure_file(app/app.h.in app.h)
+configure_file(src/app.h.in app.h)
 
 # --------------------------------------------------------------------------------
 # copy resources that are not compiled in by rcc (qrc)
@@ -81,43 +81,43 @@ file(COPY res/data/ DESTINATION res/data/)
 
 # source files
 set(SRC_FILES
-    app/main.cpp
-    app/runguard.cpp
+    src/main.cpp
+    src/runguard.cpp
     # common
-    app/common/io/asyncprocess.cpp
-    app/common/io/process.cpp
-    app/common/io/processresult.cpp
-    app/common/util/strings.cpp
+    src/common/io/asyncprocess.cpp
+    src/common/io/process.cpp
+    src/common/io/processresult.cpp
+    src/common/util/strings.cpp
     # data
-    app/data/enums/group.cpp
-    app/data/enums/protocol.cpp
-    app/data/enums/technology.cpp
-    app/data/enums/securityprotocol.cpp
-    app/data/models/connectable.cpp
-    app/data/models/country.cpp
-    app/data/models/location.cpp
-    app/data/models/server.cpp
-    app/data/repositories/baserepository.cpp
-    app/data/repositories/preferencesrepository.cpp
-    app/data/repositories/serverrepository.cpp
+    src/data/enums/group.cpp
+    src/data/enums/protocol.cpp
+    src/data/enums/technology.cpp
+    src/data/enums/securityprotocol.cpp
+    src/data/models/connectable.cpp
+    src/data/models/country.cpp
+    src/data/models/location.cpp
+    src/data/models/server.cpp
+    src/data/repositories/baserepository.cpp
+    src/data/repositories/preferencesrepository.cpp
+    src/data/repositories/serverrepository.cpp
     # logic
-    app/logic/mediators/accountmediator.cpp
-    app/logic/mediators/connectionmediator.cpp
-    app/logic/mediators/navmediator.cpp
-    app/logic/mediators/preferencesmediator.cpp
-    app/logic/mediators/qmldataconverter.cpp
-    app/logic/mediators/recentsmediator.cpp
-    app/logic/mediators/traymediator.cpp
-    app/logic/models/connectioninfo.cpp
-    app/logic/models/envinfo.cpp
-    app/logic/models/nordvpnsettings.cpp
-    app/logic/models/whitelistportentry.cpp
-    app/logic/nordvpn/accountcontroller.cpp
-    app/logic/nordvpn/basecontroller.cpp
-    app/logic/nordvpn/envcontroller.cpp
-    app/logic/nordvpn/servercontroller.cpp
-    app/logic/nordvpn/preferencescontroller.cpp
-    app/logic/nordvpn/statuscontroller.cpp
+    src/logic/mediators/accountmediator.cpp
+    src/logic/mediators/connectionmediator.cpp
+    src/logic/mediators/navmediator.cpp
+    src/logic/mediators/preferencesmediator.cpp
+    src/logic/mediators/qmldataconverter.cpp
+    src/logic/mediators/recentsmediator.cpp
+    src/logic/mediators/traymediator.cpp
+    src/logic/models/connectioninfo.cpp
+    src/logic/models/envinfo.cpp
+    src/logic/models/nordvpnsettings.cpp
+    src/logic/models/whitelistportentry.cpp
+    src/logic/nordvpn/accountcontroller.cpp
+    src/logic/nordvpn/basecontroller.cpp
+    src/logic/nordvpn/envcontroller.cpp
+    src/logic/nordvpn/servercontroller.cpp
+    src/logic/nordvpn/preferencescontroller.cpp
+    src/logic/nordvpn/statuscontroller.cpp
 )
 
 # add translations
@@ -136,15 +136,15 @@ add_custom_target(lupdate
 
 # add resource files
 qt5_add_resources(SRC_FILES
-    app/qml.qrc
+    src/qml.qrc
     res/res.qrc
     ${CMAKE_BINARY_DIR}/res/translations/translations.qrc
 )
 
 # main target
 add_executable(nordvpn-gui ${SRC_FILES} ${QM_FILES})
-target_include_directories(nordvpn-gui PUBLIC
-    app
+target_include_directories(nordvpn-gui PRIVATE
+    src
     ${CMAKE_BINARY_DIR}
 )
 target_link_libraries(nordvpn-gui PRIVATE
