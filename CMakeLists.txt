@@ -40,15 +40,15 @@ set(QML_IMPORT_PATH ${CMAKE_SOURCE_DIR}/res
 
 # --------------------------------------------------------------------------------
 # install external dependencies (except Qt) with conan
-# => https://github.com/conan-io/cmake-conan
 # --------------------------------------------------------------------------------
-set(CONAN_CMAKE_URL
-  "https://raw.githubusercontent.com/conan-io/cmake-conan/master/conan.cmake")
-if(NOT EXISTS ${CMAKE_BINARY_DIR}/conan.cmake)
-  file(DOWNLOAD ${CONAN_CMAKE_URL} ${CMAKE_BINARY_DIR}/conan.cmake)
-endif()
-include(${CMAKE_BINARY_DIR}/conan.cmake)
-conan_cmake_run(CONANFILE conanfile.txt BUILD missing BASIC_SETUP CMAKE_TARGETS)
+include(Conan)
+conan_cmake_run(
+  CONANFILE conanfile.txt
+  BUILD missing
+  BASIC_SETUP
+  CMAKE_TARGETS
+  OUTPUT_QUIET
+)
 
 # --------------------------------------------------------------------------------
 # main executable

@@ -56,7 +56,9 @@ function(target_translation_sources _target)
       COMMAND ${lrelease_EXECUTABLE} ${_ts_file} -qm ${_qm_file}
     )
     # add a target for the output .qm file and set it as dependency for _target
-    string(REGEX REPLACE "[^a-zA-Z0-9_]" "_" _qm_target ${_qm_file})
+    # (see https://cmake.org/cmake/help/latest/policy/CMP0037.html for charackters in target names)
+    string(REPLACE "${CMAKE_BINARY_DIR}/" "" _qm_target ${_qm_file})
+    string(REGEX REPLACE "[^a-zA-Z0-9_\\.\\-\\+]" "_" _qm_target ${_qm_target})
     add_custom_target(${_qm_target} DEPENDS ${_qm_file})
     add_dependencies(${_target} ${_qm_target})
   endforeach()
