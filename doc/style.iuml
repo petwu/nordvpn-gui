@@ -57,18 +57,25 @@ skinparam {
     SequenceMessageAlignment center
     SequenceBoxBorderColor GREY
     SequenceGroupBodyBackgroundColor transparent
+    ParticipantPadding 20
+    BoxPadding 10
 
     UsecaseBackgroundColor BKGD_COLOR
     UsecaseBorderColor LINE_COLOR
 
     ActorBackgroundColor BKGD_COLOR
     ActorBorderColor LINE_COLOR
+    EntityBackgroundColor BKGD_COLOR
+    EntityBorderColor LINE_COLOR
+    BoundaryBackgroundColor BKGD_COLOR
+    BoundaryBorderColor LINE_COLOR
     
     RectangleFontStyle bold
 }
 
 hide empty members
 hide circle
+hide footbox
 ' hide stereotype
 
 !define fa https://github.com/tupadr3/plantuml-icon-font-sprites/font-awesome-5
