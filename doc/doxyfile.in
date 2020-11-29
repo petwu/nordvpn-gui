@@ -51,14 +51,14 @@ PROJECT_BRIEF          = "@APPLICATION_DESCRIPTION@"
 # pixels and the maximum width should not exceed 200 pixels. Doxygen will copy
 # the logo to the output directory.
 
-PROJECT_LOGO           = @CMAKE_SOURCE_DIR@/docs/logo.png
+PROJECT_LOGO           = @CMAKE_SOURCE_DIR@/doc/logo.png
 
 # The OUTPUT_DIRECTORY tag is used to specify the (relative or absolute) path
 # into which the generated documentation will be written. If a relative path is
 # entered, it will be relative to the location where doxygen was started. If
 # left blank the current directory will be used.
 
-OUTPUT_DIRECTORY       = docs
+OUTPUT_DIRECTORY       = doc
 
 # If the CREATE_SUBDIRS tag is set to YES then doxygen will create 4096 sub-
 # directories (in 2 levels) under the output directory of each output format and
@@ -824,7 +824,7 @@ WARN_LOGFILE           =
 # Note: If this tag is empty the current directory is searched.
 
 INPUT                  = "@CMAKE_SOURCE_DIR@/src" \
-                         "@CMAKE_SOURCE_DIR@/docs"
+                         "@CMAKE_SOURCE_DIR@/doc"
 
 # This tag can be used to specify the character encoding of the source files
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding. Doxygen uses
@@ -1241,7 +1241,7 @@ HTML_STYLESHEET        =
 # list). For an example see the documentation.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-HTML_EXTRA_STYLESHEET  = "@CMAKE_SOURCE_DIR@/docs/style.css"
+HTML_EXTRA_STYLESHEET  = "@CMAKE_SOURCE_DIR@/doc/style.css"
 
 # The HTML_EXTRA_FILES tag can be used to specify one or more extra images or
 # other source files which should be copied to the HTML output directory. Note
@@ -2512,12 +2512,12 @@ DIAFILE_DIRS           =
 # generate a warning when it encounters a \startuml command in this case and
 # will not generate output for the diagram.
 
-PLANTUML_JAR_PATH      = @CMAKE_SOURCE_DIR@/docs/plantuml.jar
+PLANTUML_JAR_PATH      = @CMAKE_SOURCE_DIR@/doc/plantuml.jar
 
 # When using plantuml, the PLANTUML_CFG_FILE tag can be used to specify a
 # configuration file for plantuml.
 
-PLANTUML_CFG_FILE      = @CMAKE_SOURCE_DIR@/docs/style.iuml
+PLANTUML_CFG_FILE      = @CMAKE_SOURCE_DIR@/doc/style.iuml
 
 # When using plantuml, the specified paths are searched for files specified by
 # the !include statement in a plantuml block.

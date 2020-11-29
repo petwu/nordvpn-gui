@@ -6,7 +6,7 @@ project(nordvpn-gui LANGUAGES CXX)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
 # --------------------------------------------------------------------------------
-# application description
+# application description (see src/app.h.in as well)
 # --------------------------------------------------------------------------------
 set(AUTHOR "Peter Würth")
 set(REPOSITORY "https://github.com/petwu/nordvpn-gui")
@@ -68,4 +68,4 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
 # --------------------------------------------------------------------------------
 add_subdirectory(src)
 add_subdirectory(res)
-add_subdirectory(docs)
+add_subdirectory(doc)
