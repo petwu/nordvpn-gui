@@ -1,0 +1,12 @@
+{
+  "files.associations": {
+      ".clang-tidy": "yaml",
+      ".clang-format": "yaml",
+      "*.ts": "xml"
+  },
+  "[cmake]": {
+    "editor.detectIndentation": false,
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2
+  }
+}
