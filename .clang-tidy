@@ -1,0 +1,62 @@
+---
+
+# https://clang.llvm.org/extra/clang-tidy
+
+# enable/disable(-) specific groups of checks
+Checks: >
+  bugprone-*,
+  cert-*,
+  clang-analyzer-*,
+  concurrency-*,
+  cppcoreguidelines-*,
+  llvm-*,
+  misc-*,
+  modernize-*,
+  performance-*,
+  portability-*,
+  readability-*,
+  -modernize-use-nodiscard,
+  -llvm-header-guard
+
+# regex to
+HeaderFilterRegex: '.*'
+
+# use .clang-format for code formatting
+FormatStyle: file
+
+# fine grained control over individual checks
+CheckOptions:
+
+  # llvmlibc-restrict-system-libc-headers
+  # -------------------------------------
+  # This check causes "clang-tidy --fix" to automatically remove all Qt headers
+  # because the FindQt5 packages uses -isystem include flags.
+  # [Option] Includes: glob list of allowed filenames,
+  #          default: '-*' (disallow all)
+  # Qt headers all start with "Q...", e.g. "#include <QString>".
+  - key: llvmlibc-restrict-system-libc-headers.Includes
+    value: '-*,Q*'
+
+  # [readability|cppcoreguidelines-avoid]-magic-numbers
+  # ---------------------------------------------------
+  # This check causes some annoying warnings for common "magic" numbers.
+  # [Option] IgnoredIntegerValues: List of allowed magic integers.
+  #          default: 1;2;3;4
+  # Allow additional values: 0-9 for small array indexes (e.g. to access regex
+  # matches), 2;8;16 as number system bases and 24;60;365 for time conversions.
+  - key: readability-magic-numbers.IgnoredIntegerValues
+    value: '1;2;3;4;5;6;7;8;9;10;16;24;60;365'
+  - key: cppcoreguidelines-avoid-magic-numbers.IgnoredIntegerValues
+    value: '1;2;3;4;5;6;7;8;9;10;16;24;60;365'
+
+  # misc-non-private-member-variables-in-classes
+  # --------------------------------------------
+  # This checks disallows non-static public member attributes and functions.
+  # [Option] IgnoreClassesWithAllMemberVariablesBeingPublic: Ignore classes with
+  #          only public members,
+  #          default: false
+  # Allow all-public classes e.g. for data classes/models.
+  - key: misc-non-private-member-variables-in-classes.IgnoreClassesWithAllMemberVariablesBeingPublic
+    value: true
+
+---

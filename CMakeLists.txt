@@ -27,6 +27,7 @@ set(NORD_ACCOUNT_URL "https://my.nordaccount.com")
 # --------------------------------------------------------------------------------
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
 # --------------------------------------------------------------------------------
 # Qt settings
@@ -62,10 +63,14 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
   Threads::Threads
   ${CONAN_TARGETS}
 )
-
-# --------------------------------------------------------------------------------
-# CMakeLists.txt files in subdirectories handle the rest
-# --------------------------------------------------------------------------------
 add_subdirectory(src)
 add_subdirectory(res)
 add_subdirectory(doc)
+
+# --------------------------------------------------------------------------------
+# create targets for clang-tidy and clang-format
+# --------------------------------------------------------------------------------
+
+include(CodeQualityTools)
+add_clang_tidy(clang-tidy TARGET ${PROJECT_NAME})
+add_clang_format(clang-format FILES src/**/*.cpp src/**/*.h)
