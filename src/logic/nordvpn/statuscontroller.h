@@ -13,6 +13,22 @@ using json = nlohmann::json;
 #include "servercontroller.h"
 
 /**
+ * @brief Byte, the basic information unit.
+ */
+constexpr long Byte = 0b1;
+/**
+ * @brief KiB = 2 ^ 10 which equals 10 left shifts, because a left shift is the
+ * same as a multiplication with the base 2.
+ */
+constexpr long KiB = Byte << 10;
+/**  @brief MiB = 2 ^ 20  */
+constexpr long MiB = KiB << 10;
+/**  @brief GiB = 2 ^ 30  */
+constexpr long GiB = MiB << 10;
+/**  @brief TiB = 2 ^ 40  */
+constexpr long TiB = GiB << 10;
+
+/**
  * @brief IConnectionInfoSubscription is an interface that can be implemented by
  * any class that wants updates about the connection status from the
  * #StatusController. Through this interface, the observer pattern is
@@ -49,27 +65,23 @@ class StatusController : public BaseController {
     // Singleton:
     // https://stackoverflow.com/questions/1008019/c-singleton-design-pattern
   public:
-    /**
-     * @brief Disable copy constructor (part of the sigleton implementation).
-     */
     StatusController(const StatusController &) = delete;
-
-    /**
-     * @brief Disable copy assignment (part of the sigleton implementation).
-     */
     void operator=(const StatusController &) = delete;
+    StatusController(StatusController &&) = delete;
+    auto operator=(StatusController &&) -> StatusController & = delete;
+    ~StatusController() = default;
 
     /**
      * @brief Get the singleton instance of StatusController.
      * @details The instance will be constructed if it does not exist already.
      */
-    static StatusController &getInstance();
+    static auto getInstance() -> StatusController &;
 
     /**
      * @brief Get all information abount the current connection status collected
      * by this controller as an object.
      */
-    ConnectionInfo getStatus();
+    auto getStatus() -> ConnectionInfo;
 
     /**
      * @brief Start a task in a background thread that periodically updates the
@@ -101,26 +113,26 @@ class StatusController : public BaseController {
      * @brief Get the minimum rating value that represents the worst rating
      * possible.
      */
-    uint8_t getRatingMin();
+    static auto getRatingMin() -> uint8_t;
 
     /**
      * @brief Get the maximum rating value that represents the best rating
      * possible.
      */
-    uint8_t getRatingMax();
+    static auto getRatingMax() -> uint8_t;
 
     /**
      * @brief Rate NordVPNs services, especially the last connection.
      * @param rating A number representing the rating. Must be in the bounds
      * specified by getRatingMin() and getRatingMax().
      */
-    void rate(uint8_t rating);
+    static void rate(uint8_t rating);
 
   private:
     /**
      * @brief Empty, private constructor (part of the singleton implementation).
      */
-    StatusController() {}
+    StatusController() = default;
 
     /**
      * @brief Bool that is true, while the background task should keep running.
@@ -162,7 +174,7 @@ class StatusController : public BaseController {
      * @brief Extract the server number from the servers hostname. Example:
      * de123.nordvpn.com --> 123
      */
-    int32_t _getServerNr(std::string server);
+    static auto _getServerNr(const std::string &name) -> int32_t;
 };
 
 #endif // STATUSCONTROLLER_H

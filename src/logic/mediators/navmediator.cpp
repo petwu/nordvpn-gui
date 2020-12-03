@@ -6,15 +6,16 @@ NavMediator::NavMediator() {
     envController.startBackgroundTask();
 }
 
-QString NavMediator::_getMainWindowViewSource() {
+auto NavMediator::_getMainWindowViewSource() -> QString {
     auto viewSource =
         QString(this->_viewSourceMap[this->_currentMainWindowView].c_str());
     return std::move(viewSource);
 }
 
 void NavMediator::_setCurrentMainWindowView(MainWindowView v) {
-    if (this->_currentMainWindowView == v)
+    if (this->_currentMainWindowView == v) {
         return;
+    }
     this->_currentMainWindowView = v;
     this->mainWindowViewSourceChanged(this->_getMainWindowViewSource());
 }
@@ -30,11 +31,11 @@ void NavMediator::updateEnv(const EnvInfo &envInfo) {
             established and the login status cannot be checked
         4.) without being logged in, the NordVPN services cannot be used
     */
-    if (envInfo.shellAvailable == false) {
+    if (!envInfo.shellAvailable) {
         this->_setCurrentMainWindowView(MainWindowView::NoShell);
-    } else if (envInfo.nordvpnInstalled == false) {
+    } else if (!envInfo.nordvpnInstalled) {
         this->_setCurrentMainWindowView(MainWindowView::NotInstalled);
-    } else if (envInfo.internetConnected == false) {
+    } else if (!envInfo.internetConnected) {
         this->_setCurrentMainWindowView(MainWindowView::NoConnection);
     } else if (envInfo.loggedIn == false) {
         this->_setCurrentMainWindowView(MainWindowView::Login);

@@ -1,6 +1,7 @@
 #include "baserepository.h"
 
-std::string BaseRepository::readFile(std::filesystem::path path) {
+auto BaseRepository::readFile(const std::filesystem::path &path)
+    -> std::string {
     std::ifstream file(path);
     std::stringstream buf;
     buf << file.rdbuf();
@@ -8,8 +9,8 @@ std::string BaseRepository::readFile(std::filesystem::path path) {
     return buf.str();
 }
 
-void BaseRepository::writeFile(std::filesystem::path path,
-                               std::string content) {
+void BaseRepository::writeFile(const std::filesystem::path &path,
+                               const std::string &content) {
     std::filesystem::create_directories(path.parent_path());
     std::fstream file;
     file.open(path, std::fstream::out | std::fstream::trunc);
@@ -17,26 +18,35 @@ void BaseRepository::writeFile(std::filesystem::path path,
     file.close();
 }
 
-size_t curlCallback(const char *in, size_t size, size_t num, std::string *out) {
+auto curlCallback(const char *in, size_t size, size_t num, std::string *out)
+    -> size_t {
     size_t totalBytes = size * num;
     out->append(in, totalBytes);
     return totalBytes;
 }
 
-std::string BaseRepository::curl(std::string url, uint8_t timeoutSec) {
-    long httpCode = 0;
+auto BaseRepository::curl(const char *&url, uint8_t timeoutSec) -> std::string {
+    return BaseRepository::curl(std::string(url), timeoutSec);
+}
+
+auto BaseRepository::curl(const std::string &url, uint8_t timeoutSec)
+    -> std::string {
     std::string httpData;
     CURL *curl = curl_easy_init();
+    // curl_easy_setopt cannot be used without varargs
+    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-vararg)
     curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
+    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-vararg)
     curl_easy_setopt(curl, CURLOPT_TIMEOUT, timeoutSec);
+    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-vararg)
     curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
+    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-vararg)
+    curl_easy_setopt(curl, CURLOPT_FAILONERROR, 1L);
+    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-vararg)
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, curlCallback);
+    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-vararg)
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, &httpData);
-    curl_easy_perform(curl);
-    curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &httpCode);
+    CURLcode curlCode = curl_easy_perform(curl);
     curl_easy_cleanup(curl);
-    if (httpCode == 200) {
-        return std::move(httpData);
-    }
-    return "";
+    return curlCode == CURLE_OK ? std::move(httpData) : "";
 }

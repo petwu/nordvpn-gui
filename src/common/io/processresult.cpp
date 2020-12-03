@@ -1,25 +1,30 @@
 #include "processresult.h"
 
+#include <utility>
+
+#include <utility>
+
 ProcessResult::ProcessResult(std::string cmd, std::string out, std::string err,
                              uint32_t rc)
-    : command(cmd), output(out), error(err), exitCode(rc) {}
+    : command(std::move(std::move(cmd))), output(std::move(std::move(out))),
+      error(std::move(std::move(err))), exitCode(rc) {}
 
-bool ProcessResult::operator==(const ProcessResult &other) const {
+auto ProcessResult::operator==(const ProcessResult &other) const -> bool {
     return this->exitCode == other.exitCode && this->output == other.output &&
            this->error == other.error;
 }
 
-bool ProcessResult::operator!=(const ProcessResult &other) const {
+auto ProcessResult::operator!=(const ProcessResult &other) const -> bool {
     return !(*this == other);
 }
 
-bool ProcessResult::success() { //
+auto ProcessResult::success() const -> bool { //
     return this->exitCode == EXIT_SUCCESS;
 }
 
 #include "common/util/strings.h"
 
-std::string ProcessResult::toString() {
+auto ProcessResult::toString() const -> std::string {
     auto err = util::string::replaceAll(this->error, "\n", "\n             ");
     auto out = util::string::replaceAll(this->output, "\n", "\n             ");
     return std::string("ProcessResult {") +                     //

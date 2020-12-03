@@ -20,37 +20,39 @@ class ProcessResult {
     ProcessResult(std::string cmd, std::string out, std::string err,
                   uint32_t rc);
 
+    ~ProcessResult() = default;
+
     /** @brief The command that was executed. */
-    std::string command = "";
+    std::string command;
     /** @brief The output returned to stdout by the command. */
-    std::string output = "";
+    std::string output;
     /** @brief The output returned to stderr by the command. */
-    std::string error = "";
+    std::string error;
     /** @brief The exit code returned by the command. */
     uint32_t exitCode = EXIT_SUCCESS;
 
-    bool operator==(const ProcessResult &other) const;
-    bool operator!=(const ProcessResult &other) const;
+    auto operator==(const ProcessResult &other) const -> bool;
+    auto operator!=(const ProcessResult &other) const -> bool;
 
     /**
      * @brief success
      * @return True if #exitCode indicates a successful termination, false
      * otherwise.
      */
-    bool success();
+    auto success() const -> bool;
 
     /**
      * @brief toString
      * @return The object represented as a string containing all (public) member
      * variables.
      */
-    std::string toString();
+    auto toString() const -> std::string;
 
     // delete copy constructor -> only move semantics
     ProcessResult(const ProcessResult &c) = default;
-    ProcessResult &operator=(const ProcessResult &) = default;
+    auto operator=(const ProcessResult &) -> ProcessResult & = default;
     ProcessResult(ProcessResult &&m) = default;
-    ProcessResult &operator=(ProcessResult &&) = default;
+    auto operator=(ProcessResult &&) -> ProcessResult & = default;
 
   private:
     ProcessResult() = default;

@@ -28,7 +28,7 @@ class Nullable {
     /**
      * @brief Creates an empty Nullable.
      */
-    Nullable() : _value(), _isNull(true) {}
+    Nullable() : _value() {}
 
     /**
      * @brief Creates a Nullable with the given value.
@@ -61,14 +61,14 @@ class Nullable {
     /**
      * @brief Destroys the Nullable.
      */
-    ~Nullable() {}
+    ~Nullable() = default;
 
     /**
      * @brief Assigns a value to the Nullable.
      * @param value The value to assign.
      * @return The Nullable itself.
      */
-    Nullable &assign(const T &value) {
+    auto assign(const T &value) -> Nullable & {
         _value = value;
         _isNull = false;
         return *this;
@@ -79,7 +79,7 @@ class Nullable {
      * @param value The value to assign.
      * @return The Nullable itself.
      */
-    Nullable &assign(T &&value) {
+    auto assign(T &&value) -> Nullable & {
         _value = std::move(value);
         _isNull = false;
         return *this;
@@ -90,7 +90,7 @@ class Nullable {
      * @param other The other Nullable to assign.
      * @return The Nullable itself.
      */
-    Nullable &assign(const Nullable &other) {
+    auto assign(const Nullable &other) -> Nullable & {
         Nullable tmp(other);
         swap(tmp);
         return *this;
@@ -101,28 +101,46 @@ class Nullable {
      * @param value The value to assign.
      * @return The Nullable itself.
      */
-    Nullable &operator=(const T &value) { return assign(value); }
+    auto operator=(const T &value) -> Nullable & {
+        // disable clang-tidy check, because "return *this" is implicitly given
+        // by assign()
+        // NOLINTNEXTLINE(cppcoreguidelines-c-copy-assignment-signature,misc-unconventional-assign-operator)
+        return assign(value);
+    }
 
     /**
      * @brief Move-assigns a value to the Nullable.
      * @param value The value to assign.
      * @return The nullable itself.
      */
-    Nullable &operator=(T &&value) { return assign(std::move(value)); }
+    auto operator=(T &&value) -> Nullable & {
+        // disable clang-tidy check, because "return *this" is implicitly given
+        // by assign()
+        // NOLINTNEXTLINE(cppcoreguidelines-c-copy-assignment-signature,misc-unconventional-assign-operator)
+        return assign(std::move(value));
+    }
 
     /**
      * @brief Assigns another Nullable.
      * @param other The other Nullable to assign.
      * @return The Nullable itself.
      */
-    Nullable &operator=(const Nullable &other) { return assign(other); }
+    auto operator=(const Nullable &other) -> Nullable & {
+        if (&other == this) {
+            return *this;
+        }
+        // disable clang-tidy check, because "return *this" is implicitly given
+        // by assign()
+        // NOLINTNEXTLINE(cppcoreguidelines-c-copy-assignment-signature,misc-unconventional-assign-operator)
+        return assign(other);
+    }
 
     /**
      * @brief Moves another Nullable.
      * @param other THe Nullable to move.
      * @return The Nullable itself.
      */
-    Nullable &operator=(Nullable &&other) noexcept {
+    auto operator=(Nullable &&other) noexcept -> Nullable & {
         _isNull = other._isNull;
         _value = std::move(other._value);
         other._isNull = true;
@@ -143,7 +161,7 @@ class Nullable {
      * @param other The Nullable to compare with.
      * @return true if the have equal values, false otherwise.
      */
-    bool operator==(const Nullable<T> &other) const {
+    auto operator==(const Nullable<T> &other) const -> bool {
         return (_isNull && other._isNull) ||
                (_isNull == other._isNull && _value == other._value);
     }
@@ -153,7 +171,7 @@ class Nullable {
      * @param value The value to compare the Nullables value with.
      * @return true if equal, false otherwise.
      */
-    bool operator==(const T &value) const {
+    auto operator==(const T &value) const -> bool {
         return (!_isNull && _value == value);
     }
 
@@ -162,14 +180,14 @@ class Nullable {
      * @param value The value to compare with.
      * @return true if not equal, false otherwise.
      */
-    bool operator!=(const T &value) const { return !(*this == value); }
+    auto operator!=(const T &value) const -> bool { return !(*this == value); }
 
     /**
      * @brief Compares two Nullables for non equality
      * @param other The other Nullable to compare with.
      * @return true if not equal, false otherwise.
      */
-    bool operator!=(const Nullable<T> &other) const {
+    auto operator!=(const Nullable<T> &other) const -> bool {
         return !(*this == other);
     }
 
@@ -179,17 +197,14 @@ class Nullable {
      * @return true if this object's value is smaler than the other object's
      * value. Null value is smaller than a non-null value.
      */
-    bool operator<(const Nullable<T> &other) const {
-        if (_isNull && other._isNull)
+    auto operator<(const Nullable<T> &other) const -> bool {
+        if (_isNull && other._isNull) {
             return false;
-
-        if (!_isNull && !other._isNull)
+        }
+        if (!_isNull && !other._isNull) {
             return (_value < other._value);
-
-        if (_isNull && !other._isNull)
-            return true;
-
-        return false;
+        }
+        return (_isNull && !other._isNull);
     }
 
     /**
@@ -198,7 +213,7 @@ class Nullable {
      * @return true if this object's value is greater than the other object's
      * value. A non-null value is greater than a null value.
      */
-    bool operator>(const Nullable<T> &other) const {
+    auto operator>(const Nullable<T> &other) const -> bool {
         return !(*this == other) && !(*this < other);
     }
 
@@ -207,11 +222,11 @@ class Nullable {
      * @return The Nullable's value.
      * @throws Exception if the Nullable is empty.
      */
-    T &value() {
-        if (!_isNull)
+    auto value() -> T & {
+        if (!_isNull) {
             return _value;
-        else
-            throw "null value exception";
+        }
+        throw "null value exception";
     }
 
     /**
@@ -219,11 +234,11 @@ class Nullable {
      * @return The Nullable's value.
      * @throws Exception if the Nullable is empty.
      */
-    const T &value() const {
-        if (!_isNull)
+    auto value() const -> const T & {
+        if (!_isNull) {
             return _value;
-        else
-            throw "null value exception";
+        }
+        throw "null value exception";
     }
 
     /**
@@ -232,7 +247,9 @@ class Nullable {
      * @return The Nullable's value, or the given default value if the Nullable
      * is empty.
      */
-    const T &value(const T &deflt) const { return _isNull ? deflt : _value; }
+    auto value(const T &deflt) const -> const T & {
+        return _isNull ? deflt : _value;
+    }
 
     /**
      * @brief Get reference to the value.
@@ -249,13 +266,13 @@ class Nullable {
      * @brief Checks whether the Nullable holds a value.
      * @return true, if the Nullable is empty, false otherwise.
      */
-    bool isNull() const { return _isNull; }
+    auto isNull() const -> bool { return _isNull; }
 
     /**
      * @brief Checks whether the Nullable holds a value.
      * @return true, if the Nullable is non-empty, false otherwise.
      */
-    bool isNotNull() const { return !_isNull; }
+    auto isNotNull() const -> bool { return !_isNull; }
 
     /**
      * @brief Clears the Nullable aka. makes it null.
@@ -264,7 +281,7 @@ class Nullable {
 
   private:
     T _value;
-    bool _isNull;
+    bool _isNull{true};
 };
 
 #endif // NULLABLE_H

@@ -1,10 +1,11 @@
 #include "accountmediator.h"
 
-bool AccountMediator::login(QString username, QString password) {
-    return this->_accountController.login(username.toStdString(),
-                                          password.toStdString());
+auto AccountMediator::login(const QString &username, const QString &password)
+    -> bool {
+    return AccountController::login(username.toStdString(),
+                                    password.toStdString());
 }
 
-bool AccountMediator::logout() { //
-    return this->_accountController.logout();
+auto AccountMediator::logout() -> bool { //
+    return AccountController::logout();
 }

@@ -16,11 +16,11 @@ enum class Technology {
 /**
  * @brief Convert a Technology value into a human readable string.
  */
-std::string technologyToString(const Technology t);
+auto technologyToString(Technology t) -> std::string;
 
 /**
  * @brief Inverse operation of #technologyToString.
  */
-Technology technologyFromString(const std::string &s);
+auto technologyFromString(const std::string &s) -> Technology;
 
 #endif // TECHNOLOGY_H

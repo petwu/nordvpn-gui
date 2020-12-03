@@ -37,33 +37,34 @@ class QmlDataConverter {
      * @brief Convert any arbitrary JSON object to the equavalent QVariant
      * object.
      */
-    static QVariant jsonToQml(const json &j);
+    static auto jsonToQml(const json &j) -> QVariant;
 
     /**
      * @brief Convert a Country to a QML object.
      */
-    static QVariantMap countryToQml(const Country &country);
+    static auto countryToQml(const Country &country) -> QVariantMap;
 
     /**
      * @brief Convert a Location to a QML object.
      */
-    static QVariantMap locationToQml(const Location &location);
+    static auto locationToQml(const Location &location) -> QVariantMap;
 
     /**
      * @brief Convert a Server to a QML object.
      */
-    static QVariantMap serverToQml(const Server &server);
+    static auto serverToQml(const Server &server) -> QVariantMap;
 
     /**
      * @brief Convert NordVpnSettings to a QML object.
      */
-    static QVariantMap nordvpnSettingsToQml(const NordVpnSettings &settings);
+    static auto nordvpnSettingsToQml(const NordVpnSettings &settings)
+        -> QVariantMap;
 
     /**
      * @brief Convert a WhitelistPortEntry to a QML object.
      */
-    static QVariantMap
-    whitelistPortsEntryToQml(const WhitelistPortEntry &entry);
+    static auto whitelistPortsEntryToQml(const WhitelistPortEntry &entry)
+        -> QVariantMap;
 };
 
 #endif // JSONCONVERTER_H

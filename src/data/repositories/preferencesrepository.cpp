@@ -1,6 +1,6 @@
 #include "preferencesrepository.h"
 
-std::vector<uint32_t> PreferencesRepository::getRecentCountriesIds() {
+auto PreferencesRepository::getRecentCountriesIds() -> std::vector<uint32_t> {
     std::vector<uint32_t> all = _getRecentCountriesIds();
     uint8_t max = config::consts::MAX_RECENTS_DISPLAY;
     uint8_t n = max <= all.size() ? max : all.size();
@@ -8,17 +8,20 @@ std::vector<uint32_t> PreferencesRepository::getRecentCountriesIds() {
     return std::move(subset);
 }
 
-std::vector<uint32_t> PreferencesRepository::_getRecentCountriesIds() {
+auto PreferencesRepository::_getRecentCountriesIds() -> std::vector<uint32_t> {
     std::vector<uint32_t> recentIds;
-    std::string recentsFile = readFile(config::paths::RECENTS_JSON);
-    if (recentsFile == "") {
+    std::string recentsFile = readFile(config::paths::recentsJson());
+    if (recentsFile.empty()) {
         return std::move(recentIds);
     }
     json j = json::parse(recentsFile);
-    if (j.is_array())
-        for (auto r : j)
-            if (r.is_number_integer())
+    if (j.is_array()) {
+        for (const auto &r : j) {
+            if (r.is_number_integer()) {
                 recentIds.push_back(json::number_integer_t(r));
+            }
+        }
+    }
     return std::move(recentIds);
 }
 
@@ -38,12 +41,12 @@ void PreferencesRepository::addRecentCountryId(uint32_t id) {
         }
         newRecents.push_back(currentRecents[i]);
     }
-    writeFile(config::paths::RECENTS_JSON, newRecents.dump(2));
+    writeFile(config::paths::recentsJson(), newRecents.dump(2));
 }
 
 void PreferencesRepository::removeRecentCountryId(uint32_t id) {
     std::vector<uint32_t> currentRecents = _getRecentCountriesIds();
-    uint8_t i;
+    size_t i = 0;
     for (i = 0; i < currentRecents.size(); i++) {
         if (currentRecents[i] == id) {
             break;
@@ -54,5 +57,5 @@ void PreferencesRepository::removeRecentCountryId(uint32_t id) {
     for (auto r : currentRecents) {
         newRecents.push_back(r);
     }
-    writeFile(config::paths::RECENTS_JSON, newRecents.dump(2));
+    writeFile(config::paths::recentsJson(), newRecents.dump(2));
 }

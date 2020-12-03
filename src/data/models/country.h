@@ -41,14 +41,14 @@ class Country : public Location {
      * @brief Convert the object into a JSON string representation.
      * @return
      */
-    std::string toJSON();
+    auto toJSON() -> std::string;
 
     /**
      * @brief Inverse operation of #toJSON.
      * @param s
      * @return
      */
-    static Country fromJSON(const std::string &s);
+    static auto fromJSON(const std::string &s) -> Country;
 };
 
 #endif // COUNTRY_H

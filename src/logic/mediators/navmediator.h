@@ -15,6 +15,7 @@
  * about navigation that has be performed in order to display to correct view.
  */
 class NavMediator : public QObject, public IEnvInfoSubscription {
+    // NOLINTNEXTLINE(modernize-use-trailing-return-type): Qt is out of scope
     Q_OBJECT
 
     /**
@@ -30,7 +31,7 @@ class NavMediator : public QObject, public IEnvInfoSubscription {
      */
     NavMediator();
 
-  public slots:
+  public slots: // NOLINT(readability-redundant-access-specifiers)
     /**
      * @brief Function to tell the mediator to switch to the view that should be
      * displayed after the user entered his login credentials successfully.
@@ -69,6 +70,7 @@ class NavMediator : public QObject, public IEnvInfoSubscription {
      * @brief Get the location of the current main windows view source.
      * @return
      */
+    // NOLINTNEXTLINE(modernize-use-trailing-return-type): not supported by moc
     QString _getMainWindowViewSource();
 
     /**

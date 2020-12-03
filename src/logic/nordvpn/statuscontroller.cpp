@@ -1,15 +1,15 @@
 #include "statuscontroller.h"
 
-StatusController &StatusController::getInstance() {
+auto StatusController::getInstance() -> StatusController & {
     static StatusController instance;
     return instance;
 }
 
-ConnectionInfo StatusController::getStatus() {
+auto StatusController::getStatus() -> ConnectionInfo {
     std::string o = Process::execute("nordvpn status").output;
     ConnectionInfo info;
     std::smatch m;
-    bool matched;
+    bool matched = false;
 
     // connection status => disconnected ?
     matched = std::regex_search(o, m, std::regex("Status: (\\w+)"));
@@ -22,69 +22,75 @@ ConnectionInfo StatusController::getStatus() {
     matched = std::regex_search(o, m, std::regex("Current server: (.+)"));
     if (matched) {
         info.server = m[1].str();
-        info.serverNr = this->_getServerNr(info.server);
+        info.serverNr = StatusController::_getServerNr(info.server);
     }
 
     // country
     matched = std::regex_search(o, m, std::regex("Country: (.+)"));
-    if (matched)
+    if (matched) {
         info.country = m[1].str();
+    }
 
     // city
     matched = std::regex_search(o, m, std::regex("City: (.+)"));
-    if (matched)
+    if (matched) {
         info.city = m[1].str();
+    }
 
     // ip
     matched = std::regex_search(o, m, std::regex("Your new IP: (.+)"));
-    if (matched)
+    if (matched) {
         info.ip = m[1].str();
+    }
 
     // technology
     matched = std::regex_search(o, m, std::regex("Current technology: (.+)"));
-    if (matched)
+    if (matched) {
         info.technology = technologyFromString(m[1].str());
+    }
 
     // connection type
     matched = std::regex_search(o, m, std::regex("Current protocol: (.+)"));
-    if (matched)
+    if (matched) {
         info.connectionType = protocolFromString(m[1].str());
+    }
 
     std::map<std::string, uint64_t> bytes = {
-        {"B", 1},
-        {"KiB", 1024},
-        {"MiB", 1048576},
-        {"GiB", 1073741824},
-        {"TiB", 1099511627776},
+        {"B", Byte}, {"KiB", KiB}, {"MiB", MiB}, {"GiB", GiB}, {"TiB", TiB},
     };
     // sent
     matched = std::regex_search(
         o, m, std::regex("([\\d\\.]+) (B|KiB|MiB|GiB|TiB) sent"));
-    if (matched)
-        info.sent = uint64_t(std::atof(m[1].str().c_str()) * bytes[m[2].str()]);
+    if (matched) {
+        info.sent = uint64_t(std::strtod(m[1].str().c_str(), nullptr) *
+                             bytes[m[2].str()]);
+    }
 
     // received
     matched = std::regex_search(
         o, m, std::regex("([\\d\\.]+) (B|KiB|MiB|GiB|TiB) received"));
-    if (matched)
-        info.received =
-            uint64_t(std::atof(m[1].str().c_str()) * bytes[m[2].str()]);
+    if (matched) {
+        info.received = uint64_t(std::strtod(m[1].str().c_str(), nullptr) *
+                                 bytes[m[2].str()]);
+    }
 
     // uptime
     matched = std::regex_search(
         o, m,
         std::regex("Uptime: ?((\\d+) years?)? ?((\\d+) days?)? ?((\\d+) "
                    "hours?)? ?((\\d+) minutes?)? ?((\\d+) seconds?)?"));
-    if (matched)
-        info.uptime = std::atoi(m[10].str().c_str()) +     // seconds
-                      (std::atoi(m[8].str().c_str()) +     // minutes
-                       (std::atoi(m[6].str().c_str()) +    // hours
-                        (std::atoi(m[4].str().c_str()) +   // days
-                         (std::atoi(m[2].str().c_str())) * // years
-                             365) *                        // years -> days
-                            24) *                          // days -> hours
-                           60) *                           // hours -> minutes
-                          60;                              // minutes -> seconds
+    if (matched) {
+        info.uptime =
+            std::strtol(m[10].str().c_str(), nullptr, 10) +     // seconds
+            (std::strtol(m[8].str().c_str(), nullptr, 10) +     // minutes
+             (std::strtol(m[6].str().c_str(), nullptr, 10) +    // hours
+              (std::strtol(m[4].str().c_str(), nullptr, 10) +   // days
+               (std::strtol(m[2].str().c_str(), nullptr, 10)) * // years
+                   365) *                                       // years -> days
+                  24) *                                         // days -> hours
+                 60) *                                          // hours -> mins
+                60;                                             // mins -> secs
+    }
 
     // connection status => connecting or connected ?
     matched = std::regex_search(o, m, std::regex("Status: (\\w+)"));
@@ -138,10 +144,10 @@ ConnectionInfo StatusController::getStatus() {
     return std::move(info);
 }
 
-int32_t StatusController::_getServerNr(std::string name) {
+auto StatusController::_getServerNr(const std::string &name) -> int32_t {
     std::smatch m;
     if (std::regex_search(name, m, std::regex("^([a-zA-Z-]+)(\\d+)\\..+"))) {
-        return std::atoi(m[2].str().c_str());
+        return std::strtol(m[2].str().c_str(), nullptr, 10);
     }
     return 0;
 }
@@ -180,9 +186,13 @@ void StatusController::_notifySubscribers() {
     }
 }
 
-uint8_t StatusController::getRatingMin() { return config::consts::RATING_MIN; }
+auto StatusController::getRatingMin() -> uint8_t {
+    return config::consts::RATING_MIN;
+}
 
-uint8_t StatusController::getRatingMax() { return config::consts::RATING_MAX; }
+auto StatusController::getRatingMax() -> uint8_t {
+    return config::consts::RATING_MAX;
+}
 
 void StatusController::rate(uint8_t rating) {
     if (rating < getRatingMin() || rating > getRatingMax()) {

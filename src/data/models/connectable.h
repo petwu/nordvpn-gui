@@ -17,17 +17,18 @@ class Connectable {
      * or a concrete server identifier. The name must be interpretable by the
      * `nordvpn connect` command.
      */
-    std::string connectName = "";
+    std::string connectName;
 
     /**
      * @brief Check if two connect strings fuzzy match. The are compared all
      * lowercase and underscores are treated the same as spaces.
      * @param n1
      * @param n2
-     * @return True, if `n1` and `n2` match complete or at least almost under the
-     * given conditions.
+     * @return True, if `n1` and `n2` match complete or at least almost under
+     * the given conditions.
      */
-    static bool fuzzyMatchNames(const std::string &n1, const std::string &n2);
+    static auto fuzzyMatchNames(const std::string &n1, const std::string &n2)
+        -> bool;
 };
 
 #endif // CONNECTABLE_H

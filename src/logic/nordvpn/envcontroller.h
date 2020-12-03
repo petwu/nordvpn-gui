@@ -42,29 +42,23 @@ class EnvController : public BaseController {
     // Singleton:
     // https://stackoverflow.com/questions/1008019/c-singleton-design-pattern
   public:
-    /**
-     * @brief Disable the copy constructor (part of the sigleton
-     * implementation).
-     */
     EnvController(const EnvController &) = delete;
-
-    /**
-     * @brief Disable the copy assignement (part of the sigleton
-     * implementation).
-     */
     void operator=(const EnvController &) = delete;
+    EnvController(EnvController &&) = delete;
+    auto operator=(EnvController &&) -> EnvController & = delete;
+    ~EnvController() = default;
 
     /**
      * @brief Get the singleton instance of EnvController.
      * @details The instance will be constructed if it does not exist already.
      */
-    static EnvController &getInstance();
+    static auto getInstance() -> EnvController &;
 
     /**
      * @brief Get all information aboudtthe environment collected by this
      * controller as an object.
      */
-    EnvInfo getEnvInfo();
+    static auto getEnvInfo() -> EnvInfo;
 
     /**
      * @brief Force an override of the "logged in"-information.
@@ -109,7 +103,7 @@ class EnvController : public BaseController {
     /**
      * @brief Empty constructor (part of the sigleton implementation).
      */
-    EnvController() {}
+    EnvController() = default;
 
     /**
      * @brief The current set of environment informations.
@@ -143,25 +137,25 @@ class EnvController : public BaseController {
      * @brief Checks whether the devices has an active internet connection.
      * @details Should be executed in a detached background thread.
      */
-    bool _isInternetConnected();
+    static auto _isInternetConnected() -> bool;
 
     /**
      * @brief Checks whether the devices allows the execution of shell commands
      * (`/bin/sh -c "command"`). This is essential for making calls to the
      * NordVPN CLI.
      */
-    bool _isShellAvailable();
+    static auto _isShellAvailable() -> bool;
 
     /**
      * @brief Checks whether the NordVPN CLI (`nordvpn`) is installed and
      * available in PATH.
      */
-    bool _isNordvpnInstalled();
+    static auto _isNordvpnInstalled() -> bool;
 
     /**
      * @brief Checks whether the a user is logged in to the NordVPN CLI.
      */
-    bool _isLoggedIn();
+    static auto _isLoggedIn() -> bool;
 };
 
 #endif // ENVCONTROLLER_H

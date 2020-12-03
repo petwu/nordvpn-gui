@@ -1,5 +1,7 @@
 #include "connectionmediator.h"
 
+#include <utility>
+
 ConnectionMediator::ConnectionMediator() {
     this->_countries = this->_serverController.getAllCountries();
     this->_statusController.attach(this);
@@ -9,8 +11,12 @@ ConnectionMediator::ConnectionMediator() {
 }
 
 void ConnectionMediator::updateConnectionInfo(const ConnectionInfo &newInfo) {
-    int32_t connectingId = -1, connectedId = -1, connectedCityId = -1;
-    bool disconnected = false, connecting = false, connected = false;
+    int32_t connectingId = -1;
+    int32_t connectedId = -1;
+    int32_t connectedCityId = -1;
+    bool disconnected = false;
+    bool connecting = false;
+    bool connected = false;
     switch (newInfo.status) {
     case ConnectionStatus::Disconnected:
         disconnected = true;
@@ -39,12 +45,13 @@ void ConnectionMediator::updateConnectionInfo(const ConnectionInfo &newInfo) {
         this->_setAreConnectionCommandsPaused(true);
     }
 
-    if (this->_isConnected && disconnected)
+    if (this->_isConnected && disconnected) {
         // allow rating only when transitioning from connected to disconnected
         this->_setIsRatingPossible(true);
-    else if (this->_isDisconnected && !disconnected)
+    } else if (this->_isDisconnected && !disconnected) {
         // disallow rating when not disconnected anymore
         this->_setIsRatingPossible(false);
+    }
 
     this->_setIsDisconnected(disconnected);
     this->_setIsConnecting(connecting);
@@ -56,14 +63,16 @@ void ConnectionMediator::updateConnectionInfo(const ConnectionInfo &newInfo) {
     this->_setConnectedIP(newInfo.ip);
     this->_setReceivedBytes(newInfo.received);
     this->_setSentBytes(newInfo.sent);
-    if (connected)
+    if (connected) {
         this->_setConnectedServerGroups(newInfo.groups);
-    else
+    } else {
         this->_setConnectedServerGroups(std::vector<Group>{});
-    if (connecting)
+    }
+    if (connecting) {
         this->_setConnectingServerGroups(newInfo.groups);
-    else
+    } else {
         this->_setConnectingServerGroups(std::vector<Group>{});
+    }
 }
 
 void ConnectionMediator::updateCountryList(
@@ -72,15 +81,15 @@ void ConnectionMediator::updateCountryList(
     this->countryListChanged(this->_getCountryList());
 }
 
-QVariant ConnectionMediator::_getCountryList() {
+auto ConnectionMediator::_getCountryList() -> QVariant {
     QVariantList list;
-    for (auto country : this->_countries) {
+    for (const auto &country : this->_countries) {
         list << QmlDataConverter::countryToQml(country);
     }
     return list;
 }
 
-bool ConnectionMediator::_getAreConnectionCommandsPaused() {
+auto ConnectionMediator::_getAreConnectionCommandsPaused() const -> bool {
     return this->_areConnectionCommandsPaused;
 }
 
@@ -89,16 +98,19 @@ void ConnectionMediator::_setAreConnectionCommandsPaused(bool value) {
         this->_areConnectionCommandsPaused = value;
         this->areConnectionCommandsPausedChanged(value);
         // timeout to prevent blocking states
-        if (value == true)
+        if (value) {
             std::thread([this] {
                 std::this_thread::sleep_for(
                     config::consts::CONNECTION_COMMANDS_PAUSE_PERIOD);
                 this->_setAreConnectionCommandsPaused(false);
             }).detach();
+        }
     }
 }
 
-bool ConnectionMediator::_getIsDisconnected() { return this->_isDisconnected; }
+auto ConnectionMediator::_getIsDisconnected() const -> bool {
+    return this->_isDisconnected;
+}
 
 void ConnectionMediator::_setIsDisconnected(bool value) {
     if (value != this->_isDisconnected) {
@@ -107,7 +119,9 @@ void ConnectionMediator::_setIsDisconnected(bool value) {
     }
 }
 
-bool ConnectionMediator::_getIsConnecting() { return this->_isConnecting; }
+auto ConnectionMediator::_getIsConnecting() const -> bool {
+    return this->_isConnecting;
+}
 
 void ConnectionMediator::_setIsConnecting(bool value) {
     if (value != this->_isConnecting) {
@@ -116,7 +130,9 @@ void ConnectionMediator::_setIsConnecting(bool value) {
     }
 }
 
-bool ConnectionMediator::_getIsConnected() { return this->_isConnected; }
+auto ConnectionMediator::_getIsConnected() const -> bool {
+    return this->_isConnected;
+}
 
 void ConnectionMediator::_setIsConnected(bool value) {
     if (value != this->_isConnected) {
@@ -125,7 +141,7 @@ void ConnectionMediator::_setIsConnected(bool value) {
     }
 }
 
-bool ConnectionMediator::_getIsRatingPossible() {
+auto ConnectionMediator::_getIsRatingPossible() const -> bool {
     return this->_isRatingPossible;
 }
 
@@ -133,19 +149,20 @@ void ConnectionMediator::_setIsRatingPossible(bool value) {
     if (value != this->_isRatingPossible) {
         this->_isRatingPossible = value;
         this->isRatingPossibleChanged(value);
-        if (value == true) {
+        if (value) {
             // set to false (= hide rating widget) after a period of 1 min,
             // this should give everybody enough time to commit their rating
             std::thread([this] {
                 std::this_thread::sleep_for(config::consts::RATING_PERIOD);
-                if (this->_isRatingPossible)
+                if (this->_isRatingPossible) {
                     this->_setIsRatingPossible(false);
+                }
             }).detach();
         }
     }
 }
 
-qint32 ConnectionMediator::_getConnectingCountryId() {
+auto ConnectionMediator::_getConnectingCountryId() const -> qint32 {
     return this->_connectingCountryId;
 }
 
@@ -156,7 +173,7 @@ void ConnectionMediator::_setConnectingCountryId(qint32 value) {
     }
 }
 
-qint32 ConnectionMediator::_getConnectedCountryId() {
+auto ConnectionMediator::_getConnectedCountryId() const -> qint32 {
     return this->_connectedCountryId;
 }
 
@@ -167,7 +184,7 @@ void ConnectionMediator::_setConnectedCountryId(qint32 value) {
     }
 }
 
-qint32 ConnectionMediator::_getConnectedCityId() {
+auto ConnectionMediator::_getConnectedCityId() const -> qint32 {
     return this->_connectedCityId;
 }
 
@@ -178,7 +195,7 @@ void ConnectionMediator::_setConnectedCityId(qint32 value) {
     }
 }
 
-qint32 ConnectionMediator::_getConnectedServerNr() {
+auto ConnectionMediator::_getConnectedServerNr() const -> qint32 {
     return this->_connectedServerNr;
 }
 
@@ -189,18 +206,20 @@ void ConnectionMediator::_setConnectedServerNr(qint32 value) {
     }
 }
 
-QString ConnectionMediator::_getConnectedIP() {
+auto ConnectionMediator::_getConnectedIP() -> QString {
     return QString(this->_connectedIP.c_str());
 }
 
-void ConnectionMediator::_setConnectedIP(std::string value) {
+void ConnectionMediator::_setConnectedIP(const std::string &value) {
     if (value != this->_connectedIP) {
         this->_connectedIP = value;
         this->connectedIPChanged(QString(value.c_str()));
     }
 }
 
-qint64 ConnectionMediator::_getReceivedBytes() { return this->_receivedBytes; }
+auto ConnectionMediator::_getReceivedBytes() const -> qint64 {
+    return this->_receivedBytes;
+}
 
 void ConnectionMediator::_setReceivedBytes(uint64_t value) {
     if (value != this->_receivedBytes) {
@@ -209,7 +228,9 @@ void ConnectionMediator::_setReceivedBytes(uint64_t value) {
     }
 }
 
-qint64 ConnectionMediator::_getSentBytes() { return this->_sentBytes; }
+auto ConnectionMediator::_getSentBytes() const -> qint64 {
+    return this->_sentBytes;
+}
 
 void ConnectionMediator::_setSentBytes(uint64_t value) {
     if (value != this->_sentBytes) {
@@ -218,79 +239,94 @@ void ConnectionMediator::_setSentBytes(uint64_t value) {
     }
 }
 
-QVariantList ConnectionMediator::_getConnectedServerGroups() {
+auto ConnectionMediator::_getConnectedServerGroups() -> QVariantList {
     QVariantList serverGroups;
-    for (auto group : this->_connectedServerGroups)
+    for (auto group : this->_connectedServerGroups) {
         serverGroups << static_cast<int>(group);
+    }
     return std::move(serverGroups);
 }
 
 void ConnectionMediator::_setConnectedServerGroups(std::vector<Group> groups) {
-    this->_connectedServerGroups = groups;
+    this->_connectedServerGroups = std::move(groups);
     this->connectedServerGroupsChanged(this->_getConnectedServerGroups());
 }
 
-QVariantList ConnectionMediator::_getConnectingServerGroups() {
+auto ConnectionMediator::_getConnectingServerGroups() -> QVariantList {
     QVariantList serverGroups;
-    for (auto group : this->_connectingServerGroups)
+    for (auto group : this->_connectingServerGroups) {
         serverGroups << static_cast<int>(group);
+    }
     return std::move(serverGroups);
 }
 
 void ConnectionMediator::_setConnectingServerGroups(std::vector<Group> groups) {
-    this->_connectingServerGroups = groups;
+    this->_connectingServerGroups = std::move(groups);
     this->connectingServerGroupsChanged(this->_getConnectingServerGroups());
 }
 
-QVariantList ConnectionMediator::getServers(qint32 countryId, qint32 cityId) {
+auto ConnectionMediator::getServers(qint32 countryId, qint32 cityId)
+    -> QVariantList {
     QVariantList servers;
     if (cityId < 0) {
-        for (auto s : this->_serverController.getServersByCountry(countryId))
+        for (const auto &s :
+             this->_serverController.getServersByCountry(countryId)) {
             servers << QmlDataConverter::serverToQml(s);
+        }
     } else {
-        for (auto s : this->_serverController.getServersByCity(cityId))
+        for (const auto &s : this->_serverController.getServersByCity(cityId)) {
             servers << QmlDataConverter::serverToQml(s);
+        }
     }
     return std::move(servers);
 }
 
-QVariantList ConnectionMediator::getSpecialtyCountries(quint32 groupId) {
+auto ConnectionMediator::getSpecialtyCountries(quint32 groupId)
+    -> QVariantList {
     QVariantList countries;
     auto group = groupFromInt(groupId);
-    if (group != Group::Undefined)
-        for (auto country : this->_serverController.getCountriesByGroup(group))
+    if (group != Group::Undefined) {
+        for (const auto &country :
+             this->_serverController.getCountriesByGroup(group)) {
             countries << QmlDataConverter::countryToQml(country);
+        }
+    }
     return std::move(countries);
 }
 
-QVariantList ConnectionMediator::getSpecialtyServers(quint32 groupId,
-                                                     qint32 countryId) {
+auto ConnectionMediator::getSpecialtyServers(quint32 groupId, qint32 countryId)
+    -> QVariantList {
     QVariantList servers;
     auto group = groupFromInt(groupId);
-    if (group != Group::Undefined)
-        for (auto server :
-             this->_serverController.getServersByGroup(group, countryId))
+    if (group != Group::Undefined) {
+        for (const auto &server :
+             this->_serverController.getServersByGroup(group, countryId)) {
             servers << QmlDataConverter::serverToQml(server);
+        }
+    }
     return std::move(servers);
 }
 
 void ConnectionMediator::quickConnect() {
-    if (this->_areConnectionCommandsPaused)
+    if (this->_areConnectionCommandsPaused) {
         return;
+    }
     this->_serverController.quickConnect();
     this->_setAreConnectionCommandsPaused(true);
 }
 
 void ConnectionMediator::connectToCountryById(quint32 id) {
-    if (this->_areConnectionCommandsPaused)
+    if (this->_areConnectionCommandsPaused) {
         return;
+    }
     this->_serverController.connectToCountryById(id);
     this->_setAreConnectionCommandsPaused(true);
 }
 
 void ConnectionMediator::connectToCityById(quint32 id) {
-    if (this->_areConnectionCommandsPaused)
+    if (this->_areConnectionCommandsPaused) {
         return;
+    }
     this->_serverController.connectToCityById(id);
     this->_setAreConnectionCommandsPaused(true);
 }
@@ -315,12 +351,13 @@ void ConnectionMediator::cancelConnection() {
 }
 
 void ConnectionMediator::disconnect() {
-    if (this->_areConnectionCommandsPaused)
+    if (this->_areConnectionCommandsPaused) {
         return;
-    this->_serverController.disconnect();
+    }
+    ServerController::disconnect();
     this->_setAreConnectionCommandsPaused(true);
 }
 
-void ConnectionMediator::rate(quint8 rating) {
-    this->_statusController.rate(rating);
+void ConnectionMediator::rate(quint8 rating) { //
+    StatusController::rate(rating);
 }

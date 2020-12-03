@@ -1,18 +1,20 @@
 #ifndef PROCESS_H
 #define PROCESS_H
 
+#include <csignal>
+#include <cstddef>
+#include <cstdio>
+#include <cstdlib>
 #include <fcntl.h>
 #include <paths.h>
-#include <signal.h>
-#include <stddef.h>
-#include <stdio.h>
-#include <stdlib.h>
 #include <sys/wait.h>
 #include <unistd.h>
 
+#include <array>
 #include <iostream>
 #include <string>
 #include <thread>
+#include <utility>
 #include <vector>
 
 #include "common/util/strings.h"
@@ -35,7 +37,7 @@ class Process {
      * @return The commands output and exit code wrapped inside a ProcessResult
      * object.
      */
-    static ProcessResult execute(std::string command);
+    static auto execute(const std::string &command) -> ProcessResult;
 };
 
 /**
@@ -49,7 +51,7 @@ class Process {
  * - output from stdout
  * - errors from stderr
  *
- * The name is referring to popen() from <stdio.h> that allows opens a
+ * The name is referring to popen() from <cstdio> that allows opens a
  * process and invokes a shell. This is an extended version that uses 3
  * instead of only 1 pipe: One for each of stdin, stdout, stderr. popen in
  * contrast only uses a pipe for stdin and does therefore allow only
@@ -121,6 +123,6 @@ class Process {
  * @return The child process exit information (return code, output, error,
  * etc.) as ProcessResult object.
  */
-ProcessResult popen3(std::string command, pid_t *pid);
+auto popen3(const std::string &command, pid_t *pid) -> ProcessResult;
 
 #endif // PROCESS_H

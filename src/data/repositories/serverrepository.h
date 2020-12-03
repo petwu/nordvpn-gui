@@ -20,7 +20,7 @@ class ServerRepository : public BaseRepository {
      * @return A list of servers. The list will be empty, if something went
      * wrong (connection timeout, error HTTP code, etc.).
      */
-    static std::vector<Server> fetchServers();
+    static auto fetchServers() -> std::vector<Server>;
 
     /**
      * @brief Fetch the cached list of servers.
@@ -28,7 +28,7 @@ class ServerRepository : public BaseRepository {
      * exists. This is only the case, if #fetchServers() was not called before
      * (successfully).
      */
-    static std::vector<Server> fetchServersFromCache();
+    static auto fetchServersFromCache() -> std::vector<Server>;
 
     /**
      * @brief Fetch the list of countries from the NordVPN API.
@@ -37,7 +37,7 @@ class ServerRepository : public BaseRepository {
      * @return A list of countries. The list will be empty, if something went
      * wrong (connection timeout, error HTTP code, etc.).
      */
-    static std::vector<Country> fetchCountries();
+    static auto fetchCountries() -> std::vector<Country>;
 
     /**
      * @brief Fetch the cached list of countries.
@@ -45,7 +45,7 @@ class ServerRepository : public BaseRepository {
      * exists. This is only the case, if #fetchCountries() was not called before
      * (successfully).
      */
-    static std::vector<Country> fetchCountriesFromCache();
+    static auto fetchCountriesFromCache() -> std::vector<Country>;
 
   private:
     /**

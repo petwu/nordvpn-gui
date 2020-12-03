@@ -13,24 +13,22 @@ namespace util {
 
     namespace string {
 
-        std::string trim(const std::string &s);
-        std::string trimPrefix(const std::string &s);
-        std::string trimSuffix(const std::string &s);
+        auto trim(const std::string &s) -> std::string;
+        auto trimPrefix(const std::string &s) -> std::string;
+        auto trimSuffix(const std::string &s) -> std::string;
 
-        std::vector<std::string> split(const std::string &s,
-                                       const std::string &delim);
+        auto split(const std::string &s, const std::string &delim)
+            -> std::vector<std::string>;
 
-        std::string toLower(const std::string &s);
-        std::string toUpper(const std::string &s);
+        auto toLower(const std::string &s) -> std::string;
+        auto toUpper(const std::string &s) -> std::string;
 
-        std::string replaceAll(const std::string &s, const std::string &oldSub,
-                               const std::string &newSub);
-        std::string replacePrefix(const std::string &s,
-                                  const std::string &prefix,
-                                  const std::string &replacement);
-        std::string replaceSuffix(const std::string &s,
-                                  const std::string &suffix,
-                                  const std::string &replacement);
+        auto replaceAll(const std::string &s, const std::string &oldSub,
+                        const std::string &newSub) -> std::string;
+        auto replacePrefix(const std::string &s, const std::string &prefix,
+                           const std::string &replacement) -> std::string;
+        auto replaceSuffix(const std::string &s, const std::string &suffix,
+                           const std::string &replacement) -> std::string;
 
     } // namespace string
 

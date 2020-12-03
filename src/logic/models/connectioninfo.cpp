@@ -1,6 +1,6 @@
 #include "connectioninfo.h"
 
-bool ConnectionInfo::isEmpty() const {
+auto ConnectionInfo::isEmpty() const -> bool {
     return this->status == ConnectionStatus::Disconnected &&
            this->server.empty() && this->serverNr == 0 &&
            this->country.empty() && this->countryId == -1 &&

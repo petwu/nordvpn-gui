@@ -1,6 +1,7 @@
 #include "accountcontroller.h"
 
-bool AccountController::login(std::string username, std::string password) {
+auto AccountController::login(const std::string &username,
+                              const std::string &password) -> bool {
     std::string cmd = "nordvpn login --username '" + username +
                       "' --password '" + password + "'";
     if (Process::execute(cmd).success()) {
@@ -10,7 +11,7 @@ bool AccountController::login(std::string username, std::string password) {
     return false;
 }
 
-bool AccountController::logout() {
+auto AccountController::logout() -> bool {
     if (Process::execute("nordvpn logout").success()) {
         EnvController::getInstance().setLoggedIn(false);
         return true;

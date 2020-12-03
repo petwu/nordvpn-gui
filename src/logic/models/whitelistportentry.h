@@ -33,14 +33,14 @@ class WhitelistPortEntry {
      * @return True, if every member variables of the two compared objects
      * match, false otherwise.
      */
-    bool operator==(const WhitelistPortEntry &other) const;
+    auto operator==(const WhitelistPortEntry &other) const -> bool;
 
     /**
      * @brief operator < is required in order to be used as a std::set<> key.
      * @param other The other object to compare with.
      * @return True, if considered to be smaller. False otherwise.
      */
-    bool operator<(const WhitelistPortEntry &other) const;
+    auto operator<(const WhitelistPortEntry &other) const -> bool;
 };
 
 #endif // WHITELISTPORTENTRY_H

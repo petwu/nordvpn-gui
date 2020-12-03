@@ -13,32 +13,37 @@ ServerController::ServerController() {
     }).detach();
 }
 
-ServerController &ServerController::getInstance() {
+auto ServerController::getInstance() -> ServerController & {
     static ServerController instance;
     return instance;
 }
 
-Server ServerController::getServerByHostname(std::string hostname) {
-    for (auto server : this->_allServers)
-        if (server.hostname == hostname)
+auto ServerController::getServerByHostname(const std::string &hostname)
+    -> Server {
+    for (auto server : this->_allServers) {
+        if (server.hostname == hostname) {
             return server;
+        }
+    }
     return Server{};
 }
 
-std::vector<Country> ServerController::getAllCountries(bool updateCache) {
+auto ServerController::getAllCountries(bool updateCache)
+    -> std::vector<Country> {
     if (this->_allCountries.empty() || updateCache) {
         auto cmdResult = Process::execute("nordvpn countries");
         auto cliCountries = util::string::split(cmdResult.output, ", ");
         std::vector<Country> all;
-        if (updateCache)
+        if (updateCache) {
             all = ServerRepository::fetchCountries();
-        else
+        } else {
             all = ServerRepository::fetchCountriesFromCache();
+        }
         std::vector<Country> availableCountries;
         // filter the vector to only contains countries that were returned
         // by the CLI command
-        for (std::string c : cliCountries) {
-            for (auto e : all) {
+        for (const std::string &c : cliCountries) {
+            for (const auto &e : all) {
                 if (c == e.connectName) {
                     availableCountries.push_back(e);
                 }
@@ -46,36 +51,37 @@ std::vector<Country> ServerController::getAllCountries(bool updateCache) {
         }
         // filter the countries to only contain cities that were returned by the
         // CLI command
-        for (size_t i = 0; i < availableCountries.size(); i++) {
+        for (auto &availableCountrie : availableCountries) {
             cmdResult = Process::execute("nordvpn cities " +
-                                         availableCountries[i].connectName);
+                                         availableCountrie.connectName);
             auto cliCities = util::string::split(cmdResult.output, ", ");
             std::vector<Location> availableCities;
-            for (auto city : availableCountries[i].cities) {
-                for (auto cliCity : cliCities) {
+            for (const auto &city : availableCountrie.cities) {
+                for (const auto &cliCity : cliCities) {
                     if (Connectable::fuzzyMatchNames(city.name, cliCity)) {
                         availableCities.push_back(city);
                     }
                 }
             }
-            availableCountries[i].cities = availableCities;
+            availableCountrie.cities = availableCities;
         }
         this->_allCountries = availableCountries;
     }
     return this->_allCountries;
 }
 
-std::vector<Server> ServerController::getServersByCountry(int32_t countryId) {
+auto ServerController::getServersByCountry(int32_t countryId)
+    -> std::vector<Server> {
     return this->_filterServerList(countryId, -1);
 }
 
-std::vector<Server> ServerController::getServersByCity(int32_t cityId) {
+auto ServerController::getServersByCity(int32_t cityId) -> std::vector<Server> {
     return this->_filterServerList(-1, cityId);
 }
 
-std::vector<Country> ServerController::getCountriesByGroup(Group g) {
+auto ServerController::getCountriesByGroup(Group g) -> std::vector<Country> {
     std::vector<Country> countries;
-    for (auto server : this->_filterServerList(-1, -1)) {
+    for (const auto &server : this->_filterServerList(-1, -1)) {
         // check if the server supports the group
         // --> if no: continue
         bool containsGroup = false;
@@ -85,21 +91,23 @@ std::vector<Country> ServerController::getCountriesByGroup(Group g) {
                 break;
             }
         }
-        if (!containsGroup)
+        if (!containsGroup) {
             continue;
+        }
         // check if the servers country already occured
         // --> if yes: continue
         bool countryAlreadyInserted = false;
-        for (auto country : countries) {
+        for (const auto &country : countries) {
             if (country.id == server.countryId) {
                 countryAlreadyInserted = true;
                 break;
             }
         }
-        if (countryAlreadyInserted)
+        if (countryAlreadyInserted) {
             continue;
+        }
         // search the country to return
-        for (auto country : this->_allCountries) {
+        for (const auto &country : this->_allCountries) {
             if (country.id == server.countryId) {
                 countries.push_back(country);
                 break;
@@ -109,13 +117,14 @@ std::vector<Country> ServerController::getCountriesByGroup(Group g) {
     return std::move(countries);
 }
 
-std::vector<Server> ServerController::getServersByGroup(Group g,
-                                                        int32_t countryId) {
+auto ServerController::getServersByGroup(Group g, int32_t countryId)
+    -> std::vector<Server> {
     std::vector<Server> servers;
-    for (auto server : this->_filterServerList(-1, -1)) {
+    for (const auto &server : this->_filterServerList(-1, -1)) {
         // check if the country ID matched
-        if (countryId >= 0 && countryId != server.countryId)
+        if (countryId >= 0 && countryId != server.countryId) {
             continue;
+        }
         // check if the server supports the group
         // --> if no: continue
         bool containsGroup = false;
@@ -125,19 +134,19 @@ std::vector<Server> ServerController::getServersByGroup(Group g,
                 break;
             }
         }
-        if (!containsGroup)
+        if (!containsGroup) {
             continue;
+        }
         // append
         servers.push_back(server);
     }
     return std::move(servers);
 }
 
-std::vector<Server> ServerController::_filterServerList(int32_t countryId,
-                                                        int32_t cityId) {
+auto ServerController::_filterServerList(int32_t countryId, int32_t cityId)
+    -> std::vector<Server> {
     std::vector<Server> filtered;
-    NordVpnSettings settings =
-        this->_preferencesController.getNordvpnSettings();
+    NordVpnSettings settings = PreferencesController::getNordvpnSettings();
     for (auto server : this->_allServers) {
         // skip all servers that do not meet the requirements
         if ((settings.getObfuscated().isNotNull() &&
@@ -145,8 +154,9 @@ std::vector<Server> ServerController::_filterServerList(int32_t countryId,
              !server.supportsObfuscated()) ||
             (settings.getCybersec() && !server.supportsCyberSec()) ||
             !server.supportsProtocol(settings.getProtocol()) ||
-            !server.supportsTechnology(settings.getTechnology()))
+            !server.supportsTechnology(settings.getTechnology())) {
             continue;
+        }
         // only add servers that either match the country or city ID or both IDs
         // are unspecified
         if (server.countryId == countryId || server.cityId == cityId ||
@@ -157,13 +167,13 @@ std::vector<Server> ServerController::_filterServerList(int32_t countryId,
     return std::move(filtered);
 }
 
-std::vector<Country> ServerController::getRecentCountries() {
+auto ServerController::getRecentCountries() -> std::vector<Country> {
     std::vector<Country> recents;
     std::vector<uint32_t> recentsIds =
         PreferencesRepository::getRecentCountriesIds();
     std::vector countries = this->getAllCountries();
     for (auto rId : recentsIds) {
-        for (auto c : countries) {
+        for (const auto &c : countries) {
             if (rId == c.id) {
                 recents.push_back(c);
                 break;
@@ -181,8 +191,9 @@ void ServerController::removeFromRecentsList(uint32_t countryId) {
 
 void ServerController::quickConnect() { //
     AsyncProcess::execute(
-        "nordvpn connect", &this->_connectingPid, [](ProcessResult result) {
-            if (result.success() == false &&
+        "nordvpn connect", &this->_connectingPid,
+        [](const ProcessResult &result) {
+            if (!result.success() &&
                 result.output.find("login") != std::string::npos) {
                 EnvController::getInstance().setLoggedIn(false);
             }
@@ -190,11 +201,11 @@ void ServerController::quickConnect() { //
 }
 
 void ServerController::connectToCountryById(uint32_t id) {
-    for (auto country : this->_allCountries) {
+    for (const auto &country : this->_allCountries) {
         if (country.id == id) {
             AsyncProcess::execute("nordvpn connect " + country.connectName,
                                   &this->_connectingPid,
-                                  [this, id](ProcessResult result) {
+                                  [this, id](const ProcessResult &result) {
                                       this->_checkConnectResult(result, id);
                                   });
             break;
@@ -204,8 +215,8 @@ void ServerController::connectToCountryById(uint32_t id) {
 
 void ServerController::connectToCityById(uint32_t id) {
     bool found = false;
-    for (auto country : this->_allCountries) {
-        for (auto city : country.cities) {
+    for (const auto &country : this->_allCountries) {
+        for (const auto &city : country.cities) {
             if (city.id == id) {
                 found = true;
                 auto countryId = country.id;
@@ -213,24 +224,25 @@ void ServerController::connectToCityById(uint32_t id) {
                     "nordvpn connect " + country.connectName + " " +
                         city.connectName,
                     &this->_connectingPid,
-                    [this, countryId](ProcessResult result) { //
+                    [this, countryId](const ProcessResult &result) { //
                         this->_checkConnectResult(result, countryId);
                     });
                 break;
             }
         }
-        if (found)
+        if (found) {
             break;
+        }
     }
 }
 
 void ServerController::connectToServerById(uint32_t id) {
-    for (auto server : this->_allServers) {
+    for (const auto &server : this->_allServers) {
         if (server.id == id) {
             auto countryId = server.countryId;
             AsyncProcess::execute(
                 "nordvpn connect " + server.connectName, &this->_connectingPid,
-                [this, countryId](ProcessResult result) {
+                [this, countryId](const ProcessResult &result) {
                     this->_checkConnectResult(result, countryId);
                 });
             break;
@@ -238,10 +250,9 @@ void ServerController::connectToServerById(uint32_t id) {
     }
 }
 
-void ServerController::_checkConnectResult(ProcessResult &result,
+void ServerController::_checkConnectResult(const ProcessResult &result,
                                            int32_t countryId) {
-    if (result.success() == false &&
-        result.output.find("login") != std::string::npos) {
+    if (!result.success() && result.output.find("login") != std::string::npos) {
         // if the process returned an error code and the output contains the
         // word "login" this means, we tried to connect despite not being logged
         // in --> the the EnvController about it, that will propagate it to the
@@ -257,22 +268,23 @@ void ServerController::_checkConnectResult(ProcessResult &result,
 }
 
 void ServerController::connectToSpecialtyGroup(Group g) {
-    if (g != Group::Undefined)
+    if (g != Group::Undefined) {
         AsyncProcess::execute("nordvpn connect " + group2connectName(g),
                               &this->_connectingPid);
+    }
 }
 
 void ServerController::connectToCountryByIdAndGroup(uint32_t id, Group g) {
     std::string groupName = group2connectName(g);
-    if (groupName == "") {
+    if (groupName.empty()) {
         this->connectToCountryById(id);
     } else {
-        for (auto country : this->_allCountries) {
+        for (const auto &country : this->_allCountries) {
             if (country.id == id) {
                 AsyncProcess::execute("nordvpn connect --group " + groupName +
                                           " " + country.connectName,
                                       &this->_connectingPid,
-                                      [this, id](ProcessResult result) {
+                                      [this, id](const ProcessResult &result) {
                                           this->_checkConnectResult(result, id);
                                       });
                 break;
@@ -281,7 +293,7 @@ void ServerController::connectToCountryByIdAndGroup(uint32_t id, Group g) {
     }
 }
 
-void ServerController::cancelConnection() {
+void ServerController::cancelConnection() const {
     // try to kill the process that is responsible for establishing the
     // connection --> might not work
     AsyncProcess::kill(this->_connectingPid, true);
@@ -289,7 +301,7 @@ void ServerController::cancelConnection() {
     // the connecting process does not prevent nordvpn from finishing the
     // connection establishment, but calling disconnect while connection
     // ensures that nordvpn aborts its ongoing connection operation
-    this->disconnect();
+    ServerController::disconnect();
 }
 
 void ServerController::disconnect() {
@@ -308,15 +320,17 @@ void ServerController::detach(ICountriesSubscription *subscriber) {
 
 void ServerController::_notifySubscribersRecents() {
     for (auto &subscriber : this->_subscribers) {
-        if (subscriber != nullptr)
+        if (subscriber != nullptr) {
             subscriber->updateRecents(this->_recents);
+        }
     }
 }
 
 void ServerController::_notifySubscribersCountryList() {
     for (auto &subscriber : this->_subscribers) {
-        if (subscriber != nullptr)
+        if (subscriber != nullptr) {
             subscriber->updateCountryList(this->_allCountries);
+        }
     }
 }
 
@@ -340,17 +354,20 @@ void ServerController::_backgroundTaskServerList() {
 }
 
 void ServerController::_backgroundTaskCountryList() {
-    int i = 0;
-    int iMax = 86400 / std::chrono::duration_cast<std::chrono::seconds>(
-                           config::consts::COUNTRY_LIST_UPDATE_INTERVAL)
-                           .count();
+    long i = 0;
+    constexpr long secondsPerDay = 86400;
+    long iMax =
+        secondsPerDay / std::chrono::duration_cast<std::chrono::seconds>(
+                            config::consts::COUNTRY_LIST_UPDATE_INTERVAL)
+                            .count();
     while (this->_performBackgroundTask) {
         // update the cache the first time (on app start) ...
         this->getAllCountries(i == 0);
-        if (i == 0)
-            // ... and the only every 43.200 * 2s = 24h
+        if (i == 0) {
+            // ... and the only every ~86.400s = 24h
             // (it's an unlikely use case, that the list of countries changes)
             i = iMax;
+        }
         i--;
         this->_notifySubscribersCountryList();
         std::this_thread::sleep_for(

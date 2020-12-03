@@ -19,26 +19,11 @@ class ConnectionInfo {
      * @brief Default constructor.
      */
     ConnectionInfo() = default;
-
-    /**
-     * @brief Copy constructor.
-     */
     ConnectionInfo(const ConnectionInfo &c) = default;
-
-    /**
-     * @brief Copy assignment.
-     */
-    ConnectionInfo &operator=(const ConnectionInfo &) = default;
-
-    /**
-     * @brief Move constructor.
-     */
+    auto operator=(const ConnectionInfo &) -> ConnectionInfo & = default;
     ConnectionInfo(ConnectionInfo &&m) = default;
-
-    /**
-     * @brief Move assignment.
-     */
-    ConnectionInfo &operator=(ConnectionInfo &&) = default;
+    auto operator=(ConnectionInfo &&) -> ConnectionInfo & = default;
+    ~ConnectionInfo() = default;
 
     /**
      * @brief The current connection status. If it is
@@ -51,7 +36,7 @@ class ConnectionInfo {
      * @brief The domain name of the connected server. Example:
      * `de123.nordvpn.com`.
      */
-    std::string server = "";
+    std::string server;
 
     /**
      * @brief The servers number. This information reflects the number in the
@@ -64,7 +49,7 @@ class ConnectionInfo {
      * @brief The name of the country the server is located in. Examples:
      * Germay, United States, Switzerland, etc.
      */
-    std::string country = "";
+    std::string country;
 
     /**
      * @brief The countries ID according to the NordVPN API.
@@ -82,13 +67,13 @@ class ConnectionInfo {
      * @brief The name of the city the server is located in. Examples:
      * Frankfurt, New York, Zurich, etc.
      */
-    std::string city = "";
+    std::string city;
 
     /**
      * @brief The IP address of the server and therefore the users public IP as
      * well. Example: 195.181.170.199
      */
-    std::string ip = "";
+    std::string ip;
 
     /**
      * @brief The VPN technology used to establish the connection.
@@ -130,14 +115,14 @@ class ConnectionInfo {
      * #config::consts::SERVER_LIST_UPDATE_INTERVAL for the actual update
      * interval.
      */
-    uint8_t load;
+    uint8_t load = 0;
 
     /**
      * @brief Checks whether the object is empty aka. in it's initial state.
      * @return True, if all attributes still have their zero value. False, if
      * one or more attributes were assigned a different value.
      */
-    bool isEmpty() const;
+    auto isEmpty() const -> bool;
 };
 
 #endif // CONNECTIONINFO_H

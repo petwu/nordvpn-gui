@@ -2,6 +2,8 @@
 #define RUNGUARD_H
 
 #include <functional>
+#include <memory>
+#include <utility>
 
 #include <QCryptographicHash>
 #include <QLocalServer>
@@ -26,8 +28,6 @@
  * https://stackoverflow.com/questions/5006547/qt-best-practice-for-a-single-instance-app-protection#answer-28172162
  */
 class RunGuard : QObject {
-    Q_OBJECT
-
   public:
     /**
      * @brief RunGuard constructor.
@@ -35,21 +35,45 @@ class RunGuard : QObject {
      * then used as a key for a shared memory block and a system semaphore.
      */
     RunGuard(const QString &key);
-    ~RunGuard();
+
+    /**
+     * @brief Destructor to release the shared memory.
+     */
+    ~RunGuard() override;
+
+    /**
+     * @brief Disable copy constructor.
+     */
+    RunGuard(const RunGuard &) = delete;
+
+    /**
+     * @brief Disable copy assignment.
+     */
+    auto operator=(const RunGuard &) -> RunGuard & = delete;
+
+    /**
+     * @brief Disable move constructor.
+     */
+    RunGuard(RunGuard &&) = delete;
+
+    /**
+     * @brief Disable move assignment.
+     */
+    auto operator=(RunGuard &&) -> RunGuard & = delete;
 
     /**
      * @brief Checks whether the application may be run.
      * @return true, if no other instance is currently running and the
      * application may run, false otherwise.
      */
-    bool tryToRun();
+    auto tryToRun() -> bool;
 
     /**
-     * @brief Callback that is called when someone tried to create a second
-     * application instance but this attemp was blocked by the RunGuard. This
-     * might be used to show and focus a minimized application.
+     * @brief Set a callback function that is called when someone tried to
+     * create a second application instance but this attemp was blocked by the
+     * RunGuard. This might be used to show and focus a minimized application.
      */
-    std::function<void()> onSecondaryInstanceBlocked = [] {};
+    void setOnSecondaryInstanceBlockedHandler(std::function<void()> callback);
 
   private:
     const QString _key;
@@ -68,7 +92,7 @@ class RunGuard : QObject {
      * @brief Local server for interprocess communication (IPC). Required to let
      * the primary instance know about any future instantiation attempts.
      */
-    QLocalServer *_ipcServer = nullptr;
+    std::unique_ptr<QLocalServer> _ipcServer;
 
     /**
      * @brief _hash calculates a cryptographic hash based an the provided key
@@ -77,7 +101,7 @@ class RunGuard : QObject {
      * @param salt Additional (random) data.
      * @return The hash value of key+salt.
      */
-    QString _hash(const QString &key, const QString &salt);
+    static auto _hash(const QString &key, const QString &salt) -> QString;
 
     /**
      * @brief Check for running application instances.
@@ -85,7 +109,7 @@ class RunGuard : QObject {
      * that fails, the shared memory is alreay held by a primary isntance.
      * @return true, if another instance is arealy running, false otherwise.
      */
-    bool _isAnotherRunning();
+    auto _isAnotherRunning() -> bool;
 
     /**
      * @brief Release the shared memory and thereby allowing other instances to
@@ -93,9 +117,12 @@ class RunGuard : QObject {
      */
     void _releaseSharedMem();
 
-    // disable copying
-    RunGuard(const RunGuard &) = delete;
-    RunGuard &operator=(const RunGuard &) = delete;
+    /**
+     * @brief Callback that is called when someone tried to create a second
+     * application instance but this attemp was blocked by the RunGuard. This
+     * might be used to show and focus a minimized application.
+     */
+    std::function<void()> _onSecondaryInstanceBlocked = [] {};
 };
 
 #endif // RUNGUARD_H

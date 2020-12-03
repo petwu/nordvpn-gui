@@ -3,19 +3,19 @@
 
 // clang-format off
 
-#define AUTHOR "${AUTHOR}"
-#define REPOSITORY "${REPOSITORY}"
-#define ISSUES_BOARD "${ISSUES_BOARD}"
-#define ORGANIZATION "${ORGANIZATION}"
-#define APPLICATION_NAME "${APPLICATION_NAME}"
-#define APPLICATION_DESCRIPTION "${APPLICATION_DESCRIPTION}"
-#define VERSION_MAJOR ${VERSION_MAJOR}
-#define VERSION_MINOR ${VERSION_MINOR}
-#define VERSION_PATCH ${VERSION_PATCH}
-#define VERSION "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}"
-#define LICENSE "${LICENSE}"
-const char* LICENSE_TEXT = R"###(${LICENSE_TEXT})###";
-#define NORDVPN_DOWNLOAD_LINUX_URL "${NORDVPN_DOWNLOAD_LINUX_URL}"
-#define NORD_ACCOUNT_URL "${NORD_ACCOUNT_URL}"
+constexpr const char* AUTHOR = "${AUTHOR}";
+constexpr const char* REPOSITORY = "${REPOSITORY}";
+constexpr const char* ISSUES_BOARD = "${ISSUES_BOARD}";
+constexpr const char* ORGANIZATION = "${ORGANIZATION}";
+constexpr const char* APPLICATION_NAME = "${APPLICATION_NAME}";
+constexpr const char* APPLICATION_DESCRIPTION = "${APPLICATION_DESCRIPTION}";
+constexpr const int VERSION_MAJOR = ${VERSION_MAJOR};
+constexpr const int VERSION_MINOR = ${VERSION_MINOR};
+constexpr const int VERSION_PATCH = ${VERSION_PATCH};
+constexpr const char* VERSION = "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}";
+constexpr const char* LICENSE = "${LICENSE}";
+constexpr const char* LICENSE_TEXT = R"###(${LICENSE_TEXT})###";
+constexpr const char* NORDVPN_DOWNLOAD_LINUX_URL = "${NORDVPN_DOWNLOAD_LINUX_URL}";
+constexpr const char* NORD_ACCOUNT_URL = "${NORD_ACCOUNT_URL}";
 
 #endif // APP_H

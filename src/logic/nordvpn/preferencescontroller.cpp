@@ -1,23 +1,26 @@
 #include "preferencescontroller.h"
 
-const std::string ENABLED = "enabled";
-const std::string DISABLED = "disabled";
+// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+#define ENABLED std::string("enabled")
+// NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
+#define DISABLED std::string("disabled")
 
-std::string boolToEnabledString(bool enabled) {
+auto boolToEnabledString(bool enabled) -> std::string {
     return enabled ? ENABLED : DISABLED;
 }
 
-PreferencesController &PreferencesController::getInstance() {
+auto PreferencesController::getInstance() -> PreferencesController & {
     static PreferencesController instance;
     return instance;
 }
 
-NordVpnSettings PreferencesController::getNordvpnSettings() {
+auto PreferencesController::getNordvpnSettings() -> NordVpnSettings {
     NordVpnSettings s;
     // get current settings from NordVPN CLI
     auto result = Process::execute("nordvpn settings");
-    if (result.exitCode != 0)
+    if (result.exitCode != 0) {
         return std::move(s);
+    }
 
     // parse the output with regexes
     std::string o = result.output;
@@ -26,20 +29,24 @@ NordVpnSettings PreferencesController::getNordvpnSettings() {
     const std::string enOrDisabled = "(" + ENABLED + "|" + DISABLED + ")";
 
     // technology
-    if (std::regex_search(o, m, std::regex("Technology: (\\w+)")))
+    if (std::regex_search(o, m, std::regex("Technology: (\\w+)"))) {
         s.setTechnology(technologyFromString(m[1].str()));
+    }
 
     // protocol
-    if (std::regex_search(o, m, std::regex("Protocol: (\\w+)")))
+    if (std::regex_search(o, m, std::regex("Protocol: (\\w+)"))) {
         s.setProtocol(protocolFromString(m[1].str()));
+    }
 
     // auto connect
-    if (std::regex_search(o, m, std::regex("Auto-connect: " + enOrDisabled)))
+    if (std::regex_search(o, m, std::regex("Auto-connect: " + enOrDisabled))) {
         s.setAutoconnect(m[1].str() == ENABLED);
+    }
 
     // cybersec
-    if (std::regex_search(o, m, std::regex("CyberSec: " + enOrDisabled)))
+    if (std::regex_search(o, m, std::regex("CyberSec: " + enOrDisabled))) {
         s.setCybersec(m[1].str() == ENABLED);
+    }
 
     // dns
     s.setDns(!std::regex_search(o, m, std::regex("DNS: disabled")));
@@ -47,9 +54,10 @@ NordVpnSettings PreferencesController::getNordvpnSettings() {
         if (std::regex_search(o, m, std::regex("DNS: ((.+, )*.+)"))) {
             int i = 0;
             int n = s.getMaxNumberOfDnsAddresses();
-            for (auto ip : util::string::split(m[1].str(), ", ")) {
-                if (i == n)
+            for (const auto &ip : util::string::split(m[1].str(), ", ")) {
+                if (i == n) {
                     break;
+                }
                 s.setDnsAddress(i, ip);
                 i++;
             }
@@ -57,16 +65,19 @@ NordVpnSettings PreferencesController::getNordvpnSettings() {
     }
 
     // kill switch
-    if (std::regex_search(o, m, std::regex("Kill Switch: " + enOrDisabled)))
+    if (std::regex_search(o, m, std::regex("Kill Switch: " + enOrDisabled))) {
         s.setKillswitch(m[1].str() == ENABLED);
+    }
 
     // notify
-    if (std::regex_search(o, m, std::regex("Notify: " + enOrDisabled)))
+    if (std::regex_search(o, m, std::regex("Notify: " + enOrDisabled))) {
         s.setNotify(m[1].str() == ENABLED);
+    }
 
     // obfuscated
-    if (std::regex_search(o, m, std::regex("Obfuscate: " + enOrDisabled)))
+    if (std::regex_search(o, m, std::regex("Obfuscate: " + enOrDisabled))) {
         s.setObfuscated(m[1].str() == ENABLED);
+    }
 
     // whitelist
     bool inWhitelistPorts = false;
@@ -77,7 +88,8 @@ NordVpnSettings PreferencesController::getNordvpnSettings() {
             inWhitelistPorts = true;
             inWhitelistSubnets = false;
             continue;
-        } else if (line == "Whitelisted subnets:") {
+        }
+        if (line == "Whitelisted subnets:") {
             inWhitelistPorts = false;
             inWhitelistSubnets = true;
             continue;
@@ -85,16 +97,17 @@ NordVpnSettings PreferencesController::getNordvpnSettings() {
         if (inWhitelistPorts) {
             if (std::regex_search(
                     line, m,
-                    std::regex("(\\d+)(\\s*-\\s*(\\d+))?\\s+\\((.+)\\)"))) {
+                    std::regex(R"((\d+)(\s*-\s*(\d+))?\s+\((.+)\))"))) {
                 auto from = m[1].str();
                 auto to = m[3].str();
                 auto protocols = m[4].str();
                 WhitelistPortEntry whiteEntry;
                 whiteEntry.portFrom = std::stoi(from);
-                if (to != "")
+                if (!to.empty()) {
                     whiteEntry.portTo = std::stoi(to);
-                else
+                } else {
                     whiteEntry.portTo = whiteEntry.portFrom;
+                }
                 if (protocols == "TCP") {
                     whiteEntry.protocolFlag = Protocol::TCP;
                 } else if (protocols == "UDP") {
@@ -119,83 +132,98 @@ void PreferencesController::updateNordvpnSettings(
     std::vector<std::string> cmds;
 
     // technology
-    if (settings.getTechnology() != current.getTechnology())
+    if (settings.getTechnology() != current.getTechnology()) {
         cmds.push_back("nordvpn set technology " +
                        technologyToString(settings.getTechnology()));
+    }
 
     // protocol
     if (settings.getProtocol().isNotNull() &&
-        settings.getProtocol() != current.getProtocol())
+        settings.getProtocol() != current.getProtocol()) {
         cmds.push_back("nordvpn set protocol " +
                        protocolToString(settings.getProtocol().value()));
+    }
 
     // autoconnect
-    if (settings.getAutoconnect() != current.getAutoconnect())
+    if (settings.getAutoconnect() != current.getAutoconnect()) {
         cmds.push_back("nordvpn set autoconnect " +
                        boolToEnabledString(settings.getAutoconnect()));
+    }
 
     // cybersec
-    if (settings.getCybersec() != current.getCybersec())
+    if (settings.getCybersec() != current.getCybersec()) {
         cmds.push_back("nordvpn set cybersec " +
                        boolToEnabledString(settings.getCybersec()));
+    }
 
     // dns
-    if (settings.getDns() != current.getDns() && settings.getDns() == false)
+    if (settings.getDns() != current.getDns() && !settings.getDns()) {
         cmds.push_back("nordvpn set dns " + DISABLED);
-    if (settings.getDns() == true) {
+    }
+    if (settings.getDns()) {
         bool equal = true;
         std::string joinedIPs;
         auto dnsAddresses = settings.getDnsAddresses();
         for (int i = 0; i < settings.getMaxNumberOfDnsAddresses(); i++) {
-            if (util::string::trim(dnsAddresses[i]) != "")
+            if (!util::string::trim(dnsAddresses[i]).empty()) {
                 joinedIPs += " " + dnsAddresses[i];
-            if (dnsAddresses[i] != current.getDnsAddresses()[i])
+            }
+            if (dnsAddresses[i] != current.getDnsAddresses()[i]) {
                 equal = false;
+            }
         }
         if (!equal) {
-            if (joinedIPs != "")
+            if (!joinedIPs.empty()) {
                 cmds.push_back("nordvpn set dns" + joinedIPs);
-            else
+            } else {
                 cmds.push_back("nordvpn set dns " + DISABLED);
+            }
         }
     }
 
     // killswitch
-    if (settings.getKillswitch() != current.getKillswitch())
+    if (settings.getKillswitch() != current.getKillswitch()) {
         cmds.push_back("nordvpn set killswitch " +
                        boolToEnabledString(settings.getKillswitch()));
+    }
 
     // notify
-    if (settings.getNotify() != current.getNotify())
+    if (settings.getNotify() != current.getNotify()) {
         cmds.push_back("nordvpn set notify " +
                        boolToEnabledString(settings.getNotify()));
+    }
 
     // obfuscated
     if (settings.getObfuscated().isNotNull() &&
-        settings.getObfuscated() != current.getObfuscated())
+        settings.getObfuscated() != current.getObfuscated()) {
         cmds.push_back("nordvpn set obfuscate " +
                        boolToEnabledString(settings.getObfuscated().value()));
+    }
 
     // whitelist subnets
     auto settingsSubnets = settings.getWhitelistSubnets();
     auto currentSubnets = current.getWhitelistSubnets();
-    for (auto subnet : settingsSubnets)
+    for (const auto &subnet : settingsSubnets) {
         // find new subnets
         if (std::find(currentSubnets.begin(), currentSubnets.end(), subnet) ==
-            currentSubnets.end())
+            currentSubnets.end()) {
             cmds.push_back("nordvpn whitelist add subnet " + subnet);
-    for (auto subnet : currentSubnets)
+        }
+    }
+    for (const auto &subnet : currentSubnets) {
         // find removed subnets
         if (std::find(settingsSubnets.begin(), settingsSubnets.end(), subnet) ==
-            settingsSubnets.end())
+            settingsSubnets.end()) {
             cmds.push_back("nordvpn whitelist remove subnet " + subnet);
+        }
+    }
 
     // whitelist ports
     auto settingsPorts = settings.getWhitelistPorts();
     auto currentPorts = current.getWhitelistPorts();
-    for (auto port : settingsPorts)
+    for (auto port : settingsPorts) {
         if (std::find(currentPorts.begin(), currentPorts.end(), port) ==
-            currentPorts.end())
+            currentPorts.end()) {
             // find new ports
             cmds.push_back(
                 "nordvpn whitelist add " +
@@ -209,9 +237,11 @@ void PreferencesController::updateNordvpnSettings(
                      ? " protocol TCP" // only TCP port
                      : "")             // default is both protocols
             );
-    for (auto port : currentPorts)
+        }
+    }
+    for (auto port : currentPorts) {
         if (std::find(settingsPorts.begin(), settingsPorts.end(), port) ==
-            settingsPorts.end())
+            settingsPorts.end()) {
             // find removed ports
             cmds.push_back(
                 "nordvpn whitelist remove " +
@@ -225,14 +255,17 @@ void PreferencesController::updateNordvpnSettings(
                      ? " protocol TCP" // only TCP port
                      : "")             // default is both protocols
             );
+        }
+    }
 
     std::thread([cmds] {
-        for (auto cmd : cmds)
+        for (const auto &cmd : cmds) {
             Process::execute(cmd);
+        }
     }).detach();
 }
 
-NordVpnSettings PreferencesController::restoreDefaultNordvpnSettings() {
+auto PreferencesController::restoreDefaultNordvpnSettings() -> NordVpnSettings {
     Process::execute("nordvpn set defaults");
     return this->getNordvpnSettings();
 }

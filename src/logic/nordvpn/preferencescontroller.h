@@ -23,16 +23,21 @@ class PreferencesController : public BaseController {
      */
     void operator=(const PreferencesController &) = delete;
 
+    PreferencesController(PreferencesController &&) = default;
+    auto operator=(PreferencesController &&)
+        -> PreferencesController & = default;
+    ~PreferencesController() = default;
+
     /**
      * @brief Get the singleton instance of PreferencesController.
      * @details The instance will be constructed if it does not exist already.
      */
-    static PreferencesController &getInstance();
+    static auto getInstance() -> PreferencesController &;
 
     /**
      * @brief Retrieve the current settings regarding the NordVPN CLI.
      */
-    NordVpnSettings getNordvpnSettings();
+    static auto getNordvpnSettings() -> NordVpnSettings;
 
     /**
      * @brief Update the settings of the NordVPN CLI based on the difference of
@@ -47,13 +52,13 @@ class PreferencesController : public BaseController {
      * @warning The user will be logged out by this operation and has to
      * re-enter his/her credentials afterwards.
      */
-    NordVpnSettings restoreDefaultNordvpnSettings();
+    auto restoreDefaultNordvpnSettings() -> NordVpnSettings;
 
   private:
     /**
      * @brief Empty, private contructor (part of the singleton implementation).
      */
-    PreferencesController() {}
+    PreferencesController() = default;
 };
 
 #endif // PREFERENCESCONTROLLER_H

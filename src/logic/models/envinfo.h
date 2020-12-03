@@ -40,7 +40,7 @@ class EnvInfo {
     /**
      * @brief Convert the object into a printable, nice-to-read string.
      */
-    std::string toString() const;
+    auto toString() const -> std::string;
 };
 
 #endif // ENVINFO_H

@@ -1,6 +1,9 @@
 #include "qmldataconverter.h"
 
-QVariant QmlDataConverter::jsonToQml(const json &j) {
+// The function cannot be implemented without using recursion. The recusion
+// isn't harmful as long as the JSON structures don't reach a unrealistic depth.
+// Hence the disabled clang-tidy check. NOLINTNEXTLINE(misc-no-recursion)
+auto QmlDataConverter::jsonToQml(const json &j) -> QVariant {
     QVariant qObj;
     // check JSON type and convert to appropriate Qt/QVariant type
     // (recursively for arrays and objects)
@@ -11,7 +14,7 @@ QVariant QmlDataConverter::jsonToQml(const json &j) {
     } else if (j.is_boolean()) {
         qObj = json::boolean_t(j);
     } else if (j.is_number_integer()) {
-        qObj = QVariant((long long int)(json::number_integer_t(j)));
+        qObj = QVariant(static_cast<long long int>(json::number_integer_t(j)));
     } else if (j.is_number_float()) {
         qObj = QVariant(json::number_float_t(j));
     } else if (j.is_array()) {
@@ -35,20 +38,20 @@ QVariant QmlDataConverter::jsonToQml(const json &j) {
     return std::move(qObj);
 }
 
-QVariantMap QmlDataConverter::countryToQml(const Country &country) {
+auto QmlDataConverter::countryToQml(const Country &country) -> QVariantMap {
     QVariantMap qObj = locationToQml(country);
     qObj["countryCode"] = QString(country.countryCode.c_str());
     qObj["offsetLeft"] = country.offsetLeft;
     qObj["offsetTop"] = country.offsetTop;
     QVariantList cities;
-    for (auto city : country.cities) {
+    for (const auto &city : country.cities) {
         cities << locationToQml(city);
     }
     qObj["cities"] = cities;
     return std::move(qObj);
 }
 
-QVariantMap QmlDataConverter::locationToQml(const Location &location) {
+auto QmlDataConverter::locationToQml(const Location &location) -> QVariantMap {
     QVariantMap qObj;
     qObj["id"] = location.id;
     qObj["name"] = QString(location.name.c_str());
@@ -57,7 +60,7 @@ QVariantMap QmlDataConverter::locationToQml(const Location &location) {
     return std::move(qObj);
 }
 
-QVariantMap QmlDataConverter::serverToQml(const Server &server) {
+auto QmlDataConverter::serverToQml(const Server &server) -> QVariantMap {
     QVariantMap qObj;
     qObj["id"] = server.id;
     qObj["name"] = QString(server.name.c_str());
@@ -74,15 +77,16 @@ QVariantMap QmlDataConverter::serverToQml(const Server &server) {
     return std::move(qObj);
 }
 
-QVariantMap
-QmlDataConverter::nordvpnSettingsToQml(const NordVpnSettings &settings) {
+auto QmlDataConverter::nordvpnSettingsToQml(const NordVpnSettings &settings)
+    -> QVariantMap {
     QVariantMap qObj;
     qObj["autoconnect"] = settings.getAutoconnect();
     qObj["cybersec"] = settings.getCybersec();
     qObj["dns"] = settings.getDns();
     QVariantList dnsAddrs;
-    for (auto addr : settings.getDnsAddresses())
+    for (const auto &addr : settings.getDnsAddresses()) {
         dnsAddrs << QString(addr.c_str());
+    }
     qObj["dnsAddresses"] = dnsAddrs;
     qObj["maxNumberOfDnsAddresses"] = settings.getMaxNumberOfDnsAddresses();
     qObj["killswitch"] = settings.getKillswitch();
@@ -96,18 +100,20 @@ QmlDataConverter::nordvpnSettingsToQml(const NordVpnSettings &settings) {
     qObj["technology"] =
         QString(technologyToString(settings.getTechnology()).c_str());
     QVariantList whitelistSubnets;
-    for (auto subnet : settings.getWhitelistSubnets())
+    for (const auto &subnet : settings.getWhitelistSubnets()) {
         whitelistSubnets << QString(subnet.c_str());
+    }
     qObj["whitelistSubnets"] = whitelistSubnets;
     QVariantList whitelistPorts;
-    for (auto ports : settings.getWhitelistPorts())
+    for (auto ports : settings.getWhitelistPorts()) {
         whitelistPorts << whitelistPortsEntryToQml(ports);
+    }
     qObj["whitelistPorts"] = whitelistPorts;
     return std::move(qObj);
 }
 
-QVariantMap
-QmlDataConverter::whitelistPortsEntryToQml(const WhitelistPortEntry &entry) {
+auto QmlDataConverter::whitelistPortsEntryToQml(const WhitelistPortEntry &entry)
+    -> QVariantMap {
     QVariantMap qObj;
     qObj["portFrom"] = entry.portFrom;
     qObj["portTo"] = entry.portTo;

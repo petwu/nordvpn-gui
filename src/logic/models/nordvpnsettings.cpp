@@ -1,6 +1,8 @@
 #include "nordvpnsettings.h"
 
-bool NordVpnSettings::getAutoconnect() const { //
+#include <utility>
+
+auto NordVpnSettings::getAutoconnect() const -> bool { //
     return this->autoconnect;
 }
 
@@ -8,51 +10,44 @@ void NordVpnSettings::setAutoconnect(bool enabled) { //
     this->autoconnect = enabled;
 }
 
-bool NordVpnSettings::getCybersec() const { //
+auto NordVpnSettings::getCybersec() const -> bool { //
     return this->cybersec;
 }
 
 void NordVpnSettings::setCybersec(bool enabled) { //
     this->cybersec = enabled;
-    if (enabled)
+    if (enabled) {
         this->dns = false;
+    }
 }
 
-bool NordVpnSettings::getDns() const { //
+auto NordVpnSettings::getDns() const -> bool { //
     return this->dns;
 }
 
 void NordVpnSettings::setDns(bool enabled) {
     this->dns = enabled;
-    if (enabled)
+    if (enabled) {
         this->cybersec = false;
+    }
 }
 
-std::vector<std::string> NordVpnSettings::getDnsAddresses() const {
+auto NordVpnSettings::getDnsAddresses() const -> std::vector<std::string> {
     return this->dnsAddresses;
 }
 
-int NordVpnSettings::getMaxNumberOfDnsAddresses() const {
+auto NordVpnSettings::getMaxNumberOfDnsAddresses() const -> int {
     return this->dnsAddresses.size();
 }
 
-void NordVpnSettings::setDnsAddresses(std::string addrs[3]) {
-    bool allEmpty = true;
-    for (int i = 0; i < 3 && i < this->dnsAddresses.size(); i++) {
-        this->dnsAddresses[i] = addrs[i];
-        if (addrs[i] != "")
-            allEmpty = false;
-    }
-    this->dns = !allEmpty;
-}
-
-void NordVpnSettings::setDnsAddress(int nth, std::string addr) {
-    if (nth >= this->dnsAddresses.size() || addr == "")
+void NordVpnSettings::setDnsAddress(int nth, const std::string &addr) {
+    if (nth >= this->dnsAddresses.size() || addr.empty()) {
         return;
+    }
     this->dnsAddresses[nth] = addr;
 }
 
-bool NordVpnSettings::getKillswitch() const { //
+auto NordVpnSettings::getKillswitch() const -> bool { //
     return this->killswitch;
 }
 
@@ -60,7 +55,7 @@ void NordVpnSettings::setKillswitch(bool enabled) { //
     this->killswitch = enabled;
 }
 
-bool NordVpnSettings::getNotify() const { //
+auto NordVpnSettings::getNotify() const -> bool { //
     return this->notify;
 }
 
@@ -68,27 +63,29 @@ void NordVpnSettings::setNotify(bool enabled) { //
     this->notify = enabled;
 }
 
-Nullable<bool> NordVpnSettings::getObfuscated() const { //
+auto NordVpnSettings::getObfuscated() const -> Nullable<bool> { //
     return this->obfuscated;
 }
 
 void NordVpnSettings::setObfuscated(bool enabled) {
     this->obfuscated = enabled;
-    if (enabled)
+    if (enabled) {
         this->dns = false;
+    }
 }
 
-Nullable<Protocol> NordVpnSettings::getProtocol() const { //
+auto NordVpnSettings::getProtocol() const -> Nullable<Protocol> { //
     return this->protocol;
 }
 
 void NordVpnSettings::setProtocol(Protocol p) {
-    if (this->technology == Technology::NordLynx)
+    if (this->technology == Technology::NordLynx) {
         return;
+    }
     this->protocol = p;
 }
 
-Technology NordVpnSettings::getTechnology() const { //
+auto NordVpnSettings::getTechnology() const -> Technology { //
     return this->technology;
 }
 
@@ -103,27 +100,30 @@ void NordVpnSettings::setTechnology(Technology t) {
     }
 }
 
-std::vector<std::string> NordVpnSettings::getWhitelistSubnets() const {
+auto NordVpnSettings::getWhitelistSubnets() const -> std::vector<std::string> {
     return this->whitelistSubnets;
 }
 
-void NordVpnSettings::addSubnetToWhitelist(std::string subnet) {
+void NordVpnSettings::addSubnetToWhitelist(const std::string &subnet) {
     this->whitelistSubnets.push_back(subnet);
 }
 
 void NordVpnSettings::updateWhitelistSubnet(int index, std::string subnet) {
-    if (index < 0 || index >= this->whitelistSubnets.size())
+    if (index < 0 || index >= this->whitelistSubnets.size()) {
         return;
-    this->whitelistSubnets[index] = subnet;
+    }
+    this->whitelistSubnets[index] = std::move(subnet);
 }
 
 void NordVpnSettings::removeSubnetFromWhitelist(int index) {
-    if (index < 0 || index >= this->whitelistSubnets.size())
+    if (index < 0 || index >= this->whitelistSubnets.size()) {
         return;
+    }
     this->whitelistSubnets.erase(this->whitelistSubnets.begin() + index);
 }
 
-std::vector<WhitelistPortEntry> NordVpnSettings::getWhitelistPorts() const {
+auto NordVpnSettings::getWhitelistPorts() const
+    -> std::vector<WhitelistPortEntry> {
     return this->whitelistPorts;
 }
 
@@ -132,13 +132,15 @@ void NordVpnSettings::addPortsToWhitelist(WhitelistPortEntry p) {
 }
 
 void NordVpnSettings::updatePortsOfWhitelist(int index, WhitelistPortEntry p) {
-    if (index < 0 || index >= this->whitelistPorts.size())
+    if (index < 0 || index >= this->whitelistPorts.size()) {
         return;
+    }
     this->whitelistPorts[index] = p;
 }
 
 void NordVpnSettings::removePortsFromWhitelist(int index) {
-    if (index < 0 || index >= this->whitelistPorts.size())
+    if (index < 0 || index >= this->whitelistPorts.size()) {
         return;
+    }
     this->whitelistPorts.erase(this->whitelistPorts.begin() + index);
 }

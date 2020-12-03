@@ -21,17 +21,17 @@ enum class Protocol {
  * @param p A nullable Protocol value.
  * @return "null" literal in case `p` is null.
  */
-std::string protocolToString(const Nullable<Protocol> p);
+auto protocolToString(const Nullable<Protocol> &p) -> std::string;
 
 /**
  * @brief Convert a Protocol to a human readable string.
  */
-std::string protocolToString(const Protocol p);
+auto protocolToString(Protocol p) -> std::string;
 
 /**
  * @brief Inverse operation of `protocolToString`.
  */
-Protocol protocolFromString(const std::string &s);
+auto protocolFromString(const std::string &s) -> Protocol;
 
 /**
  * @brief Perform a bitwise OR operation.
@@ -40,7 +40,7 @@ Protocol protocolFromString(const std::string &s);
  * @return A Protocol value representing both Protocol flags. Must not be an
  * actual Protocol enum value.
  */
-Protocol operator|(Protocol lhs, Protocol rhs);
+auto operator|(Protocol lhs, Protocol rhs) -> Protocol;
 
 /**
  * @brief Perform a bitwise AND operation.
@@ -49,6 +49,6 @@ Protocol operator|(Protocol lhs, Protocol rhs);
  * @return Protocol::Undefined in case `lhs` and `rhs` don't have any flags in
  * common.
  */
-Protocol operator&(Protocol lhs, Protocol rhs);
+auto operator&(Protocol lhs, Protocol rhs) -> Protocol;
 
 #endif // PROTOCOL_H

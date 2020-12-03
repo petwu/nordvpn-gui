@@ -25,7 +25,7 @@ class PreferencesRepository : public BaseRepository {
      *
      * @return
      */
-    static std::vector<uint32_t> getRecentCountriesIds();
+    static auto getRecentCountriesIds() -> std::vector<uint32_t>;
 
     /**
      * @brief Add a country ID to the list of countries the user recently
@@ -46,7 +46,7 @@ class PreferencesRepository : public BaseRepository {
      * @brief _getRecentCountriesIds
      * @return
      */
-    static std::vector<uint32_t> _getRecentCountriesIds();
+    static auto _getRecentCountriesIds() -> std::vector<uint32_t>;
 };
 
 #endif // PREFERENCESREPOSITORY_H

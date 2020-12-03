@@ -23,7 +23,7 @@ class Location : public Connectable {
     /**
      * @brief The locations name, e.g. the country, region or city name.
      */
-    std::string name = "";
+    std::string name;
 
     /**
      * @brief latitude
@@ -39,14 +39,14 @@ class Location : public Connectable {
      * @brief Convert the object into a JSON string representation.
      * @return
      */
-    std::string toJSON();
+    auto toJSON() -> std::string;
 
     /**
      * @brief Inverse operation of #toJSON.
      * @param s
      * @return
      */
-    static Location fromJSON(const std::string &s);
+    static auto fromJSON(const std::string &s) -> Location;
 };
 
 #endif // LOCATION_H

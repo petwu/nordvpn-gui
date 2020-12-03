@@ -1,6 +1,6 @@
 #include "runguard.h"
 
-QString RunGuard::_hash(const QString &key, const QString &salt) {
+auto RunGuard::_hash(const QString &key, const QString &salt) -> QString {
     QByteArray data;
 
     data.append(key.toUtf8());
@@ -33,22 +33,23 @@ RunGuard::~RunGuard() {
     // delete the local IPC server (only primary instance)
     if (this->_ipcServer != nullptr) {
         this->_ipcServer->close();
-        delete this->_ipcServer;
     }
 }
 
-bool RunGuard::_isAnotherRunning() {
-    if (_sharedMem.isAttached())
+auto RunGuard::_isAnotherRunning() -> bool {
+    if (_sharedMem.isAttached()) {
         return false;
+    }
     this->_memLock.acquire();
     const bool isRunning = this->_sharedMem.attach();
-    if (isRunning)
+    if (isRunning) {
         this->_sharedMem.detach();
+    }
     this->_memLock.release();
     return isRunning;
 }
 
-bool RunGuard::tryToRun() {
+auto RunGuard::tryToRun() -> bool {
     bool canRun = true;
     // check if another instance is running
     if (this->_isAnotherRunning()) {
@@ -73,11 +74,12 @@ bool RunGuard::tryToRun() {
         // time this happens, onSecondaryInstanceBlocked gets invoked to let the
         // holder of the guard know about the failed instance creation.
         QLocalServer::removeServer(this->_key);
-        if (this->_ipcServer == nullptr)
-            this->_ipcServer = new QLocalServer();
+        if (this->_ipcServer == nullptr) {
+            this->_ipcServer = std::make_unique<QLocalServer>();
+        }
         this->_ipcServer->listen(this->_key);
-        this->connect(this->_ipcServer, &QLocalServer::newConnection,
-                      [this] { this->onSecondaryInstanceBlocked(); });
+        RunGuard::connect(this->_ipcServer.get(), &QLocalServer::newConnection,
+                          [this] { this->_onSecondaryInstanceBlocked(); });
     } else {
         // If canRun is false this means that another instance is already
         // running. In that case we use a local socker to connect to the local
@@ -90,9 +92,15 @@ bool RunGuard::tryToRun() {
     return canRun;
 }
 
+void RunGuard::setOnSecondaryInstanceBlockedHandler(
+    std::function<void()> callback) {
+    this->_onSecondaryInstanceBlocked = std::move(callback);
+}
+
 void RunGuard::_releaseSharedMem() {
     this->_memLock.acquire();
-    if (this->_sharedMem.isAttached())
+    if (this->_sharedMem.isAttached()) {
         this->_sharedMem.detach();
+    }
     this->_memLock.release();
 }

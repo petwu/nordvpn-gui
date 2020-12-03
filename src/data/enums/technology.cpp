@@ -1,6 +1,6 @@
 #include "technology.h"
 
-std::string technologyToString(const Technology t) {
+auto technologyToString(const Technology t) -> std::string {
     switch (t) {
     case Technology::OpenVPN:
         return "OpenVPN";
@@ -11,11 +11,12 @@ std::string technologyToString(const Technology t) {
     }
 }
 
-Technology technologyFromString(const std::string &s) {
-    if (s == "OpenVPN")
+auto technologyFromString(const std::string &s) -> Technology {
+    if (s == "OpenVPN") {
         return Technology::OpenVPN;
-    if (s == "NordLynx")
+    }
+    if (s == "NordLynx") {
         return Technology::NordLynx;
-    else
-        return Technology::Undefined;
+    }
+    { return Technology::Undefined; }
 }

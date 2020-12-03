@@ -17,7 +17,7 @@ class AsyncProcess {
      * Use Process for blocking execution.
      * @param command The shell command to execute.
      */
-    static void execute(std::string command);
+    static void execute(const std::string &command);
 
     /**
      * @brief Execute a shell command. The command is executed in a seperate
@@ -29,7 +29,7 @@ class AsyncProcess {
      * available before the command execution finished. Once the command is
      * finished, pid is set to -1.
      */
-    static void execute(std::string command, pid_t *pid);
+    static void execute(const std::string &command, pid_t *pid);
 
     /**
      * @brief Execute a shell command. The command is executed in a seperate
@@ -43,8 +43,9 @@ class AsyncProcess {
      * @param callback The method that gets called once the command has finished
      * and the result is available.
      */
-    static void execute(std::string command, pid_t *pid,
-                        std::function<void(const ProcessResult)> callback);
+    static void
+    execute(const std::string &command, pid_t *pid,
+            const std::function<void(const ProcessResult &)> &callback);
 
     /**
      * @brief Send a termination request in order to kill the child process
@@ -63,7 +64,7 @@ class AsyncProcess {
      * @return True, if the child process was killed sucessfully. False,
      * otherwise.
      */
-    static bool kill(pid_t pid, bool force = false);
+    static auto kill(pid_t pid, bool force = false) -> bool;
 };
 
 #endif // ASYNCPROCESS_H

@@ -30,13 +30,13 @@ class Server : public Connectable {
      * @brief Human readable server name.
      * Example: Germany #123
      */
-    std::string name = "";
+    std::string name;
 
     /**
      * @brief Hostname of the server that may be resolved into an IP address.
      * Example: fr752.nordvpn.com
      */
-    std::string hostname = "";
+    std::string hostname;
 
     /**
      * @brief The load percentage. A value between 0 and 100.
@@ -68,7 +68,7 @@ class Server : public Connectable {
      * connections.
      * @return
      */
-    bool supportsObfuscated();
+    auto supportsObfuscated() -> bool;
 
     /**
      * @brief Check whether the server supports a thing thats is called CyberSec
@@ -76,7 +76,7 @@ class Server : public Connectable {
      * the server.
      * @return
      */
-    bool supportsCyberSec();
+    auto supportsCyberSec() -> bool;
 
     /**
      * @brief Check whether the server supports SecurityProtocols that are
@@ -84,7 +84,7 @@ class Server : public Connectable {
      * @param p
      * @return
      */
-    bool supportsProtocol(Protocol p);
+    auto supportsProtocol(Protocol p) -> bool;
 
     /**
      * @brief Check whether the server supports SecurityProtocols for the passed
@@ -92,20 +92,20 @@ class Server : public Connectable {
      * @param t
      * @return
      */
-    bool supportsTechnology(Technology t);
+    auto supportsTechnology(Technology t) -> bool;
 
     /**
      * @brief Convert the object into a JSON string representation.
      * @return
      */
-    std::string toJSON();
+    auto toJSON() -> std::string;
 
     /**
      * @brief Inverse operation of #toJSON.
      * @param s
      * @return
      */
-    static Server fromJSON(const std::string &s);
+    static auto fromJSON(const std::string &s) -> Server;
 };
 
 #endif // SERVER_H

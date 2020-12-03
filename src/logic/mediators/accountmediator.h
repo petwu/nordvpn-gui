@@ -11,29 +11,25 @@
  * and actions with the UI that regard the users NordVPN account.
  */
 class AccountMediator : public QObject {
+    // NOLINTNEXTLINE(modernize-use-trailing-return-type): Qt is out of scope
     Q_OBJECT
 
-  public slots:
+  public slots: // NOLINT(readability-redundant-access-specifiers)
     /**
      * @brief Login to NordVPN's services.
      * @param username The users e-mail or username.
      * @param password The users password.
      * @return True, if the credentials were accepted. False otherwise.
      */
-    bool login(QString username, QString password);
+    // NOLINTNEXTLINE(modernize-use-trailing-return-type): not supported by moc
+    static bool login(const QString &username, const QString &password);
 
     /**
      * @brief Logout the currently logged in user from NordVPN's services.
      * @return True, if the logout was successful.
      */
-    bool logout();
-
-  private:
-    /**
-     * @brief Controller that implements the actual account logic. Used to
-     * delegate operations like #login() or #logout() to.
-     */
-    AccountController _accountController;
+    // NOLINTNEXTLINE(modernize-use-trailing-return-type): not supported by moc
+    static bool logout();
 };
 
 #endif // ACCOUNTMEDIATOR_H

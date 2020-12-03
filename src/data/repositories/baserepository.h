@@ -19,6 +19,12 @@ using json = nlohmann::json;
 #include "data/enums/technology.h"
 
 /**
+ * Number of seconds before a libcurl call (e.g. http request) times out and
+ * gets aborted.
+ */
+constexpr int DEFAULT_CURL_TIMEOUT = 30; // seconds
+
+/**
  * @brief The BaseRepository class is a base class for all repositories that
  * provides common utility functions, e.g. for filesystem or network access.
  */
@@ -30,14 +36,15 @@ class BaseRepository {
      * @return The contents of the file or an empty string if the file does not
      * exist.
      */
-    static std::string readFile(std::filesystem::path path);
+    static auto readFile(const std::filesystem::path &path) -> std::string;
 
     /**
      * @brief Write a text file. Existing files get overridden.
      * @param path The path to the file.
      * @param content The text that should be written to the file.
      */
-    static void writeFile(std::filesystem::path path, std::string content);
+    static void writeFile(const std::filesystem::path &path,
+                          const std::string &content);
 
     /**
      * @brief Perform a HTTP network request with the help of libcurl.
@@ -47,7 +54,14 @@ class BaseRepository {
      * code 200. An empty string in case of any other HTTP code or the requested
      * timed out.
      */
-    static std::string curl(std::string url, uint8_t timeoutSec = 30);
+    static auto curl(const char *&url,
+                     uint8_t timeoutSec = DEFAULT_CURL_TIMEOUT) -> std::string;
+
+    /**
+     * @brief Overload of #curl() with `std::string` instead of `char*`.
+     */
+    static auto curl(const std::string &url,
+                     uint8_t timeoutSec = DEFAULT_CURL_TIMEOUT) -> std::string;
 };
 
 #endif // BASEREPOSITORY_H

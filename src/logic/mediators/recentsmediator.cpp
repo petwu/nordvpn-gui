@@ -4,10 +4,10 @@ RecentsMediator::RecentsMediator() { //
     this->_serverController.attach(this);
 }
 
-QVariantList RecentsMediator::_getRecentCountries() {
+auto RecentsMediator::_getRecentCountries() -> QVariantList {
     this->_recentCountries = this->_serverController.getRecentCountries();
     QVariantList recents;
-    for (auto r : this->_recentCountries) {
+    for (const auto &r : this->_recentCountries) {
         recents << QmlDataConverter::countryToQml(r);
     }
     return std::move(recents);

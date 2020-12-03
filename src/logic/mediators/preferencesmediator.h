@@ -9,6 +9,12 @@
 #include "qmldataconverter.h"
 
 /**
+ * @brief PORT_MAX is the maximum value, a port may have. A port is a 16-bit
+ * number and hence allows values from 0 to 65535 (= 2^16 - 1).
+ */
+constexpr uint PORT_MAX = 65535;
+
+/**
  * @brief The PreferencesMediator class is responsible for communicating
  * preferences between the UI and the logic components.
  *
@@ -34,6 +40,7 @@
  * Use saveNordvpnSettings() to save the made changes.
  */
 class PreferencesMediator : public QObject {
+    // NOLINTNEXTLINE(modernize-use-trailing-return-type): Qt is out of scope
     Q_OBJECT
 
     /**
@@ -48,9 +55,9 @@ class PreferencesMediator : public QObject {
      */
     PreferencesMediator();
 
-  public slots:
+  public slots: // NOLINT(readability-redundant-access-specifiers)
     /**
-     * @brief Function to trigger the update of the N settings from the NordVPN
+     * @brief Function to trigger the update of the settings from the NordVPN
      * CLI.
      * @details The updated settings will get propagated to the UI.
      */
@@ -81,7 +88,7 @@ class PreferencesMediator : public QObject {
      * @param i The DNS addresses index.
      * @param addr The custom DNS address value.
      */
-    void setDnsAddress(int i, QString addr);
+    void setDnsAddress(int i, const QString &addr);
 
     /**
      * @brief Activate or deactivate the killswitch.
@@ -107,28 +114,31 @@ class PreferencesMediator : public QObject {
      * @param protocol A string matching a #Protocol value. Unknown values don't
      * have any effect.
      */
-    void setProtocol(QString protocol);
+    void setProtocol(const QString &protocol);
 
     /**
      * @brief Set the connection technology to use. See #Technology for
      * appropriate values.
      * @param technology
      */
-    void setTechnology(QString technology);
+    void setTechnology(const QString &technology);
     void addSubnetToWhitelist();
-    void updateWhitelistSubnet(int index, QString subnet);
+    void updateWhitelistSubnet(int index, const QString &subnet);
     void removeSubnetFromWhitelist(int index);
     void addPortsToWhitelist();
-    void updateWhitelistPorts(int index, QString portFrom, QString portTo,
-                              uint protocolFlag);
+    void updateWhitelistPorts(int index, const QString &portFrom,
+                              const QString &portTo, uint protocolFlag);
     void removePortsFromWhitelist(int index);
 
     void saveNordvpnSettings();
     void restoreDefaultNordvpnSettings();
 
-    bool isValidIpAddress(QString ip);
-    bool isValidSubnetMask(QString subnet);
-    bool isValidPort(QString port);
+    // NOLINTNEXTLINE(modernize-use-trailing-return-type): not supported by moc
+    static bool isValidIpAddress(const QString &ip);
+    // NOLINTNEXTLINE(modernize-use-trailing-return-type): not supported by moc
+    static bool isValidSubnetMask(const QString &subnet);
+    // NOLINTNEXTLINE(modernize-use-trailing-return-type): not supported by moc
+    static bool isValidPort(const QString &port);
 
   signals:
     void nordvpnSettingsChanged(QVariantMap);
@@ -137,6 +147,7 @@ class PreferencesMediator : public QObject {
     PreferencesController &_preferencesController =
         PreferencesController::getInstance();
     NordVpnSettings _nordvpnSettings;
+    // NOLINTNEXTLINE(modernize-use-trailing-return-type): not supported by moc
     QVariantMap _getNordvpnSettings();
     void _nordvpnSettingsChanged();
 };

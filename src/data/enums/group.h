@@ -18,19 +18,19 @@ enum class Group {
 /**
  * @brief Convert a Group enum to a string.
  */
-std::string group2string(Group g);
+auto group2string(Group g) -> std::string;
 
 /**
  * @brief Convert a Group enum to a string that can be used as connect parameter
  * to the NordVPN CLI.
  */
-std::string group2connectName(Group g);
+auto group2connectName(Group g) -> std::string;
 
 /**
  * @brief Convert an integer to its corresponding Group enum value.
  * @return The corresponding Group value. Defaults to Group::UNDEFINED for
  * undefined cases.
  */
-Group groupFromInt(int32_t groupId);
+auto groupFromInt(int32_t groupId) -> Group;
 
 #endif // GROUP_H

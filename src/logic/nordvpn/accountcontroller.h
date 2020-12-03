@@ -17,14 +17,15 @@ class AccountController : BaseController {
      * @return True, in case the login was successful. False, in case the
      * provided credentials were wrong.
      */
-    bool login(std::string username, std::string password);
+    static auto login(const std::string &username, const std::string &password)
+        -> bool;
 
     /**
      * @brief Logout the currently logged in user.
      * @return True, if successful. False otherwise, e.g. if no user is logged
      * in.
      */
-    bool logout();
+    static auto logout() -> bool;
 };
 
 #endif // ACCOUNTCONTROLLER_H

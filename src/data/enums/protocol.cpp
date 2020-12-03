@@ -1,13 +1,13 @@
 #include "protocol.h"
 
-std::string protocolToString(const Nullable<Protocol> p) {
+auto protocolToString(const Nullable<Protocol> &p) -> std::string {
     if (p.isNull()) {
         return "null";
     }
     return protocolToString(p.value());
 }
 
-std::string protocolToString(const Protocol p) {
+auto protocolToString(const Protocol p) -> std::string {
     switch (p) {
     case Protocol::TCP:
         return "TCP";
@@ -18,19 +18,20 @@ std::string protocolToString(const Protocol p) {
     }
 }
 
-Protocol protocolFromString(const std::string &s) {
-    if (s == "TCP")
+auto protocolFromString(const std::string &s) -> Protocol {
+    if (s == "TCP") {
         return Protocol::TCP;
-    if (s == "UDP")
+    }
+    if (s == "UDP") {
         return Protocol::UDP;
-    else
-        return Protocol::Undefined;
+    }
+    { return Protocol::Undefined; }
 }
 
-Protocol operator|(Protocol lhs, Protocol rhs) {
+auto operator|(Protocol lhs, Protocol rhs) -> Protocol {
     return static_cast<Protocol>(static_cast<int>(lhs) | static_cast<int>(rhs));
 }
 
-Protocol operator&(Protocol lhs, Protocol rhs) {
+auto operator&(Protocol lhs, Protocol rhs) -> Protocol {
     return static_cast<Protocol>(static_cast<int>(lhs) & static_cast<int>(rhs));
 }

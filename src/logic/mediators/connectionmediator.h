@@ -30,6 +30,7 @@
 class ConnectionMediator : public QObject,
                            public IConnectionInfoSubscription,
                            public ICountriesSubscription {
+    // NOLINTNEXTLINE(modernize-use-trailing-return-type): Qt is out of scope
     Q_OBJECT
 
   public:
@@ -163,7 +164,7 @@ class ConnectionMediator : public QObject,
         QVariantList connectingServerGroups READ _getConnectingServerGroups
             NOTIFY connectingServerGroupsChanged)
 
-  public slots:
+  public slots: // NOLINT(readability-redundant-access-specifiers)
     /**
      * @brief Connect to a random server.
      * @details Calls to this function are ignored while
@@ -246,6 +247,7 @@ class ConnectionMediator : public QObject,
      * @return A filtered list of server. The list is not only filtered by
      * `countryId` and `cityId` but also by the current settings.
      */
+    // NOLINTNEXTLINE(modernize-use-trailing-return-type): not supported by moc
     QVariantList getServers(qint32 countryId, qint32 cityId);
 
     /**
@@ -255,6 +257,7 @@ class ConnectionMediator : public QObject,
      * of the #Group enum.
      * @return A filtered list of countries.
      */
+    // NOLINTNEXTLINE(modernize-use-trailing-return-type): not supported by moc
     QVariantList getSpecialtyCountries(quint32 groupId);
 
     /**
@@ -265,6 +268,7 @@ class ConnectionMediator : public QObject,
      * May be <0 to include all countries.
      * @return A filtered list of servers.
      */
+    // NOLINTNEXTLINE(modernize-use-trailing-return-type): not supported by moc
     QVariantList getSpecialtyServers(quint32 groupId, qint32 countryId);
 
     /**
@@ -274,7 +278,7 @@ class ConnectionMediator : public QObject,
      * @details This function should only be used while #isRatingPossible is
      * true.
      */
-    void rate(quint8 rating);
+    static void rate(quint8 rating);
 
   signals:
     /**
@@ -382,7 +386,8 @@ class ConnectionMediator : public QObject,
     /**
      * @brief Getter for the #areConnectionCommandsPaused property.
      */
-    bool _getAreConnectionCommandsPaused();
+    // NOLINTNEXTLINE(modernize-use-trailing-return-type): not supported by moc
+    bool _getAreConnectionCommandsPaused() const;
 
     /**
      * @brief Setter for the #areConnectionCommandsPaused property.
@@ -397,7 +402,8 @@ class ConnectionMediator : public QObject,
     /**
      * @brief Getter for the #isDisconnected property.
      */
-    bool _getIsDisconnected();
+    // NOLINTNEXTLINE(modernize-use-trailing-return-type): not supported by moc
+    bool _getIsDisconnected() const;
 
     /**
      * @brief Setter for the #isDisconnected property.
@@ -412,7 +418,8 @@ class ConnectionMediator : public QObject,
     /**
      * @brief Getter for the #isConnecting property.
      */
-    bool _getIsConnecting();
+    // NOLINTNEXTLINE(modernize-use-trailing-return-type): not supported by moc
+    bool _getIsConnecting() const;
 
     /**
      * @brief Setter for the #isConnecting property.
@@ -427,7 +434,8 @@ class ConnectionMediator : public QObject,
     /**
      * @brief Getter for the #isConnected property.
      */
-    bool _getIsConnected();
+    // NOLINTNEXTLINE(modernize-use-trailing-return-type): not supported by moc
+    bool _getIsConnected() const;
 
     /**
      * @brief Setter for the #isConnected property.
@@ -442,7 +450,8 @@ class ConnectionMediator : public QObject,
     /**
      * @brief Getter for the #isRatingPossible property.
      */
-    bool _getIsRatingPossible();
+    // NOLINTNEXTLINE(modernize-use-trailing-return-type): not supported by moc
+    bool _getIsRatingPossible() const;
 
     /**
      * @brief Setter for the #isRatingPossible property.
@@ -457,7 +466,8 @@ class ConnectionMediator : public QObject,
     /**
      * @brief Getter for the #connectingCountryId property.
      */
-    qint32 _getConnectingCountryId();
+    // NOLINTNEXTLINE(modernize-use-trailing-return-type): not supported by moc
+    qint32 _getConnectingCountryId() const;
 
     /**
      * @brief Setter for the #connectingCountryId property.
@@ -472,7 +482,8 @@ class ConnectionMediator : public QObject,
     /**
      * @brief Getter for the #connectedCountryId property.
      */
-    qint32 _getConnectedCountryId();
+    // NOLINTNEXTLINE(modernize-use-trailing-return-type): not supported by moc
+    qint32 _getConnectedCountryId() const;
 
     /**
      * @brief Setter for the #connectedCountryId property.
@@ -487,7 +498,8 @@ class ConnectionMediator : public QObject,
     /**
      * @brief Getter for the #connectedCityId property.
      */
-    qint32 _getConnectedCityId();
+    // NOLINTNEXTLINE(modernize-use-trailing-return-type): not supported by moc
+    qint32 _getConnectedCityId() const;
 
     /**
      * @brief Setter for the #connectedCityId property.
@@ -502,7 +514,8 @@ class ConnectionMediator : public QObject,
     /**
      * @brief Getter for the #connectedServerNr property.
      */
-    qint32 _getConnectedServerNr();
+    // NOLINTNEXTLINE(modernize-use-trailing-return-type): not supported by moc
+    qint32 _getConnectedServerNr() const;
 
     /**
      * @brief Setter for the #connectedServerNr property.
@@ -512,17 +525,18 @@ class ConnectionMediator : public QObject,
     /**
      * @brief Field backing the #connectedIP property.
      */
-    std::string _connectedIP = "";
+    std::string _connectedIP;
 
     /**
      * @brief Getter for the #connectedIP property.
      */
+    // NOLINTNEXTLINE(modernize-use-trailing-return-type): not supported by moc
     QString _getConnectedIP();
 
     /**
      * @brief Setter for the #connectedIP property.
      */
-    void _setConnectedIP(std::string value);
+    void _setConnectedIP(const std::string &value);
 
     /**
      * @brief Field backing the #receivedBytes property.
@@ -532,7 +546,8 @@ class ConnectionMediator : public QObject,
     /**
      * @brief Getter for the #receivedBytes property.
      */
-    qint64 _getReceivedBytes();
+    // NOLINTNEXTLINE(modernize-use-trailing-return-type): not supported by moc
+    qint64 _getReceivedBytes() const;
 
     /**
      * @brief Setter for the #receivedBytes property.
@@ -547,7 +562,8 @@ class ConnectionMediator : public QObject,
     /**
      * @brief Getter for the #sentBytes property.
      */
-    qint64 _getSentBytes();
+    // NOLINTNEXTLINE(modernize-use-trailing-return-type): not supported by moc
+    qint64 _getSentBytes() const;
 
     /**
      * @brief Setter for the #sentBytes property.
@@ -557,6 +573,7 @@ class ConnectionMediator : public QObject,
     /**
      * @brief Getter for the #countryList property.
      */
+    // NOLINTNEXTLINE(modernize-use-trailing-return-type): not supported by moc
     QVariant _getCountryList();
 
     /**
@@ -567,6 +584,7 @@ class ConnectionMediator : public QObject,
     /**
      * @brief Getter for the #connectedServerGroups property.
      */
+    // NOLINTNEXTLINE(modernize-use-trailing-return-type): not supported by moc
     QVariantList _getConnectedServerGroups();
 
     /**
@@ -582,6 +600,7 @@ class ConnectionMediator : public QObject,
     /**
      * @brief Getter for the #connectingServerGroups property.
      */
+    // NOLINTNEXTLINE(modernize-use-trailing-return-type): not supported by moc
     QVariantList _getConnectingServerGroups();
 
     /**

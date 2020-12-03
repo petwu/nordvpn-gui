@@ -1,6 +1,6 @@
 #include "group.h"
 
-std::string group2string(Group g) {
+auto group2string(Group g) -> std::string {
     switch (g) {
     case Group::Standard:
         return "Standard";
@@ -17,7 +17,7 @@ std::string group2string(Group g) {
     }
 }
 
-std::string group2connectName(Group g) {
+auto group2connectName(Group g) -> std::string {
     switch (g) {
     case Group::Standard:
         return "Standard_VPN_Servers";
@@ -34,7 +34,7 @@ std::string group2connectName(Group g) {
     }
 }
 
-Group groupFromInt(int32_t groupId) {
+auto groupFromInt(int32_t groupId) -> Group {
     switch (groupId) {
     case static_cast<int32_t>(Group::Standard):
         return Group::Standard;

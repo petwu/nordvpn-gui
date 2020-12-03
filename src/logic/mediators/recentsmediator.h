@@ -13,6 +13,7 @@
  * allow modification of the list.
  */
 class RecentsMediator : public QObject, public ICountriesSubscription {
+    // NOLINTNEXTLINE(modernize-use-trailing-return-type): Qt is out of scope
     Q_OBJECT
 
   public:
@@ -28,7 +29,7 @@ class RecentsMediator : public QObject, public ICountriesSubscription {
     Q_PROPERTY(QVariantList recentCountries READ _getRecentCountries NOTIFY
                    recentCountriesChanged)
 
-  public slots:
+  public slots: // NOLINT(readability-redundant-access-specifiers)
     /**
      * @brief Remove a country from the list of recently connected countries by
      * its ID.
@@ -57,6 +58,7 @@ class RecentsMediator : public QObject, public ICountriesSubscription {
      * @brief Getter for the #recentCountries property.
      * @return
      */
+    // NOLINTNEXTLINE(modernize-use-trailing-return-type): not supported by moc
     QVariantList _getRecentCountries();
 
     /**

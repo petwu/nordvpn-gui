@@ -70,27 +70,23 @@ class ServerController : public BaseController {
     // Singleton:
     // https://stackoverflow.com/questions/1008019/c-singleton-design-pattern
   public:
-    /**
-     * @brief Disable copy constructor (part of the singleton implementation).
-     */
     ServerController(const ServerController &) = delete;
-
-    /**
-     * @brief Disable copy assignment (part of the singleton implementation).
-     */
     void operator=(const ServerController &) = delete;
+    ServerController(ServerController &&) = delete;
+    auto operator=(ServerController &&) -> ServerController & = delete;
+    ~ServerController() = default;
 
     /**
      * @brief Get the singleton instance of ServerController.
      * @details The instance will be constructed if it does not exist already.
      */
-    static ServerController &getInstance();
+    static auto getInstance() -> ServerController &;
 
     /**
      * @brief Get the first #Server whose #Server.hostname attribute equals the
      * provided `hostname`.
      */
-    Server getServerByHostname(std::string hostname);
+    auto getServerByHostname(const std::string &hostname) -> Server;
 
     /**
      * @brief Get a list of all countries.
@@ -101,39 +97,40 @@ class ServerController : public BaseController {
      * application start). In cache `updateCache` is false and no cached list
      * exists yet, the API request will be performed automatically.
      */
-    std::vector<Country> getAllCountries(bool updateCache = false);
+    auto getAllCountries(bool updateCache = false) -> std::vector<Country>;
 
     /**
      * @brief Get a list of all servers in a country.
      * @param countryId The ID of the country. If the ID does not exists, no
      * server will be returned.
      */
-    std::vector<Server> getServersByCountry(int32_t countryId);
+    auto getServersByCountry(int32_t countryId) -> std::vector<Server>;
 
     /**
      * @brief Get a list of all servers in a city/region.
      * @param cityId The ID of the city. If the ID does not exists, no server
      * will be returned.
      */
-    std::vector<Server> getServersByCity(int32_t cityId);
+    auto getServersByCity(int32_t cityId) -> std::vector<Server>;
 
     /**
      * @brief Get a list of all countries that have servers that are within a
      * specific server Group.
      */
-    std::vector<Country> getCountriesByGroup(Group g);
+    auto getCountriesByGroup(Group g) -> std::vector<Country>;
 
     /**
      * @brief Get a list of servers that are located inside a specific country
      * and are within a server Group. If `countryId` is -1 (or < 0), all
      * countries will be considered.
      */
-    std::vector<Server> getServersByGroup(Group g, int32_t countryId = -1);
+    auto getServersByGroup(Group g, int32_t countryId = -1)
+        -> std::vector<Server>;
 
     /**
      * @brief Get a list of all countries available.
      */
-    std::vector<Country> getRecentCountries();
+    auto getRecentCountries() -> std::vector<Country>;
 
     /**
      * @brief Remove a country from the list of recently connected countries by
@@ -182,13 +179,13 @@ class ServerController : public BaseController {
      * a disconnect. Hence, if already connected, this function has the same
      * effect as #disconnect().
      */
-    void cancelConnection();
+    void cancelConnection() const;
 
     /**
      * @brief Disconnect from the currently connected VPN server. If not
      * connected, this has no effect.
      */
-    void disconnect();
+    static void disconnect();
 
     /**
      * @brief Attach a subscriber that will be notified by the background task.
@@ -259,7 +256,8 @@ class ServerController : public BaseController {
      * @param cityId The ID of the city, a server has to be located in.
      * Use a value < 0 to include all cities.
      */
-    std::vector<Server> _filterServerList(int32_t countryId, int32_t cityId);
+    auto _filterServerList(int32_t countryId, int32_t cityId)
+        -> std::vector<Server>;
 
     /**
      * @brief Inspect the #ProcessResult of a connection attempt and check
@@ -273,13 +271,13 @@ class ServerController : public BaseController {
      * to update the list of recently connected countries in case of a
      * successful connection establishment.
      */
-    void _checkConnectResult(ProcessResult &result, int32_t countryId);
+    void _checkConnectResult(const ProcessResult &result, int32_t countryId);
 
     /**
      * @brief The process ID (PID) of the process that is performing a
      * connection establishment. Has a value if < 0 while not connecting.
      */
-    pid_t _connectingPid;
+    pid_t _connectingPid{};
 
     /**
      * @brief The list of subscribers.

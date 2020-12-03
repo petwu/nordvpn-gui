@@ -1,6 +1,6 @@
 #include "envinfo.h"
 
-std::string EnvInfo::toString() const {
+auto EnvInfo::toString() const -> std::string {
     return std::string("EnvInfo {") +                     //
            "\n  internetConnected   = " +                 //
            (this->internetConnected ? "true" : "false") + //

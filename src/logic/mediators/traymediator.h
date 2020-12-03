@@ -2,6 +2,7 @@
 #define TRAYMEDIATOR_H
 
 #include <iostream>
+#include <memory>
 
 #include <QAction>
 #include <QMenu>
@@ -27,19 +28,32 @@
  * didn't e.g. support displaying icons inside the context menu.
  */
 class TrayMediator : public QObject {
+    // NOLINTNEXTLINE(modernize-use-trailing-return-type): Qt is out of scope
     Q_OBJECT
 
   public:
-    ~TrayMediator();
-
+    /**
+     * @brief Get a reference to the singleton instance of the class.
+     */
+    // NOLINTNEXTLINE(modernize-use-trailing-return-type): not supported by moc
     static TrayMediator &getInstance();
 
-  public slots:
+    TrayMediator(const TrayMediator &) = delete;
+    // NOLINTNEXTLINE(modernize-use-trailing-return-type): not supported by moc
+    TrayMediator &operator=(const TrayMediator &) = delete;
+
+    TrayMediator(TrayMediator &&) = delete;
+    // NOLINTNEXTLINE(modernize-use-trailing-return-type): not supported by moc
+    TrayMediator &operator=(TrayMediator &&) = delete;
+
+    ~TrayMediator() override = default;
+
+  public slots: // NOLINT(readability-redundant-access-specifiers)
     /**
      * @brief Changes the try icon and shows it if not visible yet.
      * @param filename Path or QRC resource to the icon.
      */
-    void setIconSource(QString filename);
+    void setIconSource(const QString &filename);
 
   signals:
     /**
@@ -66,13 +80,11 @@ class TrayMediator : public QObject {
 
   private:
     TrayMediator();
-    TrayMediator(const TrayMediator &) = delete;
-    void operator=(const TrayMediator &) = delete;
 
     /** @brief Object holding the tray icon. */
     QSystemTrayIcon _trayIcon;
     /** @brief The tray icons context menu. (opens on right-click) */
-    QMenu *_trayContextMenu;
+    std::unique_ptr<QMenu> _trayContextMenu;
 };
 
 #endif // TRAYMEDIATOR_H

@@ -1,21 +1,22 @@
 #include "envcontroller.h"
 
-EnvController &EnvController::getInstance() {
+auto EnvController::getInstance() -> EnvController & {
     static EnvController instance;
     return instance;
 }
 
-EnvInfo EnvController::getEnvInfo() {
+auto EnvController::getEnvInfo() -> EnvInfo {
     EnvInfo envInfo;
-    envInfo.shellAvailable = this->_isShellAvailable();
-    envInfo.nordvpnInstalled = this->_isNordvpnInstalled();
-    envInfo.internetConnected = this->_isInternetConnected();
-    if (envInfo.internetConnected == true) {
-        envInfo.loggedIn = this->_isLoggedIn();
-        if (envInfo.loggedIn == false)
+    envInfo.shellAvailable = EnvController::_isShellAvailable();
+    envInfo.nordvpnInstalled = EnvController::_isNordvpnInstalled();
+    envInfo.internetConnected = EnvController::_isInternetConnected();
+    if (envInfo.internetConnected) {
+        envInfo.loggedIn = EnvController::_isLoggedIn();
+        if (envInfo.loggedIn == false) {
             // double check, because for some unknown reason it sometimes
             // returns false erroneously
-            envInfo.loggedIn = this->_isLoggedIn();
+            envInfo.loggedIn = EnvController::_isLoggedIn();
+        }
     }
     return std::move(envInfo);
 }
@@ -25,7 +26,7 @@ void EnvController::setLoggedIn(bool loggedIn) {
     this->_notifySubscribers();
 }
 
-bool EnvController::_isInternetConnected() {
+auto EnvController::_isInternetConnected() -> bool {
     // Use curl to check if any of the following servers respond.
     // The last one (ncsi) is used by Windows to check if the computer is
     // connected. It requests a text file whichs content may be checked against.
@@ -38,13 +39,18 @@ bool EnvController::_isInternetConnected() {
         "http://www.msftncsi.com/ncsi.txt",
     };
     bool connected = false;
-    for (uint8_t i = 0; i < testUrls.size(); i++) {
-        long httpCode = 0;
+    for (size_t i = 0; i < testUrls.size(); i++) {
         std::string httpData;
         CURL *curl = curl_easy_init();
+        // NOLINTNEXTLINE(cppcoreguidelines-pro-type-vararg)
         curl_easy_setopt(curl, CURLOPT_URL, testUrls[i].c_str());
+        // NOLINTNEXTLINE(cppcoreguidelines-pro-type-vararg)
         curl_easy_setopt(curl, CURLOPT_TIMEOUT, 8);
+        // NOLINTNEXTLINE(cppcoreguidelines-pro-type-vararg)
         curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
+        // NOLINTNEXTLINE(cppcoreguidelines-pro-type-vararg)
+        curl_easy_setopt(curl, CURLOPT_FAILONERROR, 1L);
+        // NOLINTNEXTLINE(cppcoreguidelines-pro-type-vararg)
         curl_easy_setopt(
             curl, CURLOPT_WRITEFUNCTION,
             *[](const char *in, size_t size, size_t num,
@@ -53,40 +59,41 @@ bool EnvController::_isInternetConnected() {
                 out->append(in, totalBytes);
                 return totalBytes;
             });
+        // NOLINTNEXTLINE(cppcoreguidelines-pro-type-vararg)
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, &httpData);
         CURLcode curlCode = curl_easy_perform(curl);
-        curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &httpCode);
         curl_easy_cleanup(curl);
         if (i == testUrls.size() - 1) {
             connected = (util::string::trim(httpData) == "Microsoft NCSI");
-        } else
-            connected = (curlCode == CURLE_OK && httpCode == 200);
-        if (connected)
+        } else {
+            connected = (curlCode == CURLE_OK);
+        }
+        if (connected) {
             return true;
+        }
     }
     return false;
 }
 
-bool EnvController::_isShellAvailable() {
+auto EnvController::_isShellAvailable() -> bool {
     // execute the no-op command that has to exit successfully
     return Process::execute(":").success();
 }
 
-bool EnvController::_isNordvpnInstalled() {
+auto EnvController::_isNordvpnInstalled() -> bool {
     auto result = Process::execute("nordvpn --version");
     return result.success() && result.output.rfind("NordVPN Version", 0) == 0;
 }
 
-bool EnvController::_isLoggedIn() {
+auto EnvController::_isLoggedIn() -> bool {
     auto result = Process::execute("nordvpn account");
     auto out = util::string::toLower(result.output);
-    if (!result.success())
-        return false;
-    if (std::regex_search(out, std::regex("not logged in")))
-        return false;
-    if (std::regex_search(out, std::regex("email.+@")))
-        return true;
-    return false;
+    // true, if returned successfully ...
+    return result.success() &&
+           // ... and not contains "not logged in" ...
+           !std::regex_search(out, std::regex("not logged in")) &&
+           // ... and contains "email: ..."
+           std::regex_search(out, std::regex("email.+@"));
 }
 
 void EnvController::attach(IEnvInfoSubscription *subscriber) {
@@ -101,8 +108,9 @@ void EnvController::detach(IEnvInfoSubscription *subscriber) {
 
 void EnvController::_notifySubscribers() {
     for (auto &subscriber : this->_subscribers) {
-        if (subscriber != nullptr)
+        if (subscriber != nullptr) {
             subscriber->updateEnv(this->_envInfo);
+        }
     }
 }
 
@@ -118,22 +126,22 @@ void EnvController::stopBackgroundTask() {
 
 void EnvController::_backgroundTask() {
     // get complete env info only once
-    this->_envInfo = this->getEnvInfo();
+    this->_envInfo = EnvController::getEnvInfo();
     this->_notifySubscribers();
     // counter
     int i = 0;
     // limit, when i gets reset to 0 --> once every ~60s
     // (depends on the update interval)
-    int iMax = 60 / std::chrono::duration_cast<std::chrono::seconds>(
-                        config::consts::ENV_UPDATE_INTERVAL)
-                        .count();
+    long iMax = 60 / std::chrono::duration_cast<std::chrono::seconds>(
+                         config::consts::ENV_UPDATE_INTERVAL)
+                         .count();
     // then periodically do partial updates
     while (this->_performBackgroundTask) {
         i++;
         this->_envInfo.internetConnected = this->_isInternetConnected();
         this->_envInfo.shellAvailable = this->_isShellAvailable();
         this->_envInfo.nordvpnInstalled = this->_isNordvpnInstalled();
-        if (this->_envInfo.internetConnected == true && i == iMax) {
+        if (this->_envInfo.internetConnected && i == iMax) {
             i = 0;
             /*
              * Calling "nordvpn account" probably performs a request to the
@@ -144,10 +152,11 @@ void EnvController::_backgroundTask() {
              * NordVPN API.
              */
             this->_envInfo.loggedIn = this->_isLoggedIn();
-            if (this->_envInfo.loggedIn == false)
+            if (this->_envInfo.loggedIn == false) {
                 // double check, because for some unknown reason it sometimes
                 // returns false erroneously
                 this->_envInfo.loggedIn = this->_isLoggedIn();
+            }
         }
         this->_notifySubscribers();
         std::this_thread::sleep_for(config::consts::ENV_UPDATE_INTERVAL);

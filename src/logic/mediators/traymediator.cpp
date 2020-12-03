@@ -1,13 +1,13 @@
 #include "traymediator.h"
 
-TrayMediator &TrayMediator::getInstance() {
+auto TrayMediator::getInstance() -> TrayMediator & {
     static TrayMediator instance;
     return instance;
 }
 
 TrayMediator::TrayMediator() {
     // init context menu
-    this->_trayContextMenu = new QMenu();
+    this->_trayContextMenu = std::make_unique<QMenu>();
     this->_trayContextMenu->addAction(      //
         QIcon::fromTheme("window"), "Open", //
         this, &TrayMediator::showMainWindowAction);
@@ -19,22 +19,20 @@ TrayMediator::TrayMediator() {
         this, &TrayMediator::quitApplicationAction);
 
     // init tray icon
-    this->_trayIcon.setContextMenu(this->_trayContextMenu);
-    this->connect(
+    this->_trayIcon.setContextMenu(this->_trayContextMenu.get());
+    TrayMediator::connect(
         &this->_trayIcon, &QSystemTrayIcon::activated,
         [this](QSystemTrayIcon::ActivationReason reason) {
             if (reason == QSystemTrayIcon::ActivationReason::Trigger ||
-                reason == QSystemTrayIcon::ActivationReason::MiddleClick)
+                reason == QSystemTrayIcon::ActivationReason::MiddleClick) {
                 this->toggleMainWindowAction();
+            }
         });
 }
 
-TrayMediator::~TrayMediator() { //
-    delete this->_trayContextMenu;
-}
-
-void TrayMediator::setIconSource(QString filename) {
+void TrayMediator::setIconSource(const QString &filename) {
     this->_trayIcon.setIcon(QPixmap(filename));
-    if (!this->_trayIcon.isVisible())
+    if (!this->_trayIcon.isVisible()) {
         this->_trayIcon.show();
+    }
 }

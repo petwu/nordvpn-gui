@@ -1,15 +1,15 @@
 #include "process.h"
 
 // define reading and writing ends of a pipe
-#define READ 0
-#define WRITE 1
+constexpr unsigned int READ = 0;
+constexpr unsigned int WRITE = 1;
 
-ProcessResult Process::execute(std::string command) {
+auto Process::execute(const std::string &command) -> ProcessResult {
     // use 3 pipes and fork+exec to run the _command
     return popen3(command, nullptr);
 }
 
-ProcessResult popen3(std::string command, pid_t *pid) {
+auto popen3(const std::string &command, pid_t *pid) -> ProcessResult {
     // return values
     int rc = EXIT_SUCCESS;
     std::string out;
@@ -20,12 +20,14 @@ ProcessResult popen3(std::string command, pid_t *pid) {
     // integers:
     //   pipe[0] --> reading end / pipe output
     //   pipe[1] --> writing end / pipe input
-    int pipeIn[2];
-    int pipeOut[2];
-    int pipeErr[2];
-    if (pipe(pipeIn) != 0 || pipe(pipeOut) != 0 || pipe(pipeErr) != 0)
+    std::array<int, 2> pipeIn{};
+    std::array<int, 2> pipeOut{};
+    std::array<int, 2> pipeErr{};
+    if (pipe(pipeIn.data()) != 0 || pipe(pipeOut.data()) != 0 ||
+        pipe(pipeErr.data()) != 0) {
         return ProcessResult{command, "", "error: unable to create a pipe",
                              EXIT_FAILURE};
+    }
 
     // fork child process and remember its process ID
     pid_t _pid = fork();
@@ -37,8 +39,8 @@ ProcessResult popen3(std::string command, pid_t *pid) {
         // --> fork failed
         return ProcessResult{command, "", "error: unable to fork a subprocess",
                              EXIT_FAILURE};
-
-    } else if (_pid == 0) {
+    }
+    if (_pid == 0) {
 
         // --> code that is run inside the new/child process
 
@@ -61,6 +63,8 @@ ProcessResult popen3(std::string command, pid_t *pid) {
         dup2(pipeErr[WRITE], STDERR_FILENO);
 
         // execute as shell command
+        // execl cannot be used without varargs, hence the disabled clang-tidy
+        // checks NOLINTNEXTLINE(cppcoreguidelines-pro-type-vararg)
         execl(_PATH_BSHELL, _PATH_BSHELL, "-c", command.c_str(), NULL);
 
         // the exec() family of functions replaces the current process image
@@ -83,12 +87,16 @@ ProcessResult popen3(std::string command, pid_t *pid) {
 
         // read out and err strings from the corresponding pipes.
         // the data is written into the pipes by the child process
-        std::array<char, 256> buf;
-        int r;
-        while ((r = read(pipeOut[READ], buf.data(), buf.size())) > 0)
+        std::array<char, 256> buf{}; // NOLINT(readability-magic-numbers,
+                                     // cppcoreguidelines-avoid-magic-numbers):
+                                     // buffer size is not a critical number
+        int r = 0;
+        while ((r = read(pipeOut[READ], buf.data(), buf.size())) > 0) {
             out.append(buf.data(), 0, r);
-        while ((r = read(pipeErr[READ], buf.data(), buf.size())) > 0)
+        }
+        while ((r = read(pipeErr[READ], buf.data(), buf.size())) > 0) {
             err.append(buf.data(), 0, r);
+        }
 
         // final clean-up
         close(pipeIn[WRITE]);

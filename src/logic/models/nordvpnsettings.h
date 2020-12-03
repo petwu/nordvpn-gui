@@ -32,7 +32,7 @@ class NordVpnSettings {
     /**
      * @brief Get whether autoconnect is enabled or not.
      */
-    bool getAutoconnect() const;
+    auto getAutoconnect() const -> bool;
 
     /**
      * @brief Set whether autoconnect is enabled or not.
@@ -42,7 +42,7 @@ class NordVpnSettings {
     /**
      * @brief Get whether cybersec is enabled or not.
      */
-    bool getCybersec() const;
+    auto getCybersec() const -> bool;
 
     /**
      * @brief Set whether cybersec is enabled or not.
@@ -52,7 +52,7 @@ class NordVpnSettings {
     /**
      * @brief Get whether custom DNS is enabled or not.
      */
-    bool getDns() const;
+    auto getDns() const -> bool;
 
     /**
      * @brief Set whether custom DNS is enabled or not.
@@ -64,28 +64,23 @@ class NordVpnSettings {
      * @details The list has a fixed size (see getMaxNumberOfDnsAddresses())
      * and might contain empty string.
      */
-    std::vector<std::string> getDnsAddresses() const;
+    auto getDnsAddresses() const -> std::vector<std::string>;
 
     /**
      * @brief Return the max. number of custom DNS addresses that can be set.
      * The limit is specified by the NordVPN CLI.
      */
-    int getMaxNumberOfDnsAddresses() const;
-
-    /**
-     * @brief Set all custom DNS addresses at once.
-     */
-    void setDnsAddresses(std::string addrs[3]);
+    auto getMaxNumberOfDnsAddresses() const -> int;
 
     /**
      * @brief Set the nth custom DNS address.
      */
-    void setDnsAddress(int nth, std::string addr);
+    void setDnsAddress(int nth, const std::string &addr);
 
     /**
      * @brief Get whether the killswitch is enabled or not.
      */
-    bool getKillswitch() const;
+    auto getKillswitch() const -> bool;
 
     /**
      * @brief Set whether the killswitch is enabled or not.
@@ -95,7 +90,7 @@ class NordVpnSettings {
     /**
      * @brief Get whether notifications are enabled or not.
      */
-    bool getNotify() const;
+    auto getNotify() const -> bool;
 
     /**
      * @brief Set whether notifications are enabled or not.
@@ -108,7 +103,7 @@ class NordVpnSettings {
      * #Technology, the obfuscated setting might be unavailable. In this case a
      * null value is returned. This can be checked with Nullable::isNull().
      */
-    Nullable<bool> getObfuscated() const;
+    auto getObfuscated() const -> Nullable<bool>;
 
     /**
      * @brief Set whether obfuscated connections are enabled or not.
@@ -123,7 +118,7 @@ class NordVpnSettings {
      * #Technology, the #Protocol setting might be unavailable. In this case a
      * null value is returned. This can be checked with Nullable::isNull().
      */
-    Nullable<Protocol> getProtocol() const;
+    auto getProtocol() const -> Nullable<Protocol>;
 
     /**
      * @brief Set the network #Protocol used for connections.
@@ -135,7 +130,7 @@ class NordVpnSettings {
     /**
      * @brief Get the #Technology setting.
      */
-    Technology getTechnology() const;
+    auto getTechnology() const -> Technology;
 
     /**
      * @brief Set the #Technology used for connections.
@@ -145,12 +140,12 @@ class NordVpnSettings {
     /**
      * @brief Get a list of whitelisted subnets.
      */
-    std::vector<std::string> getWhitelistSubnets() const;
+    auto getWhitelistSubnets() const -> std::vector<std::string>;
 
     /**
      * @brief Add a subnet to the whitelist.
      */
-    void addSubnetToWhitelist(std::string subnet);
+    void addSubnetToWhitelist(const std::string &subnet);
 
     /**
      * @brief Update the value of a whitelist entry by index.
@@ -166,7 +161,7 @@ class NordVpnSettings {
      * @brief Get a list of whitelisted ports/port ranges and the network
      * #Protocol they apply to.
      */
-    std::vector<WhitelistPortEntry> getWhitelistPorts() const;
+    auto getWhitelistPorts() const -> std::vector<WhitelistPortEntry>;
 
     /**
      * @brief Add a port/port range to the whitelist.
