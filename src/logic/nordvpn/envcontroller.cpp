@@ -1,5 +1,22 @@
 #include "envcontroller.h"
 
+#include <algorithm>
+#include <chrono>
+#include <cstddef>
+#include <memory>
+#include <regex>
+#include <sstream>
+#include <string>
+#include <thread>
+#include <utility>
+
+#include "common/io/process.h"
+#include "common/io/processresult.h"
+#include "common/types/nullable.h"
+#include "common/util/strings.h"
+#include "config.h"
+#include "curl/curl.h"
+
 auto EnvController::getInstance() -> EnvController & {
     static EnvController instance;
     return instance;

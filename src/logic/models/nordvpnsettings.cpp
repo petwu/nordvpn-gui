@@ -1,5 +1,7 @@
 #include "nordvpnsettings.h"
 
+#include <algorithm>
+#include <ext/alloc_traits.h>
 #include <utility>
 
 auto NordVpnSettings::getAutoconnect() const -> bool { //

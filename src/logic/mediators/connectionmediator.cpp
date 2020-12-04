@@ -1,6 +1,11 @@
 #include "connectionmediator.h"
 
+#include <thread>
 #include <utility>
+
+#include "config.h"
+#include "logic/enums/ConnectionStatus.h"
+#include "logic/mediators/qmldataconverter.h"
 
 ConnectionMediator::ConnectionMediator() {
     this->_countries = this->_serverController.getAllCountries();

@@ -1,5 +1,9 @@
 #include "accountcontroller.h"
 
+#include "common/io/process.h"
+#include "common/io/processresult.h"
+#include "logic/nordvpn/envcontroller.h"
+
 auto AccountController::login(const std::string &username,
                               const std::string &password) -> bool {
     std::string cmd = "nordvpn login --username '" + username +

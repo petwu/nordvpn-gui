@@ -1,22 +1,13 @@
 #ifndef BASEREPOSITORY_H
 #define BASEREPOSITORY_H
 
+#include <cstdint>
 #include <filesystem>
-#include <fstream>
-#include <iostream>
-#include <sstream>
 #include <string>
 
-#include "curl/curl.h"
 #include "nlohmann/json.hpp"
-using json = nlohmann::json;
 
-#include "common/util/strings.h"
-#include "config.h"
-#include "data/enums/group.h"
-#include "data/enums/protocol.h"
-#include "data/enums/securityprotocol.h"
-#include "data/enums/technology.h"
+using json = nlohmann::json;
 
 /**
  * Number of seconds before a libcurl call (e.g. http request) times out and

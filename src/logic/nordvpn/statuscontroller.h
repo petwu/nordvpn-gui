@@ -2,15 +2,16 @@
 #define STATUSCONTROLLER_H
 
 #include <atomic>
-#include <functional>
-#include <thread>
+#include <cstdint>
+#include <string>
+#include <vector>
 
 #include "nlohmann/json.hpp"
+
 using json = nlohmann::json;
 
 #include "basecontroller.h"
 #include "logic/models/connectioninfo.h"
-#include "servercontroller.h"
 
 /**
  * @brief Byte, the basic information unit.

@@ -3,8 +3,6 @@
 
 #include <string>
 
-#include "common/util/strings.h"
-
 /**
  * @brief The Connectable class is a base class for all classes that are hold
  * information that can be used to connect to a server.

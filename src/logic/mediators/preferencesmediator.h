@@ -3,10 +3,11 @@
 
 #include <QObject>
 #include <QString>
-#include <QVariant>
+#include <QVariantMap>
+#include <QtCore>
 
+#include "logic/models/nordvpnsettings.h"
 #include "logic/nordvpn/preferencescontroller.h"
-#include "qmldataconverter.h"
 
 /**
  * @brief PORT_MAX is the maximum value, a port may have. A port is a 16-bit

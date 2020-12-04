@@ -1,5 +1,10 @@
 #include "runguard.h"
 
+#include <QByteArray>
+#include <QLocalSocket>
+#include <QtCore>
+#include <utility>
+
 auto RunGuard::_hash(const QString &key, const QString &salt) -> QString {
     QByteArray data;
 

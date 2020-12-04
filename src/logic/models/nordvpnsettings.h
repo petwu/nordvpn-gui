@@ -1,11 +1,11 @@
 #ifndef NORDVPNSETTINGS_H
 #define NORDVPNSETTINGS_H
 
-#include <set>
 #include <string>
 #include <vector>
 
 #include "nlohmann/json.hpp"
+
 using json = nlohmann::json;
 
 #include "common/types/nullable.h"

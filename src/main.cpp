@@ -1,12 +1,19 @@
-#include <memory>
-
 #include <QApplication>
+#include <QColor>
+#include <QCoreApplication>
+#include <QFont>
 #include <QFontDatabase>
+#include <QIcon>
+#include <QList>
 #include <QLocale>
 #include <QPalette>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
+#include <QStringList>
 #include <QTranslator>
+#include <Qt>
+#include <QtGui>
+#include <memory>
 
 #include "app.h"
 #include "logic/mediators/accountmediator.h"

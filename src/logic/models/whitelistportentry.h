@@ -1,6 +1,8 @@
 #ifndef WHITELISTPORTENTRY_H
 #define WHITELISTPORTENTRY_H
 
+#include <cstdint>
+
 #include "data/enums/protocol.h"
 
 /**

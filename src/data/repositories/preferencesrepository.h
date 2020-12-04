@@ -1,9 +1,10 @@
 #ifndef PREFERENCESREPOSITORY_H
 #define PREFERENCESREPOSITORY_H
 
+#include <cstdint>
 #include <vector>
 
-#include "baserepository.h"
+#include "data/repositories/baserepository.h"
 
 /**
  * @brief The PreferencesRepository class provides static functions to retieve

@@ -1,7 +1,8 @@
 #ifndef ENVCONTROLLER_H
 #define ENVCONTROLLER_H
 
-#include "curl/curl.h"
+#include <atomic>
+#include <vector>
 
 #include "basecontroller.h"
 #include "logic/models/envinfo.h"

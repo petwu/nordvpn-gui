@@ -1,9 +1,11 @@
 #ifndef LOCATION_H
 #define LOCATION_H
 
+#include <cstdint>
 #include <string>
 
 #include "nlohmann/json.hpp"
+
 using json = nlohmann::json;
 
 #include "connectable.h"

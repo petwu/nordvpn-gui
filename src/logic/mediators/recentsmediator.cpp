@@ -1,5 +1,9 @@
 #include "recentsmediator.h"
 
+#include <utility>
+
+#include "logic/mediators/qmldataconverter.h"
+
 RecentsMediator::RecentsMediator() { //
     this->_serverController.attach(this);
 }

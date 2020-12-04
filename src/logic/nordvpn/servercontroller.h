@@ -2,13 +2,17 @@
 #define SERVERCONTROLLER_H
 
 #include <atomic>
-#include <thread>
+#include <cstdint>
+#include <string>
+#include <sys/types.h>
+#include <vector>
 
 #include "basecontroller.h"
-#include "data/repositories/preferencesrepository.h"
-#include "data/repositories/serverrepository.h"
-#include "envcontroller.h"
-#include "preferencescontroller.h"
+#include "common/io/processresult.h"
+#include "data/enums/group.h"
+#include "data/models/country.h"
+#include "data/models/server.h"
+#include "logic/nordvpn/preferencescontroller.h"
 
 /**
  * @brief ICountriesSubscription is an interface that can be implemented by any

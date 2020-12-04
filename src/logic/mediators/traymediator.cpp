@@ -1,5 +1,8 @@
 #include "traymediator.h"
 
+#include <QIcon>
+#include <QPixmap>
+
 auto TrayMediator::getInstance() -> TrayMediator & {
     static TrayMediator instance;
     return instance;

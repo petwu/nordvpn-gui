@@ -1,11 +1,6 @@
 #ifndef UTIL_STRINGS_H
 #define UTIL_STRINGS_H
 
-#include <algorithm>
-#include <cctype>
-#include <iostream>
-#include <locale>
-#include <regex>
 #include <string>
 #include <vector>
 

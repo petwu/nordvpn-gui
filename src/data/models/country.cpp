@@ -1,5 +1,12 @@
 #include "country.h"
 
+#include <algorithm>
+#include <initializer_list>
+#include <nlohmann/json.hpp>
+#include <utility>
+
+#include "data/models/location.h"
+
 auto Country::toJSON() -> std::string {
     json j = json::parse(Location::toJSON());
     j["connectName"] = this->connectName;

@@ -1,8 +1,6 @@
 #ifndef TECHNOLOGYPROTOCOL_H
 #define TECHNOLOGYPROTOCOL_H
 
-#include <string>
-
 /**
  * @brief The SecurityProtocol enum identifies a VPN security protocol used by
  * data from the NordVPN API.

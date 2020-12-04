@@ -1,5 +1,16 @@
 #include "preferencesrepository.h"
 
+#include <algorithm>
+#include <cstddef>
+#include <cstdint>
+#include <initializer_list>
+#include <nlohmann/json.hpp>
+#include <string>
+#include <utility>
+
+#include "config.h"
+#include "data/repositories/baserepository.h"
+
 auto PreferencesRepository::getRecentCountriesIds() -> std::vector<uint32_t> {
     std::vector<uint32_t> all = _getRecentCountriesIds();
     uint8_t max = config::consts::MAX_RECENTS_DISPLAY;

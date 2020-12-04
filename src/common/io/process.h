@@ -1,24 +1,10 @@
 #ifndef PROCESS_H
 #define PROCESS_H
 
-#include <csignal>
-#include <cstddef>
-#include <cstdio>
-#include <cstdlib>
-#include <fcntl.h>
-#include <paths.h>
-#include <sys/wait.h>
+#include <string>
 #include <unistd.h>
 
-#include <array>
-#include <iostream>
-#include <string>
-#include <thread>
-#include <utility>
-#include <vector>
-
-#include "common/util/strings.h"
-#include "processresult.h"
+#include "common/io/processresult.h"
 
 /**
  * @brief The Process class is able to create a child process, execute a

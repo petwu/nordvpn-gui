@@ -1,5 +1,10 @@
 #include "location.h"
 
+#include <initializer_list>
+#include <nlohmann/json.hpp>
+#include <utility>
+#include <vector>
+
 auto Location::toJSON() -> std::string {
     json j;
     j["connectName"] = this->connectName;

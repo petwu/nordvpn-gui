@@ -1,13 +1,12 @@
 #ifndef TRAYMEDIATOR_H
 #define TRAYMEDIATOR_H
 
-#include <iostream>
-#include <memory>
-
-#include <QAction>
+#include <QByteArrayData>
 #include <QMenu>
 #include <QObject>
+#include <QString>
 #include <QSystemTrayIcon>
+#include <memory>
 
 /**
  * @brief The TrayMediator class is a simple mediator to interact with a tray

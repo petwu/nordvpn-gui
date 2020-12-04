@@ -1,7 +1,6 @@
 #include "processresult.h"
 
-#include <utility>
-
+#include <type_traits>
 #include <utility>
 
 ProcessResult::ProcessResult(std::string cmd, std::string out, std::string err,

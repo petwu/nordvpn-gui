@@ -1,5 +1,16 @@
 #include "process.h"
 
+#include <array>
+#include <cstdint>
+#include <cstdio>
+#include <cstdlib>
+#include <paths.h>
+#include <sys/wait.h>
+#include <utility>
+
+#include "common/io/processresult.h"
+#include "common/util/strings.h"
+
 // define reading and writing ends of a pipe
 constexpr unsigned int READ = 0;
 constexpr unsigned int WRITE = 1;

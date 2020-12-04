@@ -1,8 +1,9 @@
 #ifndef ACCOUNTCONTROLLER_H
 #define ACCOUNTCONTROLLER_H
 
+#include <string>
+
 #include "basecontroller.h"
-#include "envcontroller.h"
 
 /**
  * @brief The AccountController class is repsonsible for all actions concerning

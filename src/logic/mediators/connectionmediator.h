@@ -2,11 +2,19 @@
 #define CONNECTIONMEDIATOR_H
 
 #include <QObject>
+#include <QString>
 #include <QVariant>
+#include <QVariantList>
+#include <QtCore>
+#include <cstdint>
+#include <string>
+#include <vector>
 
+#include "data/enums/group.h"
+#include "data/models/country.h"
+#include "logic/models/connectioninfo.h"
 #include "logic/nordvpn/servercontroller.h"
 #include "logic/nordvpn/statuscontroller.h"
-#include "qmldataconverter.h"
 
 /**
  * @brief The ConnectionMediator class is a quite important mediator. It is

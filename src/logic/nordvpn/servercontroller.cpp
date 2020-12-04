@@ -1,5 +1,24 @@
 #include "servercontroller.h"
 
+#include <algorithm>
+#include <chrono>
+#include <thread>
+#include <utility>
+
+#include "common/io/asyncprocess.h"
+#include "common/io/process.h"
+#include "common/types/nullable.h"
+#include "common/util/strings.h"
+#include "config.h"
+#include "data/enums/securityprotocol.h"
+#include "data/models/connectable.h"
+#include "data/models/location.h"
+#include "data/repositories/preferencesrepository.h"
+#include "data/repositories/serverrepository.h"
+#include "logic/models/nordvpnsettings.h"
+#include "logic/nordvpn/envcontroller.h"
+#include "logic/nordvpn/preferencescontroller.h"
+
 ServerController::ServerController() {
     // use a cached server list which is stored on disk and can be read in fast
     // so that the UI has something do display

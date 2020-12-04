@@ -2,10 +2,13 @@
 #define RECENTSMEDIATOR_H
 
 #include <QObject>
+#include <QString>
 #include <QVariantList>
+#include <QtCore>
+#include <vector>
 
+#include "data/models/country.h"
 #include "logic/nordvpn/servercontroller.h"
-#include "qmldataconverter.h"
 
 /**
  * @brief The RecentsMediator class is responsible for providing the UI with a

@@ -1,5 +1,9 @@
 #include "navmediator.h"
 
+#include <utility>
+
+#include "common/types/nullable.h"
+
 NavMediator::NavMediator() {
     EnvController &envController = EnvController::getInstance();
     envController.attach(this);

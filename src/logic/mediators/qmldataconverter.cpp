@@ -1,5 +1,16 @@
 #include "qmldataconverter.h"
 
+#include <QString>
+#include <QVariantList>
+#include <string>
+#include <utility>
+#include <vector>
+
+#include "common/types/nullable.h"
+#include "data/enums/group.h"
+#include "data/enums/protocol.h"
+#include "data/enums/technology.h"
+
 // The function cannot be implemented without using recursion. The recusion
 // isn't harmful as long as the JSON structures don't reach a unrealistic depth.
 // Hence the disabled clang-tidy check. NOLINTNEXTLINE(misc-no-recursion)

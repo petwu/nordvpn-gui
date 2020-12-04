@@ -1,6 +1,7 @@
 #ifndef CONNECTIONINFO_H
 #define CONNECTIONINFO_H
 
+#include <cstdint>
 #include <string>
 #include <vector>
 

@@ -1,5 +1,13 @@
 #include "strings.h"
 
+#include <algorithm>
+#include <cctype>
+#include <cstddef>
+#include <map>
+#include <regex>
+#include <sstream>
+#include <utility>
+
 namespace util::string {
 
     auto trim(const std::string &s) -> std::string {

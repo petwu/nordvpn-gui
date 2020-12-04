@@ -1,13 +1,14 @@
 #ifndef NAVMEDIATOR_H
 #define NAVMEDIATOR_H
 
+#include <QByteArrayData>
+#include <QObject>
+#include <QString>
 #include <map>
 #include <string>
 
-#include <QObject>
-#include <QString>
-
 #include "logic/enums/MainWindowView.h"
+#include "logic/models/envinfo.h"
 #include "logic/nordvpn/envcontroller.h"
 
 /**

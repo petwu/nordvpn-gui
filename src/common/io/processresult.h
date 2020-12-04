@@ -1,6 +1,8 @@
 #ifndef PROCESSRESULT_H
 #define PROCESSRESULT_H
 
+#include <cstdint>
+#include <cstdlib>
 #include <string>
 
 /**

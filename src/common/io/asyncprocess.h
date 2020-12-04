@@ -2,8 +2,10 @@
 #define ASYNCPROCESS_H
 
 #include <functional>
+#include <string>
+#include <sys/types.h>
 
-#include "process.h"
+#include "common/io/processresult.h"
 
 /**
  * @brief The AsyncProcess class extends the Process class and allows

@@ -1,10 +1,12 @@
 #ifndef SERVER_H
 #define SERVER_H
 
+#include <cstdint>
 #include <string>
 #include <vector>
 
 #include "nlohmann/json.hpp"
+
 using json = nlohmann::json;
 
 #include "connectable.h"
@@ -12,7 +14,6 @@ using json = nlohmann::json;
 #include "data/enums/protocol.h"
 #include "data/enums/securityprotocol.h"
 #include "data/enums/technology.h"
-#include "location.h"
 
 /**
  * @brief The Server class is a representation of a server. It is modeled after

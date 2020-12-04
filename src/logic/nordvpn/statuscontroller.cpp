@@ -1,5 +1,25 @@
 #include "statuscontroller.h"
 
+#include <algorithm>
+#include <cstdint>
+#include <cstdlib>
+#include <map>
+#include <regex>
+#include <sstream>
+#include <thread>
+#include <utility>
+
+#include "common/io/asyncprocess.h"
+#include "common/io/process.h"
+#include "common/io/processresult.h"
+#include "config.h"
+#include "data/enums/group.h"
+#include "data/enums/protocol.h"
+#include "data/enums/technology.h"
+#include "data/models/server.h"
+#include "logic/enums/ConnectionStatus.h"
+#include "logic/nordvpn/servercontroller.h"
+
 auto StatusController::getInstance() -> StatusController & {
     static StatusController instance;
     return instance;

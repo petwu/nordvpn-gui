@@ -1,19 +1,17 @@
 #ifndef JSONCONVERTER_H
 #define JSONCONVERTER_H
 
-#include <iostream>
-#include <memory>
-#include <vector>
-
 #include <QVariant>
-#include <QVariantList>
 #include <QVariantMap>
-
 #include <nlohmann/json.hpp>
+
 using json = nlohmann::json;
 
-#include "data/repositories/serverrepository.h"
+#include "data/models/country.h"
+#include "data/models/location.h"
+#include "data/models/server.h"
 #include "logic/models/nordvpnsettings.h"
+#include "logic/models/whitelistportentry.h"
 
 /**
  * @brief The QmlDataConverter class provides functions for converting C++

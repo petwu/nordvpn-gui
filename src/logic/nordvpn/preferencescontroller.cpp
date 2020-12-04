@@ -1,5 +1,22 @@
 #include "preferencescontroller.h"
 
+#include <algorithm>
+#include <map>
+#include <regex>
+#include <sstream>
+#include <string>
+#include <thread>
+#include <utility>
+#include <vector>
+
+#include "common/io/process.h"
+#include "common/io/processresult.h"
+#include "common/types/nullable.h"
+#include "common/util/strings.h"
+#include "data/enums/protocol.h"
+#include "data/enums/technology.h"
+#include "logic/models/whitelistportentry.h"
+
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define ENABLED std::string("enabled")
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage)

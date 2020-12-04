@@ -1,10 +1,9 @@
 #ifndef ACCOUNTMEDIATOR_H
 #define ACCOUNTMEDIATOR_H
 
+#include <QByteArrayData>
 #include <QObject>
 #include <QString>
-
-#include "logic/nordvpn/accountcontroller.h"
 
 /**
  * @brief The AccountMediator class is responsible for communicating information

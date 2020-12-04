@@ -1,5 +1,12 @@
 #include "baserepository.h"
 
+#include <cstddef>
+#include <fstream>
+#include <type_traits>
+#include <utility>
+
+#include "curl/curl.h"
+
 auto BaseRepository::readFile(const std::filesystem::path &path)
     -> std::string {
     std::ifstream file(path);

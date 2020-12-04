@@ -4,11 +4,10 @@
 #include <string>
 #include <vector>
 
+#include "data/models/location.h"
 #include "nlohmann/json.hpp"
-using json = nlohmann::json;
 
-#include "connectable.h"
-#include "location.h"
+using json = nlohmann::json;
 
 /**
  * @brief The Country class represents a country with NordVPN servers.

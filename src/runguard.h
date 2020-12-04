@@ -1,16 +1,13 @@
 #ifndef RUNGUARD_H
 #define RUNGUARD_H
 
-#include <functional>
-#include <memory>
-#include <utility>
-
-#include <QCryptographicHash>
 #include <QLocalServer>
-#include <QLocalSocket>
 #include <QObject>
 #include <QSharedMemory>
+#include <QString>
 #include <QSystemSemaphore>
+#include <functional>
+#include <memory>
 
 /**
  * @brief The RunGuard class provides a way to protect an application from
