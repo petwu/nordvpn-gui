@@ -8,9 +8,10 @@ improve code quality. Supported tools:
 
 - clang-tidy
 - clang-format
+- include-what-you-use (iwyu)
 
 This module enables ``CMAKE_EXPORT_COMPILE_COMMANDS`` since the compilation
-database (compile_controls.json) is used by *clang-tidy* to determine the
+database (compile_controls.json) is used by various tools to determine the
 correct compiler flags.
 
 It does NOT set CMAKE_<LANG>_CLANG_TIDY since this would slow down the build
@@ -20,15 +21,42 @@ will be lost after each build. Therefore it is more efficient to used the
 command below and call the created targets explicitlay.
 
 #]============================================================================]
+
+#### determine the number of logical processors the build machine has (for iwyu)
+include(ProcessorCount)
+ProcessorCount(CPU_COUNT)
+if(NOT CPU_COUNT)
+  set(CPU_COUNT 8) # just a reasonable assumption about modern computers
+endif()
+
+#### create the log directory
+file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/log)
+
+#### find all code quality tools (linter, formatter, ...)
+# clang-tidy
 find_program(CLANG_TIDY_EXECUTABLE
   NAMES clang-tidy
   REQUIRED
 )
+# clang-format
 find_program(CLANG_FORMAT_EXECUTABLE
   NAMES clang-format
   REQUIRED
 )
+# iwyu is a executable but utility tools are python scripts
+find_package (Python3 COMPONENTS Interpreter)
+# ieyu compilation database driver
+find_program(IWYU_TOOL_PY
+  NAMES iwyu_tool.py
+  REQUIRED
+)
+# ieyu auto fixer
+find_program(IWYU_FIX_PY
+  NAMES fix_includes.py
+  REQUIRED
+)
 
+#### create compilation database
 if(NOT CMAKE_EXPORT_COMPILE_COMMANDS)
   set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 endif()
@@ -113,8 +141,8 @@ function(add_clang_tidy _target)
       -p ${CMAKE_BINARY_DIR}/compile_commands.json  # compilation database
       ${_cxx_sources}                               # source files
       -header-filter=.*
-      2>&1 > clang-tidy.log
-    COMMENT "Linting CXX code with clang-tidy (clang-tidy.log)"
+      > log/clang-tidy.log 2>&1
+    COMMENT "Linting CXX code with clang-tidy (log/clang-tidy.log)"
   )
 
   #### add target to call clang-tidy and fix all suggestions
@@ -123,8 +151,8 @@ function(add_clang_tidy _target)
       -p ${CMAKE_BINARY_DIR}/compile_commands.json  # compilation database
       --fix                                         # auto-fix all suggestions
       ${_cxx_sources}                               # source files
-      > clang-tidy-fix.log
-    COMMENT "Linting CXX code with clang-tidy and fixing all suggestions (clang-tidy-fix.log)"
+      > log/clang-tidy-fix.log 2>&1
+    COMMENT "Linting CXX code with clang-tidy and fixing all suggestions (log/clang-tidy-fix.log)"
   )
 
 endfunction()
@@ -172,8 +200,88 @@ function(add_clang_format _target)
       --style=file          # format using .clang-format
       --fallback-style=LLVM # in case no .clang-format is found
       --verbose             # list the formatted files
-      ${_CF_FILES_ABS}          # input files
-    COMMENT "Formatting CXX code with clang-format"
+      ${_CF_FILES_ABS}      # input files
+      > log/clang-format.log 2>&1
+    COMMENT "Formatting CXX code with clang-format (log/clang-format.log)"
   )
+
+endfunction()
+
+#[============================================================================[.rst
+
+.. cmake:command:: add_iwyu
+
+.. code-block:: cmake
+
+  add_iwyu(<target>
+    [MAPPING_FILE [<files>...]]
+  )
+
+This command creates a ``<target>`` that calls the *include-what-you-use (iwyu)*
+tool. *iwyu* analyzes the used symbols in a file to determine the list of header
+files that export those symbols. It then compares this list with the list of
+actually included headers and suggests fixes for possible violations.
+This command creates a second target named ``<target>-fix`` that automatically
+applies all fixes.
+
+*Options*
+
+  ``MAPPING_FILE``
+    Optional `mapping file`_ for *iwyu*.
+
+.. mapping file:
+  https://github.com/include-what-you-use/include-what-you-use/blob/master/docs/IWYUMappings.md
+
+.. note::
+
+  You probably have to use a specific *iwyu* version depending on your version
+  of clang. There might be a possibility, you have to `build iwyu from source`_.
+
+.. build iwyu from source:
+  https://github.com/include-what-you-use/include-what-you-use#how-to-build
+
+#]============================================================================]
+function(add_iwyu _target)
+
+  #### parse arguments
+  set(_single_value_args MAPPING_FILE)
+  cmake_parse_arguments(_IWYU "" "${_single_value_args}" "" ${ARGN})
+
+  #### validate args
+  if(_IWYU_MAPPING_FILE)
+    if(NOT IS_ABSOLUTE ${_IWYU_MAPPING_FILE})
+      set(_IWYU_MAPPING_FILE "${CMAKE_CURRENT_SOURCE_DIR}/${_IWYU_MAPPING_FILE}")
+    endif()
+    set(_IWYU_MAPPING_FILE -Xiwyu --mapping_file=${_IWYU_MAPPING_FILE})
+  endif()
+  message(${_IWYU_MAPPING_FILE})
+
+  #### analyze target
+  add_custom_target(${_target}
+    COMMAND Python3::Interpreter
+      ${IWYU_TOOL_PY}                              # iwyu python script working off compile_commands.json
+      -p ${CMAKE_BINARY_DIR}/compile_commands.json # compilation database
+      -o iwyu                                      # output format (not output file!)
+      -j ${CPU_COUNT}                              # number of parallel jobs
+      --                                           # -- iwyu options --
+      ${_IWYU_MAPPING_FILE}                        # -Xiwyu --mapping_file=... (optional)
+      -Xiwyu --no_fwd_decls                        # use #includes, no forward declarations
+      > log/iwyu.log 2>&1
+    COMMENT "Analyzing CXX headers with include-what-you-use (log/iwyu.log)"
+  )
+
+  #### auto-fix target
+  add_custom_target(${_target}-fix
+    COMMAND Python3::Interpreter
+      ${IWYU_FIX_PY}       # iwyu python script fixing all suggestions
+      --nosafe_headers     # remove unused includes (default is to keep them)
+      < log/iwyu.log       # input
+      # > log/iwyu-fix.log # <-- for some reason this does not work as command
+                           #     despite it works when executed as shell command
+    COMMENT "Fixing CXX headers with include-what-you-use"
+  )
+
+  # log/iwyu.log needs to be available
+  add_dependencies(${_target}-fix ${_target})
 
 endfunction()

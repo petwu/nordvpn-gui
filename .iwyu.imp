@@ -1,0 +1,5 @@
+# mappings for include-what-you-use
+[
+  # Qt mappings
+  { ref: "/usr/local/share/include-what-you-use/qt5_11.imp" },
+]
