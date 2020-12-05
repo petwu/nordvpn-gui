@@ -29,9 +29,6 @@ if(NOT CPU_COUNT)
   set(CPU_COUNT 8) # just a reasonable assumption about modern computers
 endif()
 
-#### create the log directory
-file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/log)
-
 #### find all code quality tools (linter, formatter, ...)
 # clang-tidy
 find_program(CLANG_TIDY_EXECUTABLE
@@ -56,10 +53,28 @@ find_program(IWYU_FIX_PY
   REQUIRED
 )
 
-#### create compilation database
+#### create compilation databases
 if(NOT CMAKE_EXPORT_COMPILE_COMMANDS)
   set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 endif()
+add_custom_target(compile-commands-no-autogen
+  COMMAND ${CMAKE_COMMAND}
+    -P ${CMAKE_CURRENT_LIST_DIR}/scripts/compile_commands_no_autogen.cmake
+)
+
+#### create the log directory
+add_custom_target(log-dir
+  COMMAND ${CMAKE_COMMAND} -E make_directory log
+)
+
+#### delete log files on clean
+set_directory_properties(PROPERTIES ADDITIONAL_CLEAN_FILES log)
+
+add_custom_target(common-prequisities)
+add_dependencies(common-prequisities
+  log-dir
+  compile-commands-no-autogen
+)
 
 #[============================================================================[.rst
 
@@ -138,22 +153,24 @@ function(add_clang_tidy _target)
   #### add target to call clang-tidy
   add_custom_target(${_target}
     COMMAND ${CLANG_TIDY_EXECUTABLE}
-      -p ${CMAKE_BINARY_DIR}/compile_commands.json  # compilation database
-      ${_cxx_sources}                               # source files
+      -p ${CMAKE_BINARY_DIR}/compile_commands_no_autogen.json  # compilation database
+      ${_cxx_sources}                                          # source files
       -header-filter=.*
       > log/clang-tidy.log 2>&1
     COMMENT "Linting CXX code with clang-tidy (log/clang-tidy.log)"
   )
+  add_dependencies(${_target} common-prequisities)
 
   #### add target to call clang-tidy and fix all suggestions
   add_custom_target(${_target}-fix
     COMMAND ${CLANG_TIDY_EXECUTABLE}
-      -p ${CMAKE_BINARY_DIR}/compile_commands.json  # compilation database
-      --fix                                         # auto-fix all suggestions
-      ${_cxx_sources}                               # source files
+      -p ${CMAKE_BINARY_DIR}/compile_commands_no_autogen.json # compilation database
+      --fix                                                   # auto-fix all suggestions
+      ${_cxx_sources}                                         # source files
       > log/clang-tidy-fix.log 2>&1
     COMMENT "Linting CXX code with clang-tidy and fixing all suggestions (log/clang-tidy-fix.log)"
   )
+  add_dependencies(${_target}-fix common-prequisities)
 
 endfunction()
 
@@ -204,6 +221,7 @@ function(add_clang_format _target)
       > log/clang-format.log 2>&1
     COMMENT "Formatting CXX code with clang-format (log/clang-format.log)"
   )
+  add_dependencies(${_target} common-prequisities)
 
 endfunction()
 
@@ -254,21 +272,21 @@ function(add_iwyu _target)
     endif()
     set(_IWYU_MAPPING_FILE -Xiwyu --mapping_file=${_IWYU_MAPPING_FILE})
   endif()
-  message(${_IWYU_MAPPING_FILE})
 
   #### analyze target
   add_custom_target(${_target}
     COMMAND Python3::Interpreter
-      ${IWYU_TOOL_PY}                              # iwyu python script working off compile_commands.json
-      -p ${CMAKE_BINARY_DIR}/compile_commands.json # compilation database
-      -o iwyu                                      # output format (not output file!)
-      -j ${CPU_COUNT}                              # number of parallel jobs
-      --                                           # -- iwyu options --
-      ${_IWYU_MAPPING_FILE}                        # -Xiwyu --mapping_file=... (optional)
-      -Xiwyu --no_fwd_decls                        # use #includes, no forward declarations
+      ${IWYU_TOOL_PY}                                         # iwyu python script working off compile_commands.json
+      -p ${CMAKE_BINARY_DIR}/compile_commands_no_autogen.json # compilation database
+      -o iwyu                                                 # output format (not output file!)
+      -j ${CPU_COUNT}                                         # number of parallel jobs
+      --                                                      # -- iwyu options --
+      ${_IWYU_MAPPING_FILE}                                   # -Xiwyu --mapping_file=... (optional)
+      -Xiwyu --no_fwd_decls                                   # use #includes, no forward declarations
       > log/iwyu.log 2>&1
     COMMENT "Analyzing CXX headers with include-what-you-use (log/iwyu.log)"
   )
+  add_dependencies(${_target} common-prequisities)
 
   #### auto-fix target
   add_custom_target(${_target}-fix
@@ -276,10 +294,12 @@ function(add_iwyu _target)
       ${IWYU_FIX_PY}       # iwyu python script fixing all suggestions
       --nosafe_headers     # remove unused includes (default is to keep them)
       < log/iwyu.log       # input
-      # > log/iwyu-fix.log # <-- for some reason this does not work as command
-                           #     despite it works when executed as shell command
+      > log/iwyu-fix.log
     COMMENT "Fixing CXX headers with include-what-you-use"
+    VERBATIM
+    BYPRODUCTS iwyu-fix.log
   )
+  add_dependencies(${_target} common-prequisities)
 
   # log/iwyu.log needs to be available
   add_dependencies(${_target}-fix ${_target})
