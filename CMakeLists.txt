@@ -54,7 +54,7 @@ conan_cmake_run(
 # --------------------------------------------------------------------------------
 # main executable
 # --------------------------------------------------------------------------------
-find_package(Qt5 COMPONENTS Core Quick Widgets LinguistTools REQUIRED)
+find_package(Qt5 COMPONENTS Core Quick Widgets REQUIRED)
 find_package(Threads REQUIRED)
 add_executable(${PROJECT_NAME})
 target_include_directories(${PROJECT_NAME} PRIVATE src)
@@ -75,3 +75,12 @@ include(CodeQualityTools)
 add_clang_tidy(clang-tidy TARGET ${PROJECT_NAME})
 add_clang_format(clang-format FILES src/**/*.cpp src/**/*.h)
 add_iwyu(iwyu MAPPING_FILE .iwyu.imp)
+
+include(Cloc)
+add_cloc(cloc SOURCES
+  cmake
+  doc
+  res/Style
+  res/CMakeLists.txt
+  src
+)

@@ -60,11 +60,14 @@ endif()
 add_custom_target(compile-commands-no-autogen
   COMMAND ${CMAKE_COMMAND}
     -P ${CMAKE_CURRENT_LIST_DIR}/scripts/compile_commands_no_autogen.cmake
+  COMMENT "Generating compile_commands_no_autogen.json"
 )
 
 #### create the log directory
+set(_LOG_DIR "${CMAKE_BINARY_DIR}/log")
 add_custom_target(log-dir
-  COMMAND ${CMAKE_COMMAND} -E make_directory log
+  COMMAND ${CMAKE_COMMAND} -E make_directory ${_LOG_DIR}
+  COMMENT "Creating log directory"
 )
 
 #### delete log files on clean
@@ -156,8 +159,8 @@ function(add_clang_tidy _target)
       -p ${CMAKE_BINARY_DIR}/compile_commands_no_autogen.json  # compilation database
       ${_cxx_sources}                                          # source files
       -header-filter=.*
-      > log/clang-tidy.log 2>&1
-    COMMENT "Linting CXX code with clang-tidy (log/clang-tidy.log)"
+      > ${_LOG_DIR}/clang-tidy.log 2>&1
+    COMMENT "Linting CXX code with clang-tidy (${_LOG_DIR}/clang-tidy.log)"
   )
   add_dependencies(${_target} common-prequisities)
 
@@ -167,8 +170,8 @@ function(add_clang_tidy _target)
       -p ${CMAKE_BINARY_DIR}/compile_commands_no_autogen.json # compilation database
       --fix                                                   # auto-fix all suggestions
       ${_cxx_sources}                                         # source files
-      > log/clang-tidy-fix.log 2>&1
-    COMMENT "Linting CXX code with clang-tidy and fixing all suggestions (log/clang-tidy-fix.log)"
+      > ${_LOG_DIR}/clang-tidy-fix.log 2>&1
+    COMMENT "Linting CXX code with clang-tidy and fixing all suggestions (${_LOG_DIR}/clang-tidy-fix.log)"
   )
   add_dependencies(${_target}-fix common-prequisities)
 
@@ -218,8 +221,8 @@ function(add_clang_format _target)
       --fallback-style=LLVM # in case no .clang-format is found
       --verbose             # list the formatted files
       ${_CF_FILES_ABS}      # input files
-      > log/clang-format.log 2>&1
-    COMMENT "Formatting CXX code with clang-format (log/clang-format.log)"
+      > ${_LOG_DIR}/clang-format.log 2>&1
+    COMMENT "Formatting CXX code with clang-format (${_LOG_DIR}/clang-format.log)"
   )
   add_dependencies(${_target} common-prequisities)
 
@@ -283,8 +286,8 @@ function(add_iwyu _target)
       --                                                      # -- iwyu options --
       ${_IWYU_MAPPING_FILE}                                   # -Xiwyu --mapping_file=... (optional)
       -Xiwyu --no_fwd_decls                                   # use #includes, no forward declarations
-      > log/iwyu.log 2>&1
-    COMMENT "Analyzing CXX headers with include-what-you-use (log/iwyu.log)"
+      > ${_LOG_DIR}/iwyu.log 2>&1
+    COMMENT "Analyzing CXX headers with include-what-you-use (${_LOG_DIR}/iwyu.log)"
   )
   add_dependencies(${_target} common-prequisities)
 
@@ -293,15 +296,15 @@ function(add_iwyu _target)
     COMMAND Python3::Interpreter
       ${IWYU_FIX_PY}       # iwyu python script fixing all suggestions
       --nosafe_headers     # remove unused includes (default is to keep them)
-      < log/iwyu.log       # input
-      > log/iwyu-fix.log
-    COMMENT "Fixing CXX headers with include-what-you-use"
+      < ${_LOG_DIR}/iwyu.log       # input
+      > ${_LOG_DIR}/iwyu-fix.log
+    COMMENT "Fixing CXX headers with include-what-you-use (${_LOG_DIR}/iwyu-fix.log)"
     VERBATIM
     BYPRODUCTS iwyu-fix.log
   )
   add_dependencies(${_target} common-prequisities)
 
-  # log/iwyu.log needs to be available
+  # iwyu.log needs to be available
   add_dependencies(${_target}-fix ${_target})
 
 endfunction()

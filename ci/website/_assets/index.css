@@ -1,0 +1,142 @@
+.fa,
+.fas {
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+}
+
+html,
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.main-container {
+  padding: 1em;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+header {
+    position: relative;
+}
+
+header > .theme-switcher {
+    position: absolute;
+    top: 1em;
+    right: 1em;
+    font-size: 104%;
+    width: 2.5em;
+    height: 2.5em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.ms-tab {
+  margin-bottom: 1em;
+}
+
+.row {
+  overflow: hidden;
+  flex: 0 1 auto;
+}
+
+.col {
+  max-height: 100%;
+  overflow: hidden;
+}
+
+pre {
+  overflow: hidden;
+  padding: 0;
+}
+
+.max-h-100 {
+  max-height: 100%;
+}
+
+.overflow-hidden {
+  overflow: hidden;
+}
+
+.overflow-auto {
+  overflow: auto;
+}
+
+.code {
+  padding: 1em;
+  margin: 0 !important;
+  font-family: "Courier New", Courier, monospace;
+  max-width: 100%;
+  white-space: pre-wrap;
+}
+
+.code .log-line {
+  display: inline-flex;
+}
+
+.code .log-line::before {
+  content: attr(data-line) ":";
+  text-align: right;
+  min-width: 2em;
+  display: inline-block;
+  margin-right: 1em;
+  opacity: 0.5;
+}
+
+.code .log-line.cmd {
+  font-weight: 500;
+}
+
+ul.select-list,
+ol.select-list {
+  list-style-type: none;
+  margin: 0;
+}
+
+ul.select-list li:first-of-type,
+ol.select-list li:first-of-type {
+  margin: 0;
+}
+
+.pipeline-steps .step .step button {
+  position: relative;
+}
+
+.pipeline-steps .step .step-nr {
+  margin-right: .75em;
+  margin-left: .25em;
+}
+
+.pipeline-steps .step .step-indicator {
+  position: relative;
+  border-radius: 50%;
+  width: 2em;
+  height: 2em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 1em;
+}
+
+.pipeline-steps .step:not(:last-of-type) .step-indicator::after {
+  content: '';
+  display: block;
+  width: 1px;
+  height: 2em;
+  position: absolute;
+  top: 90%;
+  left: 50%;
+  background: #888;
+  z-index: -1;
+}
+
+.ms-btn {
+  margin: 0 !important;
+}

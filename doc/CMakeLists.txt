@@ -8,7 +8,7 @@ if(Doxygen_FOUND)
   add_custom_target(doc
     COMMAND ${DOXYGEN_EXECUTABLE} doxyfile
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-    COMMENT "Generating API documentation with Doxygen"
+    COMMENT "Generating API documentation with Doxygen (${CMAKE_BINARY_DIR}/doc/html)"
   )
 else()
   add_custom_target(doc

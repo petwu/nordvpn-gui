@@ -37,7 +37,7 @@ class Process {
  * - output from stdout
  * - errors from stderr
  *
- * The name is referring to popen() from <cstdio> that allows opens a
+ * The name is referring to popen() from \<cstdio> that allows opens a
  * process and invokes a shell. This is an extended version that uses 3
  * instead of only 1 pipe: One for each of stdin, stdout, stderr. popen in
  * contrast only uses a pipe for stdin and does therefore allow only

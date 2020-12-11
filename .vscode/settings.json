@@ -2,6 +2,7 @@
   "files.associations": {
       ".clang-tidy": "yaml",
       ".clang-format": "yaml",
+      ".drone.env": "shellscript",
       "*.ts": "xml"
   },
   "[cmake]": {

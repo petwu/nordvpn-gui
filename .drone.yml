@@ -1,0 +1,74 @@
+---
+kind: pipeline
+type: docker
+name: default
+
+# ------------------------------------------------------------------------------
+# platform requirements for the CI host
+platform:
+  os: linux
+  arch: amd64
+
+# ------------------------------------------------------------------------------
+# temporary volumes to share data outside the workspace between steps
+volumes:
+- name: conan-cache
+  temp: {}
+
+# ------------------------------------------------------------------------------
+# the pipeline
+steps:
+- name: environment
+  pull: never
+  image: nordvpn-gui:1.0
+  commands:
+  - printenv
+
+- name: build
+  pull: never
+  image: nordvpn-gui:1.0
+  volumes:
+  - name: conan-cache
+    path: /root/.conan
+  commands:
+  - rm -rf $BUILD_DIR
+  - mkdir -p $BUILD_DIR
+  - cd $BUILD_DIR
+  - cmake -G Ninja -DCMAKE_BUILD_TYPE=$BUILD_TYPE ../..
+  - ninja
+  - cd $CI_WORKSPACE
+  - mkdir -p $ARTIFACTS_DIR/log
+  - cp -f $BUILD_DIR/compile_commands.json $ARTIFACTS_DIR/log
+
+- name: generate docs
+  pull: never
+  image: nordvpn-gui:1.0
+  commands:
+  - cd $BUILD_DIR
+  - ninja doc
+  - cd $CI_WORKSPACE
+  - mkdir -p $ARTIFACTS_DIR/doc/html
+  - cp -rf $BUILD_DIR/doc/html/* $ARTIFACTS_DIR/doc/html
+
+- name: static analysis
+  pull: never
+  image: nordvpn-gui:1.0
+  volumes:
+  - name: conan-cache
+    path: /root/.conan
+  commands:
+  - cd $BUILD_DIR
+  - ninja clang-tidy
+  - ninja iwyu
+  - cd $CI_WORKSPACE
+  - mkdir -p $ARTIFACTS_DIR/log
+  - cp -rf $BUILD_DIR/log/* $ARTIFACTS_DIR/log
+
+- name: cloc
+  pull: never
+  image: nordvpn-gui:1.0
+  commands:
+  - cd $BUILD_DIR
+  - ninja cloc
+
+...

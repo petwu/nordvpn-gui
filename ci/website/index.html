@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>nordvpn-gui pipeline</title>
+
+    <!-- stylesheets -->
+    <!-- lightweight CSS framework: https://minstyle.io -->
+    <link rel="stylesheet" href="_assets/minstyle.io.min.css" />
+    <!-- customizations -->
+    <link rel="stylesheet" href="_assets/index.css" />
+    <!-- icon font -->
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.15.1/css/all.css"
+    />
+  </head>
+  <body>
+    <div id="app" class="main-container">
+      <!-- header = tabs -->
+      <header>
+        <h1>NordVPN GUI Pipeline</h1>
+        <div class="ms-tab">
+          <ul>
+            <li>
+              <a
+                href="#"
+                :class="activeTab === 'pipeline' ? 'ms-active' : ''"
+                v-on:click="onTabSelected('pipeline')"
+              >
+                <!-- tab 1 -->
+                Pipeline
+              </a>
+            </li>
+            <li>
+              <a
+                href="#"
+                :class="activeTab === 'logs' ? 'ms-active' : ''"
+                v-on:click="onTabSelected('logs')"
+              >
+                <!-- tab 2 -->
+                Logs
+              </a>
+            </li>
+            <li>
+              <a
+                href="#"
+                :class="activeTab === 'docs' ? 'ms-active' : ''"
+                v-on:click="onTabSelected('docs')"
+              >
+                <!-- tab 3 -->
+                Documentation
+              </a>
+            </li>
+          </ul>
+        </div>
+        <button
+          class="ms-btn theme-switcher"
+          v-on:click="onThemeToggle()"
+          title="toggle theme (light/dark)"
+        >
+          <i class="fas fa-adjust"></i>
+        </button>
+      </header>
+
+      <!-- tab 1 content -->
+      <div class="row" v-if="activeTab === 'pipeline'">
+        <div class="col col-3 max-h-100">
+          <ul class="select-list pipeline-steps">
+            <li
+              v-for="({ status }, step, i) in pipelineLog"
+              :key="step"
+              class="step"
+            >
+              <span class="step-nr">{{ i+1 }}.</span>
+              <span class="step-indicator ms-label" :class="`ms-${statusToColor(status)}`">
+                <i v-if="status < 0" class="far fa-circle"></i>
+                <i v-else-if="status === 0" class="fas fa-check-circle"></i>
+                <i v-else-if="status === 1" class="fas fa-exclamation-triangle"></i>
+                <i v-else-if="status > 1" class="fas fa-times-circle"></i>
+              </span>
+              <button
+                class="ms-btn"
+                :class="`ms${selectedPipelineStep === step ? '' : '-outline'}-${statusToColor(status)}`"
+                v-on:click="onPipelineStepSelected(step)"
+              >
+                {{ step }}
+              </button>
+            </li>
+          </ul>
+        </div>
+        <div class="col col-9 max-h-100">
+          <div class="ms-user ms-background max-h-100">
+            <div
+              class="ms-card code"
+              v-html="selectedPipelineStepLog.log"
+            ></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- tab 2 content -->
+      <div class="row" v-else-if="activeTab === 'logs'">
+        <div class="col col-3 max-h-100">
+          <ul class="select-list">
+            <li v-for="(_, logfile) in logs" :key="logfile">
+              <button
+                class="ms-btn"
+                :class="selectedLog === logfile ? 'ms-info' : 'ms-outline-info'"
+                v-on:click="onLogFileSelected(logfile)"
+              >
+                {{ logfile }}
+              </button>
+            </li>
+          </ul>
+        </div>
+        <div class="col col-9 max-h-100">
+          <div class="ms-user ms-background max-h-100">
+            <div class="ms-card code" v-html="selectedLogContent"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- tab 3 content -->
+      <div class="row" v-else-if="activeTab === 'docs'">
+        <div class="row">
+          <div class="col">
+            <ul class="select-list">
+              <li>
+                <a :href="docIndex">
+                  <button class="ms-btn ms-outline-info">Doxygen</button>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- scripts -->
+    <!-- generated data resources -->
+    <script src="data.js"></script>
+    <!-- Vue.js -->
+    <script src="_assets/vue.min.js"></script>
+    <!-- Vue instance + custom scripts -->
+    <script src="_assets/index.js"></script>
+  </body>
+</html>
