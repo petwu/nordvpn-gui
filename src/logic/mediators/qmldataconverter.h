@@ -10,6 +10,7 @@ using json = nlohmann::json;
 #include "data/models/country.h"
 #include "data/models/location.h"
 #include "data/models/server.h"
+#include "logic/models/envinfo.h"
 #include "logic/models/nordvpnsettings.h"
 #include "logic/models/whitelistportentry.h"
 
@@ -63,6 +64,11 @@ class QmlDataConverter {
      */
     static auto whitelistPortsEntryToQml(const WhitelistPortEntry &entry)
         -> QVariantMap;
+
+    /**
+     * @brief Convert a EnvInfo object to a QML object.
+     */
+    static auto envInfoToQml(const EnvInfo &envInfo) -> QVariantMap;
 };
 
 #endif // JSONCONVERTER_H

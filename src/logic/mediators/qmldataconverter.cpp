@@ -131,3 +131,17 @@ auto QmlDataConverter::whitelistPortsEntryToQml(const WhitelistPortEntry &entry)
     qObj["protocolFlag"] = static_cast<int>(entry.protocolFlag);
     return std::move(qObj);
 }
+
+auto QmlDataConverter::envInfoToQml(const EnvInfo &envInfo) -> QVariantMap {
+    QVariantMap qObj;
+    qObj["internetConnected"] = envInfo.internetConnected;
+    qObj["shellAvailable"] = envInfo.shellAvailable;
+    qObj["nordvpnInstalled"] = envInfo.nordvpnInstalled;
+    if (envInfo.loggedIn.isNotNull()) {
+        qObj["loggedIn"] = envInfo.loggedIn.value();
+    } else {
+        qObj["loggedIn"] = QVariant::fromValue(nullptr);
+    }
+    qObj["miscError"] = QString(envInfo.miscError.c_str());
+    return std::move(qObj);
+}

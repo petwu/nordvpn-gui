@@ -24,6 +24,15 @@ void NavMediator::_setCurrentMainWindowView(MainWindowView v) {
     this->mainWindowViewSourceChanged(this->_getMainWindowViewSource());
 }
 
+auto NavMediator::_getMainWindowPayload() -> QVariant {
+    return this->_mainWindowPayload;
+}
+
+void NavMediator::_setMainWindowPayload(QVariant payload) {
+    this->_mainWindowPayload = payload;
+    this->mainWindowPayloadChanged(payload);
+}
+
 void NavMediator::updateEnv(const EnvInfo &envInfo) {
     /*
         priority of false-values:
@@ -37,14 +46,22 @@ void NavMediator::updateEnv(const EnvInfo &envInfo) {
     */
     if (!envInfo.shellAvailable) {
         this->_setCurrentMainWindowView(MainWindowView::NoShell);
+        this->_setMainWindowPayload(QVariant::fromValue(nullptr));
     } else if (!envInfo.nordvpnInstalled) {
         this->_setCurrentMainWindowView(MainWindowView::NotInstalled);
+        this->_setMainWindowPayload(QVariant::fromValue(nullptr));
     } else if (!envInfo.internetConnected) {
         this->_setCurrentMainWindowView(MainWindowView::NoConnection);
+        this->_setMainWindowPayload(QVariant::fromValue(nullptr));
     } else if (envInfo.loggedIn == false) {
         this->_setCurrentMainWindowView(MainWindowView::Login);
+        this->_setMainWindowPayload(QVariant::fromValue(nullptr));
+    } else if (envInfo.miscError != "") {
+        this->_setCurrentMainWindowView(MainWindowView::MiscError);
+        this->_setMainWindowPayload(QmlDataConverter::envInfoToQml(envInfo));
     } else {
         this->_setCurrentMainWindowView(MainWindowView::Main);
+        this->_setMainWindowPayload(QVariant::fromValue(nullptr));
     }
 }
 

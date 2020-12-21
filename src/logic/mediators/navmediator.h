@@ -4,12 +4,14 @@
 #include <QByteArrayData>
 #include <QObject>
 #include <QString>
+#include <QVariant>
 #include <map>
 #include <string>
 
 #include "logic/enums/MainWindowView.h"
 #include "logic/models/envinfo.h"
 #include "logic/nordvpn/envcontroller.h"
+#include "qmldataconverter.h"
 
 /**
  * @brief The NavMediator class is responsible for communicating with the UI
@@ -25,6 +27,20 @@ class NavMediator : public QObject, public IEnvInfoSubscription {
      */
     Q_PROPERTY(QString mainWindowViewSource READ _getMainWindowViewSource NOTIFY
                    mainWindowViewSourceChanged)
+
+    /**
+     * @brief Additional payload object to the main window. The payload is
+     * optional and may be null.
+     *
+     * @details The NavMediator may set some additonal payload information,
+     * depending on the current view. The concrete payload object may vary
+     * between views but is always the same (regarding the structure, not the
+     * values) for one view. Known payload objects:
+     *
+     * - MainWindowView::MiscError --> #EnvInfo
+     */
+    Q_PROPERTY(QVariant mainWindowPayload READ _getMainWindowPayload NOTIFY
+                   mainWindowPayloadChanged)
 
   public:
     /**
@@ -46,6 +62,11 @@ class NavMediator : public QObject, public IEnvInfoSubscription {
      * parameter.
      */
     void mainWindowViewSourceChanged(QString);
+    /**
+     * @brief Signal that gets emitted once the main windows optional payload
+     * changes.
+     */
+    void mainWindowPayloadChanged(QVariant);
 
   private:
     /**
@@ -53,12 +74,13 @@ class NavMediator : public QObject, public IEnvInfoSubscription {
      * to every MainWindowView enum value.
      */
     std::map<MainWindowView, std::string> _viewSourceMap{
-        {MainWindowView::Startup, /**/ "qrc:/ui/views/StartupView.qml"},
-        {MainWindowView::Main, /*   */ "qrc:/ui/views/MainView.qml"},
-        {MainWindowView::Login, /*  */ "qrc:/ui/views/LoginView.qml"},
+        {MainWindowView::Startup, "qrc:/ui/views/StartupView.qml"},
+        {MainWindowView::Main, "qrc:/ui/views/MainView.qml"},
+        {MainWindowView::Login, "qrc:/ui/views/LoginView.qml"},
         {MainWindowView::NoConnection, "qrc:/ui/views/NoConnectionView.qml"},
-        {MainWindowView::NoShell, /**/ "qrc:/ui/views/NoShellView.qml"},
+        {MainWindowView::NoShell, "qrc:/ui/views/NoShellView.qml"},
         {MainWindowView::NotInstalled, "qrc:/ui/views/NotInstalledView.qml"},
+        {MainWindowView::MiscError, "qrc:/ui/views/MiscErrorView.qml"},
     };
 
     /**
@@ -80,6 +102,22 @@ class NavMediator : public QObject, public IEnvInfoSubscription {
      * @param v
      */
     void _setCurrentMainWindowView(MainWindowView v);
+
+    /**
+     * @brief Optional payload object for the main window.
+     */
+    QVariant _mainWindowPayload;
+
+    /**
+     * @brief Get the main windows optional payload.
+     */
+    // NOLINTNEXTLINE(modernize-use-trailing-return-type): not supported by moc
+    QVariant _getMainWindowPayload();
+
+    /**
+     * @brief Set the main windows optional payload.
+     */
+    void _setMainWindowPayload(QVariant payload);
 
     /**
      * @brief Implements IEnvInfoSubscription::updateEnv() to get changes in the

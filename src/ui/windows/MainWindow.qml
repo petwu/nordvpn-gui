@@ -61,7 +61,9 @@ ApplicationWindow {
             otherLoader.source = ''
         } else {
             mainLoader.visible = false
-            otherLoader.source = qmlFile
+            if (otherLoader.source !== qmlFile) {
+                otherLoader.source = qmlFile
+            }
         }
     }
 

@@ -27,6 +27,7 @@ auto EnvController::getEnvInfo() -> EnvInfo {
     envInfo.shellAvailable = EnvController::_isShellAvailable();
     envInfo.nordvpnInstalled = EnvController::_isNordvpnInstalled();
     envInfo.internetConnected = EnvController::_isInternetConnected();
+    envInfo.miscError = EnvController::_checkMiscError();
     if (envInfo.internetConnected) {
         envInfo.loggedIn = EnvController::_isLoggedIn();
         if (envInfo.loggedIn == false) {
@@ -94,7 +95,8 @@ auto EnvController::_isInternetConnected() -> bool {
 
 auto EnvController::_isShellAvailable() -> bool {
     // execute the no-op command that has to exit successfully
-    return Process::execute(":").success();
+    auto result = Process::execute(":");
+    return result.success();
 }
 
 auto EnvController::_isNordvpnInstalled() -> bool {
@@ -102,15 +104,27 @@ auto EnvController::_isNordvpnInstalled() -> bool {
     return result.success() && result.output.rfind("NordVPN Version", 0) == 0;
 }
 
-auto EnvController::_isLoggedIn() -> bool {
+auto EnvController::_isLoggedIn() -> Nullable<bool> {
     auto result = Process::execute("nordvpn account");
     auto out = util::string::toLower(result.output);
-    // true, if returned successfully ...
-    return result.success() &&
-           // ... and not contains "not logged in" ...
-           !std::regex_search(out, std::regex("not logged in")) &&
-           // ... and contains "email: ..."
-           std::regex_search(out, std::regex("email.+@"));
+    if (result.success()) {
+        return true;
+    }
+    if (!std::regex_search(out, std::regex("not logged in")) &&
+        std::regex_search(out, std::regex("email.+@"))) {
+        return false;
+    }
+    return Nullable<bool>();
+}
+
+auto EnvController::_checkMiscError() -> std::string {
+    auto result = Process::execute("nordvpn status");
+    if (result.success()) {
+        return "";
+    }
+    // nordvpn might write it's error message to stdout instead of stdin, who
+    // knows ...
+    return result.error != "" ? result.error : result.output;
 }
 
 void EnvController::attach(IEnvInfoSubscription *subscriber) {
@@ -158,6 +172,7 @@ void EnvController::_backgroundTask() {
         this->_envInfo.internetConnected = this->_isInternetConnected();
         this->_envInfo.shellAvailable = this->_isShellAvailable();
         this->_envInfo.nordvpnInstalled = this->_isNordvpnInstalled();
+        this->_envInfo.miscError = this->_checkMiscError();
         if (this->_envInfo.internetConnected && i == iMax) {
             i = 0;
             /*

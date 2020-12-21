@@ -35,5 +35,6 @@
         <file>ui/windows/LicenseWindow.qml</file>
         <file>ui/Translations.qml</file>
         <file>ui/sidepanel/TranslationHelper.js</file>
+        <file>ui/views/MiscErrorView.qml</file>
     </qresource>
 </RCC>

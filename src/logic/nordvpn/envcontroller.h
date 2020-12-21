@@ -156,7 +156,14 @@ class EnvController : public BaseController {
     /**
      * @brief Checks whether the a user is logged in to the NordVPN CLI.
      */
-    static auto _isLoggedIn() -> bool;
+    static auto _isLoggedIn() -> Nullable<bool>;
+
+    /**
+     * @brief Call "nordvpn status" to check if it returns any error that cannot
+     * be narrowed down any further.
+     * @return An empty string in case everything is alright.
+     */
+    static auto _checkMiscError() -> std::string;
 };
 
 #endif // ENVCONTROLLER_H

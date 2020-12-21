@@ -17,6 +17,8 @@ enum class MainWindowView {
              ///< #popen3()).
     NotInstalled, ///< Error view, in case the nordvpn CLI is not installed or
                   ///< not in $PATH.
+    MiscError,    ///< Error view, in case the is something wrong that cannot be
+                  ///< narrowed down to any specific error cause.
 };
 
 #endif // MAINWINDOWVIEW_H
