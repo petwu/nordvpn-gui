@@ -94,7 +94,11 @@ auto popen3(const std::string &command, pid_t *pid) -> ProcessResult {
         close(pipeErr[WRITE]);
 
         // wait for child process to finish and retrieve its return code
-        wait(&rc);
+        waitpid(_pid, &rc, 0);
+        // Do not use wait(&rc) which is equal to waitpid(-1, &rc, 0), since
+        // this waits until any child process terminates. In case there are
+        // several child processes this might be the wrong child which would
+        // cause race conditions and a possibly wrong value of rc.
 
         // read out and err strings from the corresponding pipes.
         // the data is written into the pipes by the child process
