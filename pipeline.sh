@@ -56,4 +56,5 @@ _ARTIFACTS_DIR=$ARTIFACTS_DIR-$START_TIME
 cp -rf $ARTIFACTS_DIR $_ARTIFACTS_DIR
 ARTIFACTS_DIR=$_ARTIFACTS_DIR
 unset _ARTIFACTS_DIR
+tar --force-local -cJf $ARTIFACTS_DIR.tar.xz -C $ARTIFACTS_DIR .
 log "pipeline artifacts are stored in: $ARTIFACTS_DIR"

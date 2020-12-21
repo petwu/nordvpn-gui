@@ -1,7 +1,13 @@
 # --------------------------------------------------------------------------------
-# configure application with defines in app.h.in
+# configure application with defines in *.h.in files
 # --------------------------------------------------------------------------------
-configure_file(app.h.in app.h)
+configure_file(app.h.in app.h @ONLY)
+include(GNUInstallDirs)
+file(RELATIVE_PATH REL_PATH_TO_RESOURCES
+  "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_BINDIR}"
+  "${CMAKE_INSTALL_PREFIX}/${RESOURCES_DIR_NAME}"
+)
+configure_file(config.h.in config.h @ONLY)
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
 
 # --------------------------------------------------------------------------------

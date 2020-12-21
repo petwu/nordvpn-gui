@@ -35,8 +35,8 @@ auto main(int argc, char *argv[]) -> int {
     QApplication::setApplicationName(APPLICATION_NAME);
     QApplication::setApplicationVersion(VERSION);
     QApplication::setWindowIcon(QIcon(":/icons/icon.ico"));
-    QQmlApplicationEngine engine;
-    engine.addImportPath(":/Style");
+    auto engine = std::make_unique<QQmlApplicationEngine>();
+    engine->addImportPath(":/Style");
 
     // run guard that make this app a single instance application
     // (must be used after QApplication was instantiated since the QLocalServer
@@ -59,7 +59,7 @@ auto main(int argc, char *argv[]) -> int {
 
     // setup connection between QML/UI and C++/logic through mediator objects
     // that are available as a QML context objects
-    QQmlContext *ctx = engine.rootContext();
+    QQmlContext *ctx = engine->rootContext();
     auto accountMediator = std::make_unique<AccountMediator>();
     auto connectionMediator = std::make_unique<ConnectionMediator>();
     auto navMediator = std::make_unique<NavMediator>();
@@ -110,8 +110,20 @@ auto main(int argc, char *argv[]) -> int {
     ctx->setContextProperty("NordAccountURL", NORD_ACCOUNT_URL);
 
     // load QML entry point
-    engine.load("qrc:/ui/windows/MainWindow.qml");
+    engine->load("qrc:/ui/windows/MainWindow.qml");
 
     // enter main loop
-    return QApplication::exec();
+    auto rc = QApplication::exec();
+
+    // Delete the QQmlEngine object before all *Mediator objects get deleted due
+    // to the return. Without this, a bunch of errors like e.g.
+    //   qrc:/ui/map/Marker.qml:25: TypeError: Cannot read property
+    //   'connectedCountryId' of null
+    // will be raised. See also the following bug report on this issue:
+    // https://bugreports.qt.io/browse/QTBUG-81247?focusedCommentId=512347#comment-512347
+    // This does not have a big impact when starting via a .desktop shortcut
+    // since the application should be quit anyway, but it is ugly when started
+    // via the command line.
+    engine.reset();
+    return rc;
 }

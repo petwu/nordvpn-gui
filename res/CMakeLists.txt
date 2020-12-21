@@ -1,7 +1,8 @@
 # --------------------------------------------------------------------------------
 # copy resources that are not compiled in by rcc (qrc)
 # --------------------------------------------------------------------------------
-file(COPY data/ DESTINATION data/)
+file(COPY data/ DESTINATION ${CMAKE_BINARY_DIR}/${RESOURCES_DIR_NAME})
+install(DIRECTORY data/ DESTINATION ${RESOURCES_DIR_NAME})
 
 # --------------------------------------------------------------------------------
 # source files
@@ -33,3 +34,8 @@ add_custom_target(lupdate
   WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
   COMMENT "Updating translations res/translations/*.ts"
 )
+
+# --------------------------------------------------------------------------------
+# desktop/start menu entry + icons
+# --------------------------------------------------------------------------------
+add_subdirectory(freedesktop)

@@ -1,22 +1,24 @@
 # --------------------------------------------------------------------------------
 # initialize project
 # --------------------------------------------------------------------------------
-cmake_minimum_required(VERSION 3.13)
-project(nordvpn-gui LANGUAGES CXX)
+cmake_minimum_required(VERSION 3.14)
+project(nordvpn-gui
+  VERSION 0.0.0
+  DESCRIPTION "Graphical User Interface (GUI) for the NordVPN Linux Client"
+  HOMEPAGE_URL "https://github.com/petwu/nordvpn-gui"
+  LANGUAGES CXX
+)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
 # --------------------------------------------------------------------------------
 # application description (see src/app.h.in as well)
 # --------------------------------------------------------------------------------
 set(AUTHOR "Peter Würth")
-set(REPOSITORY "https://github.com/petwu/nordvpn-gui")
-set(ISSUES_BOARD "https://github.com/petwu/nordvpn-gui/issues")
+set(REPOSITORY ${PROJECT_HOMEPAGE_URL})
+set(ISSUES_BOARD ${PROJECT_HOMEPAGE_URL}/issues)
 set(ORGANIZATION "NordVPN GUI")
 set(APPLICATION_NAME "NordVPN GUI")
-set(APPLICATION_DESCRIPTION "Graphical User Interface (GUI) for the NordVPN Linux Client")
-set(VERSION_MAJOR 0)
-set(VERSION_MINOR 0)
-set(VERSION_PATCH 0)
+set(APPLICATION_DESCRIPTION "${PROJECT_DESCRIPTION}")
 set(LICENSE "GPLv3")
 file(READ LICENSE LICENSE_TEXT)
 set(NORDVPN_DOWNLOAD_LINUX_URL "https://nordvpn.com/download/linux")
@@ -63,9 +65,14 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
   Threads::Threads
   ${CONAN_TARGETS}
 )
+include(GNUInstallDirs)
+set(RESOURCES_DIR_NAME ${CMAKE_INSTALL_DATAROOTDIR}/${PROJECT_NAME})
 add_subdirectory(src)
 add_subdirectory(res)
 add_subdirectory(doc)
+
+include(GNUInstallDirs)
+install(TARGETS ${PROJECT_NAME})
 
 # --------------------------------------------------------------------------------
 # create targets for clang-tidy and clang-format
@@ -84,3 +91,30 @@ add_cloc(cloc SOURCES
   res/CMakeLists.txt
   src
 )
+
+# --------------------------------------------------------------------------------
+# configure CPack to create installable packages
+# --------------------------------------------------------------------------------
+
+# create tar.xz archive with source files
+set(CPACK_SOURCE_GENERATOR TXZ)
+# create .deb and .rpm packages for Debian and 
+set(CPACK_GENERATOR TXZ DEB RPM)
+
+set(CPACK_PACKAGE_NAME ${PROJECT_NAME})
+set(CPACK_PACKAGE_CONTACT ${AUTHOR})
+set(CPACK_PACKAGE_VENDOR ${ORGANIZATION})
+set(CPACK_PACKAGE_ICON ${CMAKE_CURRENT_LIST_DIR}/res/icons/icon.ico)
+set(CPACK_PACKAGE_INSTALL_DIRECTORY ${CPACK_PACKAGE_NAME})
+set(CPACK_RESOURCE_FILE_LICENSE ${CMAKE_CURRENT_LIST_DIR}/LICENSE)
+set(CPACK_RESOURCE_FILE_README ${CMAKE_CURRENT_LIST_DIR}/README.md)
+set(CPACK_VERBATIM_VARIABLES ON)
+set(CPACK_SOURCE_IGNORE_FILES "/\\.git/" "/build/")
+set(CPACK_DEBIAN_FILE_NAME DEB-DEFAULT)
+set(CPACK_DEBIAN_PACKAGE_SHLIBDEPS ON)
+set(CPACK_DEBIAN_PACKAGE_SECTION "web")
+set(CPACK_RPM_FILE_NAME RPM-DEFAULT)
+set(CPACK_RPM_PACKAGE_LICENSE ${LICENSE})
+set(CPACK_OUTPUT_FILE_PREFIX "packages")
+
+include(CPack)

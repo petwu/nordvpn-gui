@@ -3,7 +3,9 @@
       ".clang-tidy": "yaml",
       ".clang-format": "yaml",
       ".drone.env": "shellscript",
-      "*.ts": "xml"
+      "*.ts": "xml",
+      "*.desktop": "pip-requirements",
+      "*.desktop.in": "pip-requirements"
   },
   "[cmake]": {
     "editor.detectIndentation": false,

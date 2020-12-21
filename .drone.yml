@@ -40,6 +40,20 @@ steps:
   - mkdir -p $ARTIFACTS_DIR/log
   - cp -f $BUILD_DIR/compile_commands.json $ARTIFACTS_DIR/log
 
+- name: packaging
+  pull: never
+  image: nordvpn-gui:1.0
+  volumes:
+  - name: conan-cache
+    path: /root/.conan
+  commands:
+  - cd $BUILD_DIR
+  - ninja package
+  - ninja package_source
+  - cd $CI_WORKSPACE
+  - mkdir -p $ARTIFACTS_DIR/packages
+  - cp -rf $BUILD_DIR/packages/* $ARTIFACTS_DIR/packages
+
 - name: generate docs
   pull: never
   image: nordvpn-gui:1.0

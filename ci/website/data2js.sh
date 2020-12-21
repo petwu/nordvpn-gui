@@ -30,7 +30,9 @@ log "creating data file for CI website: $ARTIFACTS_DIR/$DATA_FILE"
 # ------------------------------------------------------------------------------
 # pipeline log
 echo -n "const pipelineLog = \`" >> $DATA_FILE
-cat $PIPELINE_LOG_FILE >> $DATA_FILE
+PIPELINE_LOG=$( cat $PIPELINE_LOG_FILE )
+PIPELINE_LOG=${PIPELINE_LOG/\`/\\\`}
+echo "$PIPELINE_LOG" >> $DATA_FILE
 echo "\`" >> $DATA_FILE
 
 # ------------------------------------------------------------------------------
@@ -58,14 +60,23 @@ echo "]" >> $DATA_FILE
 echo "const logs = {" >> $DATA_FILE
 if [[ -d log ]]; then
     for LOG in log/*; do
-        LOG=${LOG/log\//}
-        echo -n "\"$LOG\": \`" >> $DATA_FILE
+        echo -n "\"${LOG/log\//}\": \`" >> $DATA_FILE
         cat $LOG >> $DATA_FILE
         echo -n "\`," >> $DATA_FILE
     done
 fi
 echo "
 }" >> $DATA_FILE
+
+# ------------------------------------------------------------------------------
+# packages
+echo "const packages = {" >> $DATA_FILE
+if [[ -d packages ]]; then
+    for PACKAGE in packages/*; do
+        echo "\"${PACKAGE/packages\//}\": \`$PACKAGE\`," >> $DATA_FILE
+    done
+fi
+echo "}" >> $DATA_FILE
 
 # ------------------------------------------------------------------------------
 # path to index.html of the generated documentation

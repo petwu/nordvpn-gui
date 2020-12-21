@@ -70,6 +70,7 @@ const app = new Vue({
     return {
       pipelineLog: _pipelineLog,
       logs: _logs,
+      packages,
       docIndex,
       activeTab: 'pipeline',
       selectedPipelineStep: firstStep,

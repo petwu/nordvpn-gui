@@ -19,6 +19,10 @@ RUN apt-get -qq update && \
         doxygen \
         openjdk-15-jre-headless \
         graphviz \
+        librsvg2-bin \
+        file \
+        dpkg-dev \
+        rpm \
         cloc && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*

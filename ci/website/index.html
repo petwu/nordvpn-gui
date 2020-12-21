@@ -53,6 +53,16 @@
                 Documentation
               </a>
             </li>
+            <li>
+              <a
+                href="#"
+                :class="activeTab === 'packages' ? 'ms-active' : ''"
+                v-on:click="onTabSelected('packages')"
+              >
+                <!-- tab 4 -->
+                Packages
+              </a>
+            </li>
           </ul>
         </div>
         <button
@@ -130,6 +140,21 @@
               <li>
                 <a :href="docIndex">
                   <button class="ms-btn ms-outline-info">Doxygen</button>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- tab 4 content -->
+      <div class="row" v-else-if="activeTab === 'packages'">
+        <div class="row">
+          <div class="col">
+            <ul class="select-list">
+              <li v-for="(path, package) in packages">
+                <a :href="path">
+                  <button class="ms-btn ms-outline-info">{{ package }}</button>
                 </a>
               </li>
             </ul>

@@ -8,11 +8,13 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-// clang-format off
+#include <QCoreApplication>
 
 namespace config {
 
     namespace consts {
+
+        // clang-format off
 
         constexpr uint8_t RATING_MIN           = 1;
         constexpr uint8_t RATING_MAX           = 5;
@@ -26,6 +28,8 @@ namespace config {
         constexpr std::chrono::duration CONNECTION_COMMANDS_PAUSE_PERIOD = std::chrono::seconds(30);
         constexpr std::chrono::duration RATING_PERIOD                    = std::chrono::minutes(1);
 
+        // clang-format on
+
     } // namespace consts
 
     namespace paths {
@@ -36,11 +40,18 @@ namespace config {
             return std::filesystem::path(home);
         }
 
+        static std::string __exeDir;
+
+        static auto getExeDir() -> std::filesystem::path {
+            return std::filesystem::path(
+                QCoreApplication::applicationDirPath().toStdString());
+        }
+
         static auto appDir() -> std::filesystem::path {
             return getHome() / ".nordvpn-gui";
         }
         static auto countriesJson() -> std::filesystem::path {
-            return std::filesystem::path("..") / "res" / "data" / "countries.json";
+            return getExeDir() / "@REL_PATH_TO_RESOURCES@" / "countries.json";
         }
         static auto recentsJson() -> std::filesystem::path {
             return appDir() / "recents.json";
@@ -56,8 +67,12 @@ namespace config {
 
     namespace urls {
 
+        // clang-format off
+
         constexpr const char* NORDVPN_API_ALL_SERVERS   = "https://api.nordvpn.com/v1/servers?limit=-1";
         constexpr const char* NORDVPN_API_ALL_COUNTRIES = "https://api.nordvpn.com/v1/servers/countries";
+
+        // clang-format on
 
     } // namespace urls
 
