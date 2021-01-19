@@ -59,6 +59,7 @@ if(NOT CMAKE_EXPORT_COMPILE_COMMANDS)
 endif()
 add_custom_target(compile-commands-no-autogen
   COMMAND ${CMAKE_COMMAND}
+    -DPROJECT_NAME="${PROJECT_NAME}"
     -P ${CMAKE_CURRENT_LIST_DIR}/scripts/compile_commands_no_autogen.cmake
   COMMENT "Generating compile_commands_no_autogen.json"
 )

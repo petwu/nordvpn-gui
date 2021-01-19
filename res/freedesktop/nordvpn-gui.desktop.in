@@ -1,15 +1,15 @@
 [Desktop Entry]
 Type=Application
 Version=1.0
-Name=NordVPN GUI
-Name[de]=NordVPN GUI
-Name[en]=NordVPN GUI
+Name=NordVPN GUI (Unofficial)
+Name[de]=NordVPN GUI (Unoffiziell)
+Name[en]=NordVPN GUI (Unofficial)
 GenericName=VPN Provider
 GenericName[de]=VPN Anbieter
 GenericName[en]=VPN Provider
-Comment=Graphical User Interface (GUI) for the NordVPN Linux Client
-Comment[de]=Grafische Benutzeroberfläche (GUI) für den NordVPN Linux Client
-Comment[en]=Graphical User Interface (GUI) for the NordVPN Linux Client
+Comment=UNOFFICIAL Graphical User Interface (GUI) for the NordVPN Linux Client
+Comment[de]=UNOFFIZIELLE Grafische Benutzeroberfläche (GUI) für den NordVPN Linux Client
+Comment[en]=UNOFFICIAL Graphical User Interface (GUI) for the NordVPN Linux Client
 Keywords=nordvpn;vpn;onion;p2p;
 Icon=@PROJECT_NAME@
 Categories=Network;Security;Utility;P2P;Qt;

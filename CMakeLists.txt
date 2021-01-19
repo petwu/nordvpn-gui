@@ -4,7 +4,7 @@
 cmake_minimum_required(VERSION 3.14)
 project(nordvpn-gui
   VERSION 0.0.0
-  DESCRIPTION "Graphical User Interface (GUI) for the NordVPN Linux Client"
+  DESCRIPTION "UNOFFICIAL Graphical User Interface (GUI) for the NordVPN Linux Client"
   HOMEPAGE_URL "https://github.com/petwu/nordvpn-gui"
   LANGUAGES CXX
 )
@@ -17,7 +17,7 @@ set(AUTHOR "Peter Würth")
 set(REPOSITORY ${PROJECT_HOMEPAGE_URL})
 set(ISSUES_BOARD ${PROJECT_HOMEPAGE_URL}/issues)
 set(ORGANIZATION "NordVPN GUI")
-set(APPLICATION_NAME "NordVPN GUI")
+set(APPLICATION_NAME "NordVPN GUI (Unofficial)")
 set(APPLICATION_DESCRIPTION "${PROJECT_DESCRIPTION}")
 set(LICENSE "GPLv3")
 file(READ LICENSE LICENSE_TEXT)
