@@ -6,11 +6,6 @@
     <div class="profile_inner">
         {{- if .imageUrl}}
         <img
-            {{- if (eq $.Site.Params.defaultTheme `dark`) }}
-            src="{{ .imageUrl.dark | absLangURL }}"
-            {{- else }}
-            src="{{ .imageUrl.light | absLangURL }}"
-            {{- end }}
             data-src-light="{{ .imageUrl.light | absLangURL }}"
             data-src-dark="{{ .imageUrl.dark | absLangURL }}"
             alt="{{ .imageTitle | default `profile image` }}"

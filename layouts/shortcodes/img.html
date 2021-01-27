@@ -3,11 +3,6 @@
 {{- if (isset .Params `src`) }}
     src="{{ .Get `src` | absLangURL }}"
 {{- else }}
-    {{- if (eq $.Site.Params.defaultTheme `dark`) }}
-        src="{{ .Get `srcDark` | absLangURL }}"
-    {{- else }}
-        src="{{ .Get `srcLight` | absLangURL }}"
-    {{- end }}
     data-src-light="{{ .Get `srcLight` | absLangURL }}"
     data-src-dark="{{ .Get `srcDark` | absLangURL }}"
 {{- end }}
