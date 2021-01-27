@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>NordVPN GUI (Unofficial)</title>
+    <link>https://petwu.github.io/nordvpn-gui/</link>
+    <description>Recent content on NordVPN GUI (Unofficial)</description>
+    <generator>Hugo -- gohugo.io</generator>
+    
+	<atom:link href="https://petwu.github.io/nordvpn-gui/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>📦 Installation</title>
+      <link>https://petwu.github.io/nordvpn-gui/docs/install/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://petwu.github.io/nordvpn-gui/docs/install/</guid>
+      <description>Learn how to install the application on different Linux distributions.</description>
+    </item>
+    
+    <item>
+      <title>⭐ Features</title>
+      <link>https://petwu.github.io/nordvpn-gui/docs/features/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://petwu.github.io/nordvpn-gui/docs/features/</guid>
+      <description>What features of the CLI application are accessible through the GUI?</description>
+    </item>
+    
+    <item>
+      <title>🖼 Screenshots</title>
+      <link>https://petwu.github.io/nordvpn-gui/docs/screenshots/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://petwu.github.io/nordvpn-gui/docs/screenshots/</guid>
+      <description>Look what the application looks like.</description>
+    </item>
+    
+    <item>
+      <title>☯ Compatibility</title>
+      <link>https://petwu.github.io/nordvpn-gui/docs/compatibility/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://petwu.github.io/nordvpn-gui/docs/compatibility/</guid>
+      <description>Notes on the compatibility of NordVPN CLI and GUI.</description>
+    </item>
+    
+    <item>
+      <title>💸 Donate</title>
+      <link>https://petwu.github.io/nordvpn-gui/docs/dontate/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://petwu.github.io/nordvpn-gui/docs/dontate/</guid>
+      <description>Donations to support my work are very welcome!</description>
+    </item>
+    
+    <item>
+      <title>🧩 Contributing</title>
+      <link>https://petwu.github.io/nordvpn-gui/docs/contribute/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://petwu.github.io/nordvpn-gui/docs/contribute/</guid>
+      <description>You can contribute in many ways: bug reports, feature requests, merge requests, etc.</description>
+    </item>
+    
+    <item>
+      <title>📰 Changelog</title>
+      <link>https://petwu.github.io/nordvpn-gui/docs/changelog/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://petwu.github.io/nordvpn-gui/docs/changelog/</guid>
+      <description>Version history, changes and compatibility notes.</description>
+    </item>
+    
+  </channel>
+</rss>

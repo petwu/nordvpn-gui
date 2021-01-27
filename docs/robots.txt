@@ -1,0 +1,3 @@
+User-agent: *
+Disallow:
+Sitemap: https://petwu.github.io/nordvpn-gui/sitemap.xml
