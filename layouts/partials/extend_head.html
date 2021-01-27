@@ -1,12 +1,4 @@
 <!--
-    BaseURL
-    =======
-
-    Set the base tag, since the website won't be hosted in the domain root.
--->
-<base href="{{ .Site.BaseURL }}" />
-
-<!--
     Favicon
     =======
 
@@ -16,17 +8,17 @@
     static/favicon/README.md). Hence override default values and include missing
     files here.
 -->
-<link rel="shortcut icon" href="favicon/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
-<link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
-<link rel="mask-icon" href="favicon/safari-pinned-tab.svg" color="#4680ff">
-<link rel="manifest" href="favicon/site.webmanifest">
-<meta name="msapplication-config" content="favicon/browserconfig.xml">
+<link rel="shortcut icon" href="{{ `favicon/favicon.ico` | absLangURL}}">
+<link rel="icon" type="image/png" sizes="16x16" href="{{ `favicon/favicon-16x16.png` | absLangURL }}">
+<link rel="icon" type="image/png" sizes="32x32" href="{{ `favicon/favicon-32x32.png` | absLangURL }}">
+<link rel="apple-touch-icon" sizes="180x180" href="{{ `favicon/apple-touch-icon.png` | absLangURL }}">
+<link rel="mask-icon" href="{{ `favicon/safari-pinned-tab.svg` | absLangURL }}" color="#4680ff">
+<link rel="manifest" href="{{ `favicon/site.webmanifest` | absLangURL }}">
+<meta name="msapplication-config" content="{{ `favicon/browserconfig.xml` | absLangURL }}">
 <meta name="theme-color" content="#4680ff">
 <meta name="msapplication-TileColor" content="#4680ff">
 
 <!--
     FontAwesome
 -->
-<link rel="stylesheet" href="fontawesome/css/all.min.css" />
+<link rel="stylesheet" href="{{ `fontawesome/css/all.min.css` | absLangURL }}" />

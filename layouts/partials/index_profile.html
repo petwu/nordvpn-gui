@@ -7,12 +7,12 @@
         {{- if .imageUrl}}
         <img
             {{- if (eq $.Site.Params.defaultTheme `dark`) }}
-            src="{{ .imageUrl.dark }}"
+            src="{{ .imageUrl.dark | absLangURL }}"
             {{- else }}
-            src="{{ .imageUrl.light }}"
+            src="{{ .imageUrl.light | absLangURL }}"
             {{- end }}
-            data-src-light="{{ .imageUrl.light }}"
-            data-src-dark="{{ .imageUrl.dark }}"
+            data-src-light="{{ .imageUrl.light | absLangURL }}"
+            data-src-dark="{{ .imageUrl.dark | absLangURL }}"
             alt="{{ .imageTitle | default `profile image` }}"
             width="{{- .imageWidth | default 150 -}}"
             height="{{- .imageHeight | default 150 -}}"
@@ -25,7 +25,7 @@
         {{- with .buttons }}
         <div class="buttons">
             {{- range . -}}
-            <a class="button" href="{{ trim .url " " }}" rel="noopener" title="{{ .name | humanize }}">
+            <a class="button" href="{{ trim .url " " | absLangURL }}" rel="noopener" title="{{ .name | humanize }}">
                 <span class="button-inner">{{ .name }}</span>
             </a>
             {{- end -}}

@@ -46,7 +46,7 @@ Params:
         Enabled: true
         Title: *website-title
         Subtitle: *website-description
-        Imageurl:
+        ImageUrl:
           Light: img/landing-page-screenshot-light.png
           Dark: img/landing-page-screenshot-dark.png
         ImageWidth: 768
