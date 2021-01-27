@@ -1,0 +1,43 @@
+<!--
+    Themed Images
+    =============
+
+    Change <img> src attributes according to the current theme (dark/light).
+    See ../shortcodes/themedImg.html for class and data-* attribute names.
+-->
+<script>
+
+    /** Updates the src of all <img>s. */
+    function updateThemedImageSources() {
+        let themeAttr = document.body.className.includes("dark")
+                        ? "srcDark"
+                        : "srcLight"
+        document.querySelectorAll("img").forEach(img => {
+            if (img.dataset[themeAttr])
+                img.src = img.dataset[themeAttr]
+        })
+    }
+
+    /** Checks if elem or one of it's parent elements has a specific id. */
+    function hasParentWithId(elem, id) {
+        if (elem.id === id)
+            return true;
+        return elem.parentNode &&
+            hasParentWithId(elem.parentNode, id)
+    }
+
+    /* updateThemedImageSources must be called executed after the function that
+     * actually changes the website theme by adding/removing the class "dark"
+     * from <body>. Otherwise, updateThemedImageSources would apply the wrong
+     * src.
+     * To ensure this, we add the event listener to document and not the
+     * #theme-toggle directly, since this event handler is ensured to be called
+     * afterwards through event bubbling. */
+    document.addEventListener("click", (e) => {
+        if (hasParentWithId(e.target, "theme-toggle"))
+            updateThemedImageSources()
+    })
+    // initial change
+    updateThemedImageSources()
+
+</script>

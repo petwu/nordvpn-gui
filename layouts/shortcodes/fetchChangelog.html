@@ -1,0 +1,1 @@
+{{ (getJSON .Site.Params.ChangelogJsonApiUrl).content | base64Decode | replaceRE "^#\\s+.*" "" | markdownify }}

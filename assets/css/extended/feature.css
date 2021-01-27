@@ -1,0 +1,47 @@
+/* ***************************************************************************** 
+ * Custom style for nice feature highlights.
+ * *****************************************************************************/
+
+.feature-gallery {
+    margin-top: 2em;
+    margin-bottom: 2em;
+}
+
+.feature-gallery .feature {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 1.5em auto;
+    padding: 0.5em;
+}
+
+.feature-gallery .feature .icon {
+    color: var(--logo-color);
+    display: block;
+}
+
+.feature-gallery .feature .title {
+    /* font-weight: bold; */
+    font-size: 140%;
+    margin-top: 1em;
+    margin-bottom: 0.25em;
+    text-align: center;
+}
+
+.feature-gallery .feature .description {
+    text-align: center;
+    font-style: italic;
+}
+
+@media screen and (min-width: 769px) {
+    .feature-gallery {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .feature-gallery .feature {
+        display: inline-flex;
+        width: 33.3333%;
+        flex: 0 0 33.3333%;
+    }
+}

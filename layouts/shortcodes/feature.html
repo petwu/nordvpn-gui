@@ -1,0 +1,5 @@
+<div class="feature">
+    <i class="icon {{ .Get "faStyle" | default "fas" }} fa-3x fa-{{ .Get "faIcon" }}"></i>
+    <div class="title">{{ .Get "title" }}</div>
+    <div class="description">{{ .Get "description" | replaceRE "\n\\s+" " " | markdownify }}</div>
+</div>

@@ -1,0 +1,36 @@
+<!--
+    override of the default papermod file: themes/papermod/layouts/partials/index_profile.html
+-->
+<div class="profile">
+    {{- with .Site.Params.profileMode }}
+    <div class="profile_inner">
+        {{- if .imageUrl}}
+        <img
+            {{- if (eq $.Site.Params.defaultTheme `dark`) }}
+            src="{{ .imageUrl.dark }}"
+            {{- else }}
+            src="{{ .imageUrl.light }}"
+            {{- end }}
+            data-src-light="{{ .imageUrl.light }}"
+            data-src-dark="{{ .imageUrl.dark }}"
+            alt="{{ .imageTitle | default `profile image` }}"
+            width="{{- .imageWidth | default 150 -}}"
+            height="{{- .imageHeight | default 150 -}}"
+        />
+        {{- end}}
+        <h1>{{- .title | default $.Site.Title | markdownify -}}</h1>
+        <span>{{- .subtitle | markdownify -}}</span>
+        {{- partial "social_icons.html" $.Site.Params.socialIcons -}}
+
+        {{- with .buttons }}
+        <div class="buttons">
+            {{- range . -}}
+            <a class="button" href="{{ trim .url " " }}" rel="noopener" title="{{ .name | humanize }}">
+                <span class="button-inner">{{ .name }}</span>
+            </a>
+            {{- end -}}
+        </div>
+        {{- end }}
+    </div>
+    {{- end}}
+</div>

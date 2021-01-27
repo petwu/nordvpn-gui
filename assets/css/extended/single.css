@@ -1,0 +1,38 @@
+/* ***************************************************************************** 
+ * Style overrides and extensions for a single content page.
+ * *****************************************************************************/
+
+.pagination {
+    margin-top: 40px;
+}
+
+@media screen and (min-width: 481px) {
+    .pagination {
+        position: relative;
+    }
+    
+    .pagination .up {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .pagination {
+        flex-direction: column;
+    }
+
+    .pagination .up {
+        position: static;
+        margin-top: 8px;
+        text-align: center;
+    }
+
+    .pagination .next {
+        margin-left: 0;
+        margin-top: 8px;
+        text-align: right;
+    }
+}

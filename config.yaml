@@ -1,0 +1,84 @@
+BaseURL: https://petwu.github.io/nordvpn-gui
+Repository: &repository-url https://github.com/petwu/nordvpn-gui
+ChangelogJsonApiUrl: &changelog-url https://api.github.com/repos/petwu/nordvpn-gui/contents/CHANGELOG.md
+Title: &website-title NordVPN GUI (Unofficial)
+TitleHeader: &website-title-header NordVPN GUI
+Description: &website-description >
+  A small Qt applications that provides a graphical user interface (GUI) on top
+  of the NordVPN command line client for Linux.
+Author: &website-author Peter Würth
+PayPalMe: &paypal-me https://paypal.me/petwu
+BuyMeACoffee: &buymeacoffee https://www.buymeacoffee.com/petwu
+
+Theme: papermod
+PublishDir: docs
+EnableRobotsTXT: true
+
+Minify:
+    disableXML: true
+    minifyOutput: true
+
+Params:
+    Env: production
+    Title: *website-title
+    Description: *website-description
+    ChangelogJsonApiUrl: *changelog-url
+    Author: *website-author
+    PayPalMe: *paypal-me
+    BuyMeACoffee: *buymeacoffee
+
+    DefaultTheme: auto # auto, dark, light
+    DisableThemeToggle: false
+
+    ShowReadingTime: false
+    ShowShareButtons: true
+    DisableSpecial1stPost: false
+    Comments: false
+    HideMeta: true
+    ShowToc: false
+    TocOpen: false
+
+    Label:
+        Text: *website-title-header
+        Icon: img/logo.svg
+
+    ProfileMode:
+        Enabled: true
+        Title: *website-title
+        Subtitle: *website-description
+        Imageurl:
+          Light: img/landing-page-screenshot-light.png
+          Dark: img/landing-page-screenshot-dark.png
+        ImageWidth: 768
+        ImageHeight: auto
+        ImageTitle: Screenshot
+        Buttons:
+            - name: 📦 Install
+              url: docs/install
+            - name: ⭐ Features
+              url: docs/features
+            - name: 🛈 More
+              url: docs
+
+    SocialIcons:
+        - name: github
+          url: *repository-url
+        - name: paypal
+          url: *paypal-me
+        - name: buymeacoffee
+          url: *buymeacoffee
+
+    FuseOpts:
+        IsCaseSensitive: false
+        ShouldSort: true
+        Location: 0
+        Distance: 1000
+        Threshold: 0.4
+        MinMatchCharLength: 0
+        Keys: ["title", "permalink", "summary", "content"]
+
+Menu:
+    Main:
+        - Name: Docs
+          url: /docs
+          Weight: 1

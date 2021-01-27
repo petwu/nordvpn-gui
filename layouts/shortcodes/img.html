@@ -1,0 +1,16 @@
+<img
+    class="align-{{ .Get `align` | default `left` }}"
+{{- if (isset .Params `src`) }}
+    src="{{ .Get `src` }}"
+{{- else }}
+    {{- if (eq $.Site.Params.defaultTheme `dark`) }}
+        src="{{ .Get `srcDark` }}"
+    {{- else }}
+        src="{{ .Get `srcLight` }}"
+    {{- end }}
+    data-src-light="{{ .Get `srcLight` }}"
+    data-src-dark="{{ .Get `srcDark` }}"
+{{- end }}
+    alt="{{ .Get `alt` | default `` }}"
+    style="width: {{- .Get `width` | default `auto` -}}; height: {{- .Get `height` | default `auto` -}};"
+/>

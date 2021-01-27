@@ -1,0 +1,36 @@
+/* ***************************************************************************** 
+ * Style overrides and extensions for the profile mode.
+ * *****************************************************************************/
+
+.main {
+    /* double padding top+bottom */
+    padding: calc(2 * var(--gap)) var(--gap);
+}
+
+.main .profile {
+    /* fix responsiveness, absolute positioning causes some weired layouts on small screens */
+    position: relative !important;
+}
+
+.main .profile img {
+    /* no border radius on the profile image, since screenshots are rectangular */
+    border-radius: unset !important;
+    pointer-events: unset !important;
+}
+
+.main .profile .buttons {
+    /* wider buttons container (default: 400px) */
+    max-width: 480px;
+}
+
+.main .profile .buttons .button {
+    /* make buttons to have the same width to be nicer aligned */
+    min-width: 140px;
+}
+
+@media screen and (max-width: 768px) {
+    .profile img {
+        /* disable image scale(.85) on small screens */
+        transform: unset !important;
+    }
+}

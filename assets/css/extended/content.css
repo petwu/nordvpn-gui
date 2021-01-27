@@ -1,0 +1,16 @@
+/* ***************************************************************************** 
+ * Custom style for various content elements.
+ * *****************************************************************************/
+
+img.align-left {
+    margin-right: auto;
+}
+
+img.align-center {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+img.align-right {
+    margin-left: auto;
+}
