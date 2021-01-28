@@ -34,7 +34,7 @@ Item {
     readonly property color colorRed: '#dc5152'
     readonly property color colorOrange: '#f18129'
     readonly property color colorYellow: '#ffc805'
-    readonly property color colorTextAlternate: IsDarkTheme ? Qt.darker(colorText, 1.5) : Qt.ligher(colorText, 1.5)
+    readonly property color colorTextAlternate: IsDarkTheme ? Qt.darker(colorText, 1.5) : Qt.lighter(colorText, 1.5)
 
     // semantic colors
     readonly property color colorError: colorRed
@@ -58,7 +58,7 @@ Item {
     readonly property color colorStatusPanelStarsOutline: colorYellow
 
     // sidebar
-    readonly property color colorCollapsibleTitle: IsDarkTheme ? Qt.darker(colorText, 1.25) : Qt.ligher(colorText, 1.25)
+    readonly property color colorCollapsibleTitle: IsDarkTheme ? Qt.darker(colorText, 1.25) : Qt.lighter(colorText, 1.25)
     readonly property color colorCollapsibleTitleExpanded: colorText
     readonly property color colorCollapsibleHandle: colorIcon
 

@@ -18,6 +18,7 @@
 #include "app.h"
 #include "logic/mediators/accountmediator.h"
 #include "logic/mediators/connectionmediator.h"
+#include "logic/mediators/mapimageprovider.h"
 #include "logic/mediators/navmediator.h"
 #include "logic/mediators/preferencesmediator.h"
 #include "logic/mediators/recentsmediator.h"
@@ -71,6 +72,10 @@ auto main(int argc, char *argv[]) -> int {
     ctx->setContextProperty("PreferencesMediator", preferencesMediator.get());
     ctx->setContextProperty("RecentsMediator", recentsMediator.get());
     ctx->setContextProperty("TrayMediator", &TrayMediator::getInstance());
+
+    // additional resource providers
+    auto mapImageProvider = std::make_unique<MapImageProvider>();
+    engine->addImageProvider("map", mapImageProvider.get());
 
     // populate whether to use dark or light colors:
     // hexadecimal color representation uses 8 bit per channel, hence whe values

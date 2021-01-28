@@ -1,6 +1,5 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.12
-import QtGraphicalEffects 1.12
 
 import Style 1.0
 
@@ -25,7 +24,7 @@ Item {
     // keep center of map centered on size changes by shifting the x/y Positioner
     // by half of the width/height change
     onWidthChanged: {
-        if (_.prevWidth === -1){
+        if (_.prevWidth === -1) {
             _.prevWidth = width
             return
         }
@@ -241,18 +240,12 @@ Item {
 
         Image {
             id: mapImg
-            source: 'qrc:/img/map.svg'
+            source: "image://map/" + Style.colorMapLand
             sourceSize: Qt.size(0, mapMaxHeight)
             fillMode: Image.PreserveAspectFit
             x: 0
             y: 0
             height: parent.height
-        }
-
-        ColorOverlay {
-            anchors.fill: map
-            source: map
-            color: Style.colorMapLand
         }
 
         Behavior on x {

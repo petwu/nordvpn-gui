@@ -3,6 +3,7 @@
 #include <utility>
 
 #include "common/types/nullable.h"
+#include "logic/mediators/qmldataconverter.h"
 
 NavMediator::NavMediator() {
     EnvController &envController = EnvController::getInstance();

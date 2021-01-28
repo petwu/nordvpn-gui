@@ -3,9 +3,11 @@
 
 #include <atomic>
 #include <vector>
+#include <string>
 
 #include "basecontroller.h"
 #include "logic/models/envinfo.h"
+#include "common/types/nullable.h"
 
 /**
  * @brief IEnvInfoSubscription is an interface that can be implemented by any

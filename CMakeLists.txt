@@ -56,12 +56,12 @@ conan_cmake_run(
 # --------------------------------------------------------------------------------
 # main executable
 # --------------------------------------------------------------------------------
-find_package(Qt5 COMPONENTS Core Quick Widgets REQUIRED)
+find_package(Qt5 COMPONENTS Core Quick Widgets Svg REQUIRED)
 find_package(Threads REQUIRED)
 add_executable(${PROJECT_NAME})
 target_include_directories(${PROJECT_NAME} PRIVATE src)
 target_link_libraries(${PROJECT_NAME} PRIVATE
-  Qt5::Core Qt5::Quick Qt5::Widgets
+  Qt5::Core Qt5::Quick Qt5::Widgets Qt5::Svg
   Threads::Threads
   ${CONAN_TARGETS}
 )

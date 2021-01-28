@@ -37,6 +37,7 @@ target_sources(${PROJECT_NAME} PRIVATE
   # logic
   logic/mediators/accountmediator.cpp
   logic/mediators/connectionmediator.cpp
+  logic/mediators/mapimageprovider.cpp
   logic/mediators/navmediator.cpp
   logic/mediators/preferencesmediator.cpp
   logic/mediators/qmldataconverter.cpp

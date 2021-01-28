@@ -11,7 +11,6 @@
 #include "logic/enums/MainWindowView.h"
 #include "logic/models/envinfo.h"
 #include "logic/nordvpn/envcontroller.h"
-#include "qmldataconverter.h"
 
 /**
  * @brief The NavMediator class is responsible for communicating with the UI
