@@ -60,13 +60,25 @@ Item {
 
         MenuSeparator { }
 
-        /* TODO
         MenuItem {
+            //: Documentation, project website.
+            text: qsTr('Help/User Guide')
+            icon.name: 'dialog-question'
+            action: helpAction
+        }
+        MenuItem {
+            //: Financally support the development of this app.
             text: qsTr('Donate')
             icon.name: 'help-donate'
             action: donateAction
         }
-        */
+
+        MenuItem {
+            //: Financally support the development of this app.
+            text: qsTr('Bugs/Features/Questions')
+            icon.name: 'mail-send'
+            action: contributingAction
+        }
 
         MenuItem {
             //: Creadits to pay attribution to open source software used by this project.
@@ -105,8 +117,18 @@ Item {
     }
 
     Action {
+        id: helpAction
+        onTriggered: Qt.openUrlExternally(DocsURL)
+    }
+
+    Action {
         id: donateAction
-        onTriggered: Qt.openUrlExternally(RepositoryURL)
+        onTriggered: Qt.openUrlExternally(DonateURL)
+    }
+
+    Action {
+        id: contributingAction
+        onTriggered: Qt.openUrlExternally(IssuesURL)
     }
 
     Action {

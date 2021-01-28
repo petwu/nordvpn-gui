@@ -32,7 +32,7 @@ auto main(int argc, char *argv[]) -> int {
     // create Qt application
     QApplication _(argc, argv);
     QApplication::setOrganizationName(ORGANIZATION);
-    QApplication::setOrganizationDomain(REPOSITORY);
+    QApplication::setOrganizationDomain(PROJECT_WEBSITE_URL);
     QApplication::setApplicationName(APPLICATION_NAME);
     QApplication::setApplicationVersion(VERSION);
     QApplication::setWindowIcon(QIcon(":/icons/icon.ico"));
@@ -106,8 +106,11 @@ auto main(int argc, char *argv[]) -> int {
     ctx->setContextProperty("ApplicationName", APPLICATION_NAME);
     ctx->setContextProperty("ApplicationDescription", APPLICATION_DESCRIPTION);
     ctx->setContextProperty("Author", AUTHOR);
-    ctx->setContextProperty("RepositoryURL", REPOSITORY);
-    ctx->setContextProperty("IssuesURL", ISSUES_BOARD);
+    ctx->setContextProperty("RepositoryURL", REPOSITORY_URL);
+    ctx->setContextProperty("ProjectWebsiteURL", PROJECT_WEBSITE_URL);
+    ctx->setContextProperty("DocsURL", DOCS_URL);
+    ctx->setContextProperty("DonateURL", DONATE_URL);
+    ctx->setContextProperty("IssuesURL", ISSUES_URL);
     ctx->setContextProperty("Version", VERSION);
     ctx->setContextProperty("License", LICENSE);
     ctx->setContextProperty("LicenseText", LICENSE_TEXT);

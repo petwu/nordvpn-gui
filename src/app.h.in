@@ -4,8 +4,11 @@
 // clang-format off
 
 constexpr const char* AUTHOR = "@AUTHOR@";
-constexpr const char* REPOSITORY = "@REPOSITORY@";
-constexpr const char* ISSUES_BOARD = "@ISSUES_BOARD@";
+constexpr const char* REPOSITORY_URL = "@REPOSITORY_URL@";
+constexpr const char* PROJECT_WEBSITE_URL = "@PROJECT_WEBSITE_URL@";
+constexpr const char* DOCS_URL = "@DOCS_URL@";
+constexpr const char* DONATE_URL = "@DONATE_URL@";
+constexpr const char* ISSUES_URL = "@ISSUES_URL@";
 constexpr const char* ORGANIZATION = "@ORGANIZATION@";
 constexpr const char* APPLICATION_NAME = "@APPLICATION_NAME@";
 constexpr const char* APPLICATION_DESCRIPTION = "@APPLICATION_DESCRIPTION@";

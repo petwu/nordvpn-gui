@@ -63,7 +63,7 @@ ApplicationWindow {
                        'provided by third parties free of charge. These include software libraries' +
                        'providing some funtionality or resource files like fonts, icons or images. ' +
                        'They are used under the licenses listed below.<br />' +
-                       '<b><i>Thanks to everyone who contributed to them!</i></b>')
+                       '<b><i>Thanks to everyone who contributed to them!</i></b>').arg(ApplicationName)
         }
 
         MenuSeparator {

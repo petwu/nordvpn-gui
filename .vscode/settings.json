@@ -1,11 +1,12 @@
 {
   "files.associations": {
-      ".clang-tidy": "yaml",
-      ".clang-format": "yaml",
-      ".drone.env": "shellscript",
-      "*.ts": "xml",
-      "*.desktop": "pip-requirements",
-      "*.desktop.in": "pip-requirements"
+    ".clang-tidy": "yaml",
+    ".clang-format": "yaml",
+    ".drone.env": "shellscript",
+    "*.ts": "xml",
+    "*.desktop": "pip-requirements",
+    "*.desktop.in": "pip-requirements",
+    "*.in": "cpp"
   },
   "[cmake]": {
     "editor.detectIndentation": false,

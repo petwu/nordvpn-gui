@@ -5,7 +5,7 @@ cmake_minimum_required(VERSION 3.14)
 project(nordvpn-gui
   VERSION 0.0.0
   DESCRIPTION "UNOFFICIAL Graphical User Interface (GUI) for the NordVPN Linux Client"
-  HOMEPAGE_URL "https://github.com/petwu/nordvpn-gui"
+  HOMEPAGE_URL "https://petwu.github.io/nordvpn-gui"
   LANGUAGES CXX
 )
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
@@ -14,13 +14,16 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 # application description (see src/app.h.in as well)
 # --------------------------------------------------------------------------------
 set(AUTHOR "Peter Würth")
-set(REPOSITORY ${PROJECT_HOMEPAGE_URL})
-set(ISSUES_BOARD ${PROJECT_HOMEPAGE_URL}/issues)
+set(REPOSITORY_URL "https://github.com/petwu/nordvpn-gui")
+set(PROJECT_WEBSITE_URL "https://petwu.github.io/nordvpn-gui")
+set(DOCS_URL "${PROJECT_WEBSITE_URL}/docs")
+set(DONATE_URL "${PROJECT_WEBSITE_URL}/docs/donate")
+set(ISSUES_URL "${PROJECT_WEBSITE_URL}/docs/contribute")
 set(ORGANIZATION "NordVPN GUI")
 set(APPLICATION_NAME "NordVPN GUI (Unofficial)")
 set(APPLICATION_DESCRIPTION "${PROJECT_DESCRIPTION}")
 set(LICENSE "GPLv3")
-file(READ LICENSE LICENSE_TEXT)
+file(READ "LICENSE" LICENSE_TEXT)
 set(NORDVPN_DOWNLOAD_LINUX_URL "https://nordvpn.com/download/linux")
 set(NORD_ACCOUNT_URL "https://my.nordaccount.com")
 

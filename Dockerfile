@@ -14,6 +14,7 @@ RUN apt-get -qq update && \
         qt5-default \
         qtdeclarative5-dev \
         qttools5-dev-tools \
+        libqt5svg5-dev \
         git \
         python3-pip \
         doxygen \
