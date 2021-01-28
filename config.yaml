@@ -49,7 +49,7 @@ Params:
         ImageUrl:
           Light: img/landing-page-screenshot-light.png
           Dark: img/landing-page-screenshot-dark.png
-        ImageWidth: 768
+        ImageWidth: 966
         ImageHeight: auto
         ImageTitle: Screenshot
         Buttons:

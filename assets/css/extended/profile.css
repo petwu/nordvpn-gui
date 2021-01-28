@@ -4,7 +4,7 @@
 
 .main {
     /* double padding top+bottom */
-    padding: calc(2 * var(--gap)) var(--gap);
+    padding: calc(1.5 * var(--gap)) var(--gap);
 }
 
 .main .profile {
@@ -16,6 +16,19 @@
     /* no border radius on the profile image, since screenshots are rectangular */
     border-radius: unset !important;
     pointer-events: unset !important;
+}
+
+@media screen and (min-width: 769px) {
+    .main .profile img {
+        margin-top: -1em;
+        margin-bottom: -1em;
+    }
+
+    .main .profile h1 + span {
+        display: block;
+        margin: auto;
+        width: 75%;
+    }
 }
 
 .main .profile .buttons {
