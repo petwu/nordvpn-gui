@@ -26,7 +26,7 @@ set(_icon_svg ${CMAKE_CURRENT_SOURCE_DIR}/${PROJECT_NAME}.svg)
 # generate png bitmaps of different sizes from the input svg vector graphic
 foreach(_size IN ITEMS 16 22 24 32 48 64 128 256 512)
   # output directory and path
-  set(_out_dir ${_size}/apps)
+  set(_out_dir ${_size}x${_size}/apps)
   set(_out ${_out_dir}/${PROJECT_NAME}.png)
   # command calling rsvg-convert
   add_custom_command(

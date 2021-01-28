@@ -25,8 +25,9 @@ configure_file(
   translations/translations.qrc
   COPYONLY
 )
+find_program(lupdate_EXECUTABLE lupdate)
 add_custom_target(lupdate
-  COMMAND ${Qt5_LUPDATE_EXECUTABLE}
+  COMMAND ${lupdate_EXECUTABLE}
     -source-language en_US                          # for new files
     -no-obsolete                                    # drop obsolete strings
     -recursive src                                  # input
