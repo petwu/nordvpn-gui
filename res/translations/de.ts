@@ -940,28 +940,73 @@ Button the user presses when he/she attempts to login with the provided credenti
         <translation>Einstellungen</translation>
     </message>
     <message>
-        <location filename="../../src/ui/general/MenuButton.qml" line="73"/>
+        <location filename="../../src/ui/general/MenuButton.qml" line="65"/>
+        <source>Help/User Guide</source>
+        <extracomment>Documentation, project website.</extracomment>
+        <translation>Hilfe/Anleitung</translation>
+    </message>
+    <message>
+        <location filename="../../src/ui/general/MenuButton.qml" line="71"/>
+        <source>Donate</source>
+        <extracomment>Financally support the development of this app.</extracomment>
+        <translation>Spenden</translation>
+    </message>
+    <message>
+        <location filename="../../src/ui/general/MenuButton.qml" line="78"/>
+        <source>Bugs/Features/Questions</source>
+        <extracomment>Financally support the development of this app.</extracomment>
+        <translation>Bugs/Funktionen/Fragen</translation>
+    </message>
+    <message>
+        <location filename="../../src/ui/general/MenuButton.qml" line="85"/>
         <source>Credits</source>
         <extracomment>Creadits to pay attribution to open source software used by this project.</extracomment>
         <translation>Credits</translation>
     </message>
     <message>
-        <location filename="../../src/ui/general/MenuButton.qml" line="80"/>
+        <location filename="../../src/ui/general/MenuButton.qml" line="92"/>
         <source>About</source>
         <extracomment>About this application (version info, copyright, license, etc.).</extracomment>
         <translation>Über</translation>
     </message>
     <message>
-        <location filename="../../src/ui/general/MenuButton.qml" line="89"/>
+        <location filename="../../src/ui/general/MenuButton.qml" line="101"/>
         <source>Logout</source>
         <extracomment>Logout from the NordVPN service.</extracomment>
         <translation>Abmelden</translation>
     </message>
     <message>
-        <location filename="../../src/ui/general/MenuButton.qml" line="96"/>
+        <location filename="../../src/ui/general/MenuButton.qml" line="108"/>
         <source>Quit</source>
         <extracomment>Terminate the app (including the system tray icon).</extracomment>
         <translation>Beenden</translation>
+    </message>
+</context>
+<context>
+    <name>MiscErrorView</name>
+    <message>
+        <location filename="../../src/ui/views/MiscErrorView.qml" line="32"/>
+        <source>Something went wrong ...</source>
+        <extracomment>Title on the error view that is shown, when an unknown error occured.</extracomment>
+        <translation>Etwas ist schief gelaufen ...</translation>
+    </message>
+    <message>
+        <location filename="../../src/ui/views/MiscErrorView.qml" line="39"/>
+        <source>The NordVPN CLI application reported the following error:</source>
+        <extracomment>Text 1 on the error view that is shown, when an unknown error occured.</extracomment>
+        <translation>Die NordVPN-CLI-Anwendung hat folgenden Fehler gemeldet:</translation>
+    </message>
+    <message>
+        <location filename="../../src/ui/views/MiscErrorView.qml" line="75"/>
+        <source>If you do not know how to handle to this issue, ask &lt;a href=&quot;https://duckduckgo.com/?q=&quot;&gt;DuckDuckGo&lt;/a&gt;, &lt;a href=&quot;https://www.google.com/search?q=&quot;&gt;Google&lt;/a&gt; or your favorite search engine for help.</source>
+        <translation>Wenn Sie nicht wissen, wie Sie dieses Problem lösen können, fragen Sie &lt;a href=&quot;https://duckduckgo.com/?q=&quot;&gt;DuckDuckGo&lt;/a&gt;, &lt;a href=&quot;https://www.google.com/search?q=&quot;&gt;Google&lt;/a&gt; oder Ihre Lieblingssuchmaschine um Hilfe.</translation>
+        <extra-Note>Keep the HTML tags (words with angle brackets, e.g. &lt;br /&gt;).</extra-Note>
+    </message>
+    <message>
+        <location filename="../../src/ui/views/MiscErrorView.qml" line="96"/>
+        <source>Consider creating an &lt;a href=&quot;%1&quot;&gt;issue&lt;/a&gt; if you cannot resolve the problem yourself.</source>
+        <translation>Falls Sie das Problem nicht eigenständig lösen können, besteht die Möglichkeit, das &lt;a href=&quot;%1&quot;&gt;Problem zu melden&lt;/a&gt;.</translation>
+        <extra-Note>Keep the HTML tags (words with angle brackets, e.g. &lt;br /&gt;).</extra-Note>
     </message>
 </context>
 <context>
