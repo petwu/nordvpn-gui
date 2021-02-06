@@ -6,6 +6,7 @@
 #include <map>
 #include <regex>
 #include <sstream>
+#include <string>
 #include <thread>
 #include <utility>
 
@@ -18,6 +19,7 @@
 #include "data/enums/technology.h"
 #include "data/models/server.h"
 #include "logic/enums/connectionstatus.h"
+#include "logic/models/connectioninfo.h"
 #include "logic/nordvpn/servercontroller.h"
 
 auto StatusController::getInstance() -> StatusController & {

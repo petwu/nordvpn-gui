@@ -56,7 +56,7 @@ class EnvInfo {
      * https://www.reddit.com/r/nordvpn/comments/kfewlb/solution_whoops_cannot_reach_system_daemon_after
      * Therefore, the cause of the error is not being interpreted any further.
      */
-    std::string miscError = "";
+    std::string miscError;
 
     /**
      * @brief Convert the object into a printable, nice-to-read string.

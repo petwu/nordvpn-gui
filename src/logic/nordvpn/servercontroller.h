@@ -12,6 +12,7 @@
 #include "data/enums/group.h"
 #include "data/models/country.h"
 #include "data/models/server.h"
+#include "logic/models/connectioninfo.h"
 #include "logic/nordvpn/preferencescontroller.h"
 #include "logic/nordvpn/statuscontroller.h"
 
@@ -197,9 +198,12 @@ class ServerController : public BaseController,
      * @brief Attach a subscriber that will be notified by the background task.
      * @param subscriber An object implementing ICountriesSubscription. This
      * object then may call attach(this).
+     * @param notifyImmediately If true, the newly attached subscriber will be
+     * notified initially.
      * @note Don't forget to call detach() in the destructor.
      */
-    void attach(ICountriesSubscription *subscriber);
+    void attach(ICountriesSubscription *subscriber,
+                bool notifyImmediately = false);
 
     /**
      * @brief Unsubscriber a subscriber. The background task will continue to
@@ -331,7 +335,7 @@ class ServerController : public BaseController,
     /**
      * @brief Implements IConnectionInfoSubscription::updateConnectionInfo().
      */
-    virtual void updateConnectionInfo(const ConnectionInfo &newInfo) override;
+    void updateConnectionInfo(const ConnectionInfo &newInfo) override;
 };
 
 #endif // SERVERCONTROLLER_H

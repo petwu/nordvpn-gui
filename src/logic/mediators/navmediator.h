@@ -116,7 +116,7 @@ class NavMediator : public QObject, public IEnvInfoSubscription {
     /**
      * @brief Set the main windows optional payload.
      */
-    void _setMainWindowPayload(QVariant payload);
+    void _setMainWindowPayload(const QVariant &payload);
 
     /**
      * @brief Implements IEnvInfoSubscription::updateEnv() to get changes in the

@@ -3,13 +3,16 @@
 
 #include <QAction>
 #include <QByteArrayData>
-#include <QLabel>
 #include <QMenu>
 #include <QObject>
 #include <QString>
 #include <QSystemTrayIcon>
+#include <QtGlobal>
 #include <memory>
+#include <vector>
 
+#include "data/models/country.h"
+#include "logic/models/connectioninfo.h"
 #include "logic/nordvpn/servercontroller.h"
 #include "logic/nordvpn/statuscontroller.h"
 
@@ -52,7 +55,7 @@ class TrayMediator : public QObject,
     // NOLINTNEXTLINE(modernize-use-trailing-return-type): not supported by moc
     TrayMediator &operator=(TrayMediator &&) = delete;
 
-    ~TrayMediator() override = default;
+    ~TrayMediator() override;
 
   public slots: // NOLINT(readability-redundant-access-specifiers)
     /**

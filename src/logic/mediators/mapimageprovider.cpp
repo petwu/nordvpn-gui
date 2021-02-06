@@ -6,9 +6,9 @@
 #include <QPainter>
 #include <QSvgRenderer>
 #include <QTextStream>
-#include <utility>
+#include <cmath>
 
-auto MapImageProvider::requestPixmap(const QString &color, QSize *size,
+auto MapImageProvider::requestPixmap(const QString &color, QSize * /*size*/,
                                      const QSize &requestedSize) -> QPixmap {
     QPixmap pixmap;
     // map.svg is embedded as QRC resource
@@ -29,9 +29,9 @@ auto MapImageProvider::requestPixmap(const QString &color, QSize *size,
         int width = requestedSize.width();
         int height = requestedSize.height();
         if (width <= 0) {
-            width = height * ratio;
+            width = static_cast<int>(std::round(height * ratio));
         } else if (height <= 0) {
-            height = width / ratio;
+            height = static_cast<int>(std::round(width / ratio));
         }
 
         // render svg as pixmap
@@ -42,5 +42,5 @@ auto MapImageProvider::requestPixmap(const QString &color, QSize *size,
         pixmap = QPixmap::fromImage(image);
     }
     file.close();
-    return std::move(pixmap);
+    return pixmap;
 }

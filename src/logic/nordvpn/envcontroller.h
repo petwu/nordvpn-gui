@@ -2,12 +2,12 @@
 #define ENVCONTROLLER_H
 
 #include <atomic>
-#include <vector>
 #include <string>
+#include <vector>
 
 #include "basecontroller.h"
-#include "logic/models/envinfo.h"
 #include "common/types/nullable.h"
+#include "logic/models/envinfo.h"
 
 /**
  * @brief IEnvInfoSubscription is an interface that can be implemented by any

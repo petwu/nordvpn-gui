@@ -124,7 +124,7 @@ auto EnvController::_checkMiscError() -> std::string {
     }
     // nordvpn might write it's error message to stdout instead of stdin, who
     // knows ...
-    return result.error != "" ? result.error : result.output;
+    return !result.error.empty() ? result.error : result.output;
 }
 
 void EnvController::attach(IEnvInfoSubscription *subscriber) {

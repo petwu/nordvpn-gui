@@ -1,5 +1,6 @@
 #include "connectioninfo.h"
 
+#include <algorithm>
 #include <vector>
 
 #include "nlohmann/json.hpp"

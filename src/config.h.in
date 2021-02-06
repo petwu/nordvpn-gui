@@ -40,8 +40,6 @@ namespace config {
             return std::filesystem::path(home);
         }
 
-        static std::string __exeDir;
-
         static auto getExeDir() -> std::filesystem::path {
             return std::filesystem::path(
                 QCoreApplication::applicationDirPath().toStdString());

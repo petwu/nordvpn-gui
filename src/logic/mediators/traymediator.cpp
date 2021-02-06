@@ -1,9 +1,19 @@
 #include "traymediator.h"
 
 #include <QApplication>
+#include <QArgument>
+#include <QCoreApplication>
 #include <QIcon>
+#include <QMetaObject>
 #include <QPixmap>
 #include <QTimer>
+#include <Qt>
+#include <cstdint>
+#include <functional>
+#include <memory>
+#include <string>
+
+#include "logic/enums/connectionstatus.h"
 
 auto TrayMediator::getInstance() -> TrayMediator & {
     static TrayMediator instance;
@@ -11,9 +21,6 @@ auto TrayMediator::getInstance() -> TrayMediator & {
 }
 
 TrayMediator::TrayMediator() {
-    StatusController::getInstance().attach(this);
-    ServerController::getInstance().attach(this);
-
     // init context menu
     this->_trayContextMenu = std::make_unique<QMenu>();
     this->_statusAction = this->_trayContextMenu->addAction("-");
@@ -33,12 +40,10 @@ TrayMediator::TrayMediator() {
     this->_countriesSubmenu = std::make_unique<QMenu>(tr("Countries"));
     this->_countriesSubmenu->setIcon(QIcon::fromTheme("flag"));
     this->_trayContextMenu->addMenu(this->_countriesSubmenu.get());
-    this->updateCountryList(ServerController::getInstance().getAllCountries());
 
     this->_recentsSubmenu = std::make_unique<QMenu>(tr("Recents"));
     this->_recentsSubmenu->setIcon(QIcon::fromTheme("edit-undo"));
     this->_trayContextMenu->addMenu(this->_recentsSubmenu.get());
-    this->updateRecents(ServerController::getInstance().getRecentCountries());
 
     this->_trayContextMenu->addSeparator();
 
@@ -62,6 +67,16 @@ TrayMediator::TrayMediator() {
                 this->toggleMainWindowAction();
             }
         });
+
+    // subsribe to controller to get updates about the connection status and
+    // country/recents lists
+    StatusController::getInstance().attach(this);
+    ServerController::getInstance().attach(this, true);
+}
+
+TrayMediator::~TrayMediator() {
+    StatusController::getInstance().detach(this);
+    ServerController::getInstance().detach(this);
 }
 
 void TrayMediator::setIconSource(const QString &filename) {
@@ -72,15 +87,16 @@ void TrayMediator::setIconSource(const QString &filename) {
 }
 
 // dispatch some function to the main UI thread
-void dispatch(std::function<void()> callback) {
+void dispatch(const std::function<void()> &callback) {
     // use a single shot timer to queue the callback in the main UI thread
-    auto *timer = new QTimer();
+    auto *timer = new QTimer(); // NOLINT(cppcoreguidelines-owning-memory): Qt
+                                // has it's own memory management, that does not
+                                // play well with unique_ptr<> and similar
     timer->moveToThread(QApplication::instance()->thread());
     timer->setSingleShot(true);
     QObject::connect(timer, &QTimer::timeout, [=]() {
         // this gets executed on the main thread
         callback();
-        timer->deleteLater();
     });
     // start the timer that times out immediately and then executes the callback
     QMetaObject::invokeMethod(timer, "start", Qt::QueuedConnection,
@@ -107,14 +123,14 @@ void TrayMediator::updateRecents(const std::vector<Country> &newRecents) {
     // quickly reconnect
     dispatch([newRecents, this] {
         this->_recentsSubmenu->clear();
-        for (auto r : newRecents) {
+        for (const auto &r : newRecents) {
             auto countryId = r.id;
             this->_recentsSubmenu->addAction(
                 QIcon(QString(":/flag/").append(r.countryCode.c_str())),
                 QString(r.name.c_str()),
                 [countryId, this] { this->connectToCountryById(countryId); });
         }
-        this->_recentsSubmenu->menuAction()->setVisible(newRecents.size() != 0);
+        this->_recentsSubmenu->menuAction()->setVisible(!newRecents.empty());
         // TODO: fix: tray submenu appears off screen the first time opened
         // without an explicit geometry update, the submenu might be display
         // wrong (partially out of screen) the first time it is opened after the
@@ -129,7 +145,7 @@ void TrayMediator::updateCountryList(const std::vector<Country> &countryList) {
     // since the last time --> if not: skip
     static uint64_t lastIdSum;
     int64_t idSum = 0;
-    for (auto c : countryList) {
+    for (const auto &c : countryList) {
         idSum += c.id;
     }
     if (idSum == lastIdSum) {
@@ -140,7 +156,7 @@ void TrayMediator::updateCountryList(const std::vector<Country> &countryList) {
     // connect to that country
     dispatch([countryList, this] {
         this->_countriesSubmenu->clear();
-        for (auto c : countryList) {
+        for (const auto &c : countryList) {
             auto countryId = c.id;
             this->_countriesSubmenu->addAction(
                 QIcon(QString(":/flag/").append(c.countryCode.c_str())),

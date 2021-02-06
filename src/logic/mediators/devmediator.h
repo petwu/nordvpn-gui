@@ -1,11 +1,12 @@
 #ifndef DEVMEDIATOR_H
 #define DEVMEDIATOR_H
 
-#include <string>
-
+#include <QByteArrayData>
 #include <QObject>
 #include <QString>
+#include <string>
 
+#include "logic/models/connectioninfo.h"
 #include "logic/nordvpn/statuscontroller.h"
 
 /**
@@ -88,7 +89,7 @@ class DevMediator : public QObject, public IConnectionInfoSubscription {
      * @brief Getter for _showDebugInformation.
      */
     // NOLINTNEXTLINE(modernize-use-trailing-return-type): not supported by moc
-    bool _getShowDebugInformation();
+    bool _getShowDebugInformation() const;
 };
 
 #endif // DEVMEDIATOR_H

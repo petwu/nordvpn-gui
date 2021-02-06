@@ -15,6 +15,7 @@
 #include "data/models/location.h"
 #include "data/repositories/preferencesrepository.h"
 #include "data/repositories/serverrepository.h"
+#include "logic/enums/connectionstatus.h"
 #include "logic/models/nordvpnsettings.h"
 #include "logic/nordvpn/envcontroller.h"
 #include "logic/nordvpn/preferencescontroller.h"
@@ -330,8 +331,13 @@ void ServerController::disconnect() {
     AsyncProcess::execute("nordvpn disconnect");
 }
 
-void ServerController::attach(ICountriesSubscription *subscriber) {
+void ServerController::attach(ICountriesSubscription *subscriber,
+                              bool notifyImmediately) {
     this->_subscribers.push_back(subscriber);
+    if (notifyImmediately && subscriber != nullptr) {
+        subscriber->updateRecents(this->_recents);
+        subscriber->updateCountryList(this->_allCountries);
+    }
 }
 
 void ServerController::detach(ICountriesSubscription *subscriber) {

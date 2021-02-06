@@ -20,7 +20,7 @@ void DevMediator::toggleDebugInformation() {
 #endif
 }
 
-auto DevMediator::_getShowDebugInformation() -> bool {
+auto DevMediator::_getShowDebugInformation() const -> bool {
 #if IS_DEBUG
     return this->_showDebugInformation;
 #else

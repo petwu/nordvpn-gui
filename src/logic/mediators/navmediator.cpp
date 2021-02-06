@@ -29,7 +29,7 @@ auto NavMediator::_getMainWindowPayload() -> QVariant {
     return this->_mainWindowPayload;
 }
 
-void NavMediator::_setMainWindowPayload(QVariant payload) {
+void NavMediator::_setMainWindowPayload(const QVariant &payload) {
     this->_mainWindowPayload = payload;
     this->mainWindowPayloadChanged(payload);
 }
@@ -57,7 +57,7 @@ void NavMediator::updateEnv(const EnvInfo &envInfo) {
     } else if (envInfo.loggedIn == false) {
         this->_setCurrentMainWindowView(MainWindowView::Login);
         this->_setMainWindowPayload(QVariant::fromValue(nullptr));
-    } else if (envInfo.miscError != "") {
+    } else if (!envInfo.miscError.empty()) {
         this->_setCurrentMainWindowView(MainWindowView::MiscError);
         this->_setMainWindowPayload(QmlDataConverter::envInfoToQml(envInfo));
     } else {

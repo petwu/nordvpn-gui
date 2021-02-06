@@ -1,11 +1,11 @@
 #ifndef MAPIMAGEPROVIDER_H
 #define MAPIMAGEPROVIDER_H
 
-#include <QQuickImageProvider>
-#include <QString>
 #include <QPixmap>
 #include <QQmlEngine>
+#include <QQuickImageProvider>
 #include <QSize>
+#include <QString>
 
 /**
  * @brief The MapImageProvider class is responsible for providing a rendered

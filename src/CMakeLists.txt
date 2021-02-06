@@ -25,8 +25,8 @@ target_sources(${PROJECT_NAME} PRIVATE
   # data
   data/enums/group.cpp
   data/enums/protocol.cpp
-  data/enums/technology.cpp
   data/enums/securityprotocol.cpp
+  data/enums/technology.cpp
   data/models/connectable.cpp
   data/models/country.cpp
   data/models/location.cpp
@@ -52,7 +52,7 @@ target_sources(${PROJECT_NAME} PRIVATE
   logic/nordvpn/accountcontroller.cpp
   logic/nordvpn/basecontroller.cpp
   logic/nordvpn/envcontroller.cpp
-  logic/nordvpn/servercontroller.cpp
   logic/nordvpn/preferencescontroller.cpp
+  logic/nordvpn/servercontroller.cpp
   logic/nordvpn/statuscontroller.cpp
 )

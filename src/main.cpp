@@ -1,18 +1,16 @@
 #include <QApplication>
-#include <QColor>
 #include <QCoreApplication>
 #include <QFont>
 #include <QFontDatabase>
 #include <QIcon>
 #include <QList>
 #include <QLocale>
-#include <QPalette>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QStringList>
 #include <QTranslator>
+#include <QVariant>
 #include <Qt>
-#include <QtGui>
 #include <memory>
 
 #include "app.h"
@@ -77,8 +75,10 @@ auto main(int argc, char *argv[]) -> int {
     ctx->setContextProperty("TrayMediator", &TrayMediator::getInstance());
 
     // additional resource providers
-    // (no unique_ptr, since the QQmlEngine takes ownership of the object)
-    engine->addImageProvider("map", new MapImageProvider());
+    auto mapImageProvider = std::make_unique<MapImageProvider>();
+    // call release() since QQmlEngine takes over ownership and otherwise a
+    // double-delete would occur
+    engine->addImageProvider("map", mapImageProvider.release());
 
     // add custom fonts (e.g. icon fonts)
     int fa5SolidId =
