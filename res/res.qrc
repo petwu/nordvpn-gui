@@ -24,7 +24,8 @@
         <file alias="logo.svg">img/logo.svg</file>
         <file alias="map.svg">img/map.svg</file>
         <file alias="tray-active">img/tray-active.svg</file>
-        <file alias="tray-inactive">img/tray-inactive.svg</file>
+        <file alias="tray-inactive-dark">img/tray-inactive-dark.svg</file>
+        <file alias="tray-inactive-light">img/tray-inactive-light.svg</file>
     </qresource>
     <qresource prefix="/Style">
         <file alias="Style/Style.qml">Style/Style.qml</file>

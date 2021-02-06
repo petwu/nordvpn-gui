@@ -37,6 +37,11 @@ Item {
     Connections {
         target: TrayMediator
         onOpenPreferencesWindowAction: preferencesAction.trigger()
+        onQuitApplicationAction: Qt.quit()
+        onQuickConnectAction: ConnectionMediator.quickConnect()
+        onCancelConnectingAction: ConnectionMediator.cancelConnection()
+        onDisconnectAction: ConnectionMediator.disconnect()
+        onConnectToCountryById: (id) => ConnectionMediator.connectToCountryById(id)
     }
 
     Connections {
@@ -47,7 +52,9 @@ Item {
     function setTrayIcon() {
         TrayMediator.setIconSource(ConnectionMediator.isConnected
                                    ? ':/img/tray-active'
-                                   : ':/img/tray-inactive')
+                                   : (Style.isDarkTheme
+                                      ? ':/img/tray-inactive-dark'
+                                      : ':/img/tray-inactive-light'))
     }
 
     function openWindow(qml) {

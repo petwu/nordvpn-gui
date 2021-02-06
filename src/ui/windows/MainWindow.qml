@@ -37,7 +37,6 @@ ApplicationWindow {
             window.raise()
             window.requestActivate()
         }
-        onQuitApplicationAction: Qt.quit()
     }
 
     Connections {
