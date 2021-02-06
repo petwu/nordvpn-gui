@@ -77,18 +77,8 @@ auto main(int argc, char *argv[]) -> int {
     ctx->setContextProperty("TrayMediator", &TrayMediator::getInstance());
 
     // additional resource providers
-    auto mapImageProvider = std::make_unique<MapImageProvider>();
-    engine->addImageProvider("map", mapImageProvider.get());
-
-    // populate whether to use dark or light colors:
-    // hexadecimal color representation uses 8 bit per channel, hence whe values
-    // range from 0-255 and the middle value 128 is euqally light and dark:
-    // isDark := (r+g+b)/2 < 128    with    r,g,b ∊ { x | 0≤x≤255 ∧ x∊ℤ}
-    constexpr int hexColorMiddle = 128;
-    auto base = QApplication::palette().base().color();
-    bool isDark =
-        (base.red() + base.green() + base.blue()) / 3 < hexColorMiddle;
-    ctx->setContextProperty("IsDarkTheme", isDark);
+    // (no unique_ptr, since the QQmlEngine takes ownership of the object)
+    engine->addImageProvider("map", new MapImageProvider());
 
     // add custom fonts (e.g. icon fonts)
     int fa5SolidId =

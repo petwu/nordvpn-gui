@@ -6,11 +6,32 @@ Item {
     SystemPalette {
         id: systemTheme
         colorGroup: SystemPalette.Active
+        onPaletteChanged: determineTheme()
     }
     SystemPalette {
         id: systemThemeDisabled
         colorGroup: SystemPalette.Disabled
     }
+
+    Component.onCompleted: determineTheme()
+
+    /*!
+     * Populate whether to use dark or light colors.
+     * The QML color type (https://doc.qt.io/qt-5/qml-color.html) has r, g, b, a properties
+     * value ranges from 0 to 1. A middle value of 0.5 is therefore equally light and dark.
+     * We use this to determine, whether the system palette is more of a light or a dark
+     * theme, based on the base color and according to this formula:
+     * isDark := (r+g+b)/3 < 0.5    with    r,g,b ∊ { x | 0≤x≤1 ∧ x∊ℤ}
+     */
+    function determineTheme() {
+        const r = systemTheme.base.r
+        const g = systemTheme.base.g
+        const b = systemTheme.base.r
+        isDarkTheme = (r+g+b)/3 < 0.5
+    }
+
+    // system color theme: dark or light?
+    property bool isDarkTheme
 
     // system colors
     readonly property color colorBase: systemTheme.base
@@ -34,7 +55,7 @@ Item {
     readonly property color colorRed: '#dc5152'
     readonly property color colorOrange: '#f18129'
     readonly property color colorYellow: '#ffc805'
-    readonly property color colorTextAlternate: IsDarkTheme ? Qt.darker(colorText, 1.5) : Qt.lighter(colorText, 1.5)
+    readonly property color colorTextAlternate: isDarkTheme ? Qt.darker(colorText, 1.5) : Qt.lighter(colorText, 1.5)
 
     // semantic colors
     readonly property color colorError: colorRed
@@ -46,7 +67,7 @@ Item {
     readonly property color colorMarkerConnected: colorGreen
     readonly property color colorMarkerSecondary: colorBaseAlternate
     readonly property color colorMapLand: colorBaseAlternate
-    readonly property color colorMapWater: IsDarkTheme ? '#4a7997' : '#b8cedc'
+    readonly property color colorMapWater: isDarkTheme ? '#4a7997' : '#b8cedc'
 
     // status panel
     readonly property color colorStatusPanelBkgd: colorBase
@@ -58,7 +79,7 @@ Item {
     readonly property color colorStatusPanelStarsOutline: colorYellow
 
     // sidebar
-    readonly property color colorCollapsibleTitle: IsDarkTheme ? Qt.darker(colorText, 1.25) : Qt.lighter(colorText, 1.25)
+    readonly property color colorCollapsibleTitle: isDarkTheme ? Qt.darker(colorText, 1.25) : Qt.lighter(colorText, 1.25)
     readonly property color colorCollapsibleTitleExpanded: colorText
     readonly property color colorCollapsibleHandle: colorIcon
 
