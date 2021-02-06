@@ -13,6 +13,7 @@
 #include "data/models/country.h"
 #include "data/models/server.h"
 #include "logic/nordvpn/preferencescontroller.h"
+#include "logic/nordvpn/statuscontroller.h"
 
 /**
  * @brief ICountriesSubscription is an interface that can be implemented by any
@@ -70,7 +71,8 @@ class ICountriesSubscription {
  * tasks doing the same thing for a different set of subscribers,
  * ServerController is implemented as a singleton.
  */
-class ServerController : public BaseController {
+class ServerController : public BaseController,
+                         public IConnectionInfoSubscription {
     // Singleton:
     // https://stackoverflow.com/questions/1008019/c-singleton-design-pattern
   public:
@@ -318,6 +320,18 @@ class ServerController : public BaseController {
      * @details Should be executed in a detached background thread.
      */
     void _backgroundTaskCountryList();
+
+    /**
+     * @brief Boolean that is true while the connection is being established.
+     * This time period starts with a call to #quickConnect() and ends when
+     * #updateConnectionInfo() receives ConnectionStatus::Connected.
+     */
+    bool _quickConnecting = false;
+
+    /**
+     * @brief Implements IConnectionInfoSubscription::updateConnectionInfo().
+     */
+    virtual void updateConnectionInfo(const ConnectionInfo &newInfo) override;
 };
 
 #endif // SERVERCONTROLLER_H

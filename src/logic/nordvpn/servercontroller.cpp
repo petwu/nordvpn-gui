@@ -20,6 +20,7 @@
 #include "logic/nordvpn/preferencescontroller.h"
 
 ServerController::ServerController() {
+    StatusController::getInstance().attach(this);
     // use a cached server list which is stored on disk and can be read in fast
     // so that the UI has something do display
     this->_allServers = ServerRepository::fetchServersFromCache();
@@ -209,11 +210,13 @@ void ServerController::removeFromRecentsList(uint32_t countryId) {
 }
 
 void ServerController::quickConnect() { //
+    this->_quickConnecting = true;
     AsyncProcess::execute(
         "nordvpn connect", &this->_connectingPid,
-        [](const ProcessResult &result) {
+        [this](const ProcessResult &result) {
             if (!result.success() &&
                 result.output.find("login") != std::string::npos) {
+                this->_quickConnecting = false;
                 EnvController::getInstance().setLoggedIn(false);
             }
         });
@@ -391,5 +394,15 @@ void ServerController::_backgroundTaskCountryList() {
         this->_notifySubscribersCountryList();
         std::this_thread::sleep_for(
             config::consts::COUNTRY_LIST_UPDATE_INTERVAL);
+    }
+}
+
+void ServerController::updateConnectionInfo(const ConnectionInfo &newInfo) {
+    if (this->_quickConnecting &&
+        newInfo.status == ConnectionStatus::Connected) {
+        this->_quickConnecting = false;
+        PreferencesRepository::addRecentCountryId(newInfo.countryId);
+        this->_recents = this->getRecentCountries();
+        this->_notifySubscribersRecents();
     }
 }
