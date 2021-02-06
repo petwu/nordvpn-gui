@@ -17,7 +17,7 @@
 #include "data/enums/protocol.h"
 #include "data/enums/technology.h"
 #include "data/models/server.h"
-#include "logic/enums/ConnectionStatus.h"
+#include "logic/enums/connectionstatus.h"
 #include "logic/nordvpn/servercontroller.h"
 
 auto StatusController::getInstance() -> StatusController & {

@@ -1,6 +1,7 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.12
 import QtQuick.Dialogs 1.2
+import Qt.labs.settings 1.1
 
 import Style 1.0
 
@@ -15,7 +16,18 @@ Item {
     width: btn.width
     height: btn.height
 
-    Component.onCompleted: setTrayIcon()
+    Settings {
+        id: menuSettings
+        category: 'Menu'
+        property alias showDebugInformation: toggleDebugInfoAction.checked
+    }
+
+    Component.onCompleted: {
+        setTrayIcon()
+        if (menuSettings.showDebugInformation !== DevMediator.showDebugInformation) {
+            DevMediator.toggleDebugInformation()
+        }
+    }
 
     Connections {
         target: ConnectionMediator
@@ -25,6 +37,11 @@ Item {
     Connections {
         target: TrayMediator
         onOpenPreferencesWindowAction: preferencesAction.trigger()
+    }
+
+    Connections {
+        target: DevMediator
+        onShowDebugInformationChanged: checked => toggleDebugInfoAction.checked = checked
     }
 
     function setTrayIcon() {
@@ -97,6 +114,14 @@ Item {
         MenuSeparator { }
 
         MenuItem {
+            visible: IsDebug
+            //: Checkbox whether to show additional information for developers or not.
+            text: qsTr('Show Debug Information')
+            icon.name: 'text-x-script'
+            action: toggleDebugInfoAction
+        }
+
+        MenuItem {
             //: Logout from the NordVPN service.
             text: qsTr('Logout')
             icon.name: 'system-log-out'
@@ -139,6 +164,15 @@ Item {
     Action {
         id: aboutAction
         onTriggered: openWindow('qrc:/ui/windows/AboutWindow.qml')
+    }
+
+    Action {
+        id: toggleDebugInfoAction
+        checkable: true
+        onTriggered: DevMediator.toggleDebugInformation()
+        onCheckedChanged: {
+            menuSettings.setValue('showDebugInformation', checked)
+        }
     }
 
     Action {

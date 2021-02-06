@@ -18,6 +18,7 @@
 #include "app.h"
 #include "logic/mediators/accountmediator.h"
 #include "logic/mediators/connectionmediator.h"
+#include "logic/mediators/devmediator.h"
 #include "logic/mediators/mapimageprovider.h"
 #include "logic/mediators/navmediator.h"
 #include "logic/mediators/preferencesmediator.h"
@@ -63,11 +64,13 @@ auto main(int argc, char *argv[]) -> int {
     QQmlContext *ctx = engine->rootContext();
     auto accountMediator = std::make_unique<AccountMediator>();
     auto connectionMediator = std::make_unique<ConnectionMediator>();
+    auto devMediator = std::make_unique<DevMediator>();
     auto navMediator = std::make_unique<NavMediator>();
     auto preferencesMediator = std::make_unique<PreferencesMediator>();
     auto recentsMediator = std::make_unique<RecentsMediator>();
     ctx->setContextProperty("AccountMediator", accountMediator.get());
     ctx->setContextProperty("ConnectionMediator", connectionMediator.get());
+    ctx->setContextProperty("DevMediator", devMediator.get());
     ctx->setContextProperty("NavMediator", navMediator.get());
     ctx->setContextProperty("PreferencesMediator", preferencesMediator.get());
     ctx->setContextProperty("RecentsMediator", recentsMediator.get());
@@ -103,6 +106,9 @@ auto main(int argc, char *argv[]) -> int {
         QFontDatabase::systemFont(QFontDatabase::FixedFont));
 
     // populate app information to QML
+#if IS_DEBUG
+    ctx->setContextProperty("IsDebug", true);
+#endif
     ctx->setContextProperty("ApplicationName", APPLICATION_NAME);
     ctx->setContextProperty("ApplicationDescription", APPLICATION_DESCRIPTION);
     ctx->setContextProperty("Author", AUTHOR);

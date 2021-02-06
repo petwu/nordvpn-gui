@@ -8,7 +8,7 @@
 #include <map>
 #include <string>
 
-#include "logic/enums/MainWindowView.h"
+#include "logic/enums/mainwindowview.h"
 #include "logic/models/envinfo.h"
 #include "logic/nordvpn/envcontroller.h"
 

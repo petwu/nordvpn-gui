@@ -8,7 +8,7 @@
 #include "data/enums/group.h"
 #include "data/enums/protocol.h"
 #include "data/enums/technology.h"
-#include "logic/enums/ConnectionStatus.h"
+#include "logic/enums/connectionstatus.h"
 
 /**
  * @brief The ConnectionInfo class is a data class that accumulates all
@@ -124,6 +124,11 @@ class ConnectionInfo {
      * one or more attributes were assigned a different value.
      */
     auto isEmpty() const -> bool;
+
+    /**
+     * @brief Serialize the object as a formatted JSON string.
+     */
+    auto toJSON() const -> std::string;
 };
 
 #endif // CONNECTIONINFO_H

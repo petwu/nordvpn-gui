@@ -57,6 +57,16 @@ Item {
         onConnectedCountryIdChanged: (id) => (id !== -1) ? focusCountry(id) : null
     }
 
+    Component.onCompleted: {
+        delay(1000, () => {
+                  if (ConnectionMediator.isConnecting) {
+                      focusCountry(ConnectionMediator.connectingCountryId)
+                  } else if (ConnectionMediator.isConnected) {
+                      focusCountry(ConnectionMediator.connectedCountryId)
+                  }
+              })
+    }
+
     /*!
       delay waits the given delayTime in millisecons an the executes the callback
     */

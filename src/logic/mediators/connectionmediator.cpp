@@ -4,7 +4,7 @@
 #include <utility>
 
 #include "config.h"
-#include "logic/enums/ConnectionStatus.h"
+#include "logic/enums/connectionstatus.h"
 #include "logic/mediators/qmldataconverter.h"
 
 ConnectionMediator::ConnectionMediator() {

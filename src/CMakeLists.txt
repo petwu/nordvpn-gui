@@ -35,8 +35,10 @@ target_sources(${PROJECT_NAME} PRIVATE
   data/repositories/preferencesrepository.cpp
   data/repositories/serverrepository.cpp
   # logic
+  logic/enums/connectionstatus.cpp
   logic/mediators/accountmediator.cpp
   logic/mediators/connectionmediator.cpp
+  logic/mediators/devmediator.cpp
   logic/mediators/mapimageprovider.cpp
   logic/mediators/navmediator.cpp
   logic/mediators/preferencesmediator.cpp

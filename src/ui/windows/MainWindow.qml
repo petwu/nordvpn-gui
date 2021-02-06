@@ -14,6 +14,7 @@ ApplicationWindow {
     height: 600
 
     Settings {
+        category: 'MainWindow'
         property alias x: window.x
         property alias y: window.y
         property alias width: window.width

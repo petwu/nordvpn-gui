@@ -78,6 +78,13 @@ include(GNUInstallDirs)
 install(TARGETS ${PROJECT_NAME})
 
 # --------------------------------------------------------------------------------
+# compile controls a.k.a. preprocessor definitions
+# --------------------------------------------------------------------------------
+if(CMAKE_BUILD_TYPE STREQUAL "Debug" OR CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
+  target_compile_definitions(${PROJECT_NAME} PRIVATE IS_DEBUG=1)
+endif()
+
+# --------------------------------------------------------------------------------
 # create targets for clang-tidy and clang-format
 # --------------------------------------------------------------------------------
 
