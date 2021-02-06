@@ -19,6 +19,16 @@ Item {
         console.log()
     }
 
+    // Translation of time units (the abbreviates versions).
+    // Usage: qsTranslate('TimeUnit', <your time unit or variable here>)
+    readonly property var timeunits: [
+        QT_TRANSLATE_NOOP('TimeUnit', 's'),
+        QT_TRANSLATE_NOOP('TimeUnit', 'min'),
+        QT_TRANSLATE_NOOP('TimeUnit', 'h'),
+        QT_TRANSLATE_NOOP('TimeUnit', 'd'),
+        QT_TRANSLATE_NOOP('TimeUnit', 'yr'),
+    ]
+
     // Translations of all country names used by NordVPN (as of 2020-11-08).
     // Usage: qsTranslate('Country', <your country name or variable here>)
     readonly property var countries: [

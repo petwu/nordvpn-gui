@@ -35,7 +35,48 @@ Item {
         const base = 1024
         const sizes = ['B', 'kiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB']
         const i = Math.floor(Math.log(bytes) / Math.log(base))
-        return parseFloat((bytes / Math.pow(base, i)).toFixed(Math.max(0, decimals))) + ' ' + sizes[i]
+        return (bytes / Math.pow(base, i)).toFixed(Math.max(0, decimals)) + ' ' + sizes[i]
+    }
+
+    /*!
+     * @brief Format a number as a human readable string. Examples:
+     *      16 --> 16s
+     *      60 --> 1min
+     *      256 --> 4min 16s
+     *      3856 --> 1h 4min 16s
+     *      ...
+     * @param secs Number of seconds as integer (no suffix like 's', 'sec', etc.).
+     */
+    function formatSeconds(secs) {
+        // unitSep not a regular space, but a thin space (unicode: U+2009, LaTeX: \,)
+        // for separating the number from its unit
+        const unitSep = ' '
+        if (secs < 60) {
+            return secs + unitSep + qsTranslate('TimeUnit', 's')
+        }
+        let t = ''
+        const tryAppendUnit = (secsPerUnit, unit, minDigits = 1) => {
+            // ignore units that are smaller than the number of seconds per unit
+            if (t === '' && secs < secsPerUnit) return
+            const num = Math.floor(secs / secsPerUnit)
+            // pad with leading zeros if required
+            let numS = num.toString()
+            if (t !== '') {
+                while (numS.length < minDigits) numS = '0' + numS
+            }
+            // regular space to separate multiple num-unit-pairs
+            if (t.length > 0) t += ' '
+            // append
+            t += numS + unitSep + qsTranslate('TimeUnit', unit)
+            // decrement secs by the number of seconds covered by the added numb-unit-pair
+            secs -= (num * secsPerUnit)
+        }
+        tryAppendUnit(31536000, 'yr', 1) // years
+        tryAppendUnit(86400, 'd', 1) // days
+        tryAppendUnit(3600, 'h', 2) // hours
+        tryAppendUnit(60, 'min', 2) // minutes
+        tryAppendUnit(1, 's', 2) // seconds
+        return t
     }
 
     QtObject {
@@ -74,7 +115,7 @@ Item {
 
             RowLayout {
                 id: content
-                Layout.minimumWidth: 440
+                Layout.minimumWidth: 460
 
                 Column {
                     Layout.alignment: Qt.AlignBottom
@@ -138,7 +179,10 @@ Item {
 
                     Text {
                         visible: ConnectionMediator.isConnected
-                        text: ConnectionMediator.connectedIP + '    ↑' + formatBytes(ConnectionMediator.sentBytes) + '    ↓' + formatBytes(ConnectionMediator.receivedBytes)
+                        text: ConnectionMediator.connectedIP +
+                              '    ▲ ' + formatBytes(ConnectionMediator.sentBytes) +
+                              '    ▼ ' + formatBytes(ConnectionMediator.receivedBytes) +
+                              '    ⏳ ' + formatSeconds(ConnectionMediator.uptimeSeconds)
                         font.pixelSize: .9*Qt.application.font.pixelSize
                         color: Style.colorStatusPanelSeconary
                         font.weight: Font.Thin

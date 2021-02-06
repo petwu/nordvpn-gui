@@ -67,6 +67,10 @@ Item {
         anchors.right: parent.right
         anchors.bottom: parent.bottom
 
+        DebugOverlay {
+            visible: DevMediator.showDebugInformation
+        }
+
         ConnectionStatusPanel {
             anchors.horizontalCenter: parent.horizontalCenter
             anchors.bottom: parent.bottom

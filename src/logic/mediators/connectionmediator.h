@@ -144,6 +144,9 @@ class ConnectionMediator : public QObject,
      */
     Q_PROPERTY(qint64 sentBytes READ _getSentBytes NOTIFY sentBytesChanged)
 
+    Q_PROPERTY(
+        qint64 uptimeSeconds READ _getUptimeSeconds NOTIFY uptimeSecondsChanged)
+
     /**
      * @brief Readonly property holding the list of currently available
      * countries. The list gets refreshed periodically, since e.g. changes in
@@ -350,6 +353,11 @@ class ConnectionMediator : public QObject,
      * @brief Signal the gets emitted when #sentBytes is being updated.
      */
     void sentBytesChanged(qint64);
+
+    /**
+     * @brief Signal the gets emitted when #uptimeSeconds is being updated.
+     */
+    void uptimeSecondsChanged(qint64);
 
     /**
      * @brief Signal the gets emitted when #countryList is being updated.
@@ -577,6 +585,22 @@ class ConnectionMediator : public QObject,
      * @brief Setter for the #sentBytes property.
      */
     void _setSentBytes(uint64_t value);
+
+    /**
+     * @brief Field backing the #uptimeSeconds property.
+     */
+    uint64_t _uptimeSeconds = 0;
+
+    /**
+     * @brief Getter for the #uptimeSeconds property.
+     */
+    // NOLINTNEXTLINE(modernize-use-trailing-return-type): not supported by moc
+    qint64 _getUptimeSeconds() const;
+
+    /**
+     * @brief Setter for the #uptimeSeconds property.
+     */
+    void _setUptimeSeconds(uint64_t value);
 
     /**
      * @brief Getter for the #countryList property.

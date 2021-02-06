@@ -68,6 +68,7 @@ void ConnectionMediator::updateConnectionInfo(const ConnectionInfo &newInfo) {
     this->_setConnectedIP(newInfo.ip);
     this->_setReceivedBytes(newInfo.received);
     this->_setSentBytes(newInfo.sent);
+    this->_setUptimeSeconds(newInfo.uptime);
     if (connected) {
         this->_setConnectedServerGroups(newInfo.groups);
     } else {
@@ -241,6 +242,17 @@ void ConnectionMediator::_setSentBytes(uint64_t value) {
     if (value != this->_sentBytes) {
         this->_sentBytes = value;
         this->sentBytesChanged(value);
+    }
+}
+
+auto ConnectionMediator::_getUptimeSeconds() const -> qint64 {
+    return this->_uptimeSeconds;
+}
+
+void ConnectionMediator::_setUptimeSeconds(uint64_t value) {
+    if (value != this->_uptimeSeconds) {
+        this->_uptimeSeconds = value;
+        this->uptimeSecondsChanged(value);
     }
 }
 
