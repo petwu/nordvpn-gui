@@ -3,7 +3,7 @@
 # --------------------------------------------------------------------------------
 cmake_minimum_required(VERSION 3.14)
 project(nordvpn-gui
-  VERSION 0.0.0
+  VERSION 1.0.0 # see below to set "-<pre-release>+<build-meta>" according to semver
   DESCRIPTION "UNOFFICIAL Graphical User Interface (GUI) for the NordVPN Linux Client"
   HOMEPAGE_URL "https://petwu.github.io/nordvpn-gui"
   LANGUAGES CXX
@@ -13,7 +13,15 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 # --------------------------------------------------------------------------------
 # application description (see src/app.h.in as well)
 # --------------------------------------------------------------------------------
+include(Git)
+set(SEMVER_MAJOR "${PROJECT_VERSION_MAJOR}")
+set(SEMVER_MINOR "${PROJECT_VERSION_MINOR}")
+set(SEMVER_PATCH "${PROJECT_VERSION_PATCH}")
+set(SEMVER_PRE_RELEASE "dev")
+get_git_hash(SEMVER_BUILD_META)
 set(AUTHOR "Peter Würth")
+set(GITHUB_USERNAME "petwu")
+set(GITHUB_REPOSITORY_NAME "nordvpn-gui")
 set(REPOSITORY_URL "https://github.com/petwu/nordvpn-gui")
 set(PROJECT_WEBSITE_URL "https://petwu.github.io/nordvpn-gui")
 set(DOCS_URL "${PROJECT_WEBSITE_URL}/docs")
@@ -24,6 +32,7 @@ set(APPLICATION_NAME "NordVPN GUI (Unofficial)")
 set(APPLICATION_DESCRIPTION "${PROJECT_DESCRIPTION}")
 set(LICENSE "GPLv3")
 file(READ "LICENSE" LICENSE_TEXT)
+file(READ "CHANGELOG.md" CHANGELOG)
 set(NORDVPN_DOWNLOAD_LINUX_URL "https://nordvpn.com/download/linux")
 set(NORD_ACCOUNT_URL "https://my.nordaccount.com")
 

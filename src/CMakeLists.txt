@@ -21,6 +21,7 @@ target_sources(${PROJECT_NAME} PRIVATE
   common/io/asyncprocess.cpp
   common/io/process.cpp
   common/io/processresult.cpp
+  common/types/version.cpp
   common/util/strings.cpp
   # data
   data/enums/group.cpp
@@ -34,6 +35,7 @@ target_sources(${PROJECT_NAME} PRIVATE
   data/repositories/baserepository.cpp
   data/repositories/preferencesrepository.cpp
   data/repositories/serverrepository.cpp
+  data/repositories/updatecheckrepository.cpp
   # logic
   logic/enums/connectionstatus.cpp
   logic/mediators/accountmediator.cpp
@@ -45,6 +47,7 @@ target_sources(${PROJECT_NAME} PRIVATE
   logic/mediators/qmldataconverter.cpp
   logic/mediators/recentsmediator.cpp
   logic/mediators/traymediator.cpp
+  logic/mediators/updatemediator.cpp
   logic/models/connectioninfo.cpp
   logic/models/envinfo.cpp
   logic/models/nordvpnsettings.cpp

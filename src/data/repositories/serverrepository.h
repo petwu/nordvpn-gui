@@ -3,9 +3,9 @@
 
 #include <vector>
 
+#include "baserepository.h"
 #include "data/models/country.h"
 #include "data/models/server.h"
-#include "data/repositories/baserepository.h"
 
 /**
  * @brief The ServerRepository class prvides static functions to retrieve and

@@ -32,11 +32,14 @@ auto curlCallback(const char *in, size_t size, size_t num, std::string *out)
     return totalBytes;
 }
 
-auto BaseRepository::curl(const char *&url, uint8_t timeoutSec) -> std::string {
-    return BaseRepository::curl(std::string(url), timeoutSec);
+auto BaseRepository::curl(const char *&url, const uint8_t timeoutSec,
+                          const std::vector<std::string> &headers)
+    -> std::string {
+    return BaseRepository::curl(std::string(url), timeoutSec, headers);
 }
 
-auto BaseRepository::curl(const std::string &url, uint8_t timeoutSec)
+auto BaseRepository::curl(const std::string &url, const uint8_t timeoutSec,
+                          const std::vector<std::string> &headers)
     -> std::string {
     std::string httpData;
     CURL *curl = curl_easy_init();
@@ -53,7 +56,16 @@ auto BaseRepository::curl(const std::string &url, uint8_t timeoutSec)
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, curlCallback);
     // NOLINTNEXTLINE(cppcoreguidelines-pro-type-vararg)
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, &httpData);
+    struct curl_slist *headerList = nullptr;
+    if (headers.size() > 0) {
+        for (auto header : headers) {
+            headerList = curl_slist_append(headerList, header.c_str());
+        }
+        // NOLINTNEXTLINE(cppcoreguidelines-pro-type-vararg)
+        curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headerList);
+    }
     CURLcode curlCode = curl_easy_perform(curl);
+    curl_slist_free_all(headerList);
     curl_easy_cleanup(curl);
     return curlCode == CURLE_OK ? std::move(httpData) : "";
 }

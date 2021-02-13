@@ -8,12 +8,12 @@
 #include <string>
 #include <utility>
 
+#include "baserepository.h"
 #include "common/util/strings.h"
 #include "config.h"
 #include "data/enums/group.h"
 #include "data/enums/securityprotocol.h"
 #include "data/models/location.h"
-#include "data/repositories/baserepository.h"
 
 auto ServerRepository::fetchServers() -> std::vector<Server> {
     std::vector<Server> servers;

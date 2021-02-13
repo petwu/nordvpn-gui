@@ -4,7 +4,7 @@
 #include <cstdint>
 #include <vector>
 
-#include "data/repositories/baserepository.h"
+#include "baserepository.h"
 
 /**
  * @brief The PreferencesRepository class provides static functions to retieve

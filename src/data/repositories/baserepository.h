@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <filesystem>
 #include <string>
+#include <vector>
 
 #include "nlohmann/json.hpp"
 
@@ -41,18 +42,24 @@ class BaseRepository {
      * @brief Perform a HTTP network request with the help of libcurl.
      * @param url HTTP(S) URL of the network resource to access.
      * @param timeoutSec Max. number of seconds the request may take to finish.
+     * @param headers Additional "Header: Value" string to set as HTTP headers.
      * @return The body of the HTTP response in case the server responded with
      * code 200. An empty string in case of any other HTTP code or the requested
      * timed out.
      */
-    static auto curl(const char *&url,
-                     uint8_t timeoutSec = DEFAULT_CURL_TIMEOUT) -> std::string;
+    static auto
+    curl(const char *&url, const uint8_t timeoutSec = DEFAULT_CURL_TIMEOUT,
+         const std::vector<std::string> &headers = std::vector<std::string>())
+        -> std::string;
 
     /**
      * @brief Overload of #curl() with `std::string` instead of `char*`.
      */
-    static auto curl(const std::string &url,
-                     uint8_t timeoutSec = DEFAULT_CURL_TIMEOUT) -> std::string;
+    static auto
+    curl(const std::string &url,
+         const uint8_t timeoutSec = DEFAULT_CURL_TIMEOUT,
+         const std::vector<std::string> &headers = std::vector<std::string>())
+        -> std::string;
 };
 
 #endif // BASEREPOSITORY_H
