@@ -9,6 +9,8 @@
 
 #include "basecontroller.h"
 #include "common/io/processresult.h"
+#include "common/templates/backgroundtaskable.h"
+#include "common/templates/subscribable.h"
 #include "data/enums/group.h"
 #include "data/models/country.h"
 #include "data/models/server.h"
@@ -21,7 +23,7 @@
  * class that wants updates of the country list from the #ServerController.
  *
  * @details Call #ServerController::attach() and possibly
- * #ServerController::startBackgroundTask() to start reveciving updates.
+ * #ServerController::startBackgroundTasks() to start reveciving updates.
  */
 class ICountriesSubscription {
   public:
@@ -62,8 +64,8 @@ class ICountriesSubscription {
  * server lists.
  *
  * The class also provides a mechanism for running a background task (thread)
- * (startBackgroundTask()/stopBackgroundTask()) that periodically refreshes the
- * country and server lists. The country list is then propagated via the
+ * (startBackgroundTasks()/stopBackgroundTasks()) that periodically refreshes
+ * the country and server lists. The country list is then propagated via the
  * observer pattern. Obsersers/subscribers have the implement the
  * #ICountriesSubscription interface and call attach(this) in order to get
  * notified. They can also use detach(this) to unsubscribe.
@@ -73,7 +75,9 @@ class ICountriesSubscription {
  * ServerController is implemented as a singleton.
  */
 class ServerController : public BaseController,
-                         public IConnectionInfoSubscription {
+                         public IConnectionInfoSubscription,
+                         public Subscribable<ICountriesSubscription>,
+                         public BackgroundTaskable {
     // Singleton:
     // https://stackoverflow.com/questions/1008019/c-singleton-design-pattern
   public:
@@ -194,34 +198,6 @@ class ServerController : public BaseController,
      */
     static void disconnect();
 
-    /**
-     * @brief Attach a subscriber that will be notified by the background task.
-     * @param subscriber An object implementing ICountriesSubscription. This
-     * object then may call attach(this).
-     * @param notifyImmediately If true, the newly attached subscriber will be
-     * notified initially.
-     * @note Don't forget to call detach() in the destructor.
-     */
-    void attach(ICountriesSubscription *subscriber,
-                bool notifyImmediately = false);
-
-    /**
-     * @brief Unsubscriber a subscriber. The background task will continue to
-     * run.
-     */
-    void detach(ICountriesSubscription *subscriber);
-
-    /**
-     * @brief Start a task in a background thread that periodically updates the
-     * country list and notified all subscribers.
-     */
-    void startBackgroundTask();
-
-    /**
-     * @brief Terminate the background thread.
-     */
-    void stopBackgroundTask();
-
   private:
     /**
      * @brief Empty, private constructor (part of the sigleton implementation).
@@ -290,9 +266,18 @@ class ServerController : public BaseController,
     pid_t _connectingPid{};
 
     /**
-     * @brief The list of subscribers.
+     * @brief Implementation of Subscribable::notifySubscriber().
+     * @param subscriber
      */
-    std::vector<ICountriesSubscription *> _subscribers;
+    void notifySubscriber(ICountriesSubscription &subscriber) override {}
+
+    /**
+     * @todo // TODO: remove override, implement notifySubscriber(), remove
+     * _notifySubscribersRecents() + _notifySubscribersCountryList()
+     * Prerequisite: extraction of recents stuff into a seperate class
+     * RecentsController
+     */
+    void notifySubscribers() override {}
 
     /**
      * @brief Notify the subscribers about an update of the list of recently
@@ -306,24 +291,16 @@ class ServerController : public BaseController,
     void _notifySubscribersCountryList();
 
     /**
-     * @brief Bool that is true, while the background task should keep running.
-     * @details Atomic bool for thread safety.
-     */
-    std::atomic<bool> _performBackgroundTask = false;
-
-    /**
      * @brief The background task responsible for periodically updating the
      * server list.
-     * @details Should be executed in a detached background thread.
      */
     void _backgroundTaskServerList();
 
     /**
      * @brief The background task responsible for periodically updating the
      * country list.
-     * @details Should be executed in a detached background thread.
      */
-    void _backgroundTaskCountryList();
+    void _backgroundTaskCountryList(bool isSpecialTick);
 
     /**
      * @brief Boolean that is true while the connection is being established.

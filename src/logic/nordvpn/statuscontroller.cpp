@@ -22,6 +22,12 @@
 #include "logic/models/connectioninfo.h"
 #include "logic/nordvpn/servercontroller.h"
 
+StatusController::StatusController() {
+    this->registerBackgroundTask(
+        std::bind(&StatusController::_backgroundTask, this),
+        config::consts::STATUS_UPDATE_INTERVAL);
+}
+
 auto StatusController::getInstance() -> StatusController & {
     static StatusController instance;
     return instance;
@@ -174,38 +180,14 @@ auto StatusController::_getServerNr(const std::string &name) -> int32_t {
     return 0;
 }
 
-void StatusController::startBackgroundTask() {
-    this->_performBackgroundTask = true;
-    // create and run new daemon thread
-    std::thread(&StatusController::_backgroundTask, this).detach();
-}
-
-void StatusController::stopBackgroundTask() {
-    this->_performBackgroundTask = false;
-}
-
-void StatusController::attach(IConnectionInfoSubscription *subscriber) {
-    this->_subscribers.push_back(subscriber);
-}
-
-void StatusController::detach(IConnectionInfoSubscription *subscriber) {
-    this->_subscribers.erase(std::remove(this->_subscribers.begin(),
-                                         this->_subscribers.end(), subscriber),
-                             this->_subscribers.end());
-}
-
 void StatusController::_backgroundTask() {
-    while (this->_performBackgroundTask) {
-        this->_currentInfo = this->getStatus();
-        this->_notifySubscribers();
-        std::this_thread::sleep_for(config::consts::STATUS_UPDATE_INTERVAL);
-    }
+    this->_currentInfo = this->getStatus();
+    this->notifySubscribers();
 }
 
-void StatusController::_notifySubscribers() {
-    for (auto &subscriber : this->_subscribers) {
-        subscriber->updateConnectionInfo(this->_currentInfo);
-    }
+void StatusController::notifySubscriber(
+    IConnectionInfoSubscription &subscriber) {
+    subscriber.updateConnectionInfo(this->_currentInfo);
 }
 
 auto StatusController::getRatingMin() -> uint8_t {

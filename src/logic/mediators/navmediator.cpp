@@ -8,7 +8,7 @@
 NavMediator::NavMediator() {
     EnvController &envController = EnvController::getInstance();
     envController.attach(this);
-    envController.startBackgroundTask();
+    envController.startBackgroundTasks();
 }
 
 auto NavMediator::_getMainWindowViewSource() -> QString {

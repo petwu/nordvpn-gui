@@ -11,6 +11,8 @@
 using json = nlohmann::json;
 
 #include "basecontroller.h"
+#include "common/templates/backgroundtaskable.h"
+#include "common/templates/subscribable.h"
 #include "logic/models/connectioninfo.h"
 
 /**
@@ -36,7 +38,7 @@ constexpr long TiB = GiB << 10;
  * implemented.
  *
  * @details Call #StatusController::attach() and possibly
- * #StatusController::startBackgroundTask() to start reveciving updates.
+ * #StatusController::startBackgroundTasks() to start reveciving updates.
  */
 class IConnectionInfoSubscription {
   public:
@@ -52,7 +54,7 @@ class IConnectionInfoSubscription {
  * connection status and related information from the NordVPN CLI.
  *
  * @details The class provides a mechanism for running a background task
- * (thread) (startBackgroundTask()/stopBackgroundTask()) that periodically
+ * (thread) (startBackgroundTasks()/stopBackgroundTasks()) that periodically
  * refreshes the connection status information. The new set of information is
  * then propagated via the observer pattern. Obsersers/subscribers have the
  * implement the #IConnectionInfoSubscription interface and call attach(this) in
@@ -62,7 +64,9 @@ class IConnectionInfoSubscription {
  * tasks doing the same thing for a different set of subscribers,
  * StatusController is implemented as a singleton.
  */
-class StatusController : public BaseController {
+class StatusController : public BaseController,
+                         public Subscribable<IConnectionInfoSubscription>,
+                         public BackgroundTaskable {
     // Singleton:
     // https://stackoverflow.com/questions/1008019/c-singleton-design-pattern
   public:
@@ -85,32 +89,6 @@ class StatusController : public BaseController {
     auto getStatus() -> ConnectionInfo;
 
     /**
-     * @brief Start a task in a background thread that periodically updates the
-     * connetion status information and notifies all subscribers.
-     * @see config::consts::STATUS_UPDATE_INTERVAL
-     */
-    void startBackgroundTask();
-
-    /**
-     * @brief Terminate the background thread.
-     */
-    void stopBackgroundTask();
-
-    /**
-     * @brief Attach a subscriber that will be notified by the background task.
-     * @param subscriber An object implementing #IConnectionInfoSubscription.
-     * The implementing class then may call attach(this).
-     * @note Don't forget to call detach() in the destructor.
-     */
-    void attach(IConnectionInfoSubscription *subscriber);
-
-    /**
-     * @brief Unsubscriber a subscriber. The background task will continue to
-     * run.
-     */
-    void detach(IConnectionInfoSubscription *subscriber);
-
-    /**
      * @brief Get the minimum rating value that represents the worst rating
      * possible.
      */
@@ -131,21 +109,15 @@ class StatusController : public BaseController {
 
   private:
     /**
-     * @brief Empty, private constructor (part of the singleton implementation).
+     * @brief Private constructor (part of the singleton implementation).
      */
-    StatusController() = default;
+    StatusController();
 
     /**
      * @brief Bool that is true, while the background task should keep running.
      * @details Atomic bool for thread safety.
      */
     std::atomic<bool> _performBackgroundTask = false;
-
-    /**
-     * @brief The list of subscribers.
-     * @see attach(), detach()
-     */
-    std::vector<IConnectionInfoSubscription *> _subscribers;
 
     /**
      * @brief Object holding the current information about the connection
@@ -161,15 +133,15 @@ class StatusController : public BaseController {
     ConnectionInfo _currentConnectedInfo;
 
     /**
-     * @brief The background tasked started/stopped by
-     * startBackgroundTask()/stopBackgroundTask().
+     * @brief The background task that is run periodically to fetch/update the
+     * latest status.
      */
     void _backgroundTask();
 
     /**
-     * @brief Notify all _subscribers.
+     * @brief Implementation of Subscribable::notifySubscriber().
      */
-    void _notifySubscribers();
+    void notifySubscriber(IConnectionInfoSubscription &subscriber) override;
 
     /**
      * @brief Extract the server number from the servers hostname. Example:

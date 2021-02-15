@@ -1,11 +1,12 @@
 #ifndef ENVCONTROLLER_H
 #define ENVCONTROLLER_H
 
-#include <atomic>
 #include <string>
 #include <vector>
 
 #include "basecontroller.h"
+#include "common/templates/backgroundtaskable.h"
+#include "common/templates/subscribable.h"
 #include "common/types/nullable.h"
 #include "logic/models/envinfo.h"
 
@@ -15,7 +16,7 @@
  * #EnvController.
  *
  * @details Call #EnvController::attach() and possibly
- * #EnvController::startBackgroundTask() to start reveciving updates.
+ * #EnvController::startBackgroundTasks() to start reveciving updates.
  */
 class IEnvInfoSubscription {
   public:
@@ -31,7 +32,7 @@ class IEnvInfoSubscription {
  * abound the environment.
  *
  * @details The class provides a mechanism for running a background task
- * (thread) (startBackgroundTask()/stopBackgroundTask()) that periodically
+ * (thread) (startBackgroundTasks()/stopBackgroundTasks()) that periodically
  * refreshes the environment information. The new set of information is then
  * propagated via the observer pattern. Obsersers/subscribers have the implement
  * the #IEnvInfoSubscription interface and call attach(this) in order to get
@@ -41,7 +42,9 @@ class IEnvInfoSubscription {
  * tasks doing the same thing for a different set of subscribers,
  * EnvController is implemented as a singleton.
  */
-class EnvController : public BaseController {
+class EnvController : public BaseController,
+                      public Subscribable<IEnvInfoSubscription>,
+                      public BackgroundTaskable {
     // Singleton:
     // https://stackoverflow.com/questions/1008019/c-singleton-design-pattern
   public:
@@ -75,38 +78,11 @@ class EnvController : public BaseController {
      */
     void setLoggedIn(bool loggedIn);
 
-    /**
-     * @brief Start a task in a background thread that periodically updates the
-     * environment information and notifies all subscribers.
-     * @see config::consts::ENV_UPDATE_INTERVAL
-     */
-    void startBackgroundTask();
-
-    /**
-     * @brief Terminate the background thread.
-     */
-    void stopBackgroundTask();
-
-    /**
-     * @brief Attach a subscriber that will be notified by the background task.
-     * @param subscriber An object implementing #IEnvInfoSubscription. A
-     * reasonable approach is to let the class the needs the environment
-     * information implement it itself and call attach(this).
-     * @note Don't forget to call detach() in the destructor.
-     */
-    void attach(IEnvInfoSubscription *subscriber);
-
-    /**
-     * @brief Unsubscriber a subscriber. The background task will continue to
-     * run.
-     */
-    void detach(IEnvInfoSubscription *subscriber);
-
   private:
     /**
-     * @brief Empty constructor (part of the sigleton implementation).
+     * @brief Private default constructor (part of the sigleton implementation).
      */
-    EnvController() = default;
+    EnvController();
 
     /**
      * @brief The current set of environment informations.
@@ -114,27 +90,20 @@ class EnvController : public BaseController {
     EnvInfo _envInfo;
 
     /**
-     * @brief The list of subscribers.
-     * @see attach(), detach()
+     * @brief Implementation of Subscribable::notifySubscriber().
      */
-    std::vector<IEnvInfoSubscription *> _subscribers;
+    void notifySubscriber(IEnvInfoSubscription &subscriber) override;
 
     /**
-     * @brief Notify all _subscribers.
+     * @brief The background task for periodically re-fetch all information and
+     * notify subscribers about it.
      */
-    void _notifySubscribers();
+    void _backgroundTask(bool isSpecialTick);
 
     /**
-     * @brief Bool that is true, while the background task should keep running.
-     * @details Atomic bool for thread safety.
+     * @brief One-time initialization of _backgroundTask.
      */
-    std::atomic<bool> _performBackgroundTask = false;
-
-    /**
-     * @brief The background tasked started/stopped by
-     * startBackgroundTask()/stopBackgroundTask().
-     */
-    void _backgroundTask();
+    void _backgroundTaskInit();
 
     /**
      * @brief Checks whether the devices has an active internet connection.

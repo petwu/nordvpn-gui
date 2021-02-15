@@ -21,6 +21,14 @@
 #include "logic/nordvpn/preferencescontroller.h"
 
 ServerController::ServerController() {
+    // register my background tasks
+    this->registerBackgroundTask(
+        std::bind(&ServerController::_backgroundTaskServerList, this),
+        config::consts::SERVER_LIST_UPDATE_INTERVAL);
+    this->registerBackgroundTask(
+        std::bind(&ServerController::_backgroundTaskCountryList, this, _1),
+        config::consts::COUNTRY_LIST_UPDATE_INTERVAL, std::chrono::hours(24));
+    // subscribe to connection status updates
     StatusController::getInstance().attach(this);
     // use a cached server list which is stored on disk and can be read in fast
     // so that the UI has something do display
@@ -331,23 +339,8 @@ void ServerController::disconnect() {
     AsyncProcess::execute("nordvpn disconnect");
 }
 
-void ServerController::attach(ICountriesSubscription *subscriber,
-                              bool notifyImmediately) {
-    this->_subscribers.push_back(subscriber);
-    if (notifyImmediately && subscriber != nullptr) {
-        subscriber->updateRecents(this->_recents);
-        subscriber->updateCountryList(this->_allCountries);
-    }
-}
-
-void ServerController::detach(ICountriesSubscription *subscriber) {
-    this->_subscribers.erase(std::remove(this->_subscribers.begin(),
-                                         this->_subscribers.end(), subscriber),
-                             this->_subscribers.end());
-}
-
 void ServerController::_notifySubscribersRecents() {
-    for (auto &subscriber : this->_subscribers) {
+    for (auto &subscriber : this->subscribers) {
         if (subscriber != nullptr) {
             subscriber->updateRecents(this->_recents);
         }
@@ -355,52 +348,23 @@ void ServerController::_notifySubscribersRecents() {
 }
 
 void ServerController::_notifySubscribersCountryList() {
-    for (auto &subscriber : this->_subscribers) {
+    for (auto &subscriber : this->subscribers) {
         if (subscriber != nullptr) {
             subscriber->updateCountryList(this->_allCountries);
         }
     }
 }
 
-void ServerController::startBackgroundTask() {
-    this->_performBackgroundTask = true;
-    // create and run new daemon threads
-    std::thread(&ServerController::_backgroundTaskServerList, this).detach();
-    std::thread(&ServerController::_backgroundTaskCountryList, this).detach();
-}
-
-void ServerController::stopBackgroundTask() {
-    this->_performBackgroundTask = false;
-}
-
 void ServerController::_backgroundTaskServerList() {
-    while (this->_performBackgroundTask) {
-        std::this_thread::sleep_for(
-            config::consts::SERVER_LIST_UPDATE_INTERVAL);
-        this->_allServers = ServerRepository::fetchServers();
-    }
+    this->_allServers = ServerRepository::fetchServers();
 }
 
-void ServerController::_backgroundTaskCountryList() {
-    long i = 0;
-    constexpr long secondsPerDay = 86400;
-    long iMax =
-        secondsPerDay / std::chrono::duration_cast<std::chrono::seconds>(
-                            config::consts::COUNTRY_LIST_UPDATE_INTERVAL)
-                            .count();
-    while (this->_performBackgroundTask) {
-        // update the cache the first time (on app start) ...
-        this->getAllCountries(i == 0);
-        if (i == 0) {
-            // ... and the only every ~86.400s = 24h
-            // (it's an unlikely use case, that the list of countries changes)
-            i = iMax;
-        }
-        i--;
-        this->_notifySubscribersCountryList();
-        std::this_thread::sleep_for(
-            config::consts::COUNTRY_LIST_UPDATE_INTERVAL);
-    }
+void ServerController::_backgroundTaskCountryList(bool isSpecialTick) {
+    // update the cache the first time (on app start) and then only every
+    // 24h (it's an unlikely use case, that the list of countries changes)
+    // See registerBackgroundTask(...) to change the isSpecialTick interval.
+    this->getAllCountries(isSpecialTick);
+    this->_notifySubscribersCountryList();
 }
 
 void ServerController::updateConnectionInfo(const ConnectionInfo &newInfo) {

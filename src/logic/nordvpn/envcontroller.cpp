@@ -17,6 +17,13 @@
 #include "config.h"
 #include "curl/curl.h"
 
+EnvController::EnvController() {
+    this->registerBackgroundTask(
+        std::bind(&EnvController::_backgroundTask, this, _1),
+        std::bind(&EnvController::_backgroundTaskInit, this),
+        config::consts::ENV_UPDATE_INTERVAL, std::chrono::minutes(1));
+}
+
 auto EnvController::getInstance() -> EnvController & {
     static EnvController instance;
     return instance;
@@ -41,7 +48,7 @@ auto EnvController::getEnvInfo() -> EnvInfo {
 
 void EnvController::setLoggedIn(bool loggedIn) {
     this->_envInfo.loggedIn = loggedIn;
-    this->_notifySubscribers();
+    this->notifySubscribers();
 }
 
 auto EnvController::_isInternetConnected() -> bool {
@@ -127,70 +134,37 @@ auto EnvController::_checkMiscError() -> std::string {
     return !result.error.empty() ? result.error : result.output;
 }
 
-void EnvController::attach(IEnvInfoSubscription *subscriber) {
-    this->_subscribers.push_back(subscriber);
+void EnvController::notifySubscriber(IEnvInfoSubscription &subscriber) {
+    subscriber.updateEnv(this->_envInfo);
 }
 
-void EnvController::detach(IEnvInfoSubscription *subscriber) {
-    this->_subscribers.erase(std::remove(this->_subscribers.begin(),
-                                         this->_subscribers.end(), subscriber),
-                             this->_subscribers.end());
-}
-
-void EnvController::_notifySubscribers() {
-    for (auto &subscriber : this->_subscribers) {
-        if (subscriber != nullptr) {
-            subscriber->updateEnv(this->_envInfo);
-        }
-    }
-}
-
-void EnvController::startBackgroundTask() {
-    this->_performBackgroundTask = true;
-    // create and run new daemon thread
-    std::thread(&EnvController::_backgroundTask, this).detach();
-}
-
-void EnvController::stopBackgroundTask() {
-    this->_performBackgroundTask = false;
-}
-
-void EnvController::_backgroundTask() {
+void EnvController::_backgroundTaskInit() {
     // get complete env info only once
     this->_envInfo = EnvController::getEnvInfo();
-    this->_notifySubscribers();
-    // counter
-    int i = 0;
-    // limit, when i gets reset to 0 --> once every ~60s
-    // (depends on the update interval)
-    long iMax = 60 / std::chrono::duration_cast<std::chrono::seconds>(
-                         config::consts::ENV_UPDATE_INTERVAL)
-                         .count();
-    // then periodically do partial updates
-    while (this->_performBackgroundTask) {
-        i++;
-        this->_envInfo.internetConnected = this->_isInternetConnected();
-        this->_envInfo.shellAvailable = this->_isShellAvailable();
-        this->_envInfo.nordvpnInstalled = this->_isNordvpnInstalled();
-        this->_envInfo.miscError = this->_checkMiscError();
-        if (this->_envInfo.internetConnected && i == iMax) {
-            i = 0;
-            /*
-             * Calling "nordvpn account" probably performs a request to the
-             * NordVPN API. The number of request is limited to 250 per hour
-             * (empirically tested on 2020-10-31). Hence, the loggedIn property
-             * gets updated only once per minute (= 60 request per hour) to
-             * leave enough scope for unknown changes on the part of the
-             * NordVPN API.
-             */
+    this->notifySubscribers();
+}
+
+void EnvController::_backgroundTask(bool isSpecialTick) {
+    this->_envInfo.internetConnected = this->_isInternetConnected();
+    this->_envInfo.shellAvailable = this->_isShellAvailable();
+    this->_envInfo.nordvpnInstalled = this->_isNordvpnInstalled();
+    this->_envInfo.miscError = this->_checkMiscError();
+    if (this->_envInfo.internetConnected && isSpecialTick) {
+        /*
+         * Calling "nordvpn account" probably performs a request to the
+         * NordVPN API. The number of request is limited to 250 per hour
+         * (empirically tested on 2020-10-31). Hence, the loggedIn property
+         * gets updated only once per minute (= 60 request per hour) to
+         * leave enough scope for unknown changes on the part of the
+         * NordVPN API.
+         * See registerBackgroundTask(...) to change the isSpecialTick interval.
+         */
+        this->_envInfo.loggedIn = this->_isLoggedIn();
+        if (this->_envInfo.loggedIn == false) {
+            // double check, because for some unknown reason it sometimes
+            // returns false erroneously
             this->_envInfo.loggedIn = this->_isLoggedIn();
-            if (this->_envInfo.loggedIn == false) {
-                // double check, because for some unknown reason it sometimes
-                // returns false erroneously
-                this->_envInfo.loggedIn = this->_isLoggedIn();
-            }
         }
-        this->_notifySubscribers();
-        std::this_thread::sleep_for(config::consts::ENV_UPDATE_INTERVAL);
     }
+    this->notifySubscribers();
 }

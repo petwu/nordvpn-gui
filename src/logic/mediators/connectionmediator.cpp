@@ -10,9 +10,9 @@
 ConnectionMediator::ConnectionMediator() {
     this->_countries = this->_serverController.getAllCountries();
     this->_statusController.attach(this);
-    this->_statusController.startBackgroundTask();
+    this->_statusController.startBackgroundTasks();
     this->_serverController.attach(this);
-    this->_serverController.startBackgroundTask();
+    this->_serverController.startBackgroundTasks();
 }
 
 void ConnectionMediator::updateConnectionInfo(const ConnectionInfo &newInfo) {
