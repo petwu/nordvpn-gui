@@ -13,8 +13,9 @@
 
 #include "data/models/country.h"
 #include "logic/models/connectioninfo.h"
-#include "logic/nordvpn/servercontroller.h"
-#include "logic/nordvpn/statuscontroller.h"
+#include "logic/subscriptions/iconnectioninfosubscription.h"
+#include "logic/subscriptions/icountriessubscription.h"
+#include "logic/subscriptions/irecentssubscription.h"
 
 /**
  * @brief The TrayMediator class is a simple mediator to interact with a tray
@@ -36,7 +37,8 @@
  */
 class TrayMediator : public QObject,
                      public IConnectionInfoSubscription,
-                     public ICountriesSubscription {
+                     public ICountriesSubscription,
+                     public IRecentsSubscription {
     // NOLINTNEXTLINE(modernize-use-trailing-return-type): Qt is out of scope
     Q_OBJECT
 

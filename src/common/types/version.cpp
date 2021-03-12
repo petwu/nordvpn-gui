@@ -1,13 +1,18 @@
 #include "version.h"
 
+#include <cstddef>
 #include <regex>
+#include <type_traits>
+#include <utility>
+#include <vector>
 
 #include "common/util/strings.h"
 
 Version::Version(uint32_t major, uint32_t minor, uint32_t patch,
                  std::string preRelease, std::string buildMeta)
-    : _major(major), _minor(minor), _patch(patch), _preRelease(preRelease),
-      _buildMeta(buildMeta) {
+    : _major(major), _minor(minor), _patch(patch),
+      _preRelease(std::move(std::move(preRelease))),
+      _buildMeta(std::move(std::move(buildMeta))) {
     // Simply assigning major, minor, etc. to is appropriate private fields does
     // not prevent invald information passed to preRelease and buildMeta. In
     // order to not duplicate logic, we re-use the validation implemented in
@@ -16,11 +21,17 @@ Version::Version(uint32_t major, uint32_t minor, uint32_t patch,
     *this = Version::fromString(this->toString());
 }
 
-Version Version::Invalid = Version(0, 0, 0, "invalid");
+auto Version::invalid() -> Version { //
+    return Version();
+}
+
+auto Version::isInvalid() const -> bool { //
+    return *this == Version::invalid();
+}
 
 auto Version::fromString(std::string s) -> Version {
     if (s.empty()) {
-        return Version::Invalid;
+        return Version::invalid();
     }
     // the semver specification does not allow a leading v|V for "version", but
     // we are a bit less strict
@@ -33,7 +44,7 @@ auto Version::fromString(std::string s) -> Version {
         R"(^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$)");
     std::smatch matches;
     if (!std::regex_search(s, matches, semverRegex)) {
-        return Version::Invalid;
+        return Version::invalid();
     }
     // std::stoi() can throw exceptions, but we don't have to catch it since we
     // already checked with a regex
@@ -71,9 +82,10 @@ auto Version::operator!=(const Version &other) const -> bool {
 }
 
 auto Version::operator>(const Version &other) const -> bool {
-    if (*this == Version::Invalid) {
+    if (this->isInvalid()) {
         return false;
-    } else if (other == Version::Invalid) {
+    }
+    if (other.isInvalid()) {
         return true;
     }
 
@@ -101,7 +113,8 @@ auto Version::operator>(const Version &other) const -> bool {
 
     if (this->_preRelease.empty() && !other._preRelease.empty()) {
         return true;
-    } else if (!this->_preRelease.empty() && other._preRelease.empty()) {
+    }
+    if (!this->_preRelease.empty() && other._preRelease.empty()) {
         return false;
     }
 
@@ -133,8 +146,8 @@ auto Version::operator>(const Version &other) const -> bool {
         if (tPartIsNumeric && oPartIsNumeric) {
             // std::stoi() can throw exceptions, but we don't have to catch it
             // since we already checked with a regex
-            int tPartNum = std::stoi(tParts[i], 0, 10);
-            int oPartNum = std::stoi(oParts[i], 0, 10);
+            int tPartNum = std::stoi(tParts[i], nullptr, 10);
+            int oPartNum = std::stoi(oParts[i], nullptr, 10);
             if (tPartNum != oPartNum) {
                 return tPartNum > oPartNum; // 11.4.1
             }

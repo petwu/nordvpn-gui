@@ -8,6 +8,7 @@
 
 #include "logic/models/connectioninfo.h"
 #include "logic/nordvpn/statuscontroller.h"
+#include "logic/subscriptions/iconnectioninfosubscription.h"
 
 /**
  * @brief The DevMediator class provides utility properties and slots for
@@ -77,8 +78,7 @@ class DevMediator : public QObject, public IConnectionInfoSubscription {
     /**
      * @brief Getter for _connectionInfo.
      */
-    // NOLINTNEXTLINE(modernize-use-trailing-return-type): not supported by moc
-    QString _getConnectionInfo();
+    auto _getConnectionInfo() -> QString;
 
     /**
      * @brief Backing attribute for the #showDebugInformation property.
@@ -88,8 +88,7 @@ class DevMediator : public QObject, public IConnectionInfoSubscription {
     /**
      * @brief Getter for _showDebugInformation.
      */
-    // NOLINTNEXTLINE(modernize-use-trailing-return-type): not supported by moc
-    bool _getShowDebugInformation() const;
+    auto _getShowDebugInformation() const -> bool;
 };
 
 #endif // DEVMEDIATOR_H

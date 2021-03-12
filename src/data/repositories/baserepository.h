@@ -48,7 +48,7 @@ class BaseRepository {
      * timed out.
      */
     static auto
-    curl(const char *&url, const uint8_t timeoutSec = DEFAULT_CURL_TIMEOUT,
+    curl(const char *&url, uint8_t timeoutSec = DEFAULT_CURL_TIMEOUT,
          const std::vector<std::string> &headers = std::vector<std::string>())
         -> std::string;
 
@@ -56,8 +56,7 @@ class BaseRepository {
      * @brief Overload of #curl() with `std::string` instead of `char*`.
      */
     static auto
-    curl(const std::string &url,
-         const uint8_t timeoutSec = DEFAULT_CURL_TIMEOUT,
+    curl(const std::string &url, uint8_t timeoutSec = DEFAULT_CURL_TIMEOUT,
          const std::vector<std::string> &headers = std::vector<std::string>())
         -> std::string;
 };

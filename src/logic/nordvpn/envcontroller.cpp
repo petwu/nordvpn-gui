@@ -1,13 +1,11 @@
 #include "envcontroller.h"
 
-#include <algorithm>
 #include <chrono>
 #include <cstddef>
 #include <memory>
 #include <regex>
 #include <sstream>
 #include <string>
-#include <thread>
 #include <utility>
 
 #include "common/io/process.h"
@@ -18,10 +16,10 @@
 #include "curl/curl.h"
 
 EnvController::EnvController() {
-    this->registerBackgroundTask(
-        std::bind(&EnvController::_backgroundTask, this, _1),
-        std::bind(&EnvController::_backgroundTaskInit, this),
-        config::consts::ENV_UPDATE_INTERVAL, std::chrono::minutes(1));
+    this->registerBackgroundTask([this](bool tick) { _backgroundTask(tick); },
+                                 [this] { _backgroundTaskInit(); },
+                                 config::consts::ENV_UPDATE_INTERVAL,
+                                 std::chrono::minutes(1));
 }
 
 auto EnvController::getInstance() -> EnvController & {

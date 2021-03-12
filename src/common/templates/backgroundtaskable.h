@@ -8,6 +8,7 @@
 #include <iostream>
 #include <memory>
 #include <thread>
+#include <utility>
 #include <vector>
 
 using namespace std::placeholders;
@@ -28,8 +29,8 @@ class BackgroundTaskable {
      * @brief Start all registered background tasks.
      */
     void startBackgroundTasks() {
-        for (size_t i = 0; i < this->_backgroundTasks.size(); i++) {
-            this->_backgroundTasks[i]->startBackgroundTask();
+        for (auto &_backgroundTask : this->_backgroundTasks) {
+            _backgroundTask->startBackgroundTask();
         }
     }
 
@@ -38,8 +39,8 @@ class BackgroundTaskable {
      * (possibly) currently executing iteration.
      */
     void stopBackgroundTasks() {
-        for (size_t i = 0; i < this->_backgroundTasks.size(); i++) {
-            this->_backgroundTasks[i]->stopBackgroundTask();
+        for (auto &_backgroundTask : this->_backgroundTasks) {
+            _backgroundTask->stopBackgroundTask();
         }
     }
 
@@ -133,11 +134,18 @@ class BackgroundTaskable {
      */
     class IBackgroundTask {
       public:
+        IBackgroundTask() = default;
+        IBackgroundTask(const IBackgroundTask &) = delete;
+        auto operator=(const IBackgroundTask &) -> IBackgroundTask & = delete;
+        IBackgroundTask(IBackgroundTask &&) = delete;
+        auto operator=(IBackgroundTask &&) -> IBackgroundTask & = delete;
+        virtual ~IBackgroundTask() = default;
+
         /**
          * @brief Start the background task in a separate daemon thread.
          */
         void startBackgroundTask() {
-            if (this->_performBackgroundTask == true) {
+            if (this->_performBackgroundTask) {
                 return;
             }
             this->_performBackgroundTask = true;
@@ -182,10 +190,10 @@ class BackgroundTaskable {
      */
     class BackgroundTask : public IBackgroundTask {
       public:
-        BackgroundTask(const std::function<void()> &task,
-                       const std::function<void()> &init,
+        BackgroundTask(std::function<void()> task, std::function<void()> init,
                        const std::chrono::milliseconds &interval)
-            : _task(task), _init(init), _interval(interval) {}
+            : _task(std::move(task)), _init(std::move(init)),
+              _interval(interval) {}
 
       private:
         const std::function<void()> _task;
@@ -216,13 +224,12 @@ class BackgroundTaskable {
     class BackgroundTaskWithSpecialTick : public IBackgroundTask {
       public:
         BackgroundTaskWithSpecialTick(
-            const std::function<void(bool)> &task,
-            const std::function<void()> &init,
+            std::function<void(bool)> task, std::function<void()> init,
             const std::chrono::milliseconds &interval,
             const std::chrono::milliseconds &specialTickInterval,
             const bool triggerSpecialTickFirstTime)
-            : _task(task), _init(init), _interval(interval),
-              _specialTickInterval(specialTickInterval),
+            : _task(std::move(task)), _init(std::move(init)),
+              _interval(interval), _specialTickInterval(specialTickInterval),
               _triggerSpecialTickFirstTime(triggerSpecialTickFirstTime) {}
 
       private:

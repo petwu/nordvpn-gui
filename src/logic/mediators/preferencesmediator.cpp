@@ -213,11 +213,13 @@ void PreferencesMediator::restoreDefaultNordvpnSettings() {
  * [1;255].[1;255].[1;255].[1;255]
  * ```
  */
-const std::string IPv4_REGEX = // NOLINT(cert-err58-cpp): a exception initialization this static string is very unlikely
+auto IPv4_REGEX() -> std::string {
+    return
     "^"
     "(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?\\.){3}" // [1;255].[1;255].[1;255].
     "(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)"       // [1;255]
     "$";
+}
 
 /**
  * @brief IPv6_REGEX is a regular expression to validate IPv6 adresses.
@@ -247,7 +249,8 @@ const std::string IPv4_REGEX = // NOLINT(cert-err58-cpp): a exception initializa
  * Source:
  * https://stackoverflow.com/questions/53497/regular-expression-that-matches-valid-ipv6-addresses
  */
-const std::string IPv6_REGEX = // NOLINT(cert-err58-cpp): a exception initialization this static string is very unlikely
+auto IPv6_REGEX() -> std::string {
+    return
     "^("
     "([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|"
     "([0-9a-fA-F]{1,4}:){1,7}:|"
@@ -266,6 +269,7 @@ const std::string IPv6_REGEX = // NOLINT(cert-err58-cpp): a exception initializa
     "((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\\.){3,3}"
     "(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])"
     ")$";
+}
 
 /**
  * @brief IPv4_SUBNET_REGEX is a regular expression to validate IPv4 subnet masks.
@@ -275,8 +279,9 @@ const std::string IPv6_REGEX = // NOLINT(cert-err58-cpp): a exception initializa
  * <valid IPv4 address>/[0;32]
  * ```
  */
-const std::string IPv4_SUBNET_REGEX = // NOLINT(cert-err58-cpp): a exception initialization this static string is very unlikely
-    IPv4_REGEX.substr(0, IPv4_REGEX.size()-1) + "/(3[0-2]|[12]?[0-9])$";
+auto IPv4_SUBNET_REGEX() -> std::string {
+    return IPv4_REGEX().substr(0, IPv4_REGEX().size()-1) + "/(3[0-2]|[12]?[0-9])$";
+}
 
 /**
  * @brief IPv6_SUBNET_REGEX is a regular expression to validate IPv6 subnet masks.
@@ -286,26 +291,29 @@ const std::string IPv4_SUBNET_REGEX = // NOLINT(cert-err58-cpp): a exception ini
  * <valid IPv6 address>/[0;128]
  * ```
  */
-const std::string IPv6_SUBNET_REGEX = // NOLINT(cert-err58-cpp): a exception initialization this static string is very unlikely
-    IPv6_REGEX.substr(0, IPv6_REGEX.size()-1) + "/(12[0-8]|1[01][0-9]|[1-9]?[0-9])$";
+auto IPv6_SUBNET_REGEX() -> std::string {
+    return IPv6_REGEX().substr(0, IPv6_REGEX().size()-1) + "/(12[0-8]|1[01][0-9]|[1-9]?[0-9])$";
+}
 
 // clang-format on
 
 auto PreferencesMediator::isValidIpAddress(const QString &ip) -> bool {
-    if (std::regex_match(ip.toStdString(), std::regex(IPv4_REGEX))) {
+    if (std::regex_match(ip.toStdString(), std::regex(IPv4_REGEX()))) {
         return true;
     }
-    if (std::regex_match(ip.toStdString(), std::regex(IPv6_REGEX))) {
+    if (std::regex_match(ip.toStdString(), std::regex(IPv6_REGEX()))) {
         return true;
     }
     return false;
 }
 
 auto PreferencesMediator::isValidSubnetMask(const QString &subnet) -> bool {
-    if (std::regex_match(subnet.toStdString(), std::regex(IPv4_SUBNET_REGEX))) {
+    if (std::regex_match(subnet.toStdString(),
+                         std::regex(IPv4_SUBNET_REGEX()))) {
         return true;
     }
-    if (std::regex_match(subnet.toStdString(), std::regex(IPv6_SUBNET_REGEX))) {
+    if (std::regex_match(subnet.toStdString(),
+                         std::regex(IPv6_SUBNET_REGEX()))) {
         return true;
     }
     return false;

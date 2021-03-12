@@ -1,44 +1,14 @@
 #ifndef SERVERCONTROLLER_H
 #define SERVERCONTROLLER_H
 
-#include <atomic>
 #include <cstdint>
 #include <string>
-#include <sys/types.h>
 #include <vector>
 
 #include "basecontroller.h"
-#include "common/io/processresult.h"
 #include "common/templates/backgroundtaskable.h"
-#include "common/templates/subscribable.h"
 #include "data/enums/group.h"
-#include "data/models/country.h"
 #include "data/models/server.h"
-#include "logic/models/connectioninfo.h"
-#include "logic/nordvpn/preferencescontroller.h"
-#include "logic/nordvpn/statuscontroller.h"
-
-/**
- * @brief ICountriesSubscription is an interface that can be implemented by any
- * class that wants updates of the country list from the #ServerController.
- *
- * @details Call #ServerController::attach() and possibly
- * #ServerController::startBackgroundTasks() to start reveciving updates.
- */
-class ICountriesSubscription {
-  public:
-    /**
-     * @brief Function that is called by the #ServerController every time there
-     * is an update of the list of recently connected countries.
-     */
-    virtual void updateRecents(const std::vector<Country> &newRecents) = 0;
-
-    /**
-     * @brief Function that is called by the #ServerController every time there
-     * is an update of the country list.
-     */
-    virtual void updateCountryList(const std::vector<Country> &countryList) = 0;
-};
 
 /**
  * @brief The ServerController class is repsonsible for getting informations
@@ -74,10 +44,7 @@ class ICountriesSubscription {
  * tasks doing the same thing for a different set of subscribers,
  * ServerController is implemented as a singleton.
  */
-class ServerController : public BaseController,
-                         public IConnectionInfoSubscription,
-                         public Subscribable<ICountriesSubscription>,
-                         public BackgroundTaskable {
+class ServerController : public BaseController, public BackgroundTaskable {
     // Singleton:
     // https://stackoverflow.com/questions/1008019/c-singleton-design-pattern
   public:
@@ -94,21 +61,15 @@ class ServerController : public BaseController,
     static auto getInstance() -> ServerController &;
 
     /**
+     * @brief Get a list of all servers.
+     */
+    auto getAllServers() -> std::vector<Server>;
+
+    /**
      * @brief Get the first #Server whose #Server.hostname attribute equals the
      * provided `hostname`.
      */
     auto getServerByHostname(const std::string &hostname) -> Server;
-
-    /**
-     * @brief Get a list of all countries.
-     * @details The list of countries is cached on the file system to be able to
-     * return it faster and to reduce the amount of API requests required. The
-     * `updateCache` parameter can be used to force an API request and
-     * override the cached list. This should be done rarely (like once per
-     * application start). In cache `updateCache` is false and no cached list
-     * exists yet, the API request will be performed automatically.
-     */
-    auto getAllCountries(bool updateCache = false) -> std::vector<Country>;
 
     /**
      * @brief Get a list of all servers in a country.
@@ -125,12 +86,6 @@ class ServerController : public BaseController,
     auto getServersByCity(int32_t cityId) -> std::vector<Server>;
 
     /**
-     * @brief Get a list of all countries that have servers that are within a
-     * specific server Group.
-     */
-    auto getCountriesByGroup(Group g) -> std::vector<Country>;
-
-    /**
      * @brief Get a list of servers that are located inside a specific country
      * and are within a server Group. If `countryId` is -1 (or < 0), all
      * countries will be considered.
@@ -138,88 +93,11 @@ class ServerController : public BaseController,
     auto getServersByGroup(Group g, int32_t countryId = -1)
         -> std::vector<Server>;
 
-    /**
-     * @brief Get a list of all countries available.
-     */
-    auto getRecentCountries() -> std::vector<Country>;
-
-    /**
-     * @brief Remove a country from the list of recently connected countries by
-     * ID.
-     */
-    void removeFromRecentsList(uint32_t countryId);
-
-    /**
-     * @brief Connect to a VPN server. Let NordVPN decide which country and
-     * server is best.
-     */
-    void quickConnect();
-
-    /**
-     * @brief Connect to a VPN server in a specific country. Let NordVPN decide
-     * which city and server in this country is best.
-     */
-    void connectToCountryById(uint32_t id);
-
-    /**
-     * @brief Connect to a VPN server in a specific city. Let NordVPN decide
-     * which server in this city is best.
-     */
-    void connectToCityById(uint32_t id);
-
-    /**
-     * @brief Connect to a specific VPN server.
-     */
-    void connectToServerById(uint32_t id);
-
-    /**
-     * @brief Connect to a VPN server in a specific server #Group. Let NordVPN
-     * decide which country and server is best.
-     */
-    void connectToSpecialtyGroup(Group g);
-
-    /**
-     * @brief Connect to a country within a specific server group. Let NordVPN
-     * decide which server in the group and county is best.
-     */
-    void connectToCountryByIdAndGroup(uint32_t id, Group g);
-
-    /**
-     * @brief Abort an connection attempt.
-     * @details This kills the process establishing the connection and performs
-     * a disconnect. Hence, if already connected, this function has the same
-     * effect as #disconnect().
-     */
-    void cancelConnection() const;
-
-    /**
-     * @brief Disconnect from the currently connected VPN server. If not
-     * connected, this has no effect.
-     */
-    static void disconnect();
-
   private:
     /**
      * @brief Empty, private constructor (part of the sigleton implementation).
      */
     ServerController();
-
-    /**
-     * @brief Controller to get the settings of the NordVPN CLI, because the
-     * server list has to be filtered according to the settings.
-     */
-    PreferencesController &_preferencesController =
-        PreferencesController::getInstance();
-
-    /**
-     * @brief Internal list of all countries.
-     */
-    std::vector<Country> _allCountries;
-
-    /**
-     * @brief Internal list of all recently connected countries.
-     */
-    std::vector<Country> _recents;
 
     /**
      * @brief Internal list of all servers.
@@ -246,73 +124,10 @@ class ServerController : public BaseController,
         -> std::vector<Server>;
 
     /**
-     * @brief Inspect the #ProcessResult of a connection attempt and check
-     * whether it was successful. The most common reason it was not successful
-     * is, if the user is not logged in. In this case, this information gets
-     * passed to the #EnvController that is repsonsible for taking further
-     * actions.
-     * @param result The #ProcessResult that is returned by #Process of
-     * #AsyncProcess in one of the `connectTo*()` methods of this class.
-     * @param countryId The ID of the country trying to connect to. This is used
-     * to update the list of recently connected countries in case of a
-     * successful connection establishment.
-     */
-    void _checkConnectResult(const ProcessResult &result, int32_t countryId);
-
-    /**
-     * @brief The process ID (PID) of the process that is performing a
-     * connection establishment. Has a value if < 0 while not connecting.
-     */
-    pid_t _connectingPid{};
-
-    /**
-     * @brief Implementation of Subscribable::notifySubscriber().
-     * @param subscriber
-     */
-    void notifySubscriber(ICountriesSubscription &subscriber) override {}
-
-    /**
-     * @todo // TODO: remove override, implement notifySubscriber(), remove
-     * _notifySubscribersRecents() + _notifySubscribersCountryList()
-     * Prerequisite: extraction of recents stuff into a seperate class
-     * RecentsController
-     */
-    void notifySubscribers() override {}
-
-    /**
-     * @brief Notify the subscribers about an update of the list of recently
-     * connected countries.
-     */
-    void _notifySubscribersRecents();
-
-    /**
-     * @brief Notify the subscribers about an update of the list of countries.
-     */
-    void _notifySubscribersCountryList();
-
-    /**
      * @brief The background task responsible for periodically updating the
      * server list.
      */
-    void _backgroundTaskServerList();
-
-    /**
-     * @brief The background task responsible for periodically updating the
-     * country list.
-     */
-    void _backgroundTaskCountryList(bool isSpecialTick);
-
-    /**
-     * @brief Boolean that is true while the connection is being established.
-     * This time period starts with a call to #quickConnect() and ends when
-     * #updateConnectionInfo() receives ConnectionStatus::Connected.
-     */
-    bool _quickConnecting = false;
-
-    /**
-     * @brief Implements IConnectionInfoSubscription::updateConnectionInfo().
-     */
-    void updateConnectionInfo(const ConnectionInfo &newInfo) override;
+    void _backgroundTask();
 };
 
 #endif // SERVERCONTROLLER_H

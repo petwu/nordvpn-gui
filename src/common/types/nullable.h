@@ -3,6 +3,7 @@
 
 #include <algorithm>
 #include <iostream>
+#include <utility>
 
 template <typename T>
 /**
@@ -34,13 +35,7 @@ class Nullable {
      * @brief Creates a Nullable with the given value.
      * @param value Initial value of the Nullable.
      */
-    Nullable(const T &value) : _value(value), _isNull(false) {}
-
-    /**
-     * @brief Creates a Nullable by moving the given value.
-     * @param value Initial value of the nullable.
-     */
-    Nullable(T &&value) : _value(value), _isNull(false) {}
+    Nullable(T value) : _value(std::move(value)), _isNull(false) {}
 
     /**
      * @brief Creates a Nullable by copying another one.

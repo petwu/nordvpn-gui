@@ -57,8 +57,8 @@ auto BaseRepository::curl(const std::string &url, const uint8_t timeoutSec,
     // NOLINTNEXTLINE(cppcoreguidelines-pro-type-vararg)
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, &httpData);
     struct curl_slist *headerList = nullptr;
-    if (headers.size() > 0) {
-        for (auto header : headers) {
+    if (!headers.empty()) {
+        for (const auto &header : headers) {
             headerList = curl_slist_append(headerList, header.c_str());
         }
         // NOLINTNEXTLINE(cppcoreguidelines-pro-type-vararg)

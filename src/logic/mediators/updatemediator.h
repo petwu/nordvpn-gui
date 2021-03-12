@@ -1,10 +1,9 @@
 #ifndef UPDATEMEDIATOR_H
 #define UPDATEMEDIATOR_H
 
+#include <QByteArrayData>
 #include <QObject>
 #include <QString>
-
-#include "common/types/version.h"
 
 class UpdateMediator : public QObject {
     // NOLINTNEXTLINE(modernize-use-trailing-return-type): Qt is out of scope
@@ -23,11 +22,9 @@ class UpdateMediator : public QObject {
     void latestVersionChanged(QString);
 
   private:
-    bool _getIsUpdateAvailable();
-    // NOLINTNEXTLINE(modernize-use-trailing-return-type): not supported by moc
-    QString _getAppVersion();
-    // NOLINTNEXTLINE(modernize-use-trailing-return-type): not supported by moc
-    QString _getLatestVersion();
+    static auto _getIsUpdateAvailable() -> bool;
+    static auto _getAppVersion() -> QString;
+    static auto _getLatestVersion() -> QString;
 };
 
 #endif // UPDATEMEDIATOR_H

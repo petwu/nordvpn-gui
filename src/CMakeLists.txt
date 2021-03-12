@@ -54,8 +54,11 @@ target_sources(${PROJECT_NAME} PRIVATE
   logic/models/whitelistportentry.cpp
   logic/nordvpn/accountcontroller.cpp
   logic/nordvpn/basecontroller.cpp
+  logic/nordvpn/connectioncontroller.cpp
+  logic/nordvpn/countrycontroller.cpp
   logic/nordvpn/envcontroller.cpp
   logic/nordvpn/preferencescontroller.cpp
+  logic/nordvpn/recentscontroller.cpp
   logic/nordvpn/servercontroller.cpp
   logic/nordvpn/statuscontroller.cpp
 )

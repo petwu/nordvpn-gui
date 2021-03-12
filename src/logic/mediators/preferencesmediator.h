@@ -148,8 +148,7 @@ class PreferencesMediator : public QObject {
     PreferencesController &_preferencesController =
         PreferencesController::getInstance();
     NordVpnSettings _nordvpnSettings;
-    // NOLINTNEXTLINE(modernize-use-trailing-return-type): not supported by moc
-    QVariantMap _getNordvpnSettings();
+    auto _getNordvpnSettings() -> QVariantMap;
     void _nordvpnSettingsChanged();
 };
 

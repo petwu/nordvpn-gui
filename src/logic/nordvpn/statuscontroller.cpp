@@ -1,13 +1,11 @@
 #include "statuscontroller.h"
 
-#include <algorithm>
 #include <cstdint>
 #include <cstdlib>
 #include <map>
 #include <regex>
 #include <sstream>
 #include <string>
-#include <thread>
 #include <utility>
 
 #include "common/io/asyncprocess.h"
@@ -23,9 +21,8 @@
 #include "logic/nordvpn/servercontroller.h"
 
 StatusController::StatusController() {
-    this->registerBackgroundTask(
-        std::bind(&StatusController::_backgroundTask, this),
-        config::consts::STATUS_UPDATE_INTERVAL);
+    this->registerBackgroundTask([this] { _backgroundTask(); },
+                                 config::consts::STATUS_UPDATE_INTERVAL);
 }
 
 auto StatusController::getInstance() -> StatusController & {

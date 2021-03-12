@@ -20,7 +20,7 @@ template <class TSubscription> class Subscribable {
      * @note Don't forget to call detach() in the destructor.
      */
     void attach(TSubscription *subscriber, bool notifyImmediately = false) {
-        this->subscribers.push_back(subscriber);
+        this->_subscribers.push_back(subscriber);
         if (notifyImmediately && subscriber != nullptr) {
             this->notifySubscribers();
         }
@@ -31,10 +31,10 @@ template <class TSubscription> class Subscribable {
      * run.
      */
     void detach(TSubscription *subscriber) {
-        this->subscribers.erase(std::remove(this->subscribers.begin(),
-                                            this->subscribers.end(),
-                                            subscriber),
-                                this->subscribers.end());
+        this->_subscribers.erase(std::remove(this->_subscribers.begin(),
+                                             this->_subscribers.end(),
+                                             subscriber),
+                                 this->_subscribers.end());
     }
 
   protected:
@@ -42,7 +42,7 @@ template <class TSubscription> class Subscribable {
      * @brief Notify all subscribers. May be overridden.
      */
     virtual void notifySubscribers() {
-        for (auto &subscriber : this->subscribers) {
+        for (auto &subscriber : this->_subscribers) {
             if (subscriber != nullptr) {
                 this->notifySubscriber(*subscriber);
             }
@@ -56,11 +56,12 @@ template <class TSubscription> class Subscribable {
      */
     virtual void notifySubscriber(TSubscription &subscriber) = 0;
 
+  private:
     /**
      * @brief The list of subscribers.
      * @see attach(), detach()
      */
-    std::vector<TSubscription *> subscribers;
+    std::vector<TSubscription *> _subscribers;
 };
 
 #endif // SUBSCRIBABLE_H

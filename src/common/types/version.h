@@ -35,7 +35,7 @@ class Version {
      * valid version, e.g. `if (myVersion == Version::Invalid) { ... }` or
      * `if (myVersion != Version::Invalid) { ... }`.
      */
-    static Version Invalid;
+    static auto invalid() -> Version;
 
     /**
      * @brief Parses a string to a Version object.
@@ -52,6 +52,11 @@ class Version {
     static auto fromString(std::string s) -> Version;
 
     /**
+     * @brief Compares this with Version::Invalid().
+     */
+    auto isInvalid() const -> bool;
+
+    /**
      * @brief Returns a semver string, e.g. "1.0.0", "1.1.0-alpha", "1.2.0-rc2",
      * "2.0.0-dev", "1.1.0-alpha+build001", etc.
      */
@@ -66,9 +71,10 @@ class Version {
 
   private:
     /**
-     * @details The empty default constructor is required by #fromString(), but
-     * should not be used by anyone to enforce validation checks through the
-     * constructor. Hence it is private.
+     * @brief Private empty constructor.
+     * @details The empty constructor is private to enforce validation checks
+     * through the constructor. It is required by #fromString() and #invalid()
+     * though and therefore can't be deleted.
      */
     Version() = default;
 
@@ -79,7 +85,7 @@ class Version {
     /** @brief <major>.<minor>.<PATCH>-<pre-release>+<build-metadata> */
     uint32_t _patch = 0;
     /** @brief <major>.<minor>.<patch>-<PRE-RELEASE>+<build-metadata> */
-    std::string _preRelease;
+    std::string _preRelease = "invalid";
     /** @brief <major>.<minor>.<patch>-<pre-release>+<BUILD-METADATA> */
     std::string _buildMeta;
 };

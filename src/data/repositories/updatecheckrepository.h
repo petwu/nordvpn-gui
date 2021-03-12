@@ -1,8 +1,8 @@
 #ifndef UPDATECHECKREPOSITORY_H
 #define UPDATECHECKREPOSITORY_H
 
-#include "baserepository.h"
 #include "common/types/version.h"
+#include "data/repositories/baserepository.h"
 
 /**
  * @brief The UpdateCheckRepository class provides functions to retrieve version

@@ -10,7 +10,7 @@
 
 #include "logic/enums/mainwindowview.h"
 #include "logic/models/envinfo.h"
-#include "logic/nordvpn/envcontroller.h"
+#include "logic/subscriptions/ienvinfosubscription.h"
 
 /**
  * @brief The NavMediator class is responsible for communicating with the UI
@@ -92,8 +92,7 @@ class NavMediator : public QObject, public IEnvInfoSubscription {
      * @brief Get the location of the current main windows view source.
      * @return
      */
-    // NOLINTNEXTLINE(modernize-use-trailing-return-type): not supported by moc
-    QString _getMainWindowViewSource();
+    auto _getMainWindowViewSource() -> QString;
 
     /**
      * @brief Set the current main window view. This will emit the
@@ -110,8 +109,7 @@ class NavMediator : public QObject, public IEnvInfoSubscription {
     /**
      * @brief Get the main windows optional payload.
      */
-    // NOLINTNEXTLINE(modernize-use-trailing-return-type): not supported by moc
-    QVariant _getMainWindowPayload();
+    auto _getMainWindowPayload() -> QVariant;
 
     /**
      * @brief Set the main windows optional payload.

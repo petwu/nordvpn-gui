@@ -1,5 +1,8 @@
 #include "updatemediator.h"
 
+#include <string>
+
+#include "common/types/version.h"
 #include "data/repositories/updatecheckrepository.h"
 
 auto UpdateMediator::_getIsUpdateAvailable() -> bool {

@@ -14,6 +14,9 @@
 #include <string>
 
 #include "logic/enums/connectionstatus.h"
+#include "logic/nordvpn/countrycontroller.h"
+#include "logic/nordvpn/recentscontroller.h"
+#include "logic/nordvpn/statuscontroller.h"
 
 auto TrayMediator::getInstance() -> TrayMediator & {
     static TrayMediator instance;
@@ -70,13 +73,14 @@ TrayMediator::TrayMediator() {
 
     // subsribe to controller to get updates about the connection status and
     // country/recents lists
-    StatusController::getInstance().attach(this);
-    ServerController::getInstance().attach(this, true);
+    StatusController::getInstance().attach(this, true);
+    CountryController::getInstance().attach(this, true);
+    RecentsController::getInstance().attach(this, true);
 }
 
 TrayMediator::~TrayMediator() {
     StatusController::getInstance().detach(this);
-    ServerController::getInstance().detach(this);
+    CountryController::getInstance().detach(this);
 }
 
 void TrayMediator::setIconSource(const QString &filename) {

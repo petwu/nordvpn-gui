@@ -13,8 +13,12 @@
 #include "data/enums/group.h"
 #include "data/models/country.h"
 #include "logic/models/connectioninfo.h"
+#include "logic/nordvpn/connectioncontroller.h"
+#include "logic/nordvpn/countrycontroller.h"
 #include "logic/nordvpn/servercontroller.h"
 #include "logic/nordvpn/statuscontroller.h"
+#include "logic/subscriptions/iconnectioninfosubscription.h"
+#include "logic/subscriptions/icountriessubscription.h"
 
 /**
  * @brief The ConnectionMediator class is a quite important mediator. It is
@@ -378,10 +382,20 @@ class ConnectionMediator : public QObject,
 
   private:
     /**
-     * @brief Controller for server related information exchange and propagating
-     * connection commands.
+     * @brief Controller for server related information exchange.
      */
     ServerController &_serverController = ServerController::getInstance();
+
+    /**
+     * @brief Controller for country related information exchange.
+     */
+    CountryController &_countryController = CountryController::getInstance();
+
+    /**
+     * @brief Controller for propagating connection commands.
+     */
+    ConnectionController &_connectionController =
+        ConnectionController::getInstance();
 
     /**
      * @brief Controller to observe for updates about the connection status.
@@ -402,8 +416,7 @@ class ConnectionMediator : public QObject,
     /**
      * @brief Getter for the #areConnectionCommandsPaused property.
      */
-    // NOLINTNEXTLINE(modernize-use-trailing-return-type): not supported by moc
-    bool _getAreConnectionCommandsPaused() const;
+    auto _getAreConnectionCommandsPaused() const -> bool;
 
     /**
      * @brief Setter for the #areConnectionCommandsPaused property.
@@ -418,8 +431,7 @@ class ConnectionMediator : public QObject,
     /**
      * @brief Getter for the #isDisconnected property.
      */
-    // NOLINTNEXTLINE(modernize-use-trailing-return-type): not supported by moc
-    bool _getIsDisconnected() const;
+    auto _getIsDisconnected() const -> bool;
 
     /**
      * @brief Setter for the #isDisconnected property.
@@ -434,8 +446,7 @@ class ConnectionMediator : public QObject,
     /**
      * @brief Getter for the #isConnecting property.
      */
-    // NOLINTNEXTLINE(modernize-use-trailing-return-type): not supported by moc
-    bool _getIsConnecting() const;
+    auto _getIsConnecting() const -> bool;
 
     /**
      * @brief Setter for the #isConnecting property.
@@ -450,8 +461,7 @@ class ConnectionMediator : public QObject,
     /**
      * @brief Getter for the #isConnected property.
      */
-    // NOLINTNEXTLINE(modernize-use-trailing-return-type): not supported by moc
-    bool _getIsConnected() const;
+    auto _getIsConnected() const -> bool;
 
     /**
      * @brief Setter for the #isConnected property.
@@ -466,8 +476,7 @@ class ConnectionMediator : public QObject,
     /**
      * @brief Getter for the #isRatingPossible property.
      */
-    // NOLINTNEXTLINE(modernize-use-trailing-return-type): not supported by moc
-    bool _getIsRatingPossible() const;
+    auto _getIsRatingPossible() const -> bool;
 
     /**
      * @brief Setter for the #isRatingPossible property.
@@ -482,8 +491,7 @@ class ConnectionMediator : public QObject,
     /**
      * @brief Getter for the #connectingCountryId property.
      */
-    // NOLINTNEXTLINE(modernize-use-trailing-return-type): not supported by moc
-    qint32 _getConnectingCountryId() const;
+    auto _getConnectingCountryId() const -> qint32;
 
     /**
      * @brief Setter for the #connectingCountryId property.
@@ -498,8 +506,7 @@ class ConnectionMediator : public QObject,
     /**
      * @brief Getter for the #connectedCountryId property.
      */
-    // NOLINTNEXTLINE(modernize-use-trailing-return-type): not supported by moc
-    qint32 _getConnectedCountryId() const;
+    auto _getConnectedCountryId() const -> qint32;
 
     /**
      * @brief Setter for the #connectedCountryId property.
@@ -514,8 +521,7 @@ class ConnectionMediator : public QObject,
     /**
      * @brief Getter for the #connectedCityId property.
      */
-    // NOLINTNEXTLINE(modernize-use-trailing-return-type): not supported by moc
-    qint32 _getConnectedCityId() const;
+    auto _getConnectedCityId() const -> qint32;
 
     /**
      * @brief Setter for the #connectedCityId property.
@@ -530,8 +536,7 @@ class ConnectionMediator : public QObject,
     /**
      * @brief Getter for the #connectedServerNr property.
      */
-    // NOLINTNEXTLINE(modernize-use-trailing-return-type): not supported by moc
-    qint32 _getConnectedServerNr() const;
+    auto _getConnectedServerNr() const -> qint32;
 
     /**
      * @brief Setter for the #connectedServerNr property.
@@ -546,8 +551,7 @@ class ConnectionMediator : public QObject,
     /**
      * @brief Getter for the #connectedIP property.
      */
-    // NOLINTNEXTLINE(modernize-use-trailing-return-type): not supported by moc
-    QString _getConnectedIP();
+    auto _getConnectedIP() -> QString;
 
     /**
      * @brief Setter for the #connectedIP property.
@@ -562,8 +566,7 @@ class ConnectionMediator : public QObject,
     /**
      * @brief Getter for the #receivedBytes property.
      */
-    // NOLINTNEXTLINE(modernize-use-trailing-return-type): not supported by moc
-    qint64 _getReceivedBytes() const;
+    auto _getReceivedBytes() const -> qint64;
 
     /**
      * @brief Setter for the #receivedBytes property.
@@ -578,8 +581,7 @@ class ConnectionMediator : public QObject,
     /**
      * @brief Getter for the #sentBytes property.
      */
-    // NOLINTNEXTLINE(modernize-use-trailing-return-type): not supported by moc
-    qint64 _getSentBytes() const;
+    auto _getSentBytes() const -> qint64;
 
     /**
      * @brief Setter for the #sentBytes property.
@@ -594,8 +596,7 @@ class ConnectionMediator : public QObject,
     /**
      * @brief Getter for the #uptimeSeconds property.
      */
-    // NOLINTNEXTLINE(modernize-use-trailing-return-type): not supported by moc
-    qint64 _getUptimeSeconds() const;
+    auto _getUptimeSeconds() const -> qint64;
 
     /**
      * @brief Setter for the #uptimeSeconds property.
@@ -605,8 +606,7 @@ class ConnectionMediator : public QObject,
     /**
      * @brief Getter for the #countryList property.
      */
-    // NOLINTNEXTLINE(modernize-use-trailing-return-type): not supported by moc
-    QVariant _getCountryList();
+    auto _getCountryList() -> QVariant;
 
     /**
      * @brief Field backing the #connectedServerGroups property.
@@ -616,8 +616,7 @@ class ConnectionMediator : public QObject,
     /**
      * @brief Getter for the #connectedServerGroups property.
      */
-    // NOLINTNEXTLINE(modernize-use-trailing-return-type): not supported by moc
-    QVariantList _getConnectedServerGroups();
+    auto _getConnectedServerGroups() -> QVariantList;
 
     /**
      * @brief Setter for the #connectedServerGroups property.
@@ -632,8 +631,7 @@ class ConnectionMediator : public QObject,
     /**
      * @brief Getter for the #connectingServerGroups property.
      */
-    // NOLINTNEXTLINE(modernize-use-trailing-return-type): not supported by moc
-    QVariantList _getConnectingServerGroups();
+    auto _getConnectingServerGroups() -> QVariantList;
 
     /**
      * @brief Setter for the #connectingServerGroups property.
@@ -646,14 +644,6 @@ class ConnectionMediator : public QObject,
      * @param newInfo The new connection information.
      */
     void updateConnectionInfo(const ConnectionInfo &newInfo) override;
-
-    /**
-     * @brief Implements ICountriesSubscription::updateRecents(). Empty
-     * implementation since the information about the recently connected
-     * countries is not required by this mediator.
-     * @see #RecentsMediator
-     */
-    void updateRecents(const std::vector<Country> &newRecents) override {}
 
     /**
      * @brief Implements ICountriesSubscription::updateCountryList() to receive
