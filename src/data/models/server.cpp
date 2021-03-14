@@ -1,4 +1,4 @@
-#include "server.h"
+#include "server.hpp"
 
 #include <algorithm>
 #include <cstdint>
@@ -6,7 +6,7 @@
 #include <nlohmann/json.hpp>
 #include <utility>
 
-#include "data/models/location.h"
+#include "data/models/location.hpp"
 
 auto Server::supportsObfuscated() -> bool {
     for (auto sp : this->securityProtocols) {

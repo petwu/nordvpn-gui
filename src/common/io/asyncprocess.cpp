@@ -1,10 +1,10 @@
-#include "asyncprocess.h"
+#include "asyncprocess.hpp"
 
 #include <csignal>
 #include <cstdlib>
 #include <thread>
 
-#include "common/io/process.h"
+#include "common/io/process.hpp"
 
 void AsyncProcess::execute(const std::string &command) { //
     execute(command, nullptr);

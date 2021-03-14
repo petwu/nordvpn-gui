@@ -1,4 +1,4 @@
-#include "preferencescontroller.h"
+#include "preferencescontroller.hpp"
 
 #include <algorithm>
 #include <map>
@@ -9,13 +9,13 @@
 #include <utility>
 #include <vector>
 
-#include "common/io/process.h"
-#include "common/io/processresult.h"
-#include "common/types/nullable.h"
-#include "common/util/strings.h"
-#include "data/enums/protocol.h"
-#include "data/enums/technology.h"
-#include "logic/models/whitelistportentry.h"
+#include "common/io/process.hpp"
+#include "common/io/processresult.hpp"
+#include "common/types/nullable.hpp"
+#include "common/util/strings.hpp"
+#include "data/enums/protocol.hpp"
+#include "data/enums/technology.hpp"
+#include "logic/models/whitelistportentry.hpp"
 
 // NOLINTNEXTLINE(cppcoreguidelines-macro-usage)
 #define ENABLED std::string("enabled")

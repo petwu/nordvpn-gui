@@ -1,4 +1,4 @@
-#include "statuscontroller.h"
+#include "statuscontroller.hpp"
 
 #include <cstdint>
 #include <cstdlib>
@@ -8,17 +8,17 @@
 #include <string>
 #include <utility>
 
-#include "common/io/asyncprocess.h"
-#include "common/io/process.h"
-#include "common/io/processresult.h"
-#include "config.h"
-#include "data/enums/group.h"
-#include "data/enums/protocol.h"
-#include "data/enums/technology.h"
-#include "data/models/server.h"
-#include "logic/enums/connectionstatus.h"
-#include "logic/models/connectioninfo.h"
-#include "logic/nordvpn/servercontroller.h"
+#include "common/io/asyncprocess.hpp"
+#include "common/io/process.hpp"
+#include "common/io/processresult.hpp"
+#include "config.hpp"
+#include "data/enums/group.hpp"
+#include "data/enums/protocol.hpp"
+#include "data/enums/technology.hpp"
+#include "data/models/server.hpp"
+#include "logic/enums/connectionstatus.hpp"
+#include "logic/models/connectioninfo.hpp"
+#include "logic/nordvpn/servercontroller.hpp"
 
 StatusController::StatusController() {
     this->registerBackgroundTask([this] { _backgroundTask(); },

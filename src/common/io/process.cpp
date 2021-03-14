@@ -1,4 +1,4 @@
-#include "process.h"
+#include "process.hpp"
 
 #include <array>
 #include <cstdint>
@@ -8,8 +8,8 @@
 #include <sys/wait.h>
 #include <utility>
 
-#include "common/io/processresult.h"
-#include "common/util/strings.h"
+#include "common/io/processresult.hpp"
+#include "common/util/strings.hpp"
 
 // define reading and writing ends of a pipe
 constexpr unsigned int READ = 0;

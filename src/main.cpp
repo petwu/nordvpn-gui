@@ -13,16 +13,16 @@
 #include <Qt>
 #include <memory>
 
-#include "app.h"
-#include "logic/mediators/accountmediator.h"
-#include "logic/mediators/connectionmediator.h"
-#include "logic/mediators/devmediator.h"
-#include "logic/mediators/mapimageprovider.h"
-#include "logic/mediators/navmediator.h"
-#include "logic/mediators/preferencesmediator.h"
-#include "logic/mediators/recentsmediator.h"
-#include "logic/mediators/traymediator.h"
-#include "runguard.h"
+#include "app.hpp"
+#include "logic/mediators/accountmediator.hpp"
+#include "logic/mediators/connectionmediator.hpp"
+#include "logic/mediators/devmediator.hpp"
+#include "logic/mediators/mapimageprovider.hpp"
+#include "logic/mediators/navmediator.hpp"
+#include "logic/mediators/preferencesmediator.hpp"
+#include "logic/mediators/recentsmediator.hpp"
+#include "logic/mediators/traymediator.hpp"
+#include "runguard.hpp"
 
 auto main(int argc, char *argv[]) -> int {
     // set the behavior of application-wide features

@@ -1,14 +1,14 @@
-#include "servercontroller.h"
+#include "servercontroller.hpp"
 
 #include <thread>
 #include <utility>
 
-#include "common/types/nullable.h"
-#include "config.h"
-#include "data/enums/securityprotocol.h"
-#include "data/repositories/serverrepository.h"
-#include "logic/models/nordvpnsettings.h"
-#include "logic/nordvpn/preferencescontroller.h"
+#include "common/types/nullable.hpp"
+#include "config.hpp"
+#include "data/enums/securityprotocol.hpp"
+#include "data/repositories/serverrepository.hpp"
+#include "logic/models/nordvpnsettings.hpp"
+#include "logic/nordvpn/preferencescontroller.hpp"
 
 ServerController::ServerController() {
     // register my background tasks

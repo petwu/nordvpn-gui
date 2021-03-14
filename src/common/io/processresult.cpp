@@ -1,4 +1,4 @@
-#include "processresult.h"
+#include "processresult.hpp"
 
 #include <type_traits>
 #include <utility>
@@ -21,7 +21,7 @@ auto ProcessResult::success() const -> bool { //
     return this->exitCode == EXIT_SUCCESS;
 }
 
-#include "common/util/strings.h"
+#include "common/util/strings.hpp"
 
 auto ProcessResult::toString() const -> std::string {
     auto err = util::string::replaceAll(this->error, "\n", "\n             ");

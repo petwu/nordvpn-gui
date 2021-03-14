@@ -1,4 +1,4 @@
-#include "technology.h"
+#include "technology.hpp"
 
 auto technologyToString(const Technology t) -> std::string {
     switch (t) {

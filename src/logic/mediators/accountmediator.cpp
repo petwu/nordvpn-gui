@@ -1,6 +1,6 @@
-#include "accountmediator.h"
+#include "accountmediator.hpp"
 
-#include "logic/nordvpn/accountcontroller.h"
+#include "logic/nordvpn/accountcontroller.hpp"
 
 auto AccountMediator::login(const QString &username, const QString &password)
     -> bool {

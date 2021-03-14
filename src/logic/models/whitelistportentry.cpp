@@ -1,4 +1,4 @@
-#include "whitelistportentry.h"
+#include "whitelistportentry.hpp"
 
 auto WhitelistPortEntry::operator==(const WhitelistPortEntry &other) const
     -> bool {

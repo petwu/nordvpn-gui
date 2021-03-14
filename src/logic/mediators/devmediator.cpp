@@ -1,4 +1,4 @@
-#include "devmediator.h"
+#include "devmediator.hpp"
 
 DevMediator::DevMediator() { //
     this->_statusController.attach(this);

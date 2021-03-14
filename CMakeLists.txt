@@ -11,7 +11,7 @@ project(nordvpn-gui
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
 # --------------------------------------------------------------------------------
-# application description (see src/app.h.in as well)
+# application description (see src/app.hpp.in as well)
 # --------------------------------------------------------------------------------
 include(Git)
 set(SEMVER_MAJOR "${PROJECT_VERSION_MAJOR}")

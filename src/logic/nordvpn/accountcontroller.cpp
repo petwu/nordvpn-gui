@@ -1,8 +1,8 @@
-#include "accountcontroller.h"
+#include "accountcontroller.hpp"
 
-#include "common/io/process.h"
-#include "common/io/processresult.h"
-#include "logic/nordvpn/envcontroller.h"
+#include "common/io/process.hpp"
+#include "common/io/processresult.hpp"
+#include "logic/nordvpn/envcontroller.hpp"
 
 auto AccountController::login(const std::string &username,
                               const std::string &password) -> bool {

@@ -1,4 +1,4 @@
-#include "version.h"
+#include "version.hpp"
 
 #include <cstddef>
 #include <regex>
@@ -6,7 +6,7 @@
 #include <utility>
 #include <vector>
 
-#include "common/util/strings.h"
+#include "common/util/strings.hpp"
 
 Version::Version(uint32_t major, uint32_t minor, uint32_t patch,
                  std::string preRelease, std::string buildMeta)

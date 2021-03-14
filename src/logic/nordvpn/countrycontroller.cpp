@@ -1,17 +1,17 @@
-#include "countrycontroller.h"
+#include "countrycontroller.hpp"
 
 #include <chrono>
 #include <string>
 #include <utility>
 
-#include "common/io/process.h"
-#include "common/io/processresult.h"
-#include "common/util/strings.h"
-#include "config.h"
-#include "data/models/connectable.h"
-#include "data/models/server.h"
-#include "data/repositories/serverrepository.h"
-#include "servercontroller.h"
+#include "common/io/process.hpp"
+#include "common/io/processresult.hpp"
+#include "common/util/strings.hpp"
+#include "config.hpp"
+#include "data/models/connectable.hpp"
+#include "data/models/server.hpp"
+#include "data/repositories/serverrepository.hpp"
+#include "servercontroller.hpp"
 
 CountryController::CountryController() {
     this->registerBackgroundTask([this](bool tick) { _backgroundTask(tick); },

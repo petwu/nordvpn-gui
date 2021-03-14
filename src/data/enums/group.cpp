@@ -1,4 +1,4 @@
-#include "group.h"
+#include "group.hpp"
 
 auto group2string(Group g) -> std::string {
     switch (g) {

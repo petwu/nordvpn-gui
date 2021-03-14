@@ -1,12 +1,12 @@
-#include "connectionmediator.h"
+#include "connectionmediator.hpp"
 
 #include <thread>
 #include <utility>
 
-#include "config.h"
-#include "logic/enums/connectionstatus.h"
-#include "logic/mediators/qmldataconverter.h"
-#include "logic/nordvpn/countrycontroller.h"
+#include "config.hpp"
+#include "logic/enums/connectionstatus.hpp"
+#include "logic/mediators/qmldataconverter.hpp"
+#include "logic/nordvpn/countrycontroller.hpp"
 
 ConnectionMediator::ConnectionMediator() {
     this->_countryController.attach(this, true);

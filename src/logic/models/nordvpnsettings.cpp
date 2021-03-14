@@ -1,4 +1,4 @@
-#include "nordvpnsettings.h"
+#include "nordvpnsettings.hpp"
 
 #include <algorithm>
 #include <ext/alloc_traits.h>

@@ -1,19 +1,19 @@
-#include "envcontroller.h"
+#include "envcontroller.hpp"
 
 #include <chrono>
 #include <cstddef>
+#include <curl/curl.h>
 #include <memory>
 #include <regex>
 #include <sstream>
 #include <string>
 #include <utility>
 
-#include "common/io/process.h"
-#include "common/io/processresult.h"
-#include "common/types/nullable.h"
-#include "common/util/strings.h"
-#include "config.h"
-#include "curl/curl.h"
+#include "common/io/process.hpp"
+#include "common/io/processresult.hpp"
+#include "common/types/nullable.hpp"
+#include "common/util/strings.hpp"
+#include "config.hpp"
 
 EnvController::EnvController() {
     this->registerBackgroundTask([this](bool tick) { _backgroundTask(tick); },

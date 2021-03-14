@@ -1,4 +1,4 @@
-#include "runguard.h"
+#include "runguard.hpp"
 
 #include <QByteArray>
 #include <QLocalSocket>

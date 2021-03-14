@@ -1,11 +1,11 @@
-#include "country.h"
+#include "country.hpp"
 
 #include <algorithm>
 #include <initializer_list>
 #include <nlohmann/json.hpp>
 #include <utility>
 
-#include "data/models/location.h"
+#include "data/models/location.hpp"
 
 auto Country::toJSON() -> std::string {
     json j = json::parse(Location::toJSON());

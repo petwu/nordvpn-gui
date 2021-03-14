@@ -1,4 +1,4 @@
-#include "serverrepository.h"
+#include "serverrepository.hpp"
 
 #include <algorithm>
 #include <initializer_list>
@@ -8,12 +8,12 @@
 #include <string>
 #include <utility>
 
-#include "baserepository.h"
-#include "common/util/strings.h"
-#include "config.h"
-#include "data/enums/group.h"
-#include "data/enums/securityprotocol.h"
-#include "data/models/location.h"
+#include "baserepository.hpp"
+#include "common/util/strings.hpp"
+#include "config.hpp"
+#include "data/enums/group.hpp"
+#include "data/enums/securityprotocol.hpp"
+#include "data/models/location.hpp"
 
 auto ServerRepository::fetchServers() -> std::vector<Server> {
     std::vector<Server> servers;

@@ -1,19 +1,19 @@
-#include "connectioncontroller.h"
+#include "connectioncontroller.hpp"
 
 #include <string>
 #include <vector>
 
-#include "common/io/asyncprocess.h"
-#include "common/types/nullable.h"
-#include "countrycontroller.h"
-#include "data/models/country.h"
-#include "data/models/location.h"
-#include "data/models/server.h"
-#include "envcontroller.h"
-#include "logic/enums/connectionstatus.h"
-#include "logic/nordvpn/statuscontroller.h"
-#include "recentscontroller.h"
-#include "servercontroller.h"
+#include "common/io/asyncprocess.hpp"
+#include "common/types/nullable.hpp"
+#include "countrycontroller.hpp"
+#include "data/models/country.hpp"
+#include "data/models/location.hpp"
+#include "data/models/server.hpp"
+#include "envcontroller.hpp"
+#include "logic/enums/connectionstatus.hpp"
+#include "logic/nordvpn/statuscontroller.hpp"
+#include "recentscontroller.hpp"
+#include "servercontroller.hpp"
 
 ConnectionController::ConnectionController() {
     // subscribe to connection status updates

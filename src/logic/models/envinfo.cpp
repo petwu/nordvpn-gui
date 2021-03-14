@@ -1,4 +1,4 @@
-#include "envinfo.h"
+#include "envinfo.hpp"
 
 auto EnvInfo::toString() const -> std::string {
     return std::string("EnvInfo {") +                     //

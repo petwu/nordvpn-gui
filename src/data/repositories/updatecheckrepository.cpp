@@ -1,12 +1,12 @@
-#include "updatecheckrepository.h"
+#include "updatecheckrepository.hpp"
 
 #include <initializer_list>
 #include <nlohmann/json.hpp>
 #include <string>
 #include <vector>
 
-#include "app.h"
-#include "data/repositories/baserepository.h"
+#include "app.hpp"
+#include "data/repositories/baserepository.hpp"
 
 auto UpdateCheckRepository::getCurrentVersion() -> Version {
     return Version(SEMVER_MAJOR,       //

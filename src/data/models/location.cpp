@@ -1,4 +1,4 @@
-#include "location.h"
+#include "location.hpp"
 
 #include <initializer_list>
 #include <nlohmann/json.hpp>

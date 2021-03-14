@@ -1,9 +1,9 @@
-#include "updatemediator.h"
+#include "updatemediator.hpp"
 
 #include <string>
 
-#include "common/types/version.h"
-#include "data/repositories/updatecheckrepository.h"
+#include "common/types/version.hpp"
+#include "data/repositories/updatecheckrepository.hpp"
 
 auto UpdateMediator::_getIsUpdateAvailable() -> bool {
     return UpdateCheckRepository::getLatestVersion() >

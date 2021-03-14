@@ -1,10 +1,10 @@
-#include "recentscontroller.h"
+#include "recentscontroller.hpp"
 
 #include <algorithm>
 #include <utility>
 
-#include "countrycontroller.h"
-#include "data/repositories/preferencesrepository.h"
+#include "countrycontroller.hpp"
+#include "data/repositories/preferencesrepository.hpp"
 
 RecentsController::RecentsController() {
     this->_recents = getRecentCountries();

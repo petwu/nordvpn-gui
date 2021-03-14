@@ -1,10 +1,10 @@
-#include "navmediator.h"
+#include "navmediator.hpp"
 
 #include <utility>
 
-#include "common/types/nullable.h"
-#include "logic/mediators/qmldataconverter.h"
-#include "logic/nordvpn/envcontroller.h"
+#include "common/types/nullable.hpp"
+#include "logic/mediators/qmldataconverter.hpp"
+#include "logic/nordvpn/envcontroller.hpp"
 
 NavMediator::NavMediator() {
     EnvController &envController = EnvController::getInstance();

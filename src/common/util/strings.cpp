@@ -1,4 +1,4 @@
-#include "strings.h"
+#include "strings.hpp"
 
 #include <algorithm>
 #include <cctype>

@@ -1,11 +1,10 @@
-#include "baserepository.h"
+#include "baserepository.hpp"
 
 #include <cstddef>
+#include <curl/curl.h>
 #include <fstream>
 #include <type_traits>
 #include <utility>
-
-#include "curl/curl.h"
 
 auto BaseRepository::readFile(const std::filesystem::path &path)
     -> std::string {

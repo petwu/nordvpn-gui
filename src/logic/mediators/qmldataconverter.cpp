@@ -1,4 +1,4 @@
-#include "qmldataconverter.h"
+#include "qmldataconverter.hpp"
 
 #include <QString>
 #include <QVariantList>
@@ -6,10 +6,10 @@
 #include <utility>
 #include <vector>
 
-#include "common/types/nullable.h"
-#include "data/enums/group.h"
-#include "data/enums/protocol.h"
-#include "data/enums/technology.h"
+#include "common/types/nullable.hpp"
+#include "data/enums/group.hpp"
+#include "data/enums/protocol.hpp"
+#include "data/enums/technology.hpp"
 
 // The function cannot be implemented without using recursion. The recusion
 // isn't harmful as long as the JSON structures don't reach a unrealistic depth.

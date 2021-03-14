@@ -1,4 +1,4 @@
-#include "mapimageprovider.h"
+#include "mapimageprovider.hpp"
 
 #include <QFile>
 #include <QIODevice>

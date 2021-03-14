@@ -1,6 +1,6 @@
-#include "connectable.h"
+#include "connectable.hpp"
 
-#include "common/util/strings.h"
+#include "common/util/strings.hpp"
 
 auto Connectable::fuzzyMatchNames(const std::string &n1, const std::string &n2)
     -> bool {

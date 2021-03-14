@@ -1,4 +1,4 @@
-#include "connectionstatus.h"
+#include "connectionstatus.hpp"
 
 auto connectionStatusToString(ConnectionStatus s) -> std::string {
     switch (s) {

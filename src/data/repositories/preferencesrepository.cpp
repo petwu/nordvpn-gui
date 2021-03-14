@@ -1,4 +1,4 @@
-#include "preferencesrepository.h"
+#include "preferencesrepository.hpp"
 
 #include <algorithm>
 #include <cstddef>
@@ -8,8 +8,8 @@
 #include <string>
 #include <utility>
 
-#include "baserepository.h"
-#include "config.h"
+#include "baserepository.hpp"
+#include "config.hpp"
 
 auto PreferencesRepository::getRecentCountriesIds() -> std::vector<uint32_t> {
     std::vector<uint32_t> all = _getRecentCountriesIds();

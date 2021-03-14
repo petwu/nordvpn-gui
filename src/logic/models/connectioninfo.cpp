@@ -1,9 +1,8 @@
-#include "connectioninfo.h"
+#include "connectioninfo.hpp"
 
 #include <algorithm>
+#include <nlohmann/json.hpp>
 #include <vector>
-
-#include "nlohmann/json.hpp"
 
 using json = nlohmann::ordered_json;
 

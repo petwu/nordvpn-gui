@@ -1,4 +1,4 @@
-#include "preferencesmediator.h"
+#include "preferencesmediator.hpp"
 
 #include <algorithm>
 #include <cstddef>
@@ -10,11 +10,11 @@
 #include <string>
 #include <vector>
 
-#include "common/types/nullable.h"
-#include "data/enums/protocol.h"
-#include "data/enums/technology.h"
-#include "logic/mediators/qmldataconverter.h"
-#include "logic/models/whitelistportentry.h"
+#include "common/types/nullable.hpp"
+#include "data/enums/protocol.hpp"
+#include "data/enums/technology.hpp"
+#include "logic/mediators/qmldataconverter.hpp"
+#include "logic/models/whitelistportentry.hpp"
 
 PreferencesMediator::PreferencesMediator() {
     this->_nordvpnSettings = PreferencesController::getNordvpnSettings();

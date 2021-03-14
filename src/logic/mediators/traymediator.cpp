@@ -1,4 +1,4 @@
-#include "traymediator.h"
+#include "traymediator.hpp"
 
 #include <QApplication>
 #include <QArgument>
@@ -13,10 +13,10 @@
 #include <memory>
 #include <string>
 
-#include "logic/enums/connectionstatus.h"
-#include "logic/nordvpn/countrycontroller.h"
-#include "logic/nordvpn/recentscontroller.h"
-#include "logic/nordvpn/statuscontroller.h"
+#include "logic/enums/connectionstatus.hpp"
+#include "logic/nordvpn/countrycontroller.hpp"
+#include "logic/nordvpn/recentscontroller.hpp"
+#include "logic/nordvpn/statuscontroller.hpp"
 
 auto TrayMediator::getInstance() -> TrayMediator & {
     static TrayMediator instance;

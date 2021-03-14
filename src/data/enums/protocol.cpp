@@ -1,4 +1,4 @@
-#include "protocol.h"
+#include "protocol.hpp"
 
 auto protocolToString(const Nullable<Protocol> &p) -> std::string {
     if (p.isNull()) {
