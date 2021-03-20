@@ -4,10 +4,10 @@
 
 auto AccountMediator::login(const QString &username, const QString &password)
     -> bool {
-    return AccountController::login(username.toStdString(),
-                                    password.toStdString());
+    return this->_accountController.login(username.toStdString(),
+                                          password.toStdString());
 }
 
 auto AccountMediator::logout() -> bool { //
-    return AccountController::logout();
+    return this->_accountController.logout();
 }

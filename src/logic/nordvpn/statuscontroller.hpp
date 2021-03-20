@@ -12,6 +12,7 @@ using json = nlohmann::json;
 #include "basecontroller.hpp"
 #include "common/templates/backgroundtaskable.hpp"
 #include "common/templates/subscribable.hpp"
+#include "istatuscontroller.hpp"
 #include "logic/models/connectioninfo.hpp"
 #include "logic/subscriptions/iconnectioninfosubscription.hpp"
 
@@ -31,22 +32,8 @@ constexpr long GiB = MiB << 10;
 /**  @brief TiB = 2 ^ 40  */
 constexpr long TiB = GiB << 10;
 
-/**
- * @brief The StatusController class is responsible for retrieving the current
- * connection status and related information from the NordVPN CLI.
- *
- * @details The class provides a mechanism for running a background task
- * (thread) (startBackgroundTasks()/stopBackgroundTasks()) that periodically
- * refreshes the connection status information. The new set of information is
- * then propagated via the observer pattern. Obsersers/subscribers have the
- * implement the #IConnectionInfoSubscription interface and call attach(this) in
- * order to get notified. They can also use detach(this) to unsubscribe.
- *
- * In order to prevent multiple instances and possibly multiple background
- * tasks doing the same thing for a different set of subscribers,
- * StatusController is implemented as a singleton.
- */
-class StatusController : public BaseController,
+class StatusController : public virtual IStatusController,
+                         public BaseController,
                          public Subscribable<IConnectionInfoSubscription>,
                          public BackgroundTaskable {
     // Singleton:
@@ -64,30 +51,10 @@ class StatusController : public BaseController,
      */
     static auto getInstance() -> StatusController &;
 
-    /**
-     * @brief Get all information abount the current connection status collected
-     * by this controller as an object.
-     */
-    auto getStatus() -> ConnectionInfo;
-
-    /**
-     * @brief Get the minimum rating value that represents the worst rating
-     * possible.
-     */
-    static auto getRatingMin() -> uint8_t;
-
-    /**
-     * @brief Get the maximum rating value that represents the best rating
-     * possible.
-     */
-    static auto getRatingMax() -> uint8_t;
-
-    /**
-     * @brief Rate NordVPNs services, especially the last connection.
-     * @param rating A number representing the rating. Must be in the bounds
-     * specified by getRatingMin() and getRatingMax().
-     */
-    static void rate(uint8_t rating);
+    auto getStatus() -> ConnectionInfo override;
+    auto getRatingMin() -> uint8_t override;
+    auto getRatingMax() -> uint8_t override;
+    void rate(uint8_t rating) override;
 
   private:
     /**

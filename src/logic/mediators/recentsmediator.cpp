@@ -5,7 +5,7 @@
 #include "logic/mediators/qmldataconverter.hpp"
 
 RecentsMediator::RecentsMediator() { //
-    this->_recentsController.attach(this);
+    this->_recentsController.attach(this, true);
 }
 
 auto RecentsMediator::_getRecentCountries() -> QVariantList {

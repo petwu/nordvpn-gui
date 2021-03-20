@@ -8,6 +8,7 @@
 #include "common/templates/backgroundtaskable.hpp"
 #include "common/templates/subscribable.hpp"
 #include "common/types/nullable.hpp"
+#include "ienvcontroller.hpp"
 #include "logic/models/envinfo.hpp"
 #include "logic/subscriptions/ienvinfosubscription.hpp"
 
@@ -26,7 +27,8 @@
  * tasks doing the same thing for a different set of subscribers,
  * EnvController is implemented as a singleton.
  */
-class EnvController : public BaseController,
+class EnvController : public virtual IEnvController,
+                      public BaseController,
                       public Subscribable<IEnvInfoSubscription>,
                       public BackgroundTaskable {
     // Singleton:
@@ -44,23 +46,8 @@ class EnvController : public BaseController,
      */
     static auto getInstance() -> EnvController &;
 
-    /**
-     * @brief Get all information aboudtthe environment collected by this
-     * controller as an object.
-     */
-    static auto getEnvInfo() -> EnvInfo;
-
-    /**
-     * @brief Force an override of the "logged in"-information.
-     * @details Use this function direclty after the users logged in/out over
-     * this application. All subscribers will be notified about this change.
-     *
-     * Why this function?: The "logged in" information will be updated anyway by
-     * the background task, but with this function the subscribers get
-     * notified immediately and don't have to wait until the next background
-     * task intervall.
-     */
-    void setLoggedIn(bool loggedIn);
+    auto getEnvInfo() -> EnvInfo override;
+    void setLoggedIn(bool loggedIn) override;
 
   private:
     /**

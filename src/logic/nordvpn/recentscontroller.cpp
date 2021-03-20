@@ -4,11 +4,6 @@
 #include <utility>
 
 #include "countrycontroller.hpp"
-#include "data/repositories/preferencesrepository.hpp"
-
-RecentsController::RecentsController() {
-    this->_recents = getRecentCountries();
-}
 
 auto RecentsController::getInstance() -> RecentsController & {
     static RecentsController instance;
@@ -18,7 +13,7 @@ auto RecentsController::getInstance() -> RecentsController & {
 auto RecentsController::getRecentCountries() -> std::vector<Country> {
     std::vector<Country> recents;
     std::vector<uint32_t> recentsIds =
-        PreferencesRepository::getRecentCountriesIds();
+        this->_preferencesRepository.getRecentCountriesIds();
     std::vector countries = CountryController::getInstance().getAllCountries();
     for (auto rId : recentsIds) {
         for (const auto &c : countries) {
@@ -32,17 +27,21 @@ auto RecentsController::getRecentCountries() -> std::vector<Country> {
 }
 
 void RecentsController::addTooRecentsList(uint32_t countryId) {
-    PreferencesRepository::addRecentCountryId(countryId);
+    this->_preferencesRepository.addRecentCountryId(countryId);
     this->_recents = this->getRecentCountries();
     this->notifySubscribers();
 }
 
 void RecentsController::removeFromRecentsList(uint32_t countryId) {
-    PreferencesRepository::removeRecentCountryId(countryId);
+    this->_preferencesRepository.removeRecentCountryId(countryId);
     this->_recents = this->getRecentCountries();
     this->notifySubscribers();
 }
 
 void RecentsController::notifySubscriber(IRecentsSubscription &subscriber) {
+    if (!this->_initialGetHappened) {
+        this->_initialGetHappened = false;
+        this->_recents = this->getRecentCountries();
+    }
     subscriber.updateRecents(this->_recents);
 }

@@ -6,10 +6,12 @@
 
 #include "common/io/processresult.hpp"
 #include "data/enums/group.hpp"
+#include "iconnectioncontroller.hpp"
 #include "logic/models/connectioninfo.hpp"
 #include "logic/subscriptions/iconnectioninfosubscription.hpp"
 
-class ConnectionController : public IConnectionInfoSubscription {
+class ConnectionController : public virtual IConnectionController,
+                             public IConnectionInfoSubscription {
     // Singleton:
     // https://stackoverflow.com/questions/1008019/c-singleton-design-pattern
   public:
@@ -25,54 +27,14 @@ class ConnectionController : public IConnectionInfoSubscription {
      */
     static auto getInstance() -> ConnectionController &;
 
-    /**
-     * @brief Connect to a VPN server. Let NordVPN decide which country and
-     * server is best.
-     */
-    void quickConnect();
-
-    /**
-     * @brief Connect to a VPN server in a specific country. Let NordVPN decide
-     * which city and server in this country is best.
-     */
-    void connectToCountryById(uint32_t id);
-
-    /**
-     * @brief Connect to a VPN server in a specific city. Let NordVPN decide
-     * which server in this city is best.
-     */
-    void connectToCityById(uint32_t id);
-
-    /**
-     * @brief Connect to a specific VPN server.
-     */
-    void connectToServerById(uint32_t id);
-
-    /**
-     * @brief Connect to a VPN server in a specific server #Group. Let NordVPN
-     * decide which country and server is best.
-     */
-    void connectToSpecialtyGroup(Group g);
-
-    /**
-     * @brief Connect to a country within a specific server group. Let NordVPN
-     * decide which server in the group and county is best.
-     */
-    void connectToCountryByIdAndGroup(uint32_t id, Group g);
-
-    /**
-     * @brief Abort an connection attempt.
-     * @details This kills the process establishing the connection and performs
-     * a disconnect. Hence, if already connected, this function has the same
-     * effect as #disconnect().
-     */
-    void cancelConnection() const;
-
-    /**
-     * @brief Disconnect from the currently connected VPN server. If not
-     * connected, this has no effect.
-     */
-    static void disconnect();
+    void quickConnect() override;
+    void connectToCountryById(uint32_t id) override;
+    void connectToCityById(uint32_t id) override;
+    void connectToServerById(uint32_t id) override;
+    void connectToSpecialtyGroup(Group g) override;
+    void connectToCountryByIdAndGroup(uint32_t id, Group g) override;
+    void cancelConnection() override;
+    void disconnect() override;
 
   private:
     ConnectionController();

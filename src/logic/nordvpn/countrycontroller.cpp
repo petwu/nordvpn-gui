@@ -17,7 +17,7 @@ CountryController::CountryController() {
     this->registerBackgroundTask([this](bool tick) { _backgroundTask(tick); },
                                  config::consts::COUNTRY_LIST_UPDATE_INTERVAL,
                                  std::chrono::hours(24));
-    this->getAllCountries(false);
+    this->_getAllCountries(false);
 }
 
 auto CountryController::getInstance() -> CountryController & {
@@ -27,14 +27,19 @@ auto CountryController::getInstance() -> CountryController & {
 
 auto CountryController::getAllCountries(bool updateCache)
     -> std::vector<Country> {
+    return this->_getAllCountries(updateCache);
+}
+
+auto CountryController::_getAllCountries(bool updateCache)
+    -> std::vector<Country> {
     if (this->_allCountries.empty() || updateCache) {
         auto cmdResult = Process::execute("nordvpn countries");
         auto cliCountries = util::string::split(cmdResult.output, ", ");
         std::vector<Country> all;
         if (updateCache) {
-            all = ServerRepository::fetchCountries();
+            all = this->_serverRepository.fetchCountries();
         } else {
-            all = ServerRepository::fetchCountriesFromCache();
+            all = this->_serverRepository.fetchCountriesFromCache();
         }
         std::vector<Country> availableCountries;
         // filter the vector to only contains countries that were returned

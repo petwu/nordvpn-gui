@@ -6,46 +6,14 @@
 #include "baserepository.hpp"
 #include "data/models/country.hpp"
 #include "data/models/server.hpp"
+#include "iserverrepository.hpp"
 
-/**
- * @brief The ServerRepository class prvides static functions to retrieve and
- * cache the list of available servers and countries.
- */
-class ServerRepository : public BaseRepository {
+class ServerRepository : public IServerRepository, public BaseRepository {
   public:
-    /**
-     * @brief Fetch the list of servers from the NordVPN API.
-     * @details After the list was retrieved it will be cached in a file. The
-     * cached list can be retrieved with #fetchServersFromCache().
-     * @return A list of servers. The list will be empty, if something went
-     * wrong (connection timeout, error HTTP code, etc.).
-     */
-    static auto fetchServers() -> std::vector<Server>;
-
-    /**
-     * @brief Fetch the cached list of servers.
-     * @return A list of servers. An empty list, in case no cached server list
-     * exists. This is only the case, if #fetchServers() was not called before
-     * (successfully).
-     */
-    static auto fetchServersFromCache() -> std::vector<Server>;
-
-    /**
-     * @brief Fetch the list of countries from the NordVPN API.
-     * @details After the list was retrieved it will be cached in a file. The
-     * cached list can be retrieved with #fetchCountriesFromCache().
-     * @return A list of countries. The list will be empty, if something went
-     * wrong (connection timeout, error HTTP code, etc.).
-     */
-    static auto fetchCountries() -> std::vector<Country>;
-
-    /**
-     * @brief Fetch the cached list of countries.
-     * @return A list of countries. An empty list, in case no cached server list
-     * exists. This is only the case, if #fetchCountries() was not called before
-     * (successfully).
-     */
-    static auto fetchCountriesFromCache() -> std::vector<Country>;
+    auto fetchServers() -> std::vector<Server> override;
+    auto fetchServersFromCache() -> std::vector<Server> override;
+    auto fetchCountries() -> std::vector<Country> override;
+    auto fetchCountriesFromCache() -> std::vector<Country> override;
 
   private:
     /**

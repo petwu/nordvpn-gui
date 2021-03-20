@@ -119,7 +119,7 @@ void ConnectionController::connectToCountryByIdAndGroup(uint32_t id, Group g) {
     }
 }
 
-void ConnectionController::cancelConnection() const {
+void ConnectionController::cancelConnection() {
     // try to kill the process that is responsible for establishing the
     // connection --> might not work
     AsyncProcess::kill(this->_connectingPid, true);
@@ -127,7 +127,7 @@ void ConnectionController::cancelConnection() const {
     // the connecting process does not prevent nordvpn from finishing the
     // connection establishment, but calling disconnect while connection
     // ensures that nordvpn aborts its ongoing connection operation
-    ConnectionController::disconnect();
+    this->disconnect();
 }
 
 void ConnectionController::disconnect() {

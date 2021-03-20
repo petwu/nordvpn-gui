@@ -17,7 +17,7 @@
 #include "logic/models/whitelistportentry.hpp"
 
 PreferencesMediator::PreferencesMediator() {
-    this->_nordvpnSettings = PreferencesController::getNordvpnSettings();
+    this->_nordvpnSettings = this->_preferencesController.getNordvpnSettings();
 }
 
 auto PreferencesMediator::_getNordvpnSettings() -> QVariantMap {
@@ -30,7 +30,7 @@ void PreferencesMediator::_nordvpnSettingsChanged() {
 }
 
 void PreferencesMediator::refreshSettings() {
-    this->_nordvpnSettings = PreferencesController::getNordvpnSettings();
+    this->_nordvpnSettings = this->_preferencesController.getNordvpnSettings();
     this->_nordvpnSettingsChanged();
 }
 

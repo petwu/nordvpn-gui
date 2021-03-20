@@ -7,13 +7,12 @@
 #include "basecontroller.hpp"
 #include "common/templates/subscribable.hpp"
 #include "data/models/country.hpp"
+#include "data/repositories/preferencesrepository.hpp"
+#include "irecentscontroller.hpp"
 #include "logic/subscriptions/irecentssubscription.hpp"
 
-/**
- * @brief The RecentsController class is responsible for managing a list of
- * recent connections.
- */
-class RecentsController : public BaseController,
+class RecentsController : public virtual IRecentsController,
+                          public BaseController,
                           public Subscribable<IRecentsSubscription> {
     // Singleton:
     // https://stackoverflow.com/questions/1008019/c-singleton-design-pattern
@@ -29,29 +28,26 @@ class RecentsController : public BaseController,
      * @details The instance will be constructed if it does not exist already.
      */
     static auto getInstance() -> RecentsController &;
-    /**
-     * @brief Get a list of all countries available.
-     */
-    static auto getRecentCountries() -> std::vector<Country>;
 
-    /**
-     * @brief Add a country to the list of recently connected countries by ID.
-     */
-    void addTooRecentsList(uint32_t countryId);
-
-    /**
-     * @brief Remove a country from the list of recently connected countries by
-     * ID.
-     */
-    void removeFromRecentsList(uint32_t countryId);
+    auto getRecentCountries() -> std::vector<Country> override;
+    void addTooRecentsList(uint32_t countryId) override;
+    void removeFromRecentsList(uint32_t countryId) override;
 
   private:
-    RecentsController();
+    RecentsController() = default;
+
+    PreferencesRepository _preferencesRepository;
 
     /**
      * @brief Internal list of all recently connected countries.
      */
     std::vector<Country> _recents;
+
+    /**
+     * @brief Flag to perform an initial #getRecentCountries() before notifiying
+     * subscribers.
+     */
+    bool _initialGetHappened = false;
 
     /**
      * @brief Implementation of Subscribable::notifySubscriber().

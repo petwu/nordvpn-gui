@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "app.hpp"
+#include "common/types/version.hpp"
 #include "data/repositories/baserepository.hpp"
 
 auto UpdateCheckRepository::getCurrentVersion() -> Version {

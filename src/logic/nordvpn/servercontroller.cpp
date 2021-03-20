@@ -8,7 +8,6 @@
 #include "data/enums/securityprotocol.hpp"
 #include "data/repositories/serverrepository.hpp"
 #include "logic/models/nordvpnsettings.hpp"
-#include "logic/nordvpn/preferencescontroller.hpp"
 
 ServerController::ServerController() {
     // register my background tasks
@@ -16,13 +15,13 @@ ServerController::ServerController() {
                                  config::consts::SERVER_LIST_UPDATE_INTERVAL);
     // use a cached server list which is stored on disk and can be read in fast
     // so that the UI has something do display
-    this->_allServers = ServerRepository::fetchServersFromCache();
+    this->_allServers = this->_serverRepository.fetchServersFromCache();
     // then fetch the up to date server list from the NordVPN API in a
     // background thread since the complete server list is a JSON file with a
     // size of ~16 MiB (as of 2020-10-10) and hence might take some time to
     // download and parse
     std::thread([this] {
-        this->_allServers = ServerRepository::fetchServers();
+        this->_allServers = this->_serverRepository.fetchServers();
     }).detach();
 }
 
@@ -83,7 +82,8 @@ auto ServerController::getServersByGroup(Group g, int32_t countryId)
 auto ServerController::_filterServerList(int32_t countryId, int32_t cityId)
     -> std::vector<Server> {
     std::vector<Server> filtered;
-    NordVpnSettings settings = PreferencesController::getNordvpnSettings();
+    NordVpnSettings settings =
+        this->_preferencesController.getNordvpnSettings();
     for (auto server : this->_allServers) {
         // skip all servers that do not meet the requirements
         if ((settings.getObfuscated().isNotNull() &&
@@ -105,5 +105,5 @@ auto ServerController::_filterServerList(int32_t countryId, int32_t cityId)
 }
 
 void ServerController::_backgroundTask() {
-    this->_allServers = ServerRepository::fetchServers();
+    this->_allServers = this->_serverRepository.fetchServers();
 }

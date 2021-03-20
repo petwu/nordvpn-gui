@@ -293,7 +293,7 @@ class ConnectionMediator : public QObject,
      * @details This function should only be used while #isRatingPossible is
      * true.
      */
-    static void rate(quint8 rating);
+    void rate(quint8 rating);
 
   signals:
     /**

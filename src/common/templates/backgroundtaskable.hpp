@@ -11,6 +11,8 @@
 #include <utility>
 #include <vector>
 
+#include "ibackgroundtaskable.hpp"
+
 using namespace std::placeholders;
 
 /**
@@ -23,22 +25,15 @@ using namespace std::placeholders;
  * A good place for calling at least one `register*()` function is the
  * constructor of the derived class.
  */
-class BackgroundTaskable {
+class BackgroundTaskable : virtual IBackgroundTaskable {
   public:
-    /**
-     * @brief Start all registered background tasks.
-     */
-    void startBackgroundTasks() {
+    void startBackgroundTasks() override {
         for (auto &_backgroundTask : this->_backgroundTasks) {
             _backgroundTask->startBackgroundTask();
         }
     }
 
-    /**
-     * @brief Terminate the all background tasks after they finished the
-     * (possibly) currently executing iteration.
-     */
-    void stopBackgroundTasks() {
+    void stopBackgroundTasks() override {
         for (auto &_backgroundTask : this->_backgroundTasks) {
             _backgroundTask->stopBackgroundTask();
         }

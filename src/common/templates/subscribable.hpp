@@ -4,33 +4,24 @@
 #include <algorithm>
 #include <vector>
 
+#include "isubscribable.hpp"
+
 /**
  * @brief The Subscribable class is a base class for classes that allow
  * subscribing to them via a subscription interface.
  */
-template <class TSubscription> class Subscribable {
+template <class TSubscription>
+class Subscribable : public virtual ISubscribable<TSubscription> {
   public:
-    /**
-     * @brief Attach a subscriber that will be notified by the background task.
-     * @param subscriber An object implementing TSubscription. A reasonable
-     * approach is to let the class the needs the subscribed information
-     * implement it itself and call attach(this).
-     * @param notifyImmediately If true, the newly attached subscriber will be
-     * notified initially.
-     * @note Don't forget to call detach() in the destructor.
-     */
-    void attach(TSubscription *subscriber, bool notifyImmediately = false) {
+    void attach(TSubscription *subscriber,
+                bool notifyImmediately = false) override {
         this->_subscribers.push_back(subscriber);
         if (notifyImmediately && subscriber != nullptr) {
             this->notifySubscribers();
         }
     }
 
-    /**
-     * @brief Unsubscriber a subscriber. The background task will continue to
-     * run.
-     */
-    void detach(TSubscription *subscriber) {
+    void detach(TSubscription *subscriber) override {
         this->_subscribers.erase(std::remove(this->_subscribers.begin(),
                                              this->_subscribers.end(),
                                              subscriber),

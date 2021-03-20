@@ -372,10 +372,10 @@ void ConnectionMediator::disconnect() {
     if (this->_areConnectionCommandsPaused) {
         return;
     }
-    ConnectionController::disconnect();
+    this->_connectionController.disconnect();
     this->_setAreConnectionCommandsPaused(true);
 }
 
 void ConnectionMediator::rate(quint8 rating) { //
-    StatusController::rate(rating);
+    this->_statusController.rate(rating);
 }

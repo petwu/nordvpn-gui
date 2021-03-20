@@ -1,6 +1,8 @@
 #ifndef IENVINFOSUBSCRIPTION_HPP
 #define IENVINFOSUBSCRIPTION_HPP
 
+#include "logic/models/envinfo.hpp"
+
 /**
  * @brief IEnvInfoSubscription is an interface that can be implemented by any
  * class that wants updates about the environment information collected by

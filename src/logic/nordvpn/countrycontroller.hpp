@@ -10,9 +10,12 @@
 #include "data/enums/group.hpp"
 #include "data/models/country.hpp"
 #include "data/models/location.hpp"
+#include "data/repositories/serverrepository.hpp"
+#include "icountrycontroller.hpp"
 #include "logic/subscriptions/icountriessubscription.hpp"
 
-class CountryController : public BackgroundTaskable,
+class CountryController : public virtual ICountryController,
+                          public BackgroundTaskable,
                           public Subscribable<ICountriesSubscription> {
     // Singleton:
     // https://stackoverflow.com/questions/1008019/c-singleton-design-pattern
@@ -29,36 +32,12 @@ class CountryController : public BackgroundTaskable,
      */
     static auto getInstance() -> CountryController &;
 
-    /**
-     * @brief Get a list of all countries.
-     * @details The list of countries is cached on the file system to be able to
-     * return it faster and to reduce the amount of API requests required. The
-     * `updateCache` parameter can be used to force an API request and
-     * override the cached list. This should be done rarely (like once per
-     * application start). In cache `updateCache` is false and no cached list
-     * exists yet, the API request will be performed automatically.
-     */
-    auto getAllCountries(bool updateCache = false) -> std::vector<Country>;
-
-    /**
-     * @brief Returns a specific #Country object by ID.
-     */
-    auto getCountryById(uint32_t id) -> Nullable<Country>;
-
-    /**
-     * @brief Returns a specific #Country object that contains a city ID.
-     */
-    auto getCountryByCityId(uint32_t id) -> Nullable<Country>;
-
-    /**
-     * @brief Returns a specific city as #Location object by ID.
-     */
-    auto getCityById(uint32_t id) -> Nullable<Location>;
-
-    /**
-     * @brief Returns all countries that are belong to a specific server group.
-     */
-    auto getCountriesByGroup(Group g) -> std::vector<Country>;
+    auto getAllCountries(bool updateCache = false)
+        -> std::vector<Country> override;
+    auto getCountryById(uint32_t id) -> Nullable<Country> override;
+    auto getCountryByCityId(uint32_t id) -> Nullable<Country> override;
+    auto getCityById(uint32_t id) -> Nullable<Location> override;
+    auto getCountriesByGroup(Group g) -> std::vector<Country> override;
 
   private:
     /**
@@ -66,10 +45,25 @@ class CountryController : public BackgroundTaskable,
      */
     CountryController();
 
+    ServerRepository _serverRepository;
+
     /**
      * @brief Internal list of all countries.
      */
     std::vector<Country> _allCountries;
+
+    /**
+     * @brief Backing implementation method of #getAllCountries().
+     * @details Requied to use this method in the constructor instead of the
+     * virtual interface implementation. Reason:
+     *
+     * ```
+     * warning: Call to virtual method 'RecentsController::getRecentCountries'
+     * during construction bypasses virtual dispatch
+     * [clang-analyzer-optin.cplusplus.VirtualCall]
+     * ```
+     */
+    auto _getAllCountries(bool updateCache = false) -> std::vector<Country>;
 
     /**
      * @brief The background task responsible for periodically updating the
