@@ -17,7 +17,7 @@ class Subscribable : public virtual ISubscribable<TSubscription> {
                 bool notifyImmediately = false) override {
         this->_subscribers.push_back(subscriber);
         if (notifyImmediately && subscriber != nullptr) {
-            this->notifySubscribers();
+            this->notifySubscriber(*subscriber);
         }
     }
 
