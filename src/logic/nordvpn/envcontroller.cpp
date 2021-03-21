@@ -22,11 +22,6 @@ EnvController::EnvController() {
                                  std::chrono::minutes(1));
 }
 
-auto EnvController::getInstance() -> EnvController & {
-    static EnvController instance;
-    return instance;
-}
-
 auto EnvController::getEnvInfo() -> EnvInfo {
     EnvInfo envInfo;
     envInfo.shellAvailable = EnvController::_isShellAvailable();

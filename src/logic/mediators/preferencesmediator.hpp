@@ -5,9 +5,10 @@
 #include <QString>
 #include <QVariantMap>
 #include <QtCore>
+#include <memory>
 
 #include "logic/models/nordvpnsettings.hpp"
-#include "logic/nordvpn/preferencescontroller.hpp"
+#include "logic/nordvpn/ipreferencescontroller.hpp"
 
 /**
  * @brief PORT_MAX is the maximum value, a port may have. A port is a 16-bit
@@ -44,17 +45,18 @@ class PreferencesMediator : public QObject {
     // NOLINTNEXTLINE(modernize-use-trailing-return-type): Qt is out of scope
     Q_OBJECT
 
+  public:
+    /**
+     * @brief Default PreferencesMediator constructor.
+     */
+    PreferencesMediator(
+        std::shared_ptr<IPreferencesController> preferencesController);
+
     /**
      * @brief Object representing the current settings of the NordVPN CLI.
      */
     Q_PROPERTY(QVariant nordvpnSettings READ _getNordvpnSettings NOTIFY
                    nordvpnSettingsChanged)
-
-  public:
-    /**
-     * @brief Default PreferencesMediator constructor.
-     */
-    PreferencesMediator();
 
   public slots: // NOLINT(readability-redundant-access-specifiers)
     /**
@@ -145,8 +147,7 @@ class PreferencesMediator : public QObject {
     void nordvpnSettingsChanged(QVariantMap);
 
   private:
-    PreferencesController &_preferencesController =
-        PreferencesController::getInstance();
+    const std::shared_ptr<IPreferencesController> _preferencesController;
     NordVpnSettings _nordvpnSettings;
     auto _getNordvpnSettings() -> QVariantMap;
     void _nordvpnSettingsChanged();

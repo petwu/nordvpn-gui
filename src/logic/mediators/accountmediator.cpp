@@ -1,13 +1,19 @@
 #include "accountmediator.hpp"
 
-#include "logic/nordvpn/accountcontroller.hpp"
+#include <utility>
+
+#include <utility>
+
+AccountMediator::AccountMediator(
+    std::shared_ptr<IAccountController> accountController)
+    : _accountController(std::move(accountController)) {}
 
 auto AccountMediator::login(const QString &username, const QString &password)
     -> bool {
-    return this->_accountController.login(username.toStdString(),
-                                          password.toStdString());
+    return this->_accountController->login(username.toStdString(),
+                                           password.toStdString());
 }
 
 auto AccountMediator::logout() -> bool { //
-    return this->_accountController.logout();
+    return this->_accountController->logout();
 }

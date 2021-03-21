@@ -2,6 +2,7 @@
 #define COUNTRYCONTROLLER_HPP
 
 #include <cstdint>
+#include <memory>
 #include <vector>
 
 #include "common/templates/backgroundtaskable.hpp"
@@ -10,27 +11,17 @@
 #include "data/enums/group.hpp"
 #include "data/models/country.hpp"
 #include "data/models/location.hpp"
-#include "data/repositories/serverrepository.hpp"
+#include "data/repositories/iserverrepository.hpp"
 #include "icountrycontroller.hpp"
+#include "logic/nordvpn/iservercontroller.hpp"
 #include "logic/subscriptions/icountriessubscription.hpp"
 
 class CountryController : public virtual ICountryController,
                           public BackgroundTaskable,
                           public Subscribable<ICountriesSubscription> {
-    // Singleton:
-    // https://stackoverflow.com/questions/1008019/c-singleton-design-pattern
   public:
-    CountryController(const CountryController &) = delete;
-    void operator=(const CountryController &) = delete;
-    CountryController(CountryController &&) = delete;
-    auto operator=(CountryController &&) -> CountryController & = delete;
-    ~CountryController() = default;
-
-    /**
-     * @brief Get the singleton instance of CountryController.
-     * @details The instance will be constructed if it does not exist already.
-     */
-    static auto getInstance() -> CountryController &;
+    CountryController(std::shared_ptr<IServerController> serverController,
+                      std::shared_ptr<IServerRepository> serverRepository);
 
     auto getAllCountries(bool updateCache = false)
         -> std::vector<Country> override;
@@ -40,12 +31,8 @@ class CountryController : public virtual ICountryController,
     auto getCountriesByGroup(Group g) -> std::vector<Country> override;
 
   private:
-    /**
-     * @brief Empty, private constructor (part of the sigleton implementation).
-     */
-    CountryController();
-
-    ServerRepository _serverRepository;
+    const std::shared_ptr<IServerController> _serverController;
+    const std::shared_ptr<IServerRepository> _serverRepository;
 
     /**
      * @brief Internal list of all countries.

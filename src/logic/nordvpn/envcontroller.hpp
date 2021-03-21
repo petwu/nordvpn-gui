@@ -12,49 +12,17 @@
 #include "logic/models/envinfo.hpp"
 #include "logic/subscriptions/ienvinfosubscription.hpp"
 
-/**
- * @brief The EnvController class is repsonsible for providing informations
- * abound the environment.
- *
- * @details The class provides a mechanism for running a background task
- * (thread) (startBackgroundTasks()/stopBackgroundTasks()) that periodically
- * refreshes the environment information. The new set of information is then
- * propagated via the observer pattern. Obsersers/subscribers have the implement
- * the #IEnvInfoSubscription interface and call attach(this) in order to get
- * notified. They can also use detach(this) to unsubscribe.
- *
- * In order to prevent multiple instances and possibly multiple background
- * tasks doing the same thing for a different set of subscribers,
- * EnvController is implemented as a singleton.
- */
 class EnvController : public virtual IEnvController,
                       public BaseController,
                       public Subscribable<IEnvInfoSubscription>,
                       public BackgroundTaskable {
-    // Singleton:
-    // https://stackoverflow.com/questions/1008019/c-singleton-design-pattern
   public:
-    EnvController(const EnvController &) = delete;
-    void operator=(const EnvController &) = delete;
-    EnvController(EnvController &&) = delete;
-    auto operator=(EnvController &&) -> EnvController & = delete;
-    ~EnvController() = default;
-
-    /**
-     * @brief Get the singleton instance of EnvController.
-     * @details The instance will be constructed if it does not exist already.
-     */
-    static auto getInstance() -> EnvController &;
+    EnvController();
 
     auto getEnvInfo() -> EnvInfo override;
     void setLoggedIn(bool loggedIn) override;
 
   private:
-    /**
-     * @brief Private default constructor (part of the sigleton implementation).
-     */
-    EnvController();
-
     /**
      * @brief The current set of environment informations.
      */

@@ -11,8 +11,8 @@
 Version::Version(uint32_t major, uint32_t minor, uint32_t patch,
                  std::string preRelease, std::string buildMeta)
     : _major(major), _minor(minor), _patch(patch),
-      _preRelease(std::move(std::move(preRelease))),
-      _buildMeta(std::move(std::move(buildMeta))) {
+      _preRelease(std::move(preRelease)),
+      _buildMeta(std::move(buildMeta)) {
     // Simply assigning major, minor, etc. to is appropriate private fields does
     // not prevent invald information passed to preRelease and buildMeta. In
     // order to not duplicate logic, we re-use the validation implemented in

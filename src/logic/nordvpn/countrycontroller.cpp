@@ -10,19 +10,16 @@
 #include "config.hpp"
 #include "data/models/connectable.hpp"
 #include "data/models/server.hpp"
-#include "data/repositories/serverrepository.hpp"
-#include "servercontroller.hpp"
 
-CountryController::CountryController() {
+CountryController::CountryController(
+    std::shared_ptr<IServerController> serverController,
+    std::shared_ptr<IServerRepository> serverRepository)
+    : _serverController(std::move(serverController)),
+      _serverRepository(std::move(serverRepository)) {
     this->registerBackgroundTask([this](bool tick) { _backgroundTask(tick); },
                                  config::consts::COUNTRY_LIST_UPDATE_INTERVAL,
                                  std::chrono::hours(24));
     this->_getAllCountries(false);
-}
-
-auto CountryController::getInstance() -> CountryController & {
-    static CountryController instance;
-    return instance;
 }
 
 auto CountryController::getAllCountries(bool updateCache)
@@ -37,9 +34,9 @@ auto CountryController::_getAllCountries(bool updateCache)
         auto cliCountries = util::string::split(cmdResult.output, ", ");
         std::vector<Country> all;
         if (updateCache) {
-            all = this->_serverRepository.fetchCountries();
+            all = this->_serverRepository->fetchCountries();
         } else {
-            all = this->_serverRepository.fetchCountriesFromCache();
+            all = this->_serverRepository->fetchCountriesFromCache();
         }
         std::vector<Country> availableCountries;
         // filter the vector to only contains countries that were returned
@@ -105,7 +102,7 @@ auto CountryController::getCityById(uint32_t id) -> Nullable<Location> {
 
 auto CountryController::getCountriesByGroup(Group g) -> std::vector<Country> {
     std::vector<Country> countries;
-    for (const auto &server : ServerController::getInstance().getAllServers()) {
+    for (const auto &server : this->_serverController->getAllServers()) {
         // check if the server supports the group
         // --> if no: continue
         bool containsGroup = false;

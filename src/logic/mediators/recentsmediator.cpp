@@ -4,8 +4,10 @@
 
 #include "logic/mediators/qmldataconverter.hpp"
 
-RecentsMediator::RecentsMediator() { //
-    this->_recentsController.attach(this, true);
+RecentsMediator::RecentsMediator(
+    std::shared_ptr<IRecentsController> recentsController)
+    : _recentsController(std::move(recentsController)) { //
+    this->_recentsController->attach(this, true);
 }
 
 auto RecentsMediator::_getRecentCountries() -> QVariantList {
@@ -17,7 +19,7 @@ auto RecentsMediator::_getRecentCountries() -> QVariantList {
 }
 
 void RecentsMediator::removeFromRecentsList(quint32 countryId) {
-    this->_recentsController.removeFromRecentsList(countryId);
+    this->_recentsController->removeFromRecentsList(countryId);
 }
 
 void RecentsMediator::updateRecents(const std::vector<Country> &newRecents) {

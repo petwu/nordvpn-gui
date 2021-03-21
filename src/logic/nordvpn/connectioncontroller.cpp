@@ -1,45 +1,46 @@
 #include "connectioncontroller.hpp"
 
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "common/io/asyncprocess.hpp"
 #include "common/types/nullable.hpp"
-#include "countrycontroller.hpp"
 #include "data/models/country.hpp"
 #include "data/models/location.hpp"
 #include "data/models/server.hpp"
-#include "envcontroller.hpp"
 #include "logic/enums/connectionstatus.hpp"
-#include "logic/nordvpn/statuscontroller.hpp"
-#include "recentscontroller.hpp"
-#include "servercontroller.hpp"
 
-ConnectionController::ConnectionController() {
+ConnectionController::ConnectionController(
+    std::shared_ptr<ICountryController> countryController,
+    std::shared_ptr<IEnvController> envController,
+    std::shared_ptr<IRecentsController> recentsController,
+    std::shared_ptr<IServerController> serverController,
+    std::shared_ptr<IStatusController> statusController)
+    : _countryController(std::move(countryController)),
+      _envController(std::move(envController)),
+      _recentsController(std::move(recentsController)),
+      _serverController(std::move(serverController)),
+      _statusController(std::move(statusController)) {
     // subscribe to connection status updates
-    StatusController::getInstance().attach(this);
-}
-
-auto ConnectionController::getInstance() -> ConnectionController & {
-    static ConnectionController instance;
-    return instance;
+    this->_statusController->attach(this);
 }
 
 void ConnectionController::quickConnect() {
     this->_quickConnecting = true;
-    AsyncProcess::execute(
-        "nordvpn connect", &this->_connectingPid,
-        [this](const ProcessResult &result) {
-            if (!result.success() &&
-                result.output.find("login") != std::string::npos) {
-                this->_quickConnecting = false;
-                EnvController::getInstance().setLoggedIn(false);
-            }
-        });
+    AsyncProcess::execute("nordvpn connect", &this->_connectingPid,
+                          [this](const ProcessResult &result) {
+                              if (!result.success() &&
+                                  result.output.find("login") !=
+                                      std::string::npos) {
+                                  this->_quickConnecting = false;
+                                  this->_envController->setLoggedIn(false);
+                              }
+                          });
 }
 
 void ConnectionController::connectToCountryById(uint32_t id) {
-    Nullable<Country> c = CountryController::getInstance().getCountryById(id);
+    Nullable<Country> c = this->_countryController->getCountryById(id);
     if (c.isNotNull()) {
         AsyncProcess::execute("nordvpn connect " + c.value().connectName,
                               &this->_connectingPid,
@@ -51,8 +52,8 @@ void ConnectionController::connectToCountryById(uint32_t id) {
 
 void ConnectionController::connectToCityById(uint32_t id) {
     Nullable<Country> country =
-        CountryController::getInstance().getCountryByCityId(id);
-    Nullable<Location> city = CountryController::getInstance().getCityById(id);
+        this->_countryController->getCountryByCityId(id);
+    Nullable<Location> city = this->_countryController->getCityById(id);
     if (country.isNotNull() && city.isNotNull()) {
         auto countryId = country.value().id;
         AsyncProcess::execute(
@@ -66,7 +67,7 @@ void ConnectionController::connectToCityById(uint32_t id) {
 }
 
 void ConnectionController::connectToServerById(uint32_t id) {
-    for (const auto &server : ServerController::getInstance().getAllServers()) {
+    for (const auto &server : this->_serverController->getAllServers()) {
         if (server.id == id) {
             auto countryId = server.countryId;
             AsyncProcess::execute(
@@ -86,11 +87,11 @@ void ConnectionController::_checkConnectResult(const ProcessResult &result,
         // word "login" this means, we tried to connect despite not being logged
         // in --> the the EnvController about it, that will propagate it to the
         // UI so that the login view will be displayed
-        EnvController::getInstance().setLoggedIn(false);
+        this->_envController->setLoggedIn(false);
     } else {
         // otherwise we assume a successful connection establishment and update
         // the recents list
-        RecentsController::getInstance().addTooRecentsList(countryId);
+        this->_recentsController->addTooRecentsList(countryId);
     }
 }
 
@@ -106,8 +107,7 @@ void ConnectionController::connectToCountryByIdAndGroup(uint32_t id, Group g) {
     if (groupName.empty()) {
         this->connectToCountryById(id);
     } else {
-        Nullable<Country> c =
-            CountryController::getInstance().getCountryById(id);
+        Nullable<Country> c = this->_countryController->getCountryById(id);
         if (c.isNotNull()) {
             AsyncProcess::execute("nordvpn connect --group " + groupName + " " +
                                       c.value().connectName,
@@ -138,6 +138,6 @@ void ConnectionController::updateConnectionInfo(const ConnectionInfo &newInfo) {
     if (this->_quickConnecting &&
         newInfo.status == ConnectionStatus::Connected) {
         this->_quickConnecting = false;
-        RecentsController::getInstance().addTooRecentsList(newInfo.countryId);
+        this->_recentsController->addTooRecentsList(newInfo.countryId);
     }
 }

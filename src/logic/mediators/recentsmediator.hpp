@@ -5,10 +5,11 @@
 #include <QString>
 #include <QVariantList>
 #include <QtCore>
+#include <memory>
 #include <vector>
 
 #include "data/models/country.hpp"
-#include "logic/nordvpn/recentscontroller.hpp"
+#include "logic/nordvpn/irecentscontroller.hpp"
 #include "logic/subscriptions/irecentssubscription.hpp"
 
 /**
@@ -24,7 +25,7 @@ class RecentsMediator : public QObject, public IRecentsSubscription {
     /**
      * @brief Default constructor.
      */
-    RecentsMediator();
+    RecentsMediator(std::shared_ptr<IRecentsController> recentsController);
 
     /**
      * @brief Readonly property that holds the list of recently connected
@@ -51,7 +52,7 @@ class RecentsMediator : public QObject, public IRecentsSubscription {
     /**
      * @brief Controller, that provides that necessary data.
      */
-    RecentsController &_recentsController = RecentsController::getInstance();
+    const std::shared_ptr<IRecentsController> _recentsController;
 
     /**
      * @brief Internal list or recently connected countries.

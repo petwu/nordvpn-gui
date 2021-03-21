@@ -4,12 +4,11 @@
 
 #include "common/types/nullable.hpp"
 #include "logic/mediators/qmldataconverter.hpp"
-#include "logic/nordvpn/envcontroller.hpp"
 
-NavMediator::NavMediator() {
-    EnvController &envController = EnvController::getInstance();
-    envController.attach(this);
-    envController.startBackgroundTasks();
+NavMediator::NavMediator(std::shared_ptr<IEnvController> envController)
+    : _envController(std::move(envController)) {
+    this->_envController->attach(this);
+    this->_envController->startBackgroundTasks();
 }
 
 auto NavMediator::_getMainWindowViewSource() -> QString {

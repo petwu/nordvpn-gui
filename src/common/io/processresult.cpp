@@ -5,8 +5,8 @@
 
 ProcessResult::ProcessResult(std::string cmd, std::string out, std::string err,
                              uint32_t rc)
-    : command(std::move(std::move(cmd))), output(std::move(std::move(out))),
-      error(std::move(std::move(err))), exitCode(rc) {}
+    : command(std::move(cmd)), output(std::move(out)),
+      error(std::move(err)), exitCode(rc) {}
 
 auto ProcessResult::operator==(const ProcessResult &other) const -> bool {
     return this->exitCode == other.exitCode && this->output == other.output &&

@@ -2,30 +2,28 @@
 #define CONNECTIONCONTROLLER_HPP
 
 #include <cstdint>
+#include <memory>
 #include <sys/types.h>
 
 #include "common/io/processresult.hpp"
 #include "data/enums/group.hpp"
 #include "iconnectioncontroller.hpp"
 #include "logic/models/connectioninfo.hpp"
+#include "logic/nordvpn/icountrycontroller.hpp"
+#include "logic/nordvpn/ienvcontroller.hpp"
+#include "logic/nordvpn/irecentscontroller.hpp"
+#include "logic/nordvpn/iservercontroller.hpp"
+#include "logic/nordvpn/istatuscontroller.hpp"
 #include "logic/subscriptions/iconnectioninfosubscription.hpp"
 
 class ConnectionController : public virtual IConnectionController,
                              public IConnectionInfoSubscription {
-    // Singleton:
-    // https://stackoverflow.com/questions/1008019/c-singleton-design-pattern
   public:
-    ConnectionController(const ConnectionController &) = delete;
-    void operator=(const ConnectionController &) = delete;
-    ConnectionController(ConnectionController &&) = delete;
-    auto operator=(ConnectionController &&) -> ConnectionController & = delete;
-    ~ConnectionController() = default;
-
-    /**
-     * @brief Get the singleton instance of ServerController.
-     * @details The instance will be constructed if it does not exist already.
-     */
-    static auto getInstance() -> ConnectionController &;
+    ConnectionController(std::shared_ptr<ICountryController> countryController,
+                         std::shared_ptr<IEnvController> envController,
+                         std::shared_ptr<IRecentsController> recentsController,
+                         std::shared_ptr<IServerController> serverController,
+                         std::shared_ptr<IStatusController> statusController);
 
     void quickConnect() override;
     void connectToCountryById(uint32_t id) override;
@@ -37,7 +35,11 @@ class ConnectionController : public virtual IConnectionController,
     void disconnect() override;
 
   private:
-    ConnectionController();
+    const std::shared_ptr<ICountryController> _countryController;
+    const std::shared_ptr<IEnvController> _envController;
+    const std::shared_ptr<IRecentsController> _recentsController;
+    const std::shared_ptr<IServerController> _serverController;
+    const std::shared_ptr<IStatusController> _statusController;
 
     /**
      * @brief Inspect the #ProcessResult of a connection attempt and check
@@ -51,8 +53,7 @@ class ConnectionController : public virtual IConnectionController,
      * to update the list of recently connected countries in case of a
      * successful connection establishment.
      */
-    static void _checkConnectResult(const ProcessResult &result,
-                                    int32_t countryId);
+    void _checkConnectResult(const ProcessResult &result, int32_t countryId);
 
     /**
      * @brief The process ID (PID) of the process that is performing a

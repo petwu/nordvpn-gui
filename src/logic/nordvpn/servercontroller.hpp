@@ -2,6 +2,7 @@
 #define SERVERCONTROLLER_HPP
 
 #include <cstdint>
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -9,27 +10,17 @@
 #include "common/templates/backgroundtaskable.hpp"
 #include "data/enums/group.hpp"
 #include "data/models/server.hpp"
-#include "data/repositories/serverrepository.hpp"
+#include "data/repositories/iserverrepository.hpp"
 #include "iservercontroller.hpp"
-#include "logic/nordvpn/preferencescontroller.hpp"
+#include "logic/nordvpn/ipreferencescontroller.hpp"
 
 class ServerController : public virtual IServerController,
                          public BaseController,
                          public BackgroundTaskable {
-    // Singleton:
-    // https://stackoverflow.com/questions/1008019/c-singleton-design-pattern
   public:
-    ServerController(const ServerController &) = delete;
-    void operator=(const ServerController &) = delete;
-    ServerController(ServerController &&) = delete;
-    auto operator=(ServerController &&) -> ServerController & = delete;
-    ~ServerController() = default;
-
-    /**
-     * @brief Get the singleton instance of ServerController.
-     * @details The instance will be constructed if it does not exist already.
-     */
-    static auto getInstance() -> ServerController &;
+    ServerController(
+        std::shared_ptr<IPreferencesController> preferencesController,
+        std::shared_ptr<IServerRepository> serverRepository);
 
     auto getAllServers() -> std::vector<Server> override;
     auto getServerByHostname(const std::string &hostname) -> Server override;
@@ -39,14 +30,8 @@ class ServerController : public virtual IServerController,
         -> std::vector<Server> override;
 
   private:
-    /**
-     * @brief Empty, private constructor (part of the sigleton implementation).
-     */
-    ServerController();
-
-    ServerRepository _serverRepository;
-    PreferencesController &_preferencesController =
-        PreferencesController::getInstance();
+    const std::shared_ptr<IPreferencesController> _preferencesController;
+    const std::shared_ptr<IServerRepository> _serverRepository;
 
     /**
      * @brief Internal list of all servers.

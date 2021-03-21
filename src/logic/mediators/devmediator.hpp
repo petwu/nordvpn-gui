@@ -4,10 +4,11 @@
 #include <QByteArrayData>
 #include <QObject>
 #include <QString>
+#include <memory>
 #include <string>
 
 #include "logic/models/connectioninfo.hpp"
-#include "logic/nordvpn/statuscontroller.hpp"
+#include "logic/nordvpn/istatuscontroller.hpp"
 #include "logic/subscriptions/iconnectioninfosubscription.hpp"
 
 /**
@@ -19,7 +20,7 @@ class DevMediator : public QObject, public IConnectionInfoSubscription {
     Q_OBJECT
 
   public:
-    DevMediator();
+    DevMediator(std::shared_ptr<IStatusController> statusController);
 
     /**
      * @brief Property that indicates that some controls should show debug
@@ -57,11 +58,7 @@ class DevMediator : public QObject, public IConnectionInfoSubscription {
     void connectionInfoChanged(QString);
 
   private:
-    /**
-     * @brief Controller to observe for updates about the connection status.
-     * @see #updateConnectionInfo()
-     */
-    StatusController &_statusController = StatusController::getInstance();
+    const std::shared_ptr<IStatusController> _statusController;
 
     /**
      * @brief Implements IConnectionInfoSubscription::updateConnectionInfo() to

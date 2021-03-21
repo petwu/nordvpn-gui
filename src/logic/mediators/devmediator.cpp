@@ -1,7 +1,8 @@
 #include "devmediator.hpp"
 
-DevMediator::DevMediator() { //
-    this->_statusController.attach(this);
+DevMediator::DevMediator(std::shared_ptr<IStatusController> statusController)
+    : _statusController(std::move(statusController)) {
+    this->_statusController->attach(this);
 }
 
 void DevMediator::updateConnectionInfo(const ConnectionInfo &newInfo) {

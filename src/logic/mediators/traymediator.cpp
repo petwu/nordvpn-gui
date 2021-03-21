@@ -8,22 +8,30 @@
 #include <QPixmap>
 #include <QTimer>
 #include <Qt>
+#include <cassert>
 #include <cstdint>
 #include <functional>
 #include <memory>
 #include <string>
+#include <utility>
 
 #include "logic/enums/connectionstatus.hpp"
-#include "logic/nordvpn/countrycontroller.hpp"
-#include "logic/nordvpn/recentscontroller.hpp"
-#include "logic/nordvpn/statuscontroller.hpp"
 
-auto TrayMediator::getInstance() -> TrayMediator & {
-    static TrayMediator instance;
-    return instance;
-}
+TrayMediator::TrayMediator(
+    std::shared_ptr<ICountryController> countryController,
+    std::shared_ptr<IRecentsController> recentsController,
+    std::shared_ptr<IStatusController> statusController)
+    : _countryController(std::move(countryController)),
+      _recentsController(std::move(recentsController)),
+      _statusController(std::move(statusController)) {
+    // de-facto singleton
+    static bool singletonLock;
+    // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+    assert(!singletonLock && "TrayMediator may only be instantiated once!");
+    if (!singletonLock) {
+        singletonLock = true;
+    }
 
-TrayMediator::TrayMediator() {
     // init context menu
     this->_trayContextMenu = std::make_unique<QMenu>();
     this->_statusAction = this->_trayContextMenu->addAction("-");
@@ -73,14 +81,15 @@ TrayMediator::TrayMediator() {
 
     // subsribe to controller to get updates about the connection status and
     // country/recents lists
-    StatusController::getInstance().attach(this, true);
-    CountryController::getInstance().attach(this, true);
-    RecentsController::getInstance().attach(this, true);
+    this->_statusController->attach(this, true);
+    this->_countryController->attach(this, true);
+    this->_recentsController->attach(this, true);
 }
 
 TrayMediator::~TrayMediator() {
-    StatusController::getInstance().detach(this);
-    CountryController::getInstance().detach(this);
+    this->_statusController->detach(this);
+    this->_countryController->detach(this);
+    this->_recentsController->detach(this);
 }
 
 void TrayMediator::setIconSource(const QString &filename) {

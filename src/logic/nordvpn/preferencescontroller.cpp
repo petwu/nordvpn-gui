@@ -26,11 +26,6 @@ auto boolToEnabledString(bool enabled) -> std::string {
     return enabled ? ENABLED : DISABLED;
 }
 
-auto PreferencesController::getInstance() -> PreferencesController & {
-    static PreferencesController instance;
-    return instance;
-}
-
 auto PreferencesController::getNordvpnSettings() -> NordVpnSettings {
     NordVpnSettings s;
     // get current settings from NordVPN CLI

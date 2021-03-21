@@ -3,6 +3,9 @@
 
 #include <vector>
 
+#include "data/models/country.hpp"
+#include "data/models/server.hpp"
+
 /**
  * @brief The IServerRepository interface prvides static functions to retrieve
  * and cache the list of available servers and countries.

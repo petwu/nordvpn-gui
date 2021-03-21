@@ -4,8 +4,9 @@
 #include <QByteArrayData>
 #include <QObject>
 #include <QString>
+#include <memory>
 
-#include "logic/nordvpn/accountcontroller.hpp"
+#include "logic/nordvpn/iaccountcontroller.hpp"
 
 /**
  * @brief The AccountMediator class is responsible for communicating information
@@ -14,6 +15,8 @@
 class AccountMediator : public QObject {
     // NOLINTNEXTLINE(modernize-use-trailing-return-type): Qt is out of scope
     Q_OBJECT
+  public:
+    AccountMediator(std::shared_ptr<IAccountController> accountController);
 
   public slots: // NOLINT(readability-redundant-access-specifiers)
     /**
@@ -33,7 +36,7 @@ class AccountMediator : public QObject {
     bool logout();
 
   private:
-    AccountController _accountController;
+    const std::shared_ptr<IAccountController> _accountController;
 };
 
 #endif // ACCOUNTMEDIATOR_HPP

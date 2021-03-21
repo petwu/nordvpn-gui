@@ -8,6 +8,7 @@
 #include <regex>
 #include <sstream>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "common/types/nullable.hpp"
@@ -16,8 +17,10 @@
 #include "logic/mediators/qmldataconverter.hpp"
 #include "logic/models/whitelistportentry.hpp"
 
-PreferencesMediator::PreferencesMediator() {
-    this->_nordvpnSettings = this->_preferencesController.getNordvpnSettings();
+PreferencesMediator::PreferencesMediator(
+    std::shared_ptr<IPreferencesController> preferencesController)
+    : _preferencesController(std::move(preferencesController)) {
+    this->_nordvpnSettings = this->_preferencesController->getNordvpnSettings();
 }
 
 auto PreferencesMediator::_getNordvpnSettings() -> QVariantMap {
@@ -30,7 +33,7 @@ void PreferencesMediator::_nordvpnSettingsChanged() {
 }
 
 void PreferencesMediator::refreshSettings() {
-    this->_nordvpnSettings = this->_preferencesController.getNordvpnSettings();
+    this->_nordvpnSettings = this->_preferencesController->getNordvpnSettings();
     this->_nordvpnSettingsChanged();
 }
 
@@ -195,11 +198,11 @@ void PreferencesMediator::saveNordvpnSettings() {
     }
 
     // save the valid settings
-    this->_preferencesController.updateNordvpnSettings(this->_nordvpnSettings);
+    this->_preferencesController->updateNordvpnSettings(this->_nordvpnSettings);
 }
 
 void PreferencesMediator::restoreDefaultNordvpnSettings() {
-    this->_preferencesController.restoreDefaultNordvpnSettings();
+    this->_preferencesController->restoreDefaultNordvpnSettings();
     this->nordvpnSettingsChanged(this->_getNordvpnSettings());
 }
 

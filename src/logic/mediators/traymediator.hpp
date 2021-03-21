@@ -13,6 +13,9 @@
 
 #include "data/models/country.hpp"
 #include "logic/models/connectioninfo.hpp"
+#include "logic/nordvpn/icountrycontroller.hpp"
+#include "logic/nordvpn/irecentscontroller.hpp"
+#include "logic/nordvpn/istatuscontroller.hpp"
 #include "logic/subscriptions/iconnectioninfosubscription.hpp"
 #include "logic/subscriptions/icountriessubscription.hpp"
 #include "logic/subscriptions/irecentssubscription.hpp"
@@ -28,7 +31,8 @@
  *   action gets triggered. See all members below the 'signals:' label for more
  *   information.
  *
- * @details Implemented as a singleton since only once tray icon should exists.
+ * @details This class can only be instantiated once (= de-facto singleton),
+ * since only one tray icon should exists at the same time.
  *
  * @note The is also a pure QML type named SystemTrayIcon
  * (https://doc.qt.io/qt-5/qml-qt-labs-platform-systemtrayicon.html), but at the
@@ -43,20 +47,13 @@ class TrayMediator : public QObject,
     Q_OBJECT
 
   public:
-    /**
-     * @brief Get a reference to the singleton instance of the class.
-     */
-    // NOLINTNEXTLINE(modernize-use-trailing-return-type): not supported by moc
-    static TrayMediator &getInstance();
-
+    TrayMediator(std::shared_ptr<ICountryController> countryController,
+                 std::shared_ptr<IRecentsController> recentsController,
+                 std::shared_ptr<IStatusController> statusController);
     TrayMediator(const TrayMediator &) = delete;
-    // NOLINTNEXTLINE(modernize-use-trailing-return-type): not supported by moc
-    TrayMediator &operator=(const TrayMediator &) = delete;
-
+    auto operator=(const TrayMediator &) -> TrayMediator & = delete;
     TrayMediator(TrayMediator &&) = delete;
-    // NOLINTNEXTLINE(modernize-use-trailing-return-type): not supported by moc
-    TrayMediator &operator=(TrayMediator &&) = delete;
-
+    auto operator=(TrayMediator &&) -> TrayMediator & = delete;
     ~TrayMediator() override;
 
   public slots: // NOLINT(readability-redundant-access-specifiers)
@@ -117,7 +114,9 @@ class TrayMediator : public QObject,
     void connectToCountryById(qint32);
 
   private:
-    TrayMediator();
+    const std::shared_ptr<ICountryController> _countryController;
+    const std::shared_ptr<IRecentsController> _recentsController;
+    const std::shared_ptr<IStatusController> _statusController;
 
     /**
      * @brief Object holding the tray icon.

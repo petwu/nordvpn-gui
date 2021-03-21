@@ -7,16 +7,17 @@
 #include <QVariantList>
 #include <QtCore>
 #include <cstdint>
+#include <memory>
 #include <string>
 #include <vector>
 
 #include "data/enums/group.hpp"
 #include "data/models/country.hpp"
 #include "logic/models/connectioninfo.hpp"
-#include "logic/nordvpn/connectioncontroller.hpp"
-#include "logic/nordvpn/countrycontroller.hpp"
-#include "logic/nordvpn/servercontroller.hpp"
-#include "logic/nordvpn/statuscontroller.hpp"
+#include "logic/nordvpn/iconnectioncontroller.hpp"
+#include "logic/nordvpn/icountrycontroller.hpp"
+#include "logic/nordvpn/iservercontroller.hpp"
+#include "logic/nordvpn/istatuscontroller.hpp"
 #include "logic/subscriptions/iconnectioninfosubscription.hpp"
 #include "logic/subscriptions/icountriessubscription.hpp"
 
@@ -46,7 +47,11 @@ class ConnectionMediator : public QObject,
     Q_OBJECT
 
   public:
-    ConnectionMediator();
+    ConnectionMediator(
+        std::shared_ptr<IConnectionController> connectionController,
+        std::shared_ptr<ICountryController> countryController,
+        std::shared_ptr<IServerController> serverController,
+        std::shared_ptr<IStatusController> statusController);
 
     /**
      * @brief Readony property that tells the UI that all connection-related
@@ -381,31 +386,10 @@ class ConnectionMediator : public QObject,
     void connectingServerGroupsChanged(QVariantList);
 
   private:
-    /**
-     * @brief Controller for server related information exchange.
-     */
-    ServerController &_serverController = ServerController::getInstance();
-
-    /**
-     * @brief Controller for country related information exchange.
-     */
-    CountryController &_countryController = CountryController::getInstance();
-
-    /**
-     * @brief Controller for propagating connection commands.
-     */
-    ConnectionController &_connectionController =
-        ConnectionController::getInstance();
-
-    /**
-     * @brief Controller to observe for updates about the connection status.
-     * @see #updateConnectionInfo()
-     */
-    StatusController &_statusController = StatusController::getInstance();
-
-    /**
-     * @brief List of currently available countries.
-     */
+    const std::shared_ptr<IConnectionController> _connectionController;
+    const std::shared_ptr<ICountryController> _countryController;
+    const std::shared_ptr<IServerController> _serverController;
+    const std::shared_ptr<IStatusController> _statusController;
     std::vector<Country> _countries;
 
     /**

@@ -18,16 +18,12 @@
 #include "data/models/server.hpp"
 #include "logic/enums/connectionstatus.hpp"
 #include "logic/models/connectioninfo.hpp"
-#include "logic/nordvpn/servercontroller.hpp"
 
-StatusController::StatusController() {
+StatusController::StatusController(
+    std::shared_ptr<IServerController> serverController)
+    : _serverController(std::move(serverController)) {
     this->registerBackgroundTask([this] { _backgroundTask(); },
                                  config::consts::STATUS_UPDATE_INTERVAL);
-}
-
-auto StatusController::getInstance() -> StatusController & {
-    static StatusController instance;
-    return instance;
 }
 
 auto StatusController::getStatus() -> ConnectionInfo {
@@ -159,8 +155,7 @@ auto StatusController::getStatus() -> ConnectionInfo {
     }
 
     // additonal server information
-    Server server =
-        ServerController::getInstance().getServerByHostname(info.server);
+    Server server = this->_serverController->getServerByHostname(info.server);
     info.groups = server.groups;
     info.load = server.load;
     info.countryId = server.countryId;

@@ -6,10 +6,12 @@
 #include <QString>
 #include <QVariant>
 #include <map>
+#include <memory>
 #include <string>
 
 #include "logic/enums/mainwindowview.hpp"
 #include "logic/models/envinfo.hpp"
+#include "logic/nordvpn/ienvcontroller.hpp"
 #include "logic/subscriptions/ienvinfosubscription.hpp"
 
 /**
@@ -19,6 +21,9 @@
 class NavMediator : public QObject, public IEnvInfoSubscription {
     // NOLINTNEXTLINE(modernize-use-trailing-return-type): Qt is out of scope
     Q_OBJECT
+
+  public:
+    NavMediator(std::shared_ptr<IEnvController> envController);
 
     /**
      * @brief Property that holds the value of the current view to be display in
@@ -41,12 +46,6 @@ class NavMediator : public QObject, public IEnvInfoSubscription {
     Q_PROPERTY(QVariant mainWindowPayload READ _getMainWindowPayload NOTIFY
                    mainWindowPayloadChanged)
 
-  public:
-    /**
-     * @brief Default NavMediator constructor.
-     */
-    NavMediator();
-
   public slots: // NOLINT(readability-redundant-access-specifiers)
     /**
      * @brief Function to tell the mediator to switch to the view that should be
@@ -68,6 +67,8 @@ class NavMediator : public QObject, public IEnvInfoSubscription {
     void mainWindowPayloadChanged(QVariant);
 
   private:
+    const std::shared_ptr<IEnvController> _envController;
+
     /**
      * @brief Map, that assigns the appropriate QRC resource location of a view
      * to every MainWindowView enum value.

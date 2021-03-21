@@ -14,6 +14,8 @@
 #include <memory>
 
 #include "app.hpp"
+#include "data/repositories/preferencesrepository.hpp"
+#include "data/repositories/serverrepository.hpp"
 #include "logic/mediators/accountmediator.hpp"
 #include "logic/mediators/connectionmediator.hpp"
 #include "logic/mediators/devmediator.hpp"
@@ -22,6 +24,14 @@
 #include "logic/mediators/preferencesmediator.hpp"
 #include "logic/mediators/recentsmediator.hpp"
 #include "logic/mediators/traymediator.hpp"
+#include "logic/nordvpn/accountcontroller.hpp"
+#include "logic/nordvpn/connectioncontroller.hpp"
+#include "logic/nordvpn/countrycontroller.hpp"
+#include "logic/nordvpn/envcontroller.hpp"
+#include "logic/nordvpn/preferencescontroller.hpp"
+#include "logic/nordvpn/recentscontroller.hpp"
+#include "logic/nordvpn/servercontroller.hpp"
+#include "logic/nordvpn/statuscontroller.hpp"
 #include "runguard.hpp"
 
 auto main(int argc, char *argv[]) -> int {
@@ -45,12 +55,6 @@ auto main(int argc, char *argv[]) -> int {
     if (!runGuard.tryToRun()) {
         return 0;
     }
-    runGuard.setOnSecondaryInstanceBlockedHandler([] {
-        // get notified if any further (blocked) instance creations and show the
-        // main window (might be minimized to taskbar or tray or hidden behind
-        // other windows)
-        TrayMediator::getInstance().showMainWindowAction();
-    });
 
     // add translations for current system locale
     QTranslator translator;
@@ -60,19 +64,50 @@ auto main(int argc, char *argv[]) -> int {
     // setup connection between QML/UI and C++/logic through mediator objects
     // that are available as a QML context objects
     QQmlContext *ctx = engine->rootContext();
-    auto accountMediator = std::make_unique<AccountMediator>();
-    auto connectionMediator = std::make_unique<ConnectionMediator>();
-    auto devMediator = std::make_unique<DevMediator>();
-    auto navMediator = std::make_unique<NavMediator>();
-    auto preferencesMediator = std::make_unique<PreferencesMediator>();
-    auto recentsMediator = std::make_unique<RecentsMediator>();
+
+    auto serverRepository = std::make_shared<ServerRepository>();
+    auto preferencesRepository = std::make_shared<PreferencesRepository>();
+
+    auto envController = std::make_shared<EnvController>();
+    auto accountController = std::make_shared<AccountController>(envController);
+    auto preferencesController = std::make_shared<PreferencesController>();
+    auto serverController = std::make_shared<ServerController>(
+        preferencesController, serverRepository);
+    auto statusController =
+        std::make_shared<StatusController>(serverController);
+    auto countryController =
+        std::make_shared<CountryController>(serverController, serverRepository);
+    auto recentsController = std::make_shared<RecentsController>(
+        countryController, preferencesRepository);
+    auto connectionController = std::make_shared<ConnectionController>(
+        countryController, envController, recentsController, serverController,
+        statusController);
+
+    auto accountMediator = std::make_unique<AccountMediator>(accountController);
+    auto connectionMediator = std::make_unique<ConnectionMediator>(
+        connectionController, countryController, serverController,
+        statusController);
+    auto devMediator = std::make_unique<DevMediator>(statusController);
+    auto navMediator = std::make_unique<NavMediator>(envController);
+    auto preferencesMediator =
+        std::make_unique<PreferencesMediator>(preferencesController);
+    auto recentsMediator = std::make_unique<RecentsMediator>(recentsController);
+    auto trayMediator = std::make_unique<TrayMediator>(
+        countryController, recentsController, statusController);
+
     ctx->setContextProperty("AccountMediator", accountMediator.get());
     ctx->setContextProperty("ConnectionMediator", connectionMediator.get());
     ctx->setContextProperty("DevMediator", devMediator.get());
     ctx->setContextProperty("NavMediator", navMediator.get());
     ctx->setContextProperty("PreferencesMediator", preferencesMediator.get());
     ctx->setContextProperty("RecentsMediator", recentsMediator.get());
-    ctx->setContextProperty("TrayMediator", &TrayMediator::getInstance());
+    ctx->setContextProperty("TrayMediator", trayMediator.get());
+
+    // get notified if any further (blocked) instance creations and show the
+    // main window (might be minimized to taskbar or tray or hidden behind
+    // other windows)
+    runGuard.setOnSecondaryInstanceBlockedHandler(
+        [&trayMediator] { trayMediator->showMainWindowAction(); });
 
     // additional resource providers
     auto mapImageProvider = std::make_unique<MapImageProvider>();

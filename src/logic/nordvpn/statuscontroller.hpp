@@ -3,18 +3,20 @@
 
 #include <atomic>
 #include <cstdint>
+#include <memory>
 #include <nlohmann/json.hpp>
 #include <string>
 #include <vector>
-
-using json = nlohmann::json;
 
 #include "basecontroller.hpp"
 #include "common/templates/backgroundtaskable.hpp"
 #include "common/templates/subscribable.hpp"
 #include "istatuscontroller.hpp"
 #include "logic/models/connectioninfo.hpp"
+#include "logic/nordvpn/iservercontroller.hpp"
 #include "logic/subscriptions/iconnectioninfosubscription.hpp"
+
+using json = nlohmann::json;
 
 /**
  * @brief Byte, the basic information unit.
@@ -36,20 +38,8 @@ class StatusController : public virtual IStatusController,
                          public BaseController,
                          public Subscribable<IConnectionInfoSubscription>,
                          public BackgroundTaskable {
-    // Singleton:
-    // https://stackoverflow.com/questions/1008019/c-singleton-design-pattern
   public:
-    StatusController(const StatusController &) = delete;
-    void operator=(const StatusController &) = delete;
-    StatusController(StatusController &&) = delete;
-    auto operator=(StatusController &&) -> StatusController & = delete;
-    ~StatusController() = default;
-
-    /**
-     * @brief Get the singleton instance of StatusController.
-     * @details The instance will be constructed if it does not exist already.
-     */
-    static auto getInstance() -> StatusController &;
+    StatusController(std::shared_ptr<IServerController> serverController);
 
     auto getStatus() -> ConnectionInfo override;
     auto getRatingMin() -> uint8_t override;
@@ -57,10 +47,7 @@ class StatusController : public virtual IStatusController,
     void rate(uint8_t rating) override;
 
   private:
-    /**
-     * @brief Private constructor (part of the singleton implementation).
-     */
-    StatusController();
+    const std::shared_ptr<IServerController> _serverController;
 
     /**
      * @brief Bool that is true, while the background task should keep running.

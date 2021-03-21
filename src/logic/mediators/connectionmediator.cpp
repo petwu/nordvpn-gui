@@ -6,14 +6,21 @@
 #include "config.hpp"
 #include "logic/enums/connectionstatus.hpp"
 #include "logic/mediators/qmldataconverter.hpp"
-#include "logic/nordvpn/countrycontroller.hpp"
 
-ConnectionMediator::ConnectionMediator() {
-    this->_countryController.attach(this, true);
-    this->_countryController.startBackgroundTasks();
-    this->_statusController.attach(this);
-    this->_statusController.startBackgroundTasks();
-    this->_serverController.startBackgroundTasks();
+ConnectionMediator::ConnectionMediator(
+    std::shared_ptr<IConnectionController> connectionController,
+    std::shared_ptr<ICountryController> countryController,
+    std::shared_ptr<IServerController> serverController,
+    std::shared_ptr<IStatusController> statusController)
+    : _connectionController(std::move(connectionController)),
+      _countryController(std::move(countryController)),
+      _serverController(std::move(serverController)),
+      _statusController(std::move(statusController)) {
+    this->_countryController->attach(this, true);
+    this->_countryController->startBackgroundTasks();
+    this->_statusController->attach(this);
+    this->_statusController->startBackgroundTasks();
+    this->_serverController->startBackgroundTasks();
 }
 
 void ConnectionMediator::updateConnectionInfo(const ConnectionInfo &newInfo) {
@@ -288,11 +295,12 @@ auto ConnectionMediator::getServers(qint32 countryId, qint32 cityId)
     QVariantList servers;
     if (cityId < 0) {
         for (const auto &s :
-             this->_serverController.getServersByCountry(countryId)) {
+             this->_serverController->getServersByCountry(countryId)) {
             servers << QmlDataConverter::serverToQml(s);
         }
     } else {
-        for (const auto &s : this->_serverController.getServersByCity(cityId)) {
+        for (const auto &s :
+             this->_serverController->getServersByCity(cityId)) {
             servers << QmlDataConverter::serverToQml(s);
         }
     }
@@ -305,7 +313,7 @@ auto ConnectionMediator::getSpecialtyCountries(quint32 groupId)
     auto group = groupFromInt(groupId);
     if (group != Group::Undefined) {
         for (const auto &country :
-             this->_countryController.getCountriesByGroup(group)) {
+             this->_countryController->getCountriesByGroup(group)) {
             countries << QmlDataConverter::countryToQml(country);
         }
     }
@@ -318,7 +326,7 @@ auto ConnectionMediator::getSpecialtyServers(quint32 groupId, qint32 countryId)
     auto group = groupFromInt(groupId);
     if (group != Group::Undefined) {
         for (const auto &server :
-             this->_serverController.getServersByGroup(group, countryId)) {
+             this->_serverController->getServersByGroup(group, countryId)) {
             servers << QmlDataConverter::serverToQml(server);
         }
     }
@@ -329,7 +337,7 @@ void ConnectionMediator::quickConnect() {
     if (this->_areConnectionCommandsPaused) {
         return;
     }
-    this->_connectionController.quickConnect();
+    this->_connectionController->quickConnect();
     this->_setAreConnectionCommandsPaused(true);
 }
 
@@ -337,7 +345,7 @@ void ConnectionMediator::connectToCountryById(quint32 id) {
     if (this->_areConnectionCommandsPaused) {
         return;
     }
-    this->_connectionController.connectToCountryById(id);
+    this->_connectionController->connectToCountryById(id);
     this->_setAreConnectionCommandsPaused(true);
 }
 
@@ -345,37 +353,37 @@ void ConnectionMediator::connectToCityById(quint32 id) {
     if (this->_areConnectionCommandsPaused) {
         return;
     }
-    this->_connectionController.connectToCityById(id);
+    this->_connectionController->connectToCityById(id);
     this->_setAreConnectionCommandsPaused(true);
 }
 
 void ConnectionMediator::connectToServerById(quint32 serverId) {
-    this->_connectionController.connectToServerById(serverId);
+    this->_connectionController->connectToServerById(serverId);
 }
 
 void ConnectionMediator::connectToSpecialtyGroup(quint32 groupId) {
     Group group = groupFromInt(groupId);
-    this->_connectionController.connectToSpecialtyGroup(group);
+    this->_connectionController->connectToSpecialtyGroup(group);
 }
 
 void ConnectionMediator::connectToCountryByIdAndGroup(quint32 id,
                                                       quint32 groupId) {
     Group group = groupFromInt(groupId);
-    this->_connectionController.connectToCountryByIdAndGroup(id, group);
+    this->_connectionController->connectToCountryByIdAndGroup(id, group);
 }
 
 void ConnectionMediator::cancelConnection() {
-    this->_connectionController.cancelConnection();
+    this->_connectionController->cancelConnection();
 }
 
 void ConnectionMediator::disconnect() {
     if (this->_areConnectionCommandsPaused) {
         return;
     }
-    this->_connectionController.disconnect();
+    this->_connectionController->disconnect();
     this->_setAreConnectionCommandsPaused(true);
 }
 
 void ConnectionMediator::rate(quint8 rating) { //
-    this->_statusController.rate(rating);
+    this->_statusController->rate(rating);
 }
