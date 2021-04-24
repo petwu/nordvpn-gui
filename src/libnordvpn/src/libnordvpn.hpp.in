@@ -1,0 +1,14 @@
+#ifndef APP_HPP
+#define APP_HPP
+
+// clang-format off
+
+constexpr const char* GITHUB_USERNAME = "@GITHUB_USERNAME@";
+constexpr const char* GITHUB_REPOSITORY_NAME = "@GITHUB_REPOSITORY_NAME@";
+constexpr const int SEMVER_MAJOR = @SEMVER_MAJOR@;
+constexpr const int SEMVER_MINOR = @SEMVER_MINOR@;
+constexpr const int SEMVER_PATCH = @SEMVER_PATCH@;
+constexpr const char* SEMVER_PRE_RELEASE = "@SEMVER_PRE_RELEASE@";
+constexpr const char* SEMVER_BUILD_META = "@SEMVER_BUILD_META@";
+
+#endif // APP_HPP

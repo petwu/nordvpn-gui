@@ -1,0 +1,22 @@
+#ifndef APP_HPP
+#define APP_HPP
+
+// clang-format off
+
+constexpr const char* AUTHOR = "@AUTHOR@";
+constexpr const char* REPOSITORY_URL = "@REPOSITORY_URL@";
+constexpr const char* PROJECT_WEBSITE_URL = "@PROJECT_WEBSITE_URL@";
+constexpr const char* DOCS_URL = "@DOCS_URL@";
+constexpr const char* DONATE_URL = "@DONATE_URL@";
+constexpr const char* ISSUES_URL = "@ISSUES_URL@";
+constexpr const char* ORGANIZATION = "@ORGANIZATION@";
+constexpr const char* APPLICATION_NAME = "@APPLICATION_NAME@";
+constexpr const char* APPLICATION_DESCRIPTION = "@APPLICATION_DESCRIPTION@";
+constexpr const char* VERSION = "@PROJECT_VERSION_MAJOR@.@PROJECT_VERSION_MINOR@.@PROJECT_VERSION_PATCH@";
+constexpr const char* LICENSE = "@LICENSE@";
+constexpr const char* LICENSE_TEXT = R"###(@LICENSE_TEXT@)###";
+constexpr const char* CHANGELOG = R"###(@CHANGELOG@)###";
+constexpr const char* NORDVPN_DOWNLOAD_LINUX_URL = "@NORDVPN_DOWNLOAD_LINUX_URL@";
+constexpr const char* NORD_ACCOUNT_URL = "@NORD_ACCOUNT_URL@";
+
+#endif // APP_HPP

@@ -11,8 +11,14 @@ CompileCommandsNoAutogen
 #]============================================================================]
 
 #### 0.) input and output file
-set(_input ${CMAKE_BINARY_DIR}/compile_commands.json)
-set(_output ${CMAKE_BINARY_DIR}/compile_commands_no_autogen.json)
+if(NOT INPUT_FILE)
+  message(FATAL_ERROR "missing required parameter: -DINPUT_FILE")
+endif()
+if(NOT OUTPUT_FILE)
+  message(FATAL_ERROR "missing required parameter: -DOUTPUT_FILE")
+endif()
+set(_input "${INPUT_FILE}")
+set(_output "${OUTPUT_FILE}")
 # verify input file exists
 if(NOT EXISTS ${_input} OR IS_DIRECTORY ${_input})
   message(FATAL_ERROR "${_input}: file not found")

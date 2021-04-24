@@ -8,12 +8,21 @@ project(nordvpn-gui
   HOMEPAGE_URL "https://petwu.github.io/nordvpn-gui"
   LANGUAGES CXX
 )
+
+# --------------------------------------------------------------------------------
+# include modules
+# --------------------------------------------------------------------------------
+
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
+include(Git)
+include(Conan)
+include(Cloc)
+include(CodeQualityTools)
+include(GNUInstallDirs)
 
 # --------------------------------------------------------------------------------
 # application description (see src/app.hpp.in as well)
 # --------------------------------------------------------------------------------
-include(Git)
 set(SEMVER_MAJOR "${PROJECT_VERSION_MAJOR}")
 set(SEMVER_MINOR "${PROJECT_VERSION_MINOR}")
 set(SEMVER_PATCH "${PROJECT_VERSION_PATCH}")
@@ -46,6 +55,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 # --------------------------------------------------------------------------------
 # Qt settings
 # --------------------------------------------------------------------------------
+find_package(Qt5 COMPONENTS Core REQUIRED)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(QML_IMPORT_PATH ${CMAKE_SOURCE_DIR}/res
@@ -56,7 +66,6 @@ set(QML_IMPORT_PATH ${CMAKE_SOURCE_DIR}/res
 # --------------------------------------------------------------------------------
 # install external dependencies (except Qt) with conan
 # --------------------------------------------------------------------------------
-include(Conan)
 conan_cmake_run(
   CONANFILE conanfile.txt
   BUILD missing
@@ -68,48 +77,19 @@ conan_cmake_run(
 # --------------------------------------------------------------------------------
 # main executable
 # --------------------------------------------------------------------------------
-find_package(Qt5 COMPONENTS Core Quick Widgets Svg REQUIRED)
-find_package(Threads REQUIRED)
-add_executable(${PROJECT_NAME})
-target_include_directories(${PROJECT_NAME} PRIVATE src)
-target_link_libraries(${PROJECT_NAME} PRIVATE
-  Qt5::Core Qt5::Quick Qt5::Widgets Qt5::Svg
-  Threads::Threads
-  ${CONAN_TARGETS}
-)
-include(GNUInstallDirs)
 set(RESOURCES_DIR_NAME ${CMAKE_INSTALL_DATAROOTDIR}/${PROJECT_NAME})
 add_subdirectory(src)
 add_subdirectory(res)
 add_subdirectory(doc)
 
-include(GNUInstallDirs)
-install(TARGETS ${PROJECT_NAME})
-
 # --------------------------------------------------------------------------------
-# compile controls a.k.a. preprocessor definitions
-# --------------------------------------------------------------------------------
-if(CMAKE_BUILD_TYPE STREQUAL "Debug" OR CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
-  target_compile_definitions(${PROJECT_NAME} PRIVATE IS_DEBUG=1)
-endif()
-
-# --------------------------------------------------------------------------------
-# create targets for clang-tidy and clang-format
+# create utility targets
 # --------------------------------------------------------------------------------
 
-include(CodeQualityTools)
-add_clang_tidy(clang-tidy TARGET ${PROJECT_NAME})
-add_clang_format(clang-format FILES src/**/*.cpp src/**/*.h)
+add_clang_format(clang-format FILES src/**/*.cpp src/**/*.hpp)
+add_clang_tidy(clang-tidy TARGETS nordvpn-gui nordvpn)
 add_iwyu(iwyu MAPPING_FILE .iwyu.imp)
-
-include(Cloc)
-add_cloc(cloc SOURCES
-  cmake
-  doc
-  res/Style
-  res/CMakeLists.txt
-  src
-)
+add_cloc(cloc SOURCES cmake doc res/Style res/CMakeLists.txt src)
 
 # --------------------------------------------------------------------------------
 # configure CPack to create installable packages

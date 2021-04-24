@@ -1,0 +1,88 @@
+#ifndef COMMANDS_H
+#define COMMANDS_H
+
+#include <array>
+#include <cassert>
+#include <chrono>
+#include <climits>
+#include <filesystem>
+#include <pwd.h>
+#include <string>
+#include <sys/types.h>
+#include <unistd.h>
+
+namespace config {
+
+    namespace consts {
+
+        // clang-format off
+
+        constexpr uint8_t RATING_MIN           = 1;
+        constexpr uint8_t RATING_MAX           = 5;
+        constexpr uint8_t MAX_RECENTS_REMEMBER = 20;
+        constexpr uint8_t MAX_RECENTS_DISPLAY  = 5;
+
+        constexpr std::chrono::duration STATUS_UPDATE_INTERVAL           = std::chrono::seconds(1);
+        constexpr std::chrono::duration COUNTRY_LIST_UPDATE_INTERVAL     = std::chrono::seconds(2);
+        constexpr std::chrono::duration COUNTRY_LIST_REFETCH_INTERVAL    = std::chrono::hours(24);
+        constexpr std::chrono::duration SERVER_LIST_UPDATE_INTERVAL      = std::chrono::minutes(15);
+        constexpr std::chrono::duration ENV_UPDATE_INTERVAL              = std::chrono::seconds(2);
+        constexpr std::chrono::duration ENV_CHECK_LOGGED_IN_INTERVAL     = std::chrono::minutes(1);
+        constexpr std::chrono::duration CONNECTION_COMMANDS_PAUSE_PERIOD = std::chrono::seconds(30);
+        constexpr std::chrono::duration RATING_PERIOD                    = std::chrono::minutes(1);
+
+        // clang-format on
+
+    } // namespace consts
+
+    namespace paths {
+
+        static auto getHome() -> std::filesystem::path {
+            struct passwd *pw = getpwuid(getuid());
+            std::string home(pw->pw_dir);
+            return std::filesystem::path(home);
+        }
+
+        static auto getExeDir() -> std::filesystem::path {
+            std::array<char, PATH_MAX> cpath{};
+            ssize_t count = readlink("/proc/self/exe", cpath.data(), PATH_MAX);
+            std::filesystem::path path(cpath.data());
+            // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-array-to-pointer-decay)
+            assert((count > 0 && path.has_parent_path()) &&
+                   "could not get location of executable (\"readlink "
+                   "/proc/self/exe\" failed)");
+            return path.parent_path();
+        }
+
+        static auto appDir() -> std::filesystem::path {
+            return getHome() / ".nordvpn-gui";
+        }
+        static auto countriesJson() -> std::filesystem::path {
+            return getExeDir() / "@REL_PATH_TO_RESOURCES@" / "countries.json";
+        }
+        static auto recentsJson() -> std::filesystem::path {
+            return appDir() / "recents.json";
+        }
+        static auto countriesCacheJson() -> std::filesystem::path {
+            return appDir() / "countries.cache.json";
+        }
+        static auto serversCacheJson() -> std::filesystem::path {
+            return appDir() / "servers.cache.json";
+        }
+
+    } // namespace paths
+
+    namespace urls {
+
+        // clang-format off
+
+        constexpr const char* NORDVPN_API_ALL_SERVERS   = "https://api.nordvpn.com/v1/servers?limit=-1";
+        constexpr const char* NORDVPN_API_ALL_COUNTRIES = "https://api.nordvpn.com/v1/servers/countries";
+
+        // clang-format on
+
+    } // namespace urls
+
+} // namespace config
+
+#endif // COMMANDS_H
