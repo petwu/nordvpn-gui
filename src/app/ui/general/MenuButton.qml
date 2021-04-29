@@ -67,7 +67,7 @@ Item {
         width: height
         icon.name: 'preferences-other'
         display: AbstractButton.IconOnly
-        onClicked: menu.open()
+        onClicked: !menu.visible ? menu.open() : menu.close()
     }
 
     Menu {

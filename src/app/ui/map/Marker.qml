@@ -18,11 +18,17 @@ Item {
 
     QtObject {
         id: _
+        /*!
+         * actual scale factor that is applied to the marker, whereas
+         * marker.scaleFactor is the initial scale factor
+         */
         property double scaleFactor: marker.scaleFactor
+        /*! properties that describe the connection status */
         property bool disconnected: ConnectionMediator.connectedCountryId !== marker.countryId &&
                                     ConnectionMediator.connectingCountryId !== marker.countryId
         property bool connecting: ConnectionMediator.connectingCountryId === marker.countryId
         property bool connected: ConnectionMediator.connectedCountryId === marker.countryId
+        /*! the primary color (= highlight color) that changes depending on the connection status */
         property color colorPrimary: connected
                                      /* if connected => highlight */
                                      ? Style.colorMarkerConnected
@@ -34,16 +40,49 @@ Item {
                                            ? Style.colorMarkerDefault
                                            /* ... and another color for all other markers */
                                            : Style.colorMarkerInactive))
+        /*! the background and border color to frame the marker */
         property color colorSecondary: Style.colorMarkerSecondary
-        onConnectedChanged: {
-            _.scaleFactor = marker.scaleFactor + (connected ? marker.scaleDiff : 0)
+        /*!
+         * the color of the text containing the country name that is displayed below
+         * the marker; uses either the background color or the general text color,
+         * depending on the brightness of the primary color
+         */
+        property color colorText: {
+            let r = colorPrimary.r
+            let g = colorPrimary.g
+            let b = colorPrimary.b
+            return (Math.max(r+g+b) >= 0.5 && (r+g+b) > 1.2)
+                ? Style.colorMarkerSecondary
+                : Style.colorText
         }
-        onDisconnectedChanged: {
-            marker.z = disconnected ? 1 : ConnectionMediator.countryList.length+1
+        /*! indicator whether the marker is currently hover by a mouse */
+        property bool hovered: false
+
+        /*! update scale, z-index and text visibility on connection status changes */
+        onConnectedChanged: setHighlight()
+        onConnectingChanged: setHighlight()
+        onDisconnectedChanged: setHighlight()
+    }
+
+    /*!
+     * Update the highlight status of the marker:
+     * - set scale factor increase/decrease size
+     * - set z index to elevate over other markers
+     * - set the text visibility
+     *
+     * parameters:
+     * - hoverState: 0=unchanged (default), 1=mouse-enter, 2=mouse-exit
+     */
+    function setHighlight(hoverState = 0) {
+        switch (hoverState) {
+        case 0: /* unchanged */; break
+        case 1: _.hovered = true; break
+        case 2: _.hovered = false; break
         }
-        onConnectingChanged: {
-            _.scaleFactor = marker.scaleFactor + (connecting ? marker.scaleDiff : 0)
-        }
+        let highlighted = _.connected || _.connecting || _.hovered
+        _.scaleFactor = marker.scaleFactor + (highlighted ? marker.scaleDiff : 0)
+        marker.z = highlighted ? ConnectionMediator.countryList.length+1 : 1
+        markerText.visible = _.hovered
     }
 
     Connections {
@@ -76,20 +115,8 @@ Item {
         y: -height
         cursorShape: Qt.PointingHandCursor
         hoverEnabled: true
-        onEntered: {
-            marker.z += 10
-            markerText.visible = true
-            if (_.disconnected) {
-                _.scaleFactor = marker.scaleFactor + scaleDiff
-            }
-        }
-        onExited: {
-            marker.z -= 10
-            markerText.visible = false
-            if (_.disconnected) {
-                _.scaleFactor = marker.scaleFactor
-            }
-        }
+        onEntered: setHighlight(1)
+        onExited: setHighlight(2)
         onClicked: {
             if (_.disconnected) {
                 ConnectionMediator.connectToCountryById(marker.countryId)
@@ -199,7 +226,7 @@ Item {
                 id: _markerText
                 text: marker.name
                 anchors.centerIn: parent
-                color: _.colorSecondary
+                color: _.colorText
             }
         }
     }

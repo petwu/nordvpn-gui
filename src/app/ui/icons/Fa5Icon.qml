@@ -17,7 +17,7 @@ Text {
 
     property int type: Fa5Icon.Type.Solid
     property string iconName: 'icons'
-    property int size: 1
+    property double size: 1
 
     function iconNameToUnicode() {
         let unicode = Solid.Icons[iconName]

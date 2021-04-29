@@ -19,8 +19,6 @@ Item {
     /*! size of the border/margin around the map */
     property int mapBorder: 128
 
-    property bool markerDebug: false
-
     // keep center of map centered on size changes by shifting the x/y Positioner
     // by half of the width/height change
     onWidthChanged: {
@@ -327,21 +325,23 @@ Item {
       markers
     */
     MouseArea {
-        visible: markerDebug
+        visible: DevMediator.showDebugInformation
         anchors.fill: map
         onClicked: {
             const l = (mouseX / map.width).toFixed(4)
             const t = (mouseY / map.height).toFixed(4)
-            debugMarkerPosHint.text = `FROM LEFT: ${l}` + '\n' + `FROM TOP:  ${t}`
+            debugMarkerPosHint.text = `left: ${l}` + '\n' + `top:  ${t}`
         }
     }
 
     Text {
         id: debugMarkerPosHint
-        visible: markerDebug
+        visible: DevMediator.showDebugInformation
         anchors.left: mapArea.left
+        anchors.leftMargin: 8
         anchors.bottom: mapArea.bottom
-        text: ''
+        anchors.bottomMargin: 48
+        text: '<i>click to<br/>show coords</i>'
     }
 
     Repeater {
