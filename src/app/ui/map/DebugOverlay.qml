@@ -5,10 +5,8 @@ import Style 1.0
 import '../general'
 
 Item {
-    anchors.top: parent.top
-    anchors.left: parent.left
     anchors.margins: Style.marginMapButtons
-    width: connectionInfoText.width
+    width: connectionInfoText.width + closeBtn.width
     height: connectionInfoText.height
     z: 1000
 
@@ -27,6 +25,7 @@ Item {
     }
 
     CloseButton {
+        id: closeBtn
         anchors.top: parent.top
         anchors.right: parent.right
         onClicked: DevMediator.toggleDebugInformation()

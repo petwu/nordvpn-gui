@@ -22,6 +22,7 @@
 #include "mediators/preferencesmediator.hpp"
 #include "mediators/recentsmediator.hpp"
 #include "mediators/traymediator.hpp"
+#include "mediators/updatemediator.hpp"
 #include "nordvpn/factory.hpp"
 #include "nordvpn/iaccountcontroller.hpp"
 #include "nordvpn/iconnectioncontroller.hpp"
@@ -31,7 +32,11 @@
 #include "nordvpn/irecentscontroller.hpp"
 #include "nordvpn/iservercontroller.hpp"
 #include "nordvpn/istatuscontroller.hpp"
+#include "nordvpn/iupdatecheckcontroller.hpp"
 #include "runguard.hpp"
+
+// define to convert a preprocessor macro to a boolean
+#define BOOL(macro) (macro ? true : false)
 
 auto main(int argc, char *argv[]) -> int {
 
@@ -72,18 +77,20 @@ auto main(int argc, char *argv[]) -> int {
         libnordvpn::get<ICountryController>(),
         libnordvpn::get<IServerController>(),
         libnordvpn::get<IStatusController>());
-    auto devMediator =
-        std::make_unique<DevMediator>(libnordvpn::get<IStatusController>());
-    auto navMediator =
-        std::make_unique<NavMediator>(libnordvpn::get<IEnvController>());
+    auto devMediator = std::make_unique<DevMediator>( //
+        libnordvpn::get<IStatusController>());
+    auto navMediator = std::make_unique<NavMediator>( //
+        libnordvpn::get<IEnvController>());
     auto preferencesMediator = std::make_unique<PreferencesMediator>(
         libnordvpn::get<IPreferencesController>());
     auto recentsMediator = std::make_unique<RecentsMediator>(
         libnordvpn::get<IRecentsController>());
-    auto trayMediator =
-        std::make_unique<TrayMediator>(libnordvpn::get<ICountryController>(),
-                                       libnordvpn::get<IRecentsController>(),
-                                       libnordvpn::get<IStatusController>());
+    auto trayMediator = std::make_unique<TrayMediator>( //
+        libnordvpn::get<ICountryController>(),
+        libnordvpn::get<IRecentsController>(),
+        libnordvpn::get<IStatusController>());
+    auto updateMediator = std::make_unique<UpdateMediator>(
+        libnordvpn::get<IUpdateCheckController>());
 
     ctx->setContextProperty("AccountMediator", accountMediator.get());
     ctx->setContextProperty("ConnectionMediator", connectionMediator.get());
@@ -92,6 +99,7 @@ auto main(int argc, char *argv[]) -> int {
     ctx->setContextProperty("PreferencesMediator", preferencesMediator.get());
     ctx->setContextProperty("RecentsMediator", recentsMediator.get());
     ctx->setContextProperty("TrayMediator", trayMediator.get());
+    ctx->setContextProperty("UpdateMediator", updateMediator.get());
 
     // get notified if any further (blocked) instance creations and show the
     // main window (might be minimized to taskbar or tray or hidden behind
@@ -121,9 +129,9 @@ auto main(int argc, char *argv[]) -> int {
         QFontDatabase::systemFont(QFontDatabase::FixedFont));
 
     // populate app information to QML
-#if IS_DEBUG
-    ctx->setContextProperty("IsDebug", true);
-#endif
+    ctx->setContextProperty("IsDebug", BOOL(IS_DEBUG));
+    ctx->setContextProperty("IsUpdateCheckEnabled",
+                            BOOL(NORDVPN_ENABLE_UPDATE_CHECK));
     ctx->setContextProperty("ApplicationName", APPLICATION_NAME);
     ctx->setContextProperty("ApplicationDescription", APPLICATION_DESCRIPTION);
     ctx->setContextProperty("Author", AUTHOR);

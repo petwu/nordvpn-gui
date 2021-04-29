@@ -30,6 +30,7 @@ namespace config {
         constexpr std::chrono::duration ENV_CHECK_LOGGED_IN_INTERVAL     = std::chrono::minutes(1);
         constexpr std::chrono::duration CONNECTION_COMMANDS_PAUSE_PERIOD = std::chrono::seconds(30);
         constexpr std::chrono::duration RATING_PERIOD                    = std::chrono::minutes(1);
+        constexpr std::chrono::duration UPDATE_CHECK_INTERVAL            = std::chrono::hours(72);
 
         // clang-format on
 
@@ -68,6 +69,9 @@ namespace config {
         }
         static auto serversCacheJson() -> std::filesystem::path {
             return appDir() / "servers.cache.json";
+        }
+        static auto hiddenUpdatesJson() -> std::filesystem::path {
+            return appDir() / "hidden-updates.json";
         }
 
     } // namespace paths

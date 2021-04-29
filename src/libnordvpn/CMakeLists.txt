@@ -19,6 +19,10 @@ target_include_directories(nordvpn
   PRIVATE src "${CMAKE_CURRENT_BINARY_DIR}/src"
   PUBLIC include "${CMAKE_CURRENT_BINARY_DIR}/include"
 )
+target_compile_definitions(nordvpn PRIVATE
+  IS_DEBUG=$<STREQUAL:${CMAKE_BUILD_TYPE},Debug>
+  NORDVPN_ENABLE_UPDATE_CHECK=$<BOOL:${NORDVPN_ENABLE_UPDATE_CHECK}>
+)
 
 # --------------------------------------------------------------------------------
 # source files
@@ -56,6 +60,7 @@ target_sources(nordvpn PRIVATE
   src/controllers/recentscontroller.cpp
   src/controllers/servercontroller.cpp
   src/controllers/statuscontroller.cpp
+  src/controllers/updatecheckcontroller.cpp
   # repositories
   src/repositories/baserepository.cpp
   src/repositories/preferencesrepository.cpp

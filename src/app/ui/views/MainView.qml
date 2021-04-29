@@ -67,7 +67,17 @@ Item {
         anchors.right: parent.right
         anchors.bottom: parent.bottom
 
+        UpdateCheckPanel {
+            id: updateCheckPanel
+            anchors.top: parent.top
+            anchors.left: parent.left
+        }
+
         DebugOverlay {
+            anchors.top: updateCheckPanel.visible
+                         ? updateCheckPanel.bottom
+                         : parent.top
+            anchors.left: parent.left
             visible: DevMediator.showDebugInformation
         }
 

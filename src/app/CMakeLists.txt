@@ -25,9 +25,10 @@ install(TARGETS nordvpn-gui)
 # --------------------------------------------------------------------------------
 # compile controls a.k.a. preprocessor definitions
 # --------------------------------------------------------------------------------
-if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-  target_compile_definitions(nordvpn-gui PRIVATE IS_DEBUG=1)
-endif()
+target_compile_definitions(nordvpn-gui PRIVATE
+  IS_DEBUG=$<STREQUAL:${CMAKE_BUILD_TYPE},Debug>
+  NORDVPN_ENABLE_UPDATE_CHECK=$<BOOL:${NORDVPN_ENABLE_UPDATE_CHECK}>
+)
 
 # --------------------------------------------------------------------------------
 # source files

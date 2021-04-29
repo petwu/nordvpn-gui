@@ -19,8 +19,33 @@ Version::Version(uint32_t major, uint32_t minor, uint32_t patch,
     *this = Version::fromString(this->toString());
 }
 
+auto Version::major() const -> int32_t {
+    if (this->isValid()) {
+        return this->_major;
+    }
+    return -1;
+}
+
+auto Version::minor() const -> int32_t {
+    if (this->isValid()) {
+        return this->_minor;
+    }
+    return -1;
+}
+
+auto Version::patch() const -> int32_t {
+    if (this->isValid()) {
+        return this->_patch;
+    }
+    return -1;
+}
+
 auto Version::invalid() -> Version { //
     return Version();
+}
+
+auto Version::isValid() const -> bool { //
+    return *this != Version::invalid();
 }
 
 auto Version::isInvalid() const -> bool { //
@@ -169,4 +194,27 @@ auto Version::operator>=(const Version &other) const -> bool {
 }
 auto Version::operator<=(const Version &other) const -> bool {
     return *this < other || *this == other;
+}
+
+auto Version::operator==(const std::string &other) const -> bool {
+    return *this == Version::fromString(other);
+}
+
+auto Version::operator!=(const std::string &other) const -> bool {
+    return *this != Version::fromString(other);
+}
+
+auto Version::operator>(const std::string &other) const -> bool {
+    return *this > Version::fromString(other);
+}
+
+auto Version::operator<(const std::string &other) const -> bool {
+    return *this < Version::fromString(other);
+}
+
+auto Version::operator>=(const std::string &other) const -> bool {
+    return *this >= Version::fromString(other);
+}
+auto Version::operator<=(const std::string &other) const -> bool {
+    return *this <= Version::fromString(other);
 }

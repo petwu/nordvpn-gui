@@ -59,8 +59,8 @@ ApplicationWindow {
             Layout.fillWidth: true
             //: Text displayed on the top of the credits window to explain the user the purpose of this window.
             //~ Note %1 gets replaced by the application name. Keep the HTML tags (words in angle brackets, e.g. <br />).
-            text: qsTr('%1 is made possible by Qt and other Open Source Software (OSS)' +
-                       'provided by third parties free of charge. These include software libraries' +
+            text: qsTr('%1 is made possible by Qt and other Open Source Software (OSS) ' +
+                       'provided by third parties free of charge. These include software libraries ' +
                        'providing some funtionality or resource files like fonts, icons or images. ' +
                        'They are used under the licenses listed below.<br />' +
                        '<b><i>Thanks to everyone who contributed to them!</i></b>').arg(ApplicationName)

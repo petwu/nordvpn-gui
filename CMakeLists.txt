@@ -28,10 +28,18 @@ set(SEMVER_MINOR "${PROJECT_VERSION_MINOR}")
 set(SEMVER_PATCH "${PROJECT_VERSION_PATCH}")
 set(SEMVER_PRE_RELEASE "dev")
 get_git_hash(SEMVER_BUILD_META)
+set(SEMVER_FULL "${SEMVER_MAJOR}.${SEMVER_MINOR}.${SEMVER_PATCH}")
+if(SEMVER_PRE_RELEASE)
+  string(APPEND SEMVER_FULL "-${SEMVER_PRE_RELEASE}")
+endif()
+if(SEMVER_BUILD_META)
+  string(APPEND SEMVER_FULL "+${SEMVER_BUILD_META}")
+endif()
 set(AUTHOR "Peter Würth")
 set(GITHUB_USERNAME "petwu")
 set(GITHUB_REPOSITORY_NAME "nordvpn-gui")
 set(REPOSITORY_URL "https://github.com/petwu/nordvpn-gui")
+set(REPOSITORY_RELEASES_URL "${REPOSITORY_URL}/releases")
 set(PROJECT_WEBSITE_URL "https://petwu.github.io/nordvpn-gui")
 set(DOCS_URL "${PROJECT_WEBSITE_URL}/docs")
 set(DONATE_URL "${PROJECT_WEBSITE_URL}/docs/donate")
@@ -72,6 +80,19 @@ conan_cmake_run(
   BASIC_SETUP
   CMAKE_TARGETS
   OUTPUT_QUIET
+)
+
+# --------------------------------------------------------------------------------
+# options
+# --------------------------------------------------------------------------------
+option(NORDVPN_ENABLE_UPDATE_CHECK
+  "If this option is on, the resulting variable will automatically check for\
+  on the GitHub releases page and notify the user if an update is available. \
+  This option should be ON when building from source or for building a\
+  downloadable deb/rpm file for the GitHub release page. It should be OFF when\
+  building for software repositories, since the the package manager of the\
+  distribution is reponsible for updates."
+  ON
 )
 
 # --------------------------------------------------------------------------------

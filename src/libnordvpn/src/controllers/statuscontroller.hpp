@@ -1,7 +1,6 @@
 #ifndef STATUSCONTROLLER_HPP
 #define STATUSCONTROLLER_HPP
 
-#include <atomic>
 #include <cstdint>
 #include <memory>
 #include <nlohmann/json.hpp>
@@ -48,12 +47,6 @@ class StatusController : public virtual IStatusController,
 
   private:
     const std::shared_ptr<IServerController> _serverController;
-
-    /**
-     * @brief Bool that is true, while the background task should keep running.
-     * @details Atomic bool for thread safety.
-     */
-    std::atomic<bool> _performBackgroundTask = false;
 
     /**
      * @brief Object holding the current information about the connection

@@ -129,6 +129,14 @@ Item {
         }
 
         MenuItem {
+            visible: IsUpdateCheckEnabled
+            //: Check if there are any updates available.
+            text: qsTr('Check for updates')
+            icon.name: 'view-refresh'
+            action: checkForUpdatesAction
+        }
+
+        MenuItem {
             //: Logout from the NordVPN service.
             text: qsTr('Logout')
             icon.name: 'system-log-out'
@@ -180,6 +188,11 @@ Item {
         onCheckedChanged: {
             menuSettings.setValue('showDebugInformation', checked)
         }
+    }
+
+    Action {
+        id: checkForUpdatesAction
+        onTriggered: UpdateMediator.showUpdateDialog()
     }
 
     Action {

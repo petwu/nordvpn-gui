@@ -10,6 +10,7 @@
 #include "controllers/recentscontroller.hpp"
 #include "controllers/servercontroller.hpp"
 #include "controllers/statuscontroller.hpp"
+#include "controllers/updatecheckcontroller.hpp"
 #include "nordvpn/iaccountcontroller.hpp"
 #include "nordvpn/iconnectioncontroller.hpp"
 #include "nordvpn/icountrycontroller.hpp"
@@ -18,10 +19,13 @@
 #include "nordvpn/irecentscontroller.hpp"
 #include "nordvpn/iservercontroller.hpp"
 #include "nordvpn/istatuscontroller.hpp"
+#include "nordvpn/iupdatecheckcontroller.hpp"
 #include "repositories/ipreferencesrepository.hpp"
 #include "repositories/iserverrepository.hpp"
+#include "repositories/iupdatecheckrepository.hpp"
 #include "repositories/preferencesrepository.hpp"
 #include "repositories/serverrepository.hpp"
+#include "repositories/updatecheckrepository.hpp"
 
 namespace libnordvpn {
 
@@ -32,7 +36,8 @@ namespace libnordvpn {
      */
     template <typename T> auto _get() -> std::shared_ptr<T> {
         constexpr bool validT = std::is_same_v<T, IServerRepository> ||
-                                std::is_same_v<T, IPreferencesRepository>;
+                                std::is_same_v<T, IPreferencesRepository> ||
+                                std::is_same_v<T, IUpdateCheckRepository>;
         static_assert(validT,
                       "invalid template parameter T for libnordvpn::_get<T>()");
 
@@ -40,6 +45,8 @@ namespace libnordvpn {
             return std::make_shared<ServerRepository>();
         } else if constexpr (std::is_same_v<T, IPreferencesRepository>) {
             return std::make_shared<PreferencesRepository>();
+        } else if constexpr (std::is_same_v<T, IUpdateCheckRepository>) {
+            return std::make_shared<UpdateCheckRepository>();
         } else {
             // not possible
         }
@@ -58,7 +65,8 @@ namespace libnordvpn {
                                 std::is_same_v<T, IPreferencesController> ||
                                 std::is_same_v<T, IRecentsController> ||
                                 std::is_same_v<T, IServerController> ||
-                                std::is_same_v<T, IStatusController>;
+                                std::is_same_v<T, IStatusController> ||
+                                std::is_same_v<T, IUpdateCheckController>;
         static_assert(validT,
                       "invalid template parameter T for libnordvpn::get<T>()");
 
@@ -100,6 +108,11 @@ namespace libnordvpn {
             static auto statusController =
                 std::make_shared<StatusController>(get<IServerController>());
             return statusController;
+        } else if constexpr (std::is_same_v<T, IUpdateCheckController>) {
+            static auto updateCheckController =
+                std::make_shared<UpdateCheckController>(
+                    _get<IUpdateCheckRepository>());
+            return updateCheckController;
         } else {
             // not possible if all classes tested in the previous if-else
             // branches are checked with validT and covered in
@@ -157,6 +170,7 @@ void getExplicitTemplateInstantiations() {
     libnordvpn::get<IRecentsController>();
     libnordvpn::get<IServerController>();
     libnordvpn::get<IStatusController>();
+    libnordvpn::get<IUpdateCheckController>();
 
     // note: no need to do the same for libnordvpn::_get<T>(), since this
     // template is both defined and implemented in the this file

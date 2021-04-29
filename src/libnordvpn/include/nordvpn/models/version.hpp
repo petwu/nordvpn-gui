@@ -30,6 +30,21 @@ class Version {
             std::string preRelease = "", std::string buildMeta = "");
 
     /**
+     * @brief Get the major version part. -1 if the Version is invalid.
+     */
+    auto major() const -> int32_t;
+
+    /**
+     * @brief Get the minor version part. -1 if the Version is invalid.
+     */
+    auto minor() const -> int32_t;
+
+    /**
+     * @brief Get the patch version part. -1 if the Version is invalid.
+     */
+    auto patch() const -> int32_t;
+
+    /**
      * @brief Represents a invalud version. #toString() returns "0.0.0-invalid".
      * Can be used in equal comparisons to check if a Version object hold a
      * valid version, e.g. `if (myVersion == Version::Invalid) { ... }` or
@@ -54,6 +69,11 @@ class Version {
     /**
      * @brief Compares this with Version::Invalid().
      */
+    auto isValid() const -> bool;
+
+    /**
+     * @brief Compares this with Version::Invalid().
+     */
     auto isInvalid() const -> bool;
 
     /**
@@ -68,6 +88,13 @@ class Version {
     auto operator<(const Version &other) const -> bool;
     auto operator>=(const Version &other) const -> bool;
     auto operator<=(const Version &other) const -> bool;
+
+    auto operator==(const std::string &other) const -> bool;
+    auto operator!=(const std::string &other) const -> bool;
+    auto operator>(const std::string &other) const -> bool;
+    auto operator<(const std::string &other) const -> bool;
+    auto operator>=(const std::string &other) const -> bool;
+    auto operator<=(const std::string &other) const -> bool;
 
   private:
     /**
