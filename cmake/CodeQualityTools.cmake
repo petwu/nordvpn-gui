@@ -31,27 +31,15 @@ endif()
 
 #### find all code quality tools (linter, formatter, ...)
 # clang-tidy
-find_program(CLANG_TIDY_EXECUTABLE
-  NAMES clang-tidy
-  REQUIRED
-)
+find_program(CLANG_TIDY_EXECUTABLE NAMES clang-tidy)
 # clang-format
-find_program(CLANG_FORMAT_EXECUTABLE
-  NAMES clang-format
-  REQUIRED
-)
+find_program(CLANG_FORMAT_EXECUTABLE NAMES clang-format)
 # iwyu is a executable but utility tools are python scripts
 find_package (Python3 COMPONENTS Interpreter)
-# ieyu compilation database driver
-find_program(IWYU_TOOL_PY
-  NAMES iwyu_tool.py
-  REQUIRED
-)
-# ieyu auto fixer
-find_program(IWYU_FIX_PY
-  NAMES fix_includes.py
-  REQUIRED
-)
+# iwyu compilation database driver
+find_program(IWYU_TOOL_PY NAMES iwyu_tool.py)
+# iwyu auto fixer
+find_program(IWYU_FIX_PY NAMES fix_includes.py)
 
 #### create compilation databases
 if(NOT CMAKE_EXPORT_COMPILE_COMMANDS)
@@ -175,27 +163,33 @@ function(add_clang_tidy _target)
     set(_log_fix "${_LOG_DIR}/${_target}-clang-tidy-fix.log")
   endif()
 
-  #### add target to call clang-tidy
-  add_custom_target(${_target}
-    COMMAND ${CLANG_TIDY_EXECUTABLE}
-      -p ${CMAKE_BINARY_DIR}/compile_commands_no_autogen.json  # compilation database
-      ${_cxx_sources}                                          # source files
-      -header-filter=.*
-      > ${_log} 2>&1
-    COMMENT "Linting CXX code with clang-tidy (${_log})"
-  )
-  add_dependencies(${_target} common-prequisities)
-
-  #### add target to call clang-tidy and fix all suggestions
-  add_custom_target(${_target}-fix
-    COMMAND ${CLANG_TIDY_EXECUTABLE}
-      -p ${CMAKE_BINARY_DIR}/compile_commands_no_autogen.json # compilation database
-      --fix                                                   # auto-fix all suggestions
-      ${_cxx_sources}                                          # source files
-      > ${_log_fix} 2>&1
-    COMMENT "Linting CXX code with clang-tidy and fixing all suggestions (${_log_fix})"
-  )
-  add_dependencies(${_target}-fix common-prequisities)
+  if(CLANG_TIDY_EXECUTABLE MATCHES ".*-NOTFOUND")
+    # dummy target if clang-tidy is not available
+    add_custom_target(${_target}
+      COMMAND ${CMAKE_COMMAND} -E echo "error: clang-tidy is not installed"
+    )
+  else()
+    #### add target to call clang-tidy
+    add_custom_target(${_target}
+      COMMAND ${CLANG_TIDY_EXECUTABLE}
+        -p ${CMAKE_BINARY_DIR}/compile_commands_no_autogen.json  # compilation database
+        ${_cxx_sources}                                          # source files
+        -header-filter=.*
+        > ${_log} 2>&1
+      COMMENT "Linting CXX code with clang-tidy (${_log})"
+    )
+    add_dependencies(${_target} common-prequisities)
+    #### add target to call clang-tidy and fix all suggestions
+    add_custom_target(${_target}-fix
+      COMMAND ${CLANG_TIDY_EXECUTABLE}
+        -p ${CMAKE_BINARY_DIR}/compile_commands_no_autogen.json # compilation database
+        --fix                                                   # auto-fix all suggestions
+        ${_cxx_sources}                                          # source files
+        > ${_log_fix} 2>&1
+      COMMENT "Linting CXX code with clang-tidy and fixing all suggestions (${_log_fix})"
+    )
+    add_dependencies(${_target}-fix common-prequisities)
+  endif()
 
 endfunction()
 
@@ -242,17 +236,24 @@ function(add_clang_format _target)
   endif()
 
   #### add target to call clang-format
-  add_custom_target(${_target}
-    COMMAND ${CLANG_FORMAT_EXECUTABLE}
-      -i                    # edit files in place
-      --style=file          # format using .clang-format
-      --fallback-style=LLVM # in case no .clang-format is found
-      --verbose             # list the formatted files
-      ${_CF_FILES_ABS}      # input files
-      > ${_log} 2>&1
-    COMMENT "Formatting CXX code with clang-format (${_log})"
-  )
-  add_dependencies(${_target} common-prequisities)
+  if(CLANG_FORMAT_EXECUTABLE MATCHES ".*-NOTFOUND")
+    # dummy target if clang-tidy is not available
+    add_custom_target(${_target}
+      COMMAND ${CMAKE_COMMAND} -E echo "error: clang-format is not installed"
+    )
+  else()
+    add_custom_target(${_target}
+      COMMAND ${CLANG_FORMAT_EXECUTABLE}
+        -i                    # edit files in place
+        --style=file          # format using .clang-format
+        --fallback-style=LLVM # in case no .clang-format is found
+        --verbose             # list the formatted files
+        ${_CF_FILES_ABS}      # input files
+        > ${_log} 2>&1
+      COMMENT "Formatting CXX code with clang-format (${_log})"
+    )
+    add_dependencies(${_target} common-prequisities)
+  endif()
 
 endfunction()
 
@@ -312,34 +313,39 @@ function(add_iwyu _target)
     set(_log_fix "${_LOG_DIR}/${_target}-iwyu-fix.log")
   endif()
 
-  #### analyze target
-  add_custom_target(${_target}
-    COMMAND Python3::Interpreter
-      ${IWYU_TOOL_PY}                                         # iwyu python script working off compile_commands.json
-      -p ${CMAKE_BINARY_DIR}/compile_commands_no_autogen.json # compilation database
-      -o iwyu                                                 # output format (not output file!)
-      -j ${CPU_COUNT}                                         # number of parallel jobs
-      --                                                      # -- iwyu options --
-      ${_IWYU_MAPPING_FILE}                                   # -Xiwyu --mapping_file=... (optional)
-      -Xiwyu --no_fwd_decls                                   # use #includes, no forward declarations
-      > ${_log} 2>&1
-    COMMENT "Analyzing CXX headers with include-what-you-use (${_log})"
-  )
-  add_dependencies(${_target} common-prequisities)
-
-  #### auto-fix target
-  add_custom_target(${_target}-fix
-    COMMAND Python3::Interpreter
-      ${IWYU_FIX_PY}       # iwyu python script fixing all suggestions
-      --nosafe_headers     # remove unused includes (default is to keep them)
-      < ${_log}       # input
-      > ${_log_fix}
-    COMMENT "Fixing CXX headers with include-what-you-use (${_log_fix})"
-    VERBATIM
-  )
-  add_dependencies(${_target} common-prequisities)
-
-  # ${_log} needs to be available
-  add_dependencies(${_target}-fix ${_target})
+  if(IWYU_TOOL_PY MATCHES ".*-NOTFOUND" OR IWYU_FIX_PY MATCHES ".*-NOTFOUND")
+    # dummy target if clang-tidy is not available
+    add_custom_target(${_target}
+      COMMAND ${CMAKE_COMMAND} -E echo "error: iwyu_tool.py or fix_includes.py is not installed"
+    )
+  else()
+    #### analyze target
+    add_custom_target(${_target}
+      COMMAND Python3::Interpreter
+        ${IWYU_TOOL_PY}                                         # iwyu python script working off compile_commands.json
+        -p ${CMAKE_BINARY_DIR}/compile_commands_no_autogen.json # compilation database
+        -o iwyu                                                 # output format (not output file!)
+        -j ${CPU_COUNT}                                         # number of parallel jobs
+        --                                                      # -- iwyu options --
+        ${_IWYU_MAPPING_FILE}                                   # -Xiwyu --mapping_file=... (optional)
+        -Xiwyu --no_fwd_decls                                   # use #includes, no forward declarations
+        > ${_log} 2>&1
+      COMMENT "Analyzing CXX headers with include-what-you-use (${_log})"
+    )
+    add_dependencies(${_target} common-prequisities)
+    #### auto-fix target
+    add_custom_target(${_target}-fix
+      COMMAND Python3::Interpreter
+        ${IWYU_FIX_PY}       # iwyu python script fixing all suggestions
+        --nosafe_headers     # remove unused includes (default is to keep them)
+        < ${_log}       # input
+        > ${_log_fix}
+      COMMENT "Fixing CXX headers with include-what-you-use (${_log_fix})"
+      VERBATIM
+    )
+    add_dependencies(${_target} common-prequisities)
+    # ${_log} needs to be available
+    add_dependencies(${_target}-fix ${_target})
+  endif()
 
 endfunction()

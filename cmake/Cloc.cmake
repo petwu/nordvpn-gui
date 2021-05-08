@@ -23,9 +23,7 @@ This command creates a new ``<target>`` that calls cloc with the given
 directories and files.
 
 #]============================================================================]
-find_program(CLOC_EXECUTABLE
-  NAMES cloc
-)
+find_program(CLOC_EXECUTABLE NAMES cloc)
 
 function(add_cloc _target)
 
